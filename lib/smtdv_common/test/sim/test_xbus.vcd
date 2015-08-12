@@ -1,5 +1,5 @@
 $date
-    Aug 12, 2015  11:28:53
+    Aug 12, 2015  15:05:25
 $end
 $version
     TOOL:	ncsim(64)	13.10-s011
@@ -30,9 +30,9 @@ $upscope $end
 
 
 $scope module xbus_if_0 $end
-$var parameter 32 ,    ADDR_WIDTH  $end
-$var parameter 32 -    BYTEN_WIDTH  $end
-$var parameter 32 .    DATA_WIDTH  $end
+$var parameter 32 ,    ADDR_WIDTH [31:0] $end
+$var parameter 32 -    BYTEN_WIDTH [31:0] $end
+$var parameter 32 .    DATA_WIDTH [31:0] $end
 $var wire      1 /    clk  $end
 $var wire      1 0    resetn  $end
 $var reg       1 1    req [0:0] $end

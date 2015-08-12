@@ -29,6 +29,7 @@ SVA
 ../../../../dpi/sqlite3/smtdv_sqlite3_pkg.sv
 ../xbus_pkg.sv
 ../test/xbus_top.sv
+../v/xbus_slave.v
 -CDSLIB
 ./INCA_libs/irun.lnx8664.13.10.nc/cdsrun.lib
 -HDLVAR

@@ -26,6 +26,7 @@
 ../../../../dpi/sqlite3/smtdv_sqlite3_pkg.sv
 ../xbus_pkg.sv
 ../test/xbus_top.sv
+../v/xbus_slave.v
 -sv_lib ../../../../dpi/sqlite3/dpi_smtdv_lib.so
 -input simvision.tcl
 -batch

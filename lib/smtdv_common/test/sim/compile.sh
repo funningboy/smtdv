@@ -22,8 +22,8 @@ vlog \
 +incdir+../v \
 +incdir+./ \
 +incdir+../../../../dpi/sqlite3 \
-../../smtdv_common_pkg.sv \
 ../../../../dpi/sqlite3/smtdv_sqlite3_pkg.sv \
-../xbus_pkg.sv \
-../test/xbus_top.sv
+../../smtdv_common_pkg.sv \
+../xbus_pkg.sv
+#../test/xbus_top.sv
 
