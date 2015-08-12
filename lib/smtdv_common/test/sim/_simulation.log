@@ -1,0 +1,133 @@
+# vsim -c -do "run 1000us; quit " "+notimingchecks" -suppress 3829 -vopt -l _simulation.log -L work top "+incdir+../../" "+incdir+../" "+incdir+./" -gblso ../../../../dpi/sqlite3/dpi_smtdv_lib.so "+UVM_TESTNAME=xbus_1w1r_test" "+UVM_VERBOSITY=UVM_FULL" 
+# Start time: 15:53:54 on Aug 06,2015
+# Loading ../../../../dpi/sqlite3/dpi_smtdv_lib.so
+# ** Note: (vsim-3812) Design is being optimized...
+# //  Questa Sim-64
+# //  Version 10.3c linux_x86_64 Jul 18 2014
+# //
+# //  Copyright 1991-2014 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //
+# Loading sv_std.std
+# Loading mtiUvm.uvm_pkg
+# Loading work.smtdv_common_pkg(fast)
+# Loading work.xbus_pkg(fast)
+# Loading work.top(fast)
+# Loading work.xbus_pkg_sv_unit(fast)
+# Loading work.xbus_if(fast__1)
+# Loading mtiUvm.questa_uvm_pkg(fast)
+# Loading work.xbus_if(fast)
+# Loading work.smtdv_gen_rst_if(fast)
+# Loading /stec/apps/mentor/questa_sim_10.3c/questasim/uvm-1.1d/linux_x86_64/uvm_dpi.so
+# run 1000us
+# ----------------------------------------------------------------
+# UVM-1.1d
+# (C) 2007-2013 Mentor Graphics Corporation
+# (C) 2007-2013 Cadence Design Systems, Inc.
+# (C) 2006-2013 Synopsys, Inc.
+# (C) 2011-2013 Cypress Semiconductor Corp.
+# ----------------------------------------------------------------
+# 
+#   ***********       IMPORTANT RELEASE NOTES         ************
+# 
+#   You are using a version of the UVM library that has been compiled
+#   with `UVM_NO_DEPRECATED undefined.
+#   See http://www.eda.org/svdb/view.php?id=3313 for more details.
+# 
+#   You are using a version of the UVM library that has been compiled
+#   with `UVM_OBJECT_MUST_HAVE_CONSTRUCTOR undefined.
+#   See http://www.eda.org/svdb/view.php?id=3770 for more details.
+# 
+#       (Specify +UVM_NO_RELNOTES to turn off this notice)
+# 
+# UVM_INFO verilog_src/questa_uvm_pkg-1.2/src/questa_uvm_pkg.sv(215) @ 0: reporter [Questa UVM] QUESTA_UVM-1.2.2
+# UVM_INFO verilog_src/questa_uvm_pkg-1.2/src/questa_uvm_pkg.sv(217) @ 0: reporter [Questa UVM]  questa_uvm::init(+struct)
+# UVM_INFO ../..//smtdv_gen_rst_if.sv(29) @ 0: reporter [xbus_rst_if] Power-On Reset Initialized ...
+# UVM_INFO @ 0: reporter [RNTST] Running test xbus_1w1r_test...
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=xbus_rst_model_rst_mon
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=xbus_rst_model_rst_mon.smtdv_monitor_threads
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.master_agent[0]
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.master_agent[0].drv
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.master_agent[0].drv.rsp_port
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.master_agent[0].drv.seq_item_port
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.master_agent[0].drv.smtdv_driver_threads
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.master_agent[0].mon
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.master_agent[0].mon.item_collected_port
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.master_agent[0].mon.item_detected_port
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.master_agent[0].mon.smtdv_monitor_threads
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr.req_fifo
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr.req_fifo.get_ap
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr.req_fifo.get_peek_export
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr.req_fifo.put_ap
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr.req_fifo.put_export
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr.rsp_export
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr.seq_item_export
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr.sqr_rsp_analysis_fifo
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr.sqr_rsp_analysis_fifo.analysis_export
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr.sqr_rsp_analysis_fifo.get_ap
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr.sqr_rsp_analysis_fifo.get_peek_export
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr.sqr_rsp_analysis_fifo.put_ap
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr.sqr_rsp_analysis_fifo.put_export
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0]
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].drv
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].drv.rsp_port
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].drv.seq_item_port
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].drv.smtdv_driver_threads
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].fifo_mon_sqr
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].fifo_mon_sqr.analysis_export
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].fifo_mon_sqr.get_ap
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].fifo_mon_sqr.get_peek_export
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].fifo_mon_sqr.put_ap
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].fifo_mon_sqr.put_export
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].mon
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].mon.item_collected_port
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].mon.item_detected_port
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].mon.smtdv_monitor_threads
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.mon_get_port
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.req_fifo
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.req_fifo.get_ap
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.req_fifo.get_peek_export
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.req_fifo.put_ap
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.req_fifo.put_export
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.rsp_export
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.seq_item_export
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.sqr_rsp_analysis_fifo
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.sqr_rsp_analysis_fifo.analysis_export
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.sqr_rsp_analysis_fifo.get_ap
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.sqr_rsp_analysis_fifo.get_peek_export
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.sqr_rsp_analysis_fifo.put_ap
+# UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.sqr_rsp_analysis_fifo.put_export
+# UVM_INFO verilog_src/questa_uvm_pkg-1.2/src/questa_uvm_pkg.sv(272) @ 0: reporter [Questa UVM] End Of Elaboration
+# UVM_INFO ../..//smtdv_component.sv(56) @ 0: uvm_test_top.master_agent[0].drv.smtdv_driver_threads [uvm_test_top.master_agent[0].drv.smtdv_driver_threads] The initial "resetn" flag has been set to 0
+# UVM_INFO ../..//smtdv_component.sv(56) @ 0: uvm_test_top.master_agent[0].drv [uvm_test_top.master_agent[0].drv] The initial "resetn" flag has been set to 0
+# UVM_INFO ../..//smtdv_component.sv(56) @ 0: uvm_test_top.master_agent[0].mon.smtdv_monitor_threads [uvm_test_top.master_agent[0].mon.smtdv_monitor_threads] The initial "resetn" flag has been set to 0
+# UVM_INFO ../..//smtdv_component.sv(56) @ 0: uvm_test_top.master_agent[0].mon [uvm_test_top.master_agent[0].mon] The initial "resetn" flag has been set to 0
+# UVM_INFO ../..//smtdv_component.sv(56) @ 0: uvm_test_top.master_agent[0].seqr [uvm_test_top.master_agent[0].seqr] The initial "resetn" flag has been set to 0
+# UVM_INFO ../..//smtdv_component.sv(56) @ 0: uvm_test_top.master_agent[0] [uvm_test_top.master_agent[0]] The initial "resetn" flag has been set to 0
+# UVM_INFO ../..//smtdv_component.sv(56) @ 0: uvm_test_top.slave_agent[0].drv.smtdv_driver_threads [uvm_test_top.slave_agent[0].drv.smtdv_driver_threads] The initial "resetn" flag has been set to 0
+# UVM_INFO ../..//smtdv_component.sv(56) @ 0: uvm_test_top.slave_agent[0].drv [uvm_test_top.slave_agent[0].drv] The initial "resetn" flag has been set to 0
+# UVM_INFO ../..//smtdv_component.sv(56) @ 0: uvm_test_top.slave_agent[0].mon.smtdv_monitor_threads [uvm_test_top.slave_agent[0].mon.smtdv_monitor_threads] The initial "resetn" flag has been set to 0
+# UVM_INFO ../..//smtdv_component.sv(56) @ 0: uvm_test_top.slave_agent[0].mon [uvm_test_top.slave_agent[0].mon] The initial "resetn" flag has been set to 0
+# UVM_INFO ../..//smtdv_component.sv(56) @ 0: uvm_test_top.slave_agent[0].seqr [uvm_test_top.slave_agent[0].seqr] The initial "resetn" flag has been set to 0
+# UVM_INFO ../..//smtdv_component.sv(56) @ 0: uvm_test_top.slave_agent[0] [uvm_test_top.slave_agent[0]] The initial "resetn" flag has been set to 0
+# UVM_INFO ../..//smtdv_component.sv(56) @ 0: uvm_test_top [uvm_test_top] The initial "resetn" flag has been set to 0
+# UVM_INFO ../..//smtdv_component.sv(56) @ 0: xbus_rst_model_rst_mon.smtdv_monitor_threads [xbus_rst_model_rst_mon.smtdv_monitor_threads] The initial "resetn" flag has been set to 0
+# UVM_INFO ../..//smtdv_component.sv(56) @ 0: xbus_rst_model_rst_mon [xbus_rst_model_rst_mon] The initial "resetn" flag has been set to 0
+# UVM_INFO verilog_src/uvm-1.1d/src/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'run'
+# ** Fatal: (SIGSEGV) Bad handle or reference.
+#    Time: 0 ps  Iteration: 46  Process: /smtdv_common_pkg::smtdv_thread_handler::smtdv_thread_handler__3::run/#FORK#56_2a9aa59fa1f File: ../../smtdv_common_pkg.sv
+# Fatal error in Task smtdv_common_pkg/smtdv_thread_handler::run at ../..//smtdv_thread_handler.sv line 56
+# 
+# HDL call sequence:
+# Stopped at ../..//smtdv_thread_handler.sv 56 Task smtdv_common_pkg/smtdv_thread_handler::run
+# 
+#  quit 
+# End time: 15:54:18 on Aug 06,2015, Elapsed time: 0:00:24
+# Errors: 2, Warnings: 0

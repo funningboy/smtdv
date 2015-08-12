@@ -1,0 +1,8 @@
+./xbus_1w1r_test.sv
+../..//xbus_1w1r_test.sv
+..//xbus_1w1r_test.sv
+../test/xbus_slave_seqs_cb.sv
+../seq/smtdv_sqlite3_pkg.sv
+../v/smtdv_sqlite3_pkg.sv
+.//smtdv_sqlite3_pkg.sv
+../../../../dpi/sqlite3/macros/uvm_deprecated_defines.svh

@@ -1,0 +1,60 @@
+irun(64): 13.10-s011: (c) Copyright 1995-2013 Cadence Design Systems, Inc.
+TOOL:	irun(64)	13.10-s011: Started on Aug 12, 2015 at 14:54:18 CST
+irun
+	-f run.f
+		-uvm
+		-64bit
+		-access rwc
+		-status
+		-top top
+		+UVM_TESTNAME=xbus_1w1r_test
+		+UVM_VERBOSITY=UVM_DEBUG
+		-covoverwrite
+		-coverage b:u
+		+nccoverage+functional
+		+notchkmsg
+		+notimingchecks
+		+no_notifier
+		+define+SVA
+		-linedebug
+		-lineuvmdebug
+		+incdir+../../
+		+incdir+../
+		+incdir+../test
+		+incdir+../seq
+		+incdir+../v
+		+incdir+./
+		+incdir+../../../../dpi/sqlite3
+		../../smtdv_common_pkg.sv
+		../../../../dpi/sqlite3/smtdv_sqlite3_pkg.sv
+		../xbus_pkg.sv
+		../test/xbus_top.sv
+		-sv_lib ../../../../dpi/sqlite3/dpi_smtdv_lib.so
+		-input simvision.tcl
+		-batch
+
+   User defined plus("+") options:
+	+UVM_VERBOSITY=UVM_DEBUG
+
+irun: *W,BADPRF: The -linedebug option may have an adverse performance impact.
+
+   The following -l options were used, however no libraries are being build and hal was not requested:
+	-lineuvmdebug
+
+Recompiling... reason: file '../test/xbus_top.sv' is newer than expected.
+	expected: Fri Aug  7 13:42:29 2015
+	actual:   Wed Aug 12 14:07:49 2015
+Compiling UVM packages (uvm_pkg.sv cdns_uvm_pkg.sv) using uvmhome location /stec/apps/cadence/INCISIV13.10.011/tools/uvm
+ncvlog: Memory Usage - 17.9M program + 45.2M data = 63.0M total
+ncvlog: CPU Usage - 0.1s system + 1.5s user = 1.7s total (3.1s, 53.4% cpu)
+file: ../xbus_pkg.sv
+    ) xbus_if_harness;
+                    |
+ncvlog: *E,VIFCNG (..//xbus_if_harness.sv,35|20): Virtual interface declaration is not allowed here [SystemVerilog].
+(`include file: ..//xbus_if_harness.sv line 75, file: ../xbus_pkg.sv line 6)
+	interface worklib.xbus_slave_if_harness:sv
+		errors: 1, warnings: 0
+ncvlog: Memory Usage - 17.9M program + 39.2M data = 57.0M total
+ncvlog: CPU Usage - 0.1s system + 0.3s user = 0.4s total (0.6s, 65.6% cpu)
+irun: *E,VLGERR: An error occurred during parsing.  Review the log file for errors with the code *E and fix those identified problems to proceed.  Exiting with code (status 1).
+TOOL:	irun(64)	13.10-s011: Exiting on Aug 12, 2015 at 14:54:22 CST  (total: 00:00:04)
