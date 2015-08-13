@@ -70,3 +70,5 @@ define VIEW_MAP ( $VIEW_MAP \
 , .vams => vams \
 , .VAMS => VAMS \
 )
+define ELAB_SNAPSHOT
+define SNAPSHOT worklib.top:sv

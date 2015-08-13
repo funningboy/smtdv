@@ -7,5 +7,6 @@
 
 `include "xbus_base_test.sv"
 `include "xbus_1w1r_test.sv"
+`include "xbus_rand_test.sv"
 
 `endif // end of __XBUS_TEST_LIST_SV__

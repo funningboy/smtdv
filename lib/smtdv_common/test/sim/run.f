@@ -13,8 +13,8 @@
 +notimingchecks
 +no_notifier
 +define+SVA
--linedebug
--lineuvmdebug
+#-linedebug
+#-lineuvmdebug
 +incdir+../../
 +incdir+../
 +incdir+../test
@@ -27,6 +27,9 @@
 ../xbus_pkg.sv
 ../test/xbus_top.sv
 ../v/xbus_slave.v
+-sysc
+../sysc/xbus_event.cpp
+../sysc/xbus_slave_listener.cpp
 -sv_lib ../../../../dpi/sqlite3/dpi_smtdv_lib.so
 -input simvision.tcl
 -batch

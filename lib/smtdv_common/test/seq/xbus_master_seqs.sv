@@ -66,6 +66,44 @@ class xbus_master_1w1r_seq #(
       finish_item(req);
     endtask
 
+endclass
+
+
+class xbus_master_rand_seq #(
+  ADDR_WIDTH = 14,
+  BYTEN_WIDTH = 4,
+  DATA_WIDTH = 32
+  ) extends
+    `XBUS_MASTER_BASE_SEQ;
+
+    `uvm_object_utils_begin(`XBUS_MASTER_RAND_SEQ)
+    `uvm_object_utils_end
+
+    function new(string name = "xbus_master_rand_seq");
+      super.new(name);
+    endfunction
+
+    virtual task body();
+      super.body();
+      `uvm_info(get_type_name(), {$psprintf("starting seq ... ")}, UVM_MEDIUM)
+      item = `XBUS_ITEM::type_id::create("item");
+      void'(item.randomize());
+     `uvm_info(get_type_name(), {$psprintf("\n%s", item.sprint())}, UVM_LOW)
+      `uvm_create(req);
+      req.copy(item);
+      start_item(req);
+      finish_item(req);
+
+      item = `XBUS_ITEM::type_id::create("item");
+      item.copy(req);
+      item.trs_t = RD;
+      `uvm_info(get_type_name(), {$psprintf("\n%s", item.sprint())}, UVM_LOW)
+      `uvm_create(req);
+      req.copy(item);
+      start_item(req);
+      finish_item(req);
+    endtask
+
   endclass
 
 `endif // end of __XBUS_MASTER_SEQS_SV__

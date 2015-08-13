@@ -2,9 +2,6 @@
 `ifndef __XBUS_PKG_SV__
 `define __XBUS_PKG_SV__
 
-`include "xbus_if.sv"
-`include "xbus_if_harness.sv"
-
 package xbus_pkg;
 
   import uvm_pkg::*;
@@ -37,5 +34,8 @@ package xbus_pkg;
   `include "xbus_slave_agent.sv"
 
 endpackage
+
+`include "xbus_if.sv"
+`include "xbus_if_harness.sv"
 
 `endif

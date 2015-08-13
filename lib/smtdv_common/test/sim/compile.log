@@ -1,5 +1,5 @@
 QuestaSim-64 vlog 10.3c Compiler 2014.07 Jul 18 2014
-Start time: 17:22:23 on Aug 12,2015
+Start time: 17:29:53 on Aug 12,2015
 vlog -timescale 10ps/1ps "+notimingchecks" -vopt -64 -suppress 2240 -suppress 2181 -suppress 2239 -sv "+libext+_ncverilog.v+.v+.sv" -l compile.log "+incdir+../../" "+incdir+../" "+incdir+../test" "+incdir+../seq" "+incdir+../v" "+incdir+./" "+incdir+../../../../dpi/sqlite3" ../../../../dpi/sqlite3/smtdv_sqlite3_pkg.sv ../../smtdv_common_pkg.sv ../xbus_pkg.sv 
 -- Compiling package smtdv_sqlite3_pkg
 -- Compiling package smtdv_common_pkg
@@ -7,7 +7,13 @@ vlog -timescale 10ps/1ps "+notimingchecks" -vopt -64 -suppress 2240 -suppress 21
 ** Note: (vlog-2286) Using implicit +incdir+/stec/apps/mentor/questa_sim_10.3c/questasim/uvm-1.1d/../verilog_src/uvm-1.1d/src from import uvm_pkg
 -- Compiling interface smtdv_gen_rst_if
 -- Compiling interface xbus_if
-** Error: ** while parsing file included at ../xbus_pkg.sv(17)
-** at ../../../../dpi/sqlite3/smtdv_sqlite3_pkg.sv(5): near "package": syntax error, unexpected package, expecting class
-End time: 17:22:24 on Aug 12,2015, Elapsed time: 0:00:01
-Errors: 1, Warnings: 0, Suppressed Warnings: 8
+-- Compiling interface xbus_slave_if_harness
+-- Compiling package xbus_pkg_sv_unit
+-- Importing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)
+-- Compiling interface xbus_if
+-- Compiling interface xbus_slave_if_harness
+
+Top level modules:
+	--none--
+End time: 17:29:55 on Aug 12,2015, Elapsed time: 0:00:02
+Errors: 0, Warnings: 0, Suppressed Warnings: 4

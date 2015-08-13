@@ -1,6 +1,6 @@
-./xbus_1w1r_test.sv
-../..//xbus_1w1r_test.sv
-..//xbus_1w1r_test.sv
+./xbus_rand_test.sv
+../..//xbus_rand_test.sv
+..//xbus_rand_test.sv
 ../test/xbus_slave_seqs.sv
 ../seq/smtdv_sqlite3_pkg.sv
 ../v/smtdv_sqlite3_pkg.sv

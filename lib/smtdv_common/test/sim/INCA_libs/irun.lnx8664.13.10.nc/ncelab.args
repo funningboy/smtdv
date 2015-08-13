@@ -30,6 +30,9 @@ functional
 -NONOTIFIER
 -MESSAGES
 top
+-SCRUN
+-loadrun
+./INCA_libs/irun.lnx8664.13.10.nc/librun
 -XLMODE
 ./INCA_libs/irun.lnx8664.13.10.nc
 -RUNMODE
@@ -39,5 +42,7 @@ top
 ./INCA_libs/irun.lnx8664.13.10.nc/hdl.var
 -WORK
 worklib
+-HASCC
+-HASSYSC
 -IRUNHASTOP
 -HASXLMODE

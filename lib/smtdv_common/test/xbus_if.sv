@@ -7,9 +7,9 @@ import uvm_pkg::*;
 // TODO bind force interface ...
 // coverage group
 interface xbus_if #(
-  parameter int ADDR_WIDTH  = 14,
-  parameter int BYTEN_WIDTH = 4,
-  parameter int DATA_WIDTH = 32
+  parameter integer ADDR_WIDTH  = 14,
+  parameter integer BYTEN_WIDTH = 4,
+  parameter integer DATA_WIDTH = 32
   ) (
     input clk,
     input resetn

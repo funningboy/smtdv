@@ -1,4 +1,7 @@
 
+//`ifndef __XBUS_SLAVE_V__
+//`define __XBUS_SLAVE_V__
+
 `timescale 1ns/10ps
 
 module xbus_slave #(
@@ -28,6 +31,8 @@ module xbus_slave #(
 
   reg [DATA_WIDTH-1:0] rdata;
 
-  //
+  // implement your func here...
 
 endmodule
+
+//`endif // end of __XBUS_SLAVE_V__

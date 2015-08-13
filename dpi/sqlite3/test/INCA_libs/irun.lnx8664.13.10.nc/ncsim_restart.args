@@ -1,0 +1,37 @@
+//
+// File created by:  irun
+// Do not modify this file
+//
++nccoverage+functional
++notchkmsg
++notimingchecks
++no_notifier
++define+SVA
++incdir+./
++incdir+../
+-STATUS
+-COVOVERWRITE
+-sv_lib
+../dpi_smtdv_lib.so
+-INPUT
+simvision.tcl
+-BATCH
+-MESSAGES
++EMGRLOG
+irun.log
+-XLSTIME
+1439448022
+-XLKEEP
+-XLMODE
+./INCA_libs/irun.lnx8664.13.10.nc
+-RUNMODE
+-CDSLIB
+./INCA_libs/irun.lnx8664.13.10.nc/cds.lib
+-HDLVAR
+./INCA_libs/irun.lnx8664.13.10.nc/hdl.var
+-XLNAME
+irun
+-XLVERSION
+"TOOL:	irun(64)	13.10-s011"
+-XLNAME
+./INCA_libs/irun.lnx8664.13.10.nc/twlogin04_15593

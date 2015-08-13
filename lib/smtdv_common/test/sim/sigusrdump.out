@@ -1,2 +1,0 @@
-*** Current stack trace:
---> 0x2b007aa768fa std::_Rb_tree_decrement(std::_Rb_tree_node_base*) + a        /stec/apps/cadence/INCISIV13.10.011/tools/lib/64bit/libstdc++.so.6.0.13

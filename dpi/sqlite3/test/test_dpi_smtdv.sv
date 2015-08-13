@@ -42,7 +42,7 @@ initial begin
       m_col_size = smtdv_sqlite3::exec_column_size(m_row);
       for (int c=0; c<m_col_size; c++) begin
         m_col = smtdv_sqlite3::exec_column_step(m_row, c);
-        $display("r : %d, c : %d, %h", r, c, smtdv_sqlite3::exec_string_data(m_col));
+        $display("r : %d, c : %d, %s", r, c, smtdv_sqlite3::exec_string_data(m_col));
       end
     end
     smtdv_sqlite3::delete_pl(table_nm);

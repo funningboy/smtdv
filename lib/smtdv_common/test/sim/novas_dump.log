@@ -209,44 +209,47 @@ argv[16]=+notchkmsg
 argv[17]=+notimingchecks
 argv[18]=+no_notifier
 argv[19]=+define+SVA
-argv[20]=-linedebug
-argv[21]=-lineuvmdebug
-argv[22]=+incdir+../../
-argv[23]=+incdir+../
-argv[24]=+incdir+../test
-argv[25]=+incdir+../seq
-argv[26]=+incdir+../v
-argv[27]=+incdir+./
-argv[28]=+incdir+../../../../dpi/sqlite3
-argv[29]=../../smtdv_common_pkg.sv
-argv[30]=../../../../dpi/sqlite3/smtdv_sqlite3_pkg.sv
-argv[31]=../xbus_pkg.sv
-argv[32]=../test/xbus_top.sv
-argv[33]=-sv_lib
-argv[34]=../../../../dpi/sqlite3/dpi_smtdv_lib.so
-argv[35]=-input
-argv[36]=simvision.tcl
-argv[37]=-batch
-229 profile - 100
-          CPU/Mem usage: 0.360 sys,  0.340 user,  252.18M sys,  0.00M vm
-230 VC callback profile - scalar:0 vector:0
-231 Wed Aug 12 15:05:24 2015
-232 pliAppInit
-233 *Verdi3* : Enable Parallel Dumping.
-234 pliAppMiscSet: New Sim Round
-235 LIBSSCORE=found /stec/apps/novas/verdi_2013.09/share/PLI/IUS/LINUX64/libsscore_ius131.so through $LD_LIBRARY_PATH setting.
-236 Catch signal 11. Stack trace follows:
+argv[20]=+incdir+../../
+argv[21]=+incdir+../
+argv[22]=+incdir+../test
+argv[23]=+incdir+../seq
+argv[24]=+incdir+../v
+argv[25]=+incdir+./
+argv[26]=+incdir+../../../../dpi/sqlite3
+argv[27]=../../smtdv_common_pkg.sv
+argv[28]=../../../../dpi/sqlite3/smtdv_sqlite3_pkg.sv
+argv[29]=../xbus_pkg.sv
+argv[30]=../test/xbus_top.sv
+argv[31]=../v/xbus_slave.v
+argv[32]=-sysc
+argv[33]=../sysc/xbus_event.cpp
+argv[34]=../sysc/xbus_slave_listener.cpp
+argv[35]=-sv_lib
+argv[36]=../../../../dpi/sqlite3/dpi_smtdv_lib.so
+argv[37]=-input
+argv[38]=simvision.tcl
+argv[39]=-batch
+231 profile - 100
+          CPU/Mem usage: 0.420 sys,  0.580 user,  306.57M sys,  0.00M vm
+232 VC callback profile - scalar:0 vector:0
+233 Thu Aug 13 14:17:40 2015
+234 pliAppInit
+235 *Verdi3* : Loading SystemC dumping library libsscore_ius131_sc_gcc44.so.
+236 *Verdi3* : Enable Parallel Dumping.
+237 pliAppMiscSet: New Sim Round
+238 LIBSSCORE=found /stec/apps/novas/verdi_2013.09/share/PLI/IUS/LINUX64/libsscore_ius131.so through $LD_LIBRARY_PATH setting.
+239 Catch signal 11. Stack trace follows:
 #0  0x00000030eccc71b0 in __read_nocancel () from /lib64/libc.so.6
 #1  0x00000030ecc6bd07 in _IO_new_file_underflow () from /lib64/libc.so.6
 #2  0x00000030ecc6c6ce in _IO_default_uflow_internal () from /lib64/libc.so.6
 #3  0x00000030ecc616b4 in _IO_getline_info_internal () from /lib64/libc.so.6
 #4  0x00000030ecc60559 in fgets () from /lib64/libc.so.6
-#5  0x00002b301511a932 in ndpGetCallStack () from /stec/apps/novas/verdi_2013.09/share/PLI/IUS/LINUX64/libsscore_ius131.so
-#6  0x00002b301514b3da in pliAppDbg_SigHandler () from /stec/apps/novas/verdi_2013.09/share/PLI/IUS/LINUX64/libsscore_ius131.so
-#7  0x00002b301511a3ac in catchSignalCB () from /stec/apps/novas/verdi_2013.09/share/PLI/IUS/LINUX64/libsscore_ius131.so
+#5  0x00002b89f5383932 in ndpGetCallStack () from /stec/apps/novas/verdi_2013.09/share/PLI/IUS/LINUX64/libsscore_ius131.so
+#6  0x00002b89f53b43da in pliAppDbg_SigHandler () from /stec/apps/novas/verdi_2013.09/share/PLI/IUS/LINUX64/libsscore_ius131.so
+#7  0x00002b89f53833ac in catchSignalCB () from /stec/apps/novas/verdi_2013.09/share/PLI/IUS/LINUX64/libsscore_ius131.so
 #8  <signal handler called>
-#9  0x00002b300fb31b74 in ?? ()
-#10 0x00002b300fb31b68 in ?? ()
-#11 0x00002b300fc8032f in ?? ()
+#9  0x00002b89ee0d7e3c in ?? ()
+#10 0x00002b89ee0d7e30 in ?? ()
+#11 0x00002b89ed28825b in ?? ()
 #12 0x0000000000000000 in ?? ()
-237 Sim process exit
+240 Sim process exit

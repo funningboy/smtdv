@@ -900,3 +900,189 @@ wvConvertFile -win $_nWave1 -o \
            "/stec/tw/users/schen/prj/smartdv/lib/smtdv_common/test/sim/test_xbus.vcd.fsdb" \
            "/stec/tw/users/schen/prj/smartdv/lib/smtdv_common/test/sim/test_xbus.vcd"
 wvReloadFile -win $_nWave1
+wvSetCursor -win $_nWave1 44157.414625 -snap {("G1" 7)}
+wvDisplayGridCount -win $_nWave1 -off
+wvGetSignalClose -win $_nWave1
+wvConvertFile -win $_nWave1 -o \
+           "/stec/tw/users/schen/prj/smartdv/lib/smtdv_common/test/sim/test_xbus.vcd.fsdb" \
+           "/stec/tw/users/schen/prj/smartdv/lib/smtdv_common/test/sim/test_xbus.vcd"
+wvReloadFile -win $_nWave1
+wvUnknownSaveResult -win $_nWave1 -clear
+wvGetSignalOpen -win $_nWave1
+wvSetPosition -win $_nWave1 {("G2" 9)}
+wvSetPosition -win $_nWave1 {("G2" 9)}
+wvAddSignal -win $_nWave1 -clear
+wvAddSignal -win $_nWave1 -group {"G1" \
+}
+wvAddSignal -win $_nWave1 -group {"G2" \
+{/top/clk} \
+{/top/resetn} \
+{/top/w_ack\[0\]} \
+{/top/w_addr\[31:0\]} \
+{/top/w_byten\[3:0\]} \
+{/top/w_rdata\[31:0\]} \
+{/top/w_req\[0\]} \
+{/top/w_rw\[0\]} \
+{/top/w_wdata\[31:0\]} \
+}
+wvAddSignal -win $_nWave1 -group {"G3" \
+}
+wvSelectSignal -win $_nWave1 {( "G2" 1 2 3 4 5 6 7 8 9 )} 
+wvSetPosition -win $_nWave1 {("G2" 9)}
+wvSetPosition -win $_nWave1 {("G2" 9)}
+wvSetPosition -win $_nWave1 {("G2" 9)}
+wvAddSignal -win $_nWave1 -clear
+wvAddSignal -win $_nWave1 -group {"G1" \
+}
+wvAddSignal -win $_nWave1 -group {"G2" \
+{/top/clk} \
+{/top/resetn} \
+{/top/w_ack\[0\]} \
+{/top/w_addr\[31:0\]} \
+{/top/w_byten\[3:0\]} \
+{/top/w_rdata\[31:0\]} \
+{/top/w_req\[0\]} \
+{/top/w_rw\[0\]} \
+{/top/w_wdata\[31:0\]} \
+}
+wvAddSignal -win $_nWave1 -group {"G3" \
+}
+wvSelectSignal -win $_nWave1 {( "G2" 1 2 3 4 5 6 7 8 9 )} 
+wvSetPosition -win $_nWave1 {("G2" 9)}
+wvGetSignalClose -win $_nWave1
+wvZoomAll -win $_nWave1
+wvZoom -win $_nWave1 490003.781925 517595.235756
+wvSelectSignal -win $_nWave1 {( "G2" 3 )} 
+wvSelectSignal -win $_nWave1 {( "G2" 2 )} 
+wvSelectSignal -win $_nWave1 {( "G2" 3 )} 
+wvSelectSignal -win $_nWave1 {( "G2" 4 )} 
+wvSelectSignal -win $_nWave1 {( "G2" 5 )} 
+wvSelectSignal -win $_nWave1 {( "G2" 6 )} 
+wvSelectSignal -win $_nWave1 {( "G2" 7 )} 
+wvSelectSignal -win $_nWave1 {( "G2" 8 )} 
+wvSelectSignal -win $_nWave1 {( "G2" 9 )} 
+wvGetSignalOpen -win $_nWave1
+wvGetSignalSetScope -win $_nWave1 "/top"
+wvGetSignalSetScope -win $_nWave1 "/top/xbus_if_0"
+wvGetSignalSetScope -win $_nWave1 "/top/xbus_slave_if_harness_0"
+wvSetPosition -win $_nWave1 {("G2" 18)}
+wvSetPosition -win $_nWave1 {("G2" 18)}
+wvAddSignal -win $_nWave1 -clear
+wvAddSignal -win $_nWave1 -group {"G1" \
+}
+wvAddSignal -win $_nWave1 -group {"G2" \
+{/top/clk} \
+{/top/resetn} \
+{/top/w_ack\[0\]} \
+{/top/w_addr\[31:0\]} \
+{/top/w_byten\[3:0\]} \
+{/top/w_rdata\[31:0\]} \
+{/top/w_req\[0\]} \
+{/top/w_rw\[0\]} \
+{/top/w_wdata\[31:0\]} \
+{/top/xbus_slave_if_harness_0/ack\[0\]} \
+{/top/xbus_slave_if_harness_0/addr\[31:0\]} \
+{/top/xbus_slave_if_harness_0/byten\[3:0\]} \
+{/top/xbus_slave_if_harness_0/has_force} \
+{/top/xbus_slave_if_harness_0/rdata\[31:0\]} \
+{/top/xbus_slave_if_harness_0/req\[0\]} \
+{/top/xbus_slave_if_harness_0/resetn} \
+{/top/xbus_slave_if_harness_0/rw\[0\]} \
+{/top/xbus_slave_if_harness_0/wdata\[31:0\]} \
+}
+wvAddSignal -win $_nWave1 -group {"G3" \
+}
+wvSelectSignal -win $_nWave1 {( "G2" 10 11 12 13 14 15 16 17 18 )} 
+wvSetPosition -win $_nWave1 {("G2" 18)}
+wvSetPosition -win $_nWave1 {("G2" 18)}
+wvSetPosition -win $_nWave1 {("G2" 18)}
+wvAddSignal -win $_nWave1 -clear
+wvAddSignal -win $_nWave1 -group {"G1" \
+}
+wvAddSignal -win $_nWave1 -group {"G2" \
+{/top/clk} \
+{/top/resetn} \
+{/top/w_ack\[0\]} \
+{/top/w_addr\[31:0\]} \
+{/top/w_byten\[3:0\]} \
+{/top/w_rdata\[31:0\]} \
+{/top/w_req\[0\]} \
+{/top/w_rw\[0\]} \
+{/top/w_wdata\[31:0\]} \
+{/top/xbus_slave_if_harness_0/ack\[0\]} \
+{/top/xbus_slave_if_harness_0/addr\[31:0\]} \
+{/top/xbus_slave_if_harness_0/byten\[3:0\]} \
+{/top/xbus_slave_if_harness_0/has_force} \
+{/top/xbus_slave_if_harness_0/rdata\[31:0\]} \
+{/top/xbus_slave_if_harness_0/req\[0\]} \
+{/top/xbus_slave_if_harness_0/resetn} \
+{/top/xbus_slave_if_harness_0/rw\[0\]} \
+{/top/xbus_slave_if_harness_0/wdata\[31:0\]} \
+}
+wvAddSignal -win $_nWave1 -group {"G3" \
+}
+wvSelectSignal -win $_nWave1 {( "G2" 10 11 12 13 14 15 16 17 18 )} 
+wvSetPosition -win $_nWave1 {("G2" 18)}
+wvGetSignalClose -win $_nWave1
+wvScrollDown -win $_nWave1 4
+wvScrollUp -win $_nWave1 3
+wvScrollDown -win $_nWave1 4
+wvSelectSignal -win $_nWave1 {( "G2" 15 16 17 18 )} 
+wvScrollUp -win $_nWave1 5
+wvCut -win $_nWave1
+wvSetPosition -win $_nWave1 {("G2" 0)}
+wvGetSignalOpen -win $_nWave1
+wvGetSignalSetScope -win $_nWave1 "/top"
+wvGetSignalSetScope -win $_nWave1 "/top/xbus_slave_if_harness_0"
+wvGetSignalSetScope -win $_nWave1 "/top/xbus_slave_if_harness_0/vif"
+wvSetPosition -win $_nWave1 {("G2" 8)}
+wvSetPosition -win $_nWave1 {("G2" 8)}
+wvAddSignal -win $_nWave1 -clear
+wvAddSignal -win $_nWave1 -group {"G1" \
+}
+wvAddSignal -win $_nWave1 -group {"G2" \
+{/top/xbus_slave_if_harness_0/vif/ack\[0:0\]} \
+{/top/xbus_slave_if_harness_0/vif/addr\[31:0\]} \
+{/top/xbus_slave_if_harness_0/vif/byten\[3:0\]} \
+{/top/xbus_slave_if_harness_0/vif/clk} \
+{/top/xbus_slave_if_harness_0/vif/rdata\[31:0\]} \
+{/top/xbus_slave_if_harness_0/vif/req\[0:0\]} \
+{/top/xbus_slave_if_harness_0/vif/rw\[0:0\]} \
+{/top/xbus_slave_if_harness_0/vif/wdata\[31:0\]} \
+}
+wvAddSignal -win $_nWave1 -group {"G3" \
+}
+wvSelectSignal -win $_nWave1 {( "G2" 1 2 3 4 5 6 7 8 )} 
+wvSetPosition -win $_nWave1 {("G2" 8)}
+wvSetPosition -win $_nWave1 {("G2" 8)}
+wvSetPosition -win $_nWave1 {("G2" 8)}
+wvAddSignal -win $_nWave1 -clear
+wvAddSignal -win $_nWave1 -group {"G1" \
+}
+wvAddSignal -win $_nWave1 -group {"G2" \
+{/top/xbus_slave_if_harness_0/vif/ack\[0:0\]} \
+{/top/xbus_slave_if_harness_0/vif/addr\[31:0\]} \
+{/top/xbus_slave_if_harness_0/vif/byten\[3:0\]} \
+{/top/xbus_slave_if_harness_0/vif/clk} \
+{/top/xbus_slave_if_harness_0/vif/rdata\[31:0\]} \
+{/top/xbus_slave_if_harness_0/vif/req\[0:0\]} \
+{/top/xbus_slave_if_harness_0/vif/rw\[0:0\]} \
+{/top/xbus_slave_if_harness_0/vif/wdata\[31:0\]} \
+}
+wvAddSignal -win $_nWave1 -group {"G3" \
+}
+wvSelectSignal -win $_nWave1 {( "G2" 1 2 3 4 5 6 7 8 )} 
+wvSetPosition -win $_nWave1 {("G2" 8)}
+wvGetSignalClose -win $_nWave1
+wvGetSignalOpen -win $_nWave1
+wvGetSignalSetScope -win $_nWave1 "/top"
+wvGetSignalSetScope -win $_nWave1 "/top/xbus_slave_if_harness_0"
+wvGetSignalSetScope -win $_nWave1 "/top/xbus_slave_if_harness_0/vif"
+wvGetSignalClose -win $_nWave1
+wvSetCursor -win $_nWave1 494665.599272 -snap {("G2" 8)}
+wvDisplayGridCount -win $_nWave1 -off
+wvGetSignalClose -win $_nWave1
+wvConvertFile -win $_nWave1 -o \
+           "/stec/tw/users/schen/prj/smartdv/lib/smtdv_common/test/sim/test_xbus.vcd.fsdb" \
+           "/stec/tw/users/schen/prj/smartdv/lib/smtdv_common/test/sim/test_xbus.vcd"
+wvReloadFile -win $_nWave1

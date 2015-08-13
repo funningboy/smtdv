@@ -104,8 +104,8 @@ class xbus_export_collected_items#(
       string table_nm = $psprintf("\"%s\"", this.cmp.get_full_name());
       smtdv_sqlite3::insert_value(table_nm, "addr",    $psprintf("%d", item.addr));
       smtdv_sqlite3::insert_value(table_nm, "rw",      $psprintf("%d", item.trs_t));
-      smtdv_sqlite3::insert_value(table_nm, "data",    $psprintf("%d", item.data));
-      smtdv_sqlite3::insert_value(table_nm, "byten",   $psprintf("%d", item.byten));
+      smtdv_sqlite3::insert_value(table_nm, "data",    $psprintf("%d", item.unpack_data()));
+      smtdv_sqlite3::insert_value(table_nm, "byten",   $psprintf("%d", item.unpack_byten()));
       smtdv_sqlite3::insert_value(table_nm, "bg_cyc",  $psprintf("%d", item.bg_cyc));
       smtdv_sqlite3::insert_value(table_nm, "ed_cyc",  $psprintf("%d", item.ed_cyc));
       smtdv_sqlite3::exec_value(table_nm);
@@ -145,6 +145,7 @@ class xbus_collect_stop_signal#(
     virtual task run();
       do_stop();
       // notify sequencer to finish
+      // like timeout watch dog ref: http://www.synapse-da.com/Uploads/PDFFiles/04_UVM-Heartbeat.pdf
       if (this.cmp.seqr) begin
         this.cmp.seqr.finish = 1;
         `uvm_info(this.cmp.get_full_name(), {$psprintf("try collect finish signal\n")}, UVM_LOW)

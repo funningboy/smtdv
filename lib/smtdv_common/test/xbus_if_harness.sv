@@ -8,72 +8,102 @@
 // input: inout logic
 // assign out(wire): inout logic
 //
-interface xbus_slave_if_harness #(
-  parameter int ADDR_WIDTH  = 14,
-  parameter int BYTEN_WIDTH = 4,
-  parameter int DATA_WIDTH = 32
+`include "xbus_if.sv"
+
+`define VIF2PORT(port)\
+  always @(vif.port) begin \
+    if (has_force) \
+      force port = vif.port; \
+    else release port; \
+  end
+
+`define PORT2VIF(port)\
+  always @(port) begin \
+    if (has_force) \
+      vif.port = port; \
+  end
+
+interface xbus_master_if_harness #(
+  parameter integer ADDR_WIDTH  = 14,
+  parameter integer BYTEN_WIDTH = 4,
+  parameter integer DATA_WIDTH = 32
   ) (
     input clk,
     input resetn,
 
-    inout logic [0:0]   req, // input
-    inout logic [0:0]    rw, // input
-    inout logic [ADDR_WIDTH-1:0]  addr, //input
-    inout logic [0:0]   ack, // assign wire out
-    inout logic [BYTEN_WIDTH-1:0] byten, // input
-    inout logic [DATA_WIDTH-1:0] rdata,  // reg out
-    // ref logic [DATA_WIDTH-1:0] rdata,  // reg out
-    inout logic [DATA_WIDTH-1:0] wdata // input
+    logic [0:0]   req,
+    logic [0:0]    rw,
+    logic [ADDR_WIDTH-1:0]  addr,
+    logic [0:0]   ack,
+    logic [BYTEN_WIDTH-1:0] byten,
+    logic [DATA_WIDTH-1:0] rdata,
+    // irun doesn't work for ref logic
+    //ref logic [DATA_WIDTH-1:0] rdata,
+    logic [DATA_WIDTH-1:0] wdata
   );
 
     bit has_force = 1;
 
-    virtual interface xbus_if #(
+    xbus_if #(
       .ADDR_WIDTH(ADDR_WIDTH),
       .BYTEN_WIDTH(BYTEN_WIDTH),
       .DATA_WIDTH(DATA_WIDTH)
-    ) xbus_if_harness;
+    ) vif
+    (
+      .clk(clk),
+      .resetn(resetn)
+    );
 
-    // as eq assign
-    always @(req) begin
-      if (has_force)
-        xbus_if_harness.req = req;
-    end
-
-    always @(rw) begin
-      if (has_force)
-        xbus_if_harness.rw = rw;
-    end
-
-    always @(addr) begin
-      if (has_force)
-        xbus_if_harness.addr = addr;
-    end
-
-    always @(byten) begin
-      if (has_force)
-        xbus_if_harness.byten = byten;
-    end
-
-    always @(wdata) begin
-      if (has_force)
-        xbus_if_harness.wdata = wdata;
-    end
-
-    always @(xbus_if_harness.ack) begin
-      if (has_force)
-        force ack = xbus_if_harness.ack;
-      else release ack;
-    end
-
-    always @(xbus_if_harness.rdata) begin
-      if (has_force)
-        force rdata = xbus_if_harness.rdata;
-      else release rdata;
-    end
+    `VIF2PORT(req)
+    `VIF2PORT(rw)
+    `VIF2PORT(addr)
+    `VIF2PORT(byten)
+    `VIF2PORT(wdata)
+    `PORT2VIF(ack)
+    `PORT2VIF(rdata)
 
 endinterface
 
 
+interface xbus_slave_if_harness #(
+  parameter integer ADDR_WIDTH  = 14,
+  parameter integer BYTEN_WIDTH = 4,
+  parameter integer DATA_WIDTH = 32
+  ) (
+    input clk,
+    input resetn,
+
+    logic [0:0]   req,
+    logic [0:0]    rw,
+    logic [ADDR_WIDTH-1:0]  addr,
+    logic [0:0]   ack,
+    logic [BYTEN_WIDTH-1:0] byten,
+    logic [DATA_WIDTH-1:0] rdata,
+    // irun doesn't work for ref logic
+    //ref logic [DATA_WIDTH-1:0] rdata,
+    logic [DATA_WIDTH-1:0] wdata
+  );
+
+    bit has_force = 1;
+
+    xbus_if #(
+      .ADDR_WIDTH(ADDR_WIDTH),
+      .BYTEN_WIDTH(BYTEN_WIDTH),
+      .DATA_WIDTH(DATA_WIDTH)
+    ) vif
+    (
+      .clk(clk),
+      .resetn(resetn)
+    );
+
+    `PORT2VIF(req)
+    `PORT2VIF(rw)
+    `PORT2VIF(addr)
+    `PORT2VIF(byten)
+    `PORT2VIF(wdata)
+    `VIF2PORT(ack)
+    `VIF2PORT(rdata)
+
+endinterface
 
 `endif // end of  __XBUS_IF_HARNESS_SV__

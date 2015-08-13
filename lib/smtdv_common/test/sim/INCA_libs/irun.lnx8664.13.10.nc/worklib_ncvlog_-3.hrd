@@ -4,7 +4,6 @@
 //
 -DEFINE
 SVA
--LINEDEBUG
 -INCDIR
 ../../
 -INCDIR
@@ -19,6 +18,8 @@ SVA
 ./
 -INCDIR
 ../../../../dpi/sqlite3
+-DEFINE
+NCSC
 -INCDIR
 /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv
 -DEFINE

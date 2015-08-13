@@ -72,6 +72,7 @@ class xbus_base_test extends smtdv_test;
     xbus_rst_model.show_components(0);
   endfunction
 
+
 endclass
 
 `endif // __XBUS_TEST_SV__
