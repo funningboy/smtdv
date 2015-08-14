@@ -1,0 +1,900 @@
+irun(64): 13.10-s011: (c) Copyright 1995-2013 Cadence Design Systems, Inc.
+TOOL:	irun(64)	13.10-s011: Started on Aug 14, 2015 at 17:16:47 CST
+irun
+	-f run.f
+		-uvm
+		-64bit
+		-access rwc
+		-status
+		-top top
+		+UVM_TESTNAME=apb_1w1r_test
+		+UVM_VERBOSITY=UVM_DEBUG
+		-covoverwrite
+		-coverage b:u
+		+nccoverage+functional
+		+notchkmsg
+		+notimingchecks
+		+no_notifier
+		+define+SVA
+		+incdir+../../smtdv_common
+		+incdir+../
+		+incdir+../test
+		+incdir+../seq
+		+incdir+../v
+		+incdir+./
+		+incdir+../../../dpi/sqlite3
+		../../smtdv_common/smtdv_common_pkg.sv
+		./../../../dpi/sqlite3/smtdv_sqlite3_pkg.sv
+		../apb_pkg.sv
+		../test/apb_top.sv
+		-sv
+		../v/dut_apb_1m2s.v
+		-sv_lib ../../../dpi/sqlite3/dpi_smtdv_lib.so
+		-input simvision.tcl
+		-batch
+
+   User defined plus("+") options:
+	+UVM_VERBOSITY=UVM_DEBUG
+
+Recompiling... reason: file '../apb_monitor_threads.sv' is newer than expected.
+	expected: Fri Aug 14 14:43:23 2015
+	actual:   Fri Aug 14 17:16:45 2015
+Compiling UVM packages (uvm_pkg.sv cdns_uvm_pkg.sv) using uvmhome location /stec/apps/cadence/INCISIV13.10.011/tools/uvm
+ncvlog: Memory Usage - 17.9M program + 45.1M data = 63.0M total
+ncvlog: CPU Usage - 0.1s system + 1.1s user = 1.2s total (1.3s, 90.8% cpu)
+file: ../apb_pkg.sv
+	package worklib.apb_pkg:sv
+		errors: 0, warnings: 0
+	interface worklib.apb_if:sv
+		errors: 0, warnings: 0
+interface apb_if #(
+               |
+ncvlog: *W,RECOME (..//apb_if.sv,9|15): recompiling design unit worklib.apb_if:sv.
+	First compiled from line 9 of ..//apb_if.sv.
+(`include file: ..//apb_if.sv line 9, `include file: ..//apb_if_harness.sv line 11, file: ../apb_pkg.sv line 38)
+	interface worklib.apb_if:sv
+		errors: 0, warnings: 1
+file: ../test/apb_top.sv
+	module worklib.top:sv
+		errors: 0, warnings: 0
+ncvlog: Memory Usage - 17.9M program + 39.4M data = 57.3M total
+ncvlog: CPU Usage - 0.1s system + 0.3s user = 0.4s total (0.6s, 65.9% cpu)
+	Elaborating the design hierarchy:
+		Caching library 'worklib' ....... Done
+	Top level design units:
+		uvm_pkg
+		$unit_0x36743d40
+		smtdv_common_pkg
+		smtdv_sqlite3_pkg
+		apb_pkg
+		top
+ncelab: *W,COVNIB: Currently, by default, coverage is scored for implicit else and case default blocks. In subsequent releases, the default scoring for such blocks will be disabled and a coverage configuration file command will be provided to revert to the old behavior. This change may prevent refinements from 13.1 releases to be applied on coverage databases generated using subsequent releases in the default mode..
+	Building instance overlay tables: .................... Done
+	Enabling instrumentation for coverage types: block functional
+	Generating native compiled code:
+		worklib.apb_if:sv <0x1e521531>
+			streams:  46, words: 31106
+		worklib.apb_if:sv <0x5dde7784>
+			streams:  46, words: 31106
+		worklib.apb_master_if_harness:sv <0x2d77d028>
+			streams:  14, words: 11522
+		worklib.apb_pkg:sv <0x426b87ad>
+			streams:  24, words: 43838
+		worklib.apb_pkg:sv <0x66e0b7c7>
+			streams:  22, words: 46752
+		worklib.apb_slave_if_harness:sv <0x6ff885af>
+			streams:  12, words:  8577
+		worklib.smtdv_common_pkg:sv <0x0ca9e55a>
+			streams: 159, words: 460134
+		worklib.smtdv_common_pkg:sv <0x2bb8ab78>
+			streams: 300, words: 982402
+		worklib.smtdv_common_pkg:sv <0x59c4a4f7>
+			streams: 216, words: 676143
+		worklib.top:sv <0x42cfb8be>
+			streams: 181, words: 542755
+		worklib.top:sv <0x71701857>
+			streams: 144, words: 502416
+		worklib.uvm_pkg:sv <0x06824132>
+			streams:  23, words: 37740
+		worklib.uvm_pkg:sv <0x06ced8ba>
+			streams:  24, words: 156877
+		worklib.uvm_pkg:sv <0x1bb8034b>
+			streams: 116, words: 350459
+		worklib.uvm_pkg:sv <0x2a67ba4e>
+			streams:  25, words: 65018
+		worklib.uvm_pkg:sv <0x30c68d0c>
+			streams:  22, words: 42867
+		worklib.uvm_pkg:sv <0x387c8d18>
+			streams: 137, words: 489121
+		worklib.uvm_pkg:sv <0x38ccb7e5>
+			streams:  25, words: 68128
+		worklib.uvm_pkg:sv <0x38ebe9f0>
+			streams:  74, words: 172250
+		worklib.uvm_pkg:sv <0x3ffb73b6>
+			streams:  25, words: 50329
+		worklib.uvm_pkg:sv <0x42a5a648>
+			streams: 373, words: 911153
+		worklib.uvm_pkg:sv <0x43782e34>
+			streams:  24, words: 59653
+		worklib.uvm_pkg:sv <0x5faaf2b5>
+			streams:  23, words: 37740
+	Building instance specific data structures.
+ncelab: *W,CGDOGV: The target goal, by default, is set as 100.
+ncelab: *W,CGPIDF: Covergroup "per_instance" option , by default, is set as 0.
+	Loading native compiled code:     .................... Done
+	Design hierarchy summary:
+		                       Instances  Unique
+		Modules:                       5       4
+		Interfaces:                    7       4
+		Verilog packages:              4       4
+		Registers:                 18867   11384
+		Scalar wires:                120       -
+		Vectored wires:                2       -
+		Named events:                  7      13
+		Always blocks:                42      22
+		Initial blocks:              441     173
+		Clocking blocks:               6       2
+		Clocking items:               60      20
+		Parallel blocks:              58      45
+		Cont. assignments:             2       2
+		Pseudo assignments:            3       3
+		Assertions:                    9       8
+		Covergroup Instances:          0       1
+		Compilation units:             1       1
+		SV Class declarations:       252     368
+		SV Class specializations:    545     545
+		Simulation timescale:       10ps
+	Writing initial simulation snapshot: worklib.top:sv
+ncelab: Memory Usage - 44.0M program + 118.6M data = 162.7M total (Peak 163.9M)
+ncelab: CPU Usage - 0.9s system + 5.1s user = 5.9s total (8.0s, 74.7% cpu)
+Loading snapshot worklib.top:sv .................... Done
+SVSEED default: 1
+*Verdi3* Loading libsscore_ius131.so
+*Verdi3* : Enable Parallel Dumping.
+ncsim> source /stec/apps/cadence/INCISIV13.10.011/tools/inca/files/ncsimrc
+ncsim> source /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/files/tcl/uvm_sim.tcl
+ncsim> database -open waves -shm -statement
+ncsim: *W,DBSPE2: The database -statement option will have an adverse performance impact. The +linedebug command line option must be specified when probing statements.
+Created SHM database waves
+ncsim> probe -create -all -depth all
+Created probe 1
+ncsim> 
+ncsim> run
+ncsim: *W,COVNIB: Currently, by default, coverage is scored for implicit else and case default blocks. In subsequent releases, the default scoring for such blocks will be disabled and a coverage configuration file command will be provided to revert to the old behavior. This change may prevent refinements from 13.1 releases to be applied on coverage databases generated using subsequent releases in the default mode..
+----------------------------------------------------------------
+CDNS-UVM-1.1d (13.10-s011)
+(C) 2007-2013 Mentor Graphics Corporation
+(C) 2007-2013 Cadence Design Systems, Inc.
+(C) 2006-2013 Synopsys, Inc.
+(C) 2011-2013 Cypress Semiconductor Corp.
+----------------------------------------------------------------
+
+  ***********       IMPORTANT RELEASE NOTES         ************
+
+  You are using a version of the UVM library that has been compiled
+  with `UVM_NO_DEPRECATED undefined.
+  See http://www.eda.org/svdb/view.php?id=3313 for more details.
+
+  You are using a version of the UVM library that has been compiled
+  with `UVM_OBJECT_MUST_HAVE_CONSTRUCTOR undefined.
+  See http://www.eda.org/svdb/view.php?id=3770 for more details.
+
+      (Specify +UVM_NO_RELNOTES to turn off this notice)
+
+UVM_INFO ../../smtdv_common/smtdv_gen_rst_if.sv(29) @ 0: reporter [apb_rst_if] Power-On Reset Initialized ...
+UVM_INFO @ 0: reporter [RNTST] Running test apb_1w1r_test...
+UVM_WARNING ../../smtdv_common/smtdv_monitor.sv(30) @ 0: apb_rst_model_rst_mon [NOTHREADHANDLER] thread handler create fail: apb_rst_model_rst_mon
+UVM_WARNING ..//apb_monitor.sv(55) @ 0: uvm_test_top.master_agent[0].mon [NOSEQR] slave sequencer must be set for: uvm_test_top.master_agent[0].mon.seqr
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=apb_rst_model_rst_mon
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.master_agent[0]
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.master_agent[0].drv
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.master_agent[0].drv.rsp_port
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.master_agent[0].drv.seq_item_port
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.master_agent[0].drv.smtdv_driver_threads
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.master_agent[0].mon
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.master_agent[0].mon.item_asserted_port
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.master_agent[0].mon.item_collected_port
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.master_agent[0].mon.smtdv_monitor_threads
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr.req_fifo
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr.req_fifo.get_ap
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr.req_fifo.get_peek_export
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr.req_fifo.put_ap
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr.req_fifo.put_export
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr.rsp_export
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr.seq_item_export
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr.sqr_rsp_analysis_fifo
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr.sqr_rsp_analysis_fifo.analysis_export
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr.sqr_rsp_analysis_fifo.get_ap
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr.sqr_rsp_analysis_fifo.get_peek_export
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr.sqr_rsp_analysis_fifo.put_ap
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.master_agent[0].seqr.sqr_rsp_analysis_fifo.put_export
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0]
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].drv
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].drv.rsp_port
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].drv.seq_item_port
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].drv.smtdv_driver_threads
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].fifo_mon_sqr
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].fifo_mon_sqr.analysis_export
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].fifo_mon_sqr.get_ap
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].fifo_mon_sqr.get_peek_export
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].fifo_mon_sqr.put_ap
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].fifo_mon_sqr.put_export
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].mon
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].mon.item_asserted_port
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].mon.item_collected_port
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].mon.smtdv_monitor_threads
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.mon_get_port
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.req_fifo
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.req_fifo.get_ap
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.req_fifo.get_peek_export
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.req_fifo.put_ap
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.req_fifo.put_export
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.rsp_export
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.seq_item_export
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.sqr_rsp_analysis_fifo
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.sqr_rsp_analysis_fifo.analysis_export
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.sqr_rsp_analysis_fifo.get_ap
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.sqr_rsp_analysis_fifo.get_peek_export
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.sqr_rsp_analysis_fifo.put_ap
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[0].seqr.sqr_rsp_analysis_fifo.put_export
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1]
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].drv
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].drv.rsp_port
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].drv.seq_item_port
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].drv.smtdv_driver_threads
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].fifo_mon_sqr
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].fifo_mon_sqr.analysis_export
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].fifo_mon_sqr.get_ap
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].fifo_mon_sqr.get_peek_export
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].fifo_mon_sqr.put_ap
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].fifo_mon_sqr.put_export
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].mon
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].mon.item_asserted_port
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].mon.item_collected_port
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].mon.smtdv_monitor_threads
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].seqr
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].seqr.mon_get_port
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].seqr.req_fifo
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].seqr.req_fifo.get_ap
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].seqr.req_fifo.get_peek_export
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].seqr.req_fifo.put_ap
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].seqr.req_fifo.put_export
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].seqr.rsp_export
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].seqr.seq_item_export
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].seqr.sqr_rsp_analysis_fifo
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].seqr.sqr_rsp_analysis_fifo.analysis_export
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].seqr.sqr_rsp_analysis_fifo.get_ap
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].seqr.sqr_rsp_analysis_fifo.get_peek_export
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].seqr.sqr_rsp_analysis_fifo.put_ap
+UVM_INFO ../../smtdv_common/smtdv_reset_model.sv(280) @ 0: reporter [apb_rst_model] Get comp_name=uvm_test_top.slave_agent[1].seqr.sqr_rsp_analysis_fifo.put_export
+UVM_INFO ../../smtdv_common/smtdv_component.sv(57) @ 0: apb_rst_model_rst_mon [apb_rst_model_rst_mon] The initial "resetn" flag has been set to 0
+UVM_INFO ../../smtdv_common/smtdv_component.sv(57) @ 0: uvm_test_top.master_agent[0].drv.smtdv_driver_threads [uvm_test_top.master_agent[0].drv.smtdv_driver_threads] The initial "resetn" flag has been set to 0
+UVM_INFO ../../smtdv_common/smtdv_component.sv(57) @ 0: uvm_test_top.master_agent[0].drv [uvm_test_top.master_agent[0].drv] The initial "resetn" flag has been set to 0
+UVM_INFO ../../smtdv_common/smtdv_component.sv(57) @ 0: uvm_test_top.master_agent[0].mon.smtdv_monitor_threads [uvm_test_top.master_agent[0].mon.smtdv_monitor_threads] The initial "resetn" flag has been set to 0
+UVM_INFO ../../smtdv_common/smtdv_component.sv(57) @ 0: uvm_test_top.master_agent[0].mon [uvm_test_top.master_agent[0].mon] The initial "resetn" flag has been set to 0
+UVM_INFO ../../smtdv_common/smtdv_component.sv(57) @ 0: uvm_test_top.master_agent[0].seqr [uvm_test_top.master_agent[0].seqr] The initial "resetn" flag has been set to 0
+UVM_INFO ../../smtdv_common/smtdv_component.sv(57) @ 0: uvm_test_top.master_agent[0] [uvm_test_top.master_agent[0]] The initial "resetn" flag has been set to 0
+UVM_INFO ../../smtdv_common/smtdv_component.sv(57) @ 0: uvm_test_top.slave_agent[0].drv.smtdv_driver_threads [uvm_test_top.slave_agent[0].drv.smtdv_driver_threads] The initial "resetn" flag has been set to 0
+UVM_INFO ../../smtdv_common/smtdv_component.sv(57) @ 0: uvm_test_top.slave_agent[0].drv [uvm_test_top.slave_agent[0].drv] The initial "resetn" flag has been set to 0
+UVM_INFO ../../smtdv_common/smtdv_component.sv(57) @ 0: uvm_test_top.slave_agent[0].mon.smtdv_monitor_threads [uvm_test_top.slave_agent[0].mon.smtdv_monitor_threads] The initial "resetn" flag has been set to 0
+UVM_INFO ../../smtdv_common/smtdv_component.sv(57) @ 0: uvm_test_top.slave_agent[0].mon [uvm_test_top.slave_agent[0].mon] The initial "resetn" flag has been set to 0
+UVM_INFO ../../smtdv_common/smtdv_component.sv(57) @ 0: uvm_test_top.slave_agent[0].seqr [uvm_test_top.slave_agent[0].seqr] The initial "resetn" flag has been set to 0
+UVM_INFO ../../smtdv_common/smtdv_component.sv(57) @ 0: uvm_test_top.slave_agent[0] [uvm_test_top.slave_agent[0]] The initial "resetn" flag has been set to 0
+UVM_INFO ../../smtdv_common/smtdv_component.sv(57) @ 0: uvm_test_top.slave_agent[1].drv.smtdv_driver_threads [uvm_test_top.slave_agent[1].drv.smtdv_driver_threads] The initial "resetn" flag has been set to 0
+UVM_INFO ../../smtdv_common/smtdv_component.sv(57) @ 0: uvm_test_top.slave_agent[1].drv [uvm_test_top.slave_agent[1].drv] The initial "resetn" flag has been set to 0
+UVM_INFO ../../smtdv_common/smtdv_component.sv(57) @ 0: uvm_test_top.slave_agent[1].mon.smtdv_monitor_threads [uvm_test_top.slave_agent[1].mon.smtdv_monitor_threads] The initial "resetn" flag has been set to 0
+UVM_INFO ../../smtdv_common/smtdv_component.sv(57) @ 0: uvm_test_top.slave_agent[1].mon [uvm_test_top.slave_agent[1].mon] The initial "resetn" flag has been set to 0
+UVM_INFO ../../smtdv_common/smtdv_component.sv(57) @ 0: uvm_test_top.slave_agent[1].seqr [uvm_test_top.slave_agent[1].seqr] The initial "resetn" flag has been set to 0
+UVM_INFO ../../smtdv_common/smtdv_component.sv(57) @ 0: uvm_test_top.slave_agent[1] [uvm_test_top.slave_agent[1]] The initial "resetn" flag has been set to 0
+UVM_INFO ../../smtdv_common/smtdv_component.sv(57) @ 0: uvm_test_top [uvm_test_top] The initial "resetn" flag has been set to 0
+---------------------------------------------------------------------
+Name                         Type                        Size  Value 
+---------------------------------------------------------------------
+uvm_test_top                 apb_1w1r_test               -     @4355 
+  master_agent[0]            uvm_agent                   -     @5448 
+    drv                      uvm_driver #(REQ,RSP)       -     @5826 
+      rsp_port               uvm_analysis_port           -     @6928 
+      seq_item_port          uvm_seq_item_pull_port      -     @6854 
+      smtdv_driver_threads   uvm_component               -     @6781 
+        resetn               integral                    1     'h0   
+        thread_q             da(object)                  1     -     
+          [0]                <unknown>                   -     @7018 
+      resetn                 integral                    1     'h0   
+    mon                      uvm_monitor                 -     @522  
+      item_asserted_port     uvm_analysis_port           -     @5778 
+      item_collected_port    uvm_analysis_port           -     @5704 
+      smtdv_monitor_threads  uvm_component               -     @107  
+        resetn               integral                    1     'h0   
+        thread_q             da(object)                  5     -     
+          [0]                <unknown>                   -     @7073 
+          [1]                <unknown>                   -     @7077 
+          [2]                <unknown>                   -     @7081 
+          [3]                <unknown>                   -     @7085 
+          [4]                <unknown>                   -     @7090 
+      resetn                 integral                    1     'h0   
+    seqr                     uvm_sequencer               -     @5532 
+      rsp_export             uvm_analysis_export         -     @5909 
+      seq_item_export        uvm_seq_item_pull_imp       -     @6733 
+      resetn                 integral                    1     'h0   
+      arbitration_queue      array                       0     -     
+      lock_queue             array                       0     -     
+      num_last_reqs          integral                    32    'd1   
+      num_last_rsps          integral                    32    'd1   
+    resetn                   integral                    1     'h0   
+  slave_agent[0]             uvm_agent                   -     @4449 
+    drv                      uvm_driver #(REQ,RSP)       -     @7351 
+      rsp_port               uvm_analysis_port           -     @8516 
+      seq_item_port          uvm_seq_item_pull_port      -     @8443 
+      smtdv_driver_threads   uvm_component               -     @8371 
+        resetn               integral                    1     'h0   
+        thread_q             da(object)                  1     -     
+          [0]                <unknown>                   -     @8623 
+      resetn                 integral                    1     'h0   
+    fifo_mon_sqr             uvm_tlm_analysis_fifo #(T)  -     @4493 
+      analysis_export        uvm_analysis_imp            -     @4866 
+      get_ap                 uvm_analysis_port           -     @4791 
+      get_peek_export        uvm_get_peek_imp            -     @4643 
+      put_ap                 uvm_analysis_port           -     @4717 
+      put_export             uvm_put_imp                 -     @4567 
+    mon                      uvm_monitor                 -     @7160 
+      item_asserted_port     uvm_analysis_port           -     @7303 
+      item_collected_port    uvm_analysis_port           -     @7230 
+      smtdv_monitor_threads  uvm_component               -     @8662 
+        resetn               integral                    1     'h0   
+        thread_q             da(object)                  5     -     
+          [0]                <unknown>                   -     @8702 
+          [1]                <unknown>                   -     @8704 
+          [2]                <unknown>                   -     @8706 
+          [3]                <unknown>                   -     @8708 
+          [4]                <unknown>                   -     @8711 
+      resetn                 integral                    1     'h0   
+    seqr                     uvm_sequencer               -     @99   
+      mon_get_port           uvm_blocking_get_port       -     @8325 
+      rsp_export             uvm_analysis_export         -     @7431 
+      seq_item_export        uvm_seq_item_pull_imp       -     @8251 
+      resetn                 integral                    1     'h0   
+      arbitration_queue      array                       0     -     
+      lock_queue             array                       0     -     
+      num_last_reqs          integral                    32    'd1   
+      num_last_rsps          integral                    32    'd1   
+    resetn                   integral                    1     'h0   
+  slave_agent[1]             uvm_agent                   -     @4960 
+    drv                      uvm_driver #(REQ,RSP)       -     @8972 
+      rsp_port               uvm_analysis_port           -     @10135
+      seq_item_port          uvm_seq_item_pull_port      -     @10062
+      smtdv_driver_threads   uvm_component               -     @9989 
+        resetn               integral                    1     'h0   
+        thread_q             da(object)                  1     -     
+          [0]                <unknown>                   -     @10242
+      resetn                 integral                    1     'h0   
+    fifo_mon_sqr             uvm_tlm_analysis_fifo #(T)  -     @5004 
+      analysis_export        uvm_analysis_imp            -     @5369 
+      get_ap                 uvm_analysis_port           -     @5295 
+      get_peek_export        uvm_get_peek_imp            -     @5149 
+      put_ap                 uvm_analysis_port           -     @5222 
+      put_export             uvm_put_imp                 -     @5076 
+    mon                      uvm_monitor                 -     @8783 
+      item_asserted_port     uvm_analysis_port           -     @8925 
+      item_collected_port    uvm_analysis_port           -     @8852 
+      smtdv_monitor_threads  uvm_component               -     @10282
+        resetn               integral                    1     'h0   
+        thread_q             da(object)                  5     -     
+          [0]                <unknown>                   -     @10321
+          [1]                <unknown>                   -     @10323
+          [2]                <unknown>                   -     @10325
+          [3]                <unknown>                   -     @10327
+          [4]                <unknown>                   -     @10330
+      resetn                 integral                    1     'h0   
+    seqr                     uvm_sequencer               -     @59   
+      mon_get_port           uvm_blocking_get_port       -     @9945 
+      rsp_export             uvm_analysis_export         -     @9052 
+      seq_item_export        uvm_seq_item_pull_imp       -     @9872 
+      resetn                 integral                    1     'h0   
+      arbitration_queue      array                       0     -     
+      lock_queue             array                       0     -     
+      num_last_reqs          integral                    32    'd1   
+      num_last_rsps          integral                    32    'd1   
+    resetn                   integral                    1     'h0   
+  resetn                     integral                    1     'h0   
+---------------------------------------------------------------------
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1391) @ 0: uvm_test_top.slave_agent[1].seqr [PHASESEQ] Starting default sequence 'apb_slave_base_seq #(ADDR_WIDTH, DATA_WIDTH)' for phase 'run'
+UVM_INFO ../../smtdv_common/smtdv_thread_handler.sv(58) @ 0: uvm_test_top.slave_agent[1].mon.smtdv_monitor_threads [uvm_test_top.slave_agent[1].mon.smtdv_monitor_threads] start to run thread "apb_collect_write_items" in run thread queue
+UVM_INFO ../../smtdv_common/smtdv_thread_handler.sv(58) @ 0: uvm_test_top.slave_agent[1].mon.smtdv_monitor_threads [uvm_test_top.slave_agent[1].mon.smtdv_monitor_threads] start to run thread "apb_collect_read_items" in run thread queue
+UVM_INFO ../../smtdv_common/smtdv_thread_handler.sv(58) @ 0: uvm_test_top.slave_agent[1].mon.smtdv_monitor_threads [uvm_test_top.slave_agent[1].mon.smtdv_monitor_threads] start to run thread "apb_collect_stop_signal" in run thread queue
+UVM_INFO ../../smtdv_common/smtdv_thread_handler.sv(58) @ 0: uvm_test_top.slave_agent[1].mon.smtdv_monitor_threads [uvm_test_top.slave_agent[1].mon.smtdv_monitor_threads] start to run thread "apb_collect_cover_group" in run thread queue
+UVM_INFO ../../smtdv_common/smtdv_thread_handler.sv(58) @ 0: uvm_test_top.slave_agent[1].mon.smtdv_monitor_threads [uvm_test_top.slave_agent[1].mon.smtdv_monitor_threads] start to run thread "apb_export_collected_items" in run thread queue
+UVM_INFO ..//apb_monitor_threads.sv(87) @ 0: reporter [uvm_test_top.slave_agent[1].mon] "uvm_test_top.slave_agent[1].mon"
+UVM_INFO ../../smtdv_common/smtdv_thread_handler.sv(58) @ 0: uvm_test_top.slave_agent[1].drv.smtdv_driver_threads [uvm_test_top.slave_agent[1].drv.smtdv_driver_threads] start to run thread "apb_slave_drive_items" in run thread queue
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1391) @ 0: uvm_test_top.slave_agent[0].seqr [PHASESEQ] Starting default sequence 'apb_slave_base_seq #(ADDR_WIDTH, DATA_WIDTH)' for phase 'run'
+UVM_INFO ../../smtdv_common/smtdv_thread_handler.sv(58) @ 0: uvm_test_top.slave_agent[0].mon.smtdv_monitor_threads [uvm_test_top.slave_agent[0].mon.smtdv_monitor_threads] start to run thread "apb_collect_write_items" in run thread queue
+UVM_INFO ../../smtdv_common/smtdv_thread_handler.sv(58) @ 0: uvm_test_top.slave_agent[0].mon.smtdv_monitor_threads [uvm_test_top.slave_agent[0].mon.smtdv_monitor_threads] start to run thread "apb_collect_read_items" in run thread queue
+UVM_INFO ../../smtdv_common/smtdv_thread_handler.sv(58) @ 0: uvm_test_top.slave_agent[0].mon.smtdv_monitor_threads [uvm_test_top.slave_agent[0].mon.smtdv_monitor_threads] start to run thread "apb_collect_stop_signal" in run thread queue
+UVM_INFO ../../smtdv_common/smtdv_thread_handler.sv(58) @ 0: uvm_test_top.slave_agent[0].mon.smtdv_monitor_threads [uvm_test_top.slave_agent[0].mon.smtdv_monitor_threads] start to run thread "apb_collect_cover_group" in run thread queue
+UVM_INFO ../../smtdv_common/smtdv_thread_handler.sv(58) @ 0: uvm_test_top.slave_agent[0].mon.smtdv_monitor_threads [uvm_test_top.slave_agent[0].mon.smtdv_monitor_threads] start to run thread "apb_export_collected_items" in run thread queue
+UVM_INFO ..//apb_monitor_threads.sv(87) @ 0: reporter [uvm_test_top.slave_agent[0].mon] "uvm_test_top.slave_agent[0].mon"
+UVM_INFO ../../smtdv_common/smtdv_thread_handler.sv(58) @ 0: uvm_test_top.slave_agent[0].drv.smtdv_driver_threads [uvm_test_top.slave_agent[0].drv.smtdv_driver_threads] start to run thread "apb_slave_drive_items" in run thread queue
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1391) @ 0: uvm_test_top.master_agent[0].seqr [PHASESEQ] Starting default sequence 'apb_master_1w1r_seq #(ADDR_WIDTH, DATA_WIDTH)' for phase 'run'
+UVM_INFO ../../smtdv_common/smtdv_thread_handler.sv(58) @ 0: uvm_test_top.master_agent[0].mon.smtdv_monitor_threads [uvm_test_top.master_agent[0].mon.smtdv_monitor_threads] start to run thread "apb_collect_write_items" in run thread queue
+UVM_INFO ../../smtdv_common/smtdv_thread_handler.sv(58) @ 0: uvm_test_top.master_agent[0].mon.smtdv_monitor_threads [uvm_test_top.master_agent[0].mon.smtdv_monitor_threads] start to run thread "apb_collect_read_items" in run thread queue
+UVM_INFO ../../smtdv_common/smtdv_thread_handler.sv(58) @ 0: uvm_test_top.master_agent[0].mon.smtdv_monitor_threads [uvm_test_top.master_agent[0].mon.smtdv_monitor_threads] start to run thread "apb_collect_stop_signal" in run thread queue
+UVM_INFO ../../smtdv_common/smtdv_thread_handler.sv(58) @ 0: uvm_test_top.master_agent[0].mon.smtdv_monitor_threads [uvm_test_top.master_agent[0].mon.smtdv_monitor_threads] start to run thread "apb_collect_cover_group" in run thread queue
+UVM_INFO ../../smtdv_common/smtdv_thread_handler.sv(58) @ 0: uvm_test_top.master_agent[0].mon.smtdv_monitor_threads [uvm_test_top.master_agent[0].mon.smtdv_monitor_threads] start to run thread "apb_export_collected_items" in run thread queue
+UVM_INFO ..//apb_monitor_threads.sv(87) @ 0: reporter [uvm_test_top.master_agent[0].mon] "uvm_test_top.master_agent[0].mon"
+UVM_INFO ../../smtdv_common/smtdv_thread_handler.sv(58) @ 0: uvm_test_top.master_agent[0].drv.smtdv_driver_threads [uvm_test_top.master_agent[0].drv.smtdv_driver_threads] start to run thread "apb_master_drive_items" in run thread queue
+UVM_INFO ../../smtdv_common/smtdv_sequence.sv(28) @ 0: uvm_test_top.slave_agent[1].seqr@@apb_slave_base_seq #(ADDR_WIDTH, DATA_WIDTH) [uvm_test_top.slave_agent[1].seqr.apb_slave_base_seq #(ADDR_WIDTH, DATA_WIDTH).pre_body()] raise objection in phase: run
+UVM_INFO ../../smtdv_common/smtdv_sequence.sv(28) @ 0: uvm_test_top.slave_agent[0].seqr@@apb_slave_base_seq #(ADDR_WIDTH, DATA_WIDTH) [uvm_test_top.slave_agent[0].seqr.apb_slave_base_seq #(ADDR_WIDTH, DATA_WIDTH).pre_body()] raise objection in phase: run
+UVM_INFO ../../smtdv_common/smtdv_sequence.sv(28) @ 0: uvm_test_top.master_agent[0].seqr@@apb_master_1w1r_seq #(ADDR_WIDTH, DATA_WIDTH) [uvm_test_top.master_agent[0].seqr.apb_master_1w1r_seq #(ADDR_WIDTH, DATA_WIDTH).pre_body()] raise objection in phase: run
+----------------------------------------------------------
+0 Running sequence : [apb_master_1w1r_seq]  !
+----------------------------------------------------------
+UVM_INFO ../seq/apb_master_seqs.sv(38) @ 0: uvm_test_top.master_agent[0].seqr@@apb_master_1w1r_seq #(ADDR_WIDTH, DATA_WIDTH) [apb_master_1w1r_seq #(ADDR_WIDTH, DATA_WIDTH)] starting seq ... 
+UVM_INFO ../seq/apb_master_seqs.sv(45) @ 0: uvm_test_top.master_agent[0].seqr@@apb_master_1w1r_seq #(ADDR_WIDTH, DATA_WIDTH) [apb_master_1w1r_seq #(ADDR_WIDTH, DATA_WIDTH)] 
+----------------------------------------------
+Name           Type               Size  Value 
+----------------------------------------------
+item           uvm_sequence_item  -     @12241
+  mod_t        mod_type_t         1     MASTER
+  trs_t        trs_type_t         1     WR    
+  run_t        run_type_t         2     NORMAL
+  bg_cyc       integral           64    'h0   
+  ed_cyc       integral           64    'h0   
+  addr         integral           32    'hf   
+  data         da(integral)       4     -     
+    [0]        integral           8     'hff  
+    [1]        integral           8     'hff  
+    [2]        integral           8     'hff  
+    [3]        integral           8     'hff  
+  psel_L2H     integral           64    'h0   
+  penable_L2H  integral           64    'h0   
+  pready_L2H   integral           64    'h0   
+----------------------------------------------
+
+UVM_WARNING @ 0: uvm_test_top.master_agent[0].seqr@@apb_master_1w1r_seq #(ADDR_WIDTH, DATA_WIDTH) [uvm_sequence_base] Body definition undefined
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[1].seqr [PHASESEQ] No default phase sequence for phase 'pre_reset'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_reset'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_reset'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.pre_reset' (id=3031) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'apb_rst_model_domain.uvm_sched.pre_reset' (id=11236) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[1].seqr [PHASESEQ] No default phase sequence for phase 'reset'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'reset'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'reset'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.reset' (id=3114) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'apb_rst_model_domain.uvm_sched.reset' (id=11278) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[1].seqr [PHASESEQ] No default phase sequence for phase 'post_reset'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_reset'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_reset'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.post_reset' (id=3197) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'apb_rst_model_domain.uvm_sched.post_reset' (id=11320) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[1].seqr [PHASESEQ] No default phase sequence for phase 'pre_configure'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_configure'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_configure'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.pre_configure' (id=3280) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'apb_rst_model_domain.uvm_sched.pre_configure' (id=11362) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[1].seqr [PHASESEQ] No default phase sequence for phase 'configure'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'configure'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'configure'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.configure' (id=3363) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'apb_rst_model_domain.uvm_sched.configure' (id=11404) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[1].seqr [PHASESEQ] No default phase sequence for phase 'post_configure'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_configure'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_configure'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.post_configure' (id=3446) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'apb_rst_model_domain.uvm_sched.post_configure' (id=11446) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[1].seqr [PHASESEQ] No default phase sequence for phase 'pre_main'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_main'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_main'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.pre_main' (id=3529) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'apb_rst_model_domain.uvm_sched.pre_main' (id=11488) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[1].seqr [PHASESEQ] No default phase sequence for phase 'main'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'main'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'main'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.main' (id=3612) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'apb_rst_model_domain.uvm_sched.main' (id=11530) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[1].seqr [PHASESEQ] No default phase sequence for phase 'post_main'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_main'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_main'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.post_main' (id=3695) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'apb_rst_model_domain.uvm_sched.post_main' (id=11572) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[1].seqr [PHASESEQ] No default phase sequence for phase 'pre_shutdown'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_shutdown'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_shutdown'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.pre_shutdown' (id=3778) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'apb_rst_model_domain.uvm_sched.pre_shutdown' (id=11614) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[1].seqr [PHASESEQ] No default phase sequence for phase 'shutdown'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'shutdown'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'shutdown'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.shutdown' (id=3861) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'apb_rst_model_domain.uvm_sched.shutdown' (id=11656) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[1].seqr [PHASESEQ] No default phase sequence for phase 'post_shutdown'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_shutdown'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_shutdown'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1720) @ 16600: reporter [PH_JUMPB] jumping backward to phase reset
+UVM_INFO ../../smtdv_common/smtdv_reset_monitor.sv(66) @ 16600: apb_rst_model_rst_mon [apb_rst_model_rst_mon] wating for PWR RESET deasserted ...
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1200) @ 16600: reporter [PH/TRC/EXE/JUMP] Phase 'apb_rst_model_domain.uvm_sched.post_shutdown' (id=11698) PHASE EXIT ON JUMP REQUEST
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1326) @ 16600: reporter [PH_JUMP] phase post_shutdown (schedule uvm_sched, domain apb_rst_model_domain) is jumping to phase reset
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 16600: uvm_test_top.slave_agent[1].seqr [PHASESEQ] No default phase sequence for phase 'reset'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 16600: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'reset'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 16600: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'reset'
+UVM_INFO ../../smtdv_common/smtdv_reset_monitor.sv(79) @ 16600: apb_rst_model_rst_mon [apb_rst_model_rst_mon] Detect RESET asserted ...
+UVM_INFO ../../smtdv_common/smtdv_gen_rst_if.sv(42) @ 516600: reporter [apb_rst_if] Power-On Reset Released ...
+UVM_INFO ../../smtdv_common/smtdv_reset_monitor.sv(86) @ 516600: apb_rst_model_rst_mon [apb_rst_model_rst_mon] Detect RESET deasserted ...
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1211) @ 516600: reporter [PH/TRC/EXE/ALLDROP] Phase 'apb_rst_model_domain.uvm_sched.reset' (id=11278) PHASE EXIT ALL_DROPPED
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 516600: reporter [PH_READY_TO_END] Phase 'apb_rst_model_domain.uvm_sched.reset' (id=11278) PHASE READY TO END
+UVM_INFO ../../smtdv_common/smtdv_component.sv(145) @ 516600: apb_rst_model_rst_mon [apb_rst_model_rst_mon] Detect a PWR_RST
+UVM_INFO ../../smtdv_common/smtdv_component.sv(145) @ 516600: uvm_test_top.master_agent[0].drv.smtdv_driver_threads [uvm_test_top.master_agent[0].drv.smtdv_driver_threads] Detect a PWR_RST
+UVM_INFO ../../smtdv_common/smtdv_component.sv(145) @ 516600: uvm_test_top.master_agent[0].drv [uvm_test_top.master_agent[0].drv] Detect a PWR_RST
+UVM_INFO ../../smtdv_common/smtdv_component.sv(145) @ 516600: uvm_test_top.master_agent[0].mon.smtdv_monitor_threads [uvm_test_top.master_agent[0].mon.smtdv_monitor_threads] Detect a PWR_RST
+UVM_INFO ../../smtdv_common/smtdv_component.sv(145) @ 516600: uvm_test_top.master_agent[0].mon [uvm_test_top.master_agent[0].mon] Detect a PWR_RST
+UVM_INFO ../../smtdv_common/smtdv_component.sv(145) @ 516600: uvm_test_top.master_agent[0].seqr [uvm_test_top.master_agent[0].seqr] Detect a PWR_RST
+UVM_INFO ../../smtdv_common/smtdv_component.sv(145) @ 516600: uvm_test_top.master_agent[0] [uvm_test_top.master_agent[0]] Detect a PWR_RST
+UVM_INFO ../../smtdv_common/smtdv_component.sv(145) @ 516600: uvm_test_top.slave_agent[0].drv.smtdv_driver_threads [uvm_test_top.slave_agent[0].drv.smtdv_driver_threads] Detect a PWR_RST
+UVM_INFO ../../smtdv_common/smtdv_component.sv(145) @ 516600: uvm_test_top.slave_agent[0].drv [uvm_test_top.slave_agent[0].drv] Detect a PWR_RST
+UVM_INFO ../../smtdv_common/smtdv_component.sv(145) @ 516600: uvm_test_top.slave_agent[0].mon.smtdv_monitor_threads [uvm_test_top.slave_agent[0].mon.smtdv_monitor_threads] Detect a PWR_RST
+UVM_INFO ../../smtdv_common/smtdv_component.sv(145) @ 516600: uvm_test_top.slave_agent[0].mon [uvm_test_top.slave_agent[0].mon] Detect a PWR_RST
+UVM_INFO ../../smtdv_common/smtdv_component.sv(145) @ 516600: uvm_test_top.slave_agent[0].seqr [uvm_test_top.slave_agent[0].seqr] Detect a PWR_RST
+UVM_INFO ../../smtdv_common/smtdv_component.sv(145) @ 516600: uvm_test_top.slave_agent[0] [uvm_test_top.slave_agent[0]] Detect a PWR_RST
+UVM_INFO ../../smtdv_common/smtdv_component.sv(145) @ 516600: uvm_test_top.slave_agent[1].drv.smtdv_driver_threads [uvm_test_top.slave_agent[1].drv.smtdv_driver_threads] Detect a PWR_RST
+UVM_INFO ../../smtdv_common/smtdv_component.sv(145) @ 516600: uvm_test_top.slave_agent[1].drv [uvm_test_top.slave_agent[1].drv] Detect a PWR_RST
+UVM_INFO ../../smtdv_common/smtdv_component.sv(145) @ 516600: uvm_test_top.slave_agent[1].mon.smtdv_monitor_threads [uvm_test_top.slave_agent[1].mon.smtdv_monitor_threads] Detect a PWR_RST
+UVM_INFO ../../smtdv_common/smtdv_component.sv(145) @ 516600: uvm_test_top.slave_agent[1].mon [uvm_test_top.slave_agent[1].mon] Detect a PWR_RST
+UVM_INFO ../../smtdv_common/smtdv_component.sv(145) @ 516600: uvm_test_top.slave_agent[1].seqr [uvm_test_top.slave_agent[1].seqr] Detect a PWR_RST
+UVM_INFO ../../smtdv_common/smtdv_component.sv(145) @ 516600: uvm_test_top.slave_agent[1] [uvm_test_top.slave_agent[1]] Detect a PWR_RST
+UVM_INFO ../../smtdv_common/smtdv_component.sv(145) @ 516600: uvm_test_top [uvm_test_top] Detect a PWR_RST
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.slave_agent[1].seqr [PHASESEQ] No default phase sequence for phase 'post_reset'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_reset'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_reset'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 516600: reporter [PH_READY_TO_END] Phase 'apb_rst_model_domain.uvm_sched.post_reset' (id=11320) PHASE READY TO END
+UVM_INFO ../../smtdv_common/smtdv_reset_monitor.sv(68) @ 516600: apb_rst_model_rst_mon [apb_rst_model_rst_mon] Detect PWR RESET deasserted ...
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.slave_agent[1].seqr [PHASESEQ] No default phase sequence for phase 'pre_configure'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_configure'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_configure'
+UVM_INFO ../seq/apb_master_seqs.sv(58) @ 516600: uvm_test_top.master_agent[0].seqr@@apb_master_1w1r_seq #(ADDR_WIDTH, DATA_WIDTH) [apb_master_1w1r_seq #(ADDR_WIDTH, DATA_WIDTH)] 
+----------------------------------------------
+Name           Type               Size  Value 
+----------------------------------------------
+item           uvm_sequence_item  -     @12144
+  mod_t        mod_type_t         1     MASTER
+  trs_t        trs_type_t         1     RD    
+  run_t        run_type_t         2     NORMAL
+  bg_cyc       integral           64    'h0   
+  ed_cyc       integral           64    'h0   
+  addr         integral           32    'hf   
+  data         da(integral)       4     -     
+    [0]        integral           8     'hff  
+    [1]        integral           8     'hff  
+    [2]        integral           8     'hff  
+    [3]        integral           8     'hff  
+  psel_L2H     integral           64    'h0   
+  penable_L2H  integral           64    'h0   
+  pready_L2H   integral           64    'h0   
+----------------------------------------------
+
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 516600: reporter [PH_READY_TO_END] Phase 'apb_rst_model_domain.uvm_sched.pre_configure' (id=11362) PHASE READY TO END
+UVM_INFO ../../smtdv_common/smtdv_sequence.sv(52) @ 516600: uvm_test_top.master_agent[0].seqr@@apb_master_1w1r_seq #(ADDR_WIDTH, DATA_WIDTH) [uvm_test_top.master_agent[0].seqr.apb_master_1w1r_seq #(ADDR_WIDTH, DATA_WIDTH).post_body()] drop objection in phase: run
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.slave_agent[1].seqr [PHASESEQ] No default phase sequence for phase 'configure'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'configure'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'configure'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 516600: reporter [PH_READY_TO_END] Phase 'apb_rst_model_domain.uvm_sched.configure' (id=11404) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.slave_agent[1].seqr [PHASESEQ] No default phase sequence for phase 'post_configure'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_configure'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_configure'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 516600: reporter [PH_READY_TO_END] Phase 'apb_rst_model_domain.uvm_sched.post_configure' (id=11446) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.slave_agent[1].seqr [PHASESEQ] No default phase sequence for phase 'pre_main'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_main'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_main'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 516600: reporter [PH_READY_TO_END] Phase 'apb_rst_model_domain.uvm_sched.pre_main' (id=11488) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.slave_agent[1].seqr [PHASESEQ] No default phase sequence for phase 'main'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'main'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'main'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 516600: reporter [PH_READY_TO_END] Phase 'apb_rst_model_domain.uvm_sched.main' (id=11530) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.slave_agent[1].seqr [PHASESEQ] No default phase sequence for phase 'post_main'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_main'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_main'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 516600: reporter [PH_READY_TO_END] Phase 'apb_rst_model_domain.uvm_sched.post_main' (id=11572) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.slave_agent[1].seqr [PHASESEQ] No default phase sequence for phase 'pre_shutdown'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_shutdown'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_shutdown'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 516600: reporter [PH_READY_TO_END] Phase 'apb_rst_model_domain.uvm_sched.pre_shutdown' (id=11614) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.slave_agent[1].seqr [PHASESEQ] No default phase sequence for phase 'shutdown'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'shutdown'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'shutdown'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 516600: reporter [PH_READY_TO_END] Phase 'apb_rst_model_domain.uvm_sched.shutdown' (id=11656) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.slave_agent[1].seqr [PHASESEQ] No default phase sequence for phase 'post_shutdown'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_shutdown'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 516600: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_shutdown'
+UVM_INFO ../seq/apb_slave_seqs.sv(44) @ 518000: uvm_test_top.slave_agent[0].seqr@@apb_slave_base_seq #(ADDR_WIDTH, DATA_WIDTH) [apb_slave_base_seq #(ADDR_WIDTH, DATA_WIDTH)] get monitor collected item
+-----------------------------------------------
+Name            Type               Size  Value 
+-----------------------------------------------
+apb_write_item  uvm_sequence_item  -     @12069
+  mod_t         mod_type_t         1     MASTER
+  trs_t         trs_type_t         1     WR    
+  run_t         run_type_t         2     FORCE 
+  bg_cyc        integral           64    'h206 
+  ed_cyc        integral           64    'h0   
+  addr          integral           32    'hf   
+  data          da(integral)       4     -     
+    [0]         integral           8     'hff  
+    [1]         integral           8     'hff  
+    [2]         integral           8     'hff  
+    [3]         integral           8     'hff  
+  psel_L2H      integral           64    'h0   
+  penable_L2H   integral           64    'h0   
+  pready_L2H    integral           64    'h0   
+  begin_time    time               64    518000
+-----------------------------------------------
+
+UVM_INFO ..//apb_monitor_threads.sv(172) @ 519000: reporter [uvm_test_top.slave_agent[0].mon] try collect write item
+-----------------------------------------------
+Name            Type               Size  Value 
+-----------------------------------------------
+apb_write_item  uvm_sequence_item  -     @12069
+  mod_t         mod_type_t         1     MASTER
+  trs_t         trs_type_t         1     WR    
+  run_t         run_type_t         2     FORCE 
+  bg_cyc        integral           64    'h206 
+  ed_cyc        integral           64    'h207 
+  addr          integral           32    'hf   
+  data          da(integral)       4     -     
+    [0]         integral           8     'hff  
+    [1]         integral           8     'hff  
+    [2]         integral           8     'hff  
+    [3]         integral           8     'hff  
+  psel_L2H      integral           64    'h0   
+  penable_L2H   integral           64    'h0   
+  pready_L2H    integral           64    'h0   
+  begin_time    time               64    518000
+  end_time      time               64    519000
+-----------------------------------------------
+
+UVM_INFO ..//apb_monitor_threads.sv(172) @ 519000: reporter [uvm_test_top.master_agent[0].mon] try collect write item
+-----------------------------------------------
+Name            Type               Size  Value 
+-----------------------------------------------
+apb_write_item  uvm_sequence_item  -     @12596
+  mod_t         mod_type_t         1     MASTER
+  trs_t         trs_type_t         1     WR    
+  run_t         run_type_t         2     FORCE 
+  bg_cyc        integral           64    'h206 
+  ed_cyc        integral           64    'h207 
+  addr          integral           32    'hf   
+  data          da(integral)       4     -     
+    [0]         integral           8     'hff  
+    [1]         integral           8     'hff  
+    [2]         integral           8     'hff  
+    [3]         integral           8     'hff  
+  psel_L2H      integral           64    'h0   
+  penable_L2H   integral           64    'h0   
+  pready_L2H    integral           64    'h0   
+  begin_time    time               64    518000
+  end_time      time               64    519000
+-----------------------------------------------
+
+UVM_INFO ..//apb_slave_driver_threads.sv(43) @ 519500: reporter [uvm_test_top.slave_agent[0].drv] try respone write item
+
+UVM_INFO ..//apb_master_driver_threads.sv(49) @ 519500: reporter [uvm_test_top.master_agent[0].drv] try do write item 
+---------------------------------------------------------------------------------------------------------------------------------------
+Name                           Type               Size  Value                                                                          
+---------------------------------------------------------------------------------------------------------------------------------------
+req                            uvm_sequence_item  -     @12041                                                                         
+  mod_t                        mod_type_t         1     MASTER                                                                         
+  trs_t                        trs_type_t         1     WR                                                                             
+  run_t                        run_type_t         2     NORMAL                                                                         
+  bg_cyc                       integral           64    'h0                                                                            
+  ed_cyc                       integral           64    'h0                                                                            
+  addr                         integral           32    'hf                                                                            
+  data                         da(integral)       4     -                                                                              
+    [0]                        integral           8     'hff                                                                           
+    [1]                        integral           8     'hff                                                                           
+    [2]                        integral           8     'hff                                                                           
+    [3]                        integral           8     'hff                                                                           
+  psel_L2H                     integral           64    'h0                                                                            
+  penable_L2H                  integral           64    'h0                                                                            
+  pready_L2H                   integral           64    'h0                                                                            
+  begin_time                   time               64    516600                                                                         
+  end_time                     time               64    516600                                                                         
+  depth                        int                32    'd2                                                                            
+  parent sequence (name)       string             45    apb_master_1w1r_seq #(ADDR_WIDTH, DATA_WIDTH)                                  
+  parent sequence (full name)  string             79    uvm_test_top.master_agent[0].seqr.apb_master_1w1r_seq #(ADDR_WIDTH, DATA_WIDTH)
+  sequencer                    string             33    uvm_test_top.master_agent[0].seqr                                              
+---------------------------------------------------------------------------------------------------------------------------------------
+
+UVM_INFO ../seq/apb_slave_seqs.sv(44) @ 521000: uvm_test_top.slave_agent[0].seqr@@apb_slave_base_seq #(ADDR_WIDTH, DATA_WIDTH) [apb_slave_base_seq #(ADDR_WIDTH, DATA_WIDTH)] get monitor collected item
+----------------------------------------------
+Name           Type               Size  Value 
+----------------------------------------------
+apb_read_item  uvm_sequence_item  -     @12573
+  mod_t        mod_type_t         1     MASTER
+  trs_t        trs_type_t         1     RD    
+  run_t        run_type_t         2     FORCE 
+  bg_cyc       integral           64    'h209 
+  ed_cyc       integral           64    'h0   
+  addr         integral           32    'hf   
+  data         da(integral)       0     -     
+  psel_L2H     integral           64    'h0   
+  penable_L2H  integral           64    'h0   
+  pready_L2H   integral           64    'h0   
+  begin_time   time               64    521000
+----------------------------------------------
+
+UVM_INFO ..//apb_slave_driver_threads.sv(54) @ 522500: reporter [uvm_test_top.slave_agent[0].drv] try respone read item
+
+UVM_INFO ..//apb_master_driver_threads.sv(66) @ 522500: reporter [uvm_test_top.master_agent[0].drv] try do read item 
+---------------------------------------------------------------------------------------------------------------------------------------
+Name                           Type               Size  Value                                                                          
+---------------------------------------------------------------------------------------------------------------------------------------
+req                            uvm_sequence_item  -     @1850                                                                          
+  mod_t                        mod_type_t         1     MASTER                                                                         
+  trs_t                        trs_type_t         1     RD                                                                             
+  run_t                        run_type_t         2     NORMAL                                                                         
+  bg_cyc                       integral           64    'h0                                                                            
+  ed_cyc                       integral           64    'h0                                                                            
+  addr                         integral           32    'hf                                                                            
+  data                         da(integral)       4     -                                                                              
+    [0]                        integral           8     'hff                                                                           
+    [1]                        integral           8     'hff                                                                           
+    [2]                        integral           8     'hff                                                                           
+    [3]                        integral           8     'hff                                                                           
+  psel_L2H                     integral           64    'h0                                                                            
+  penable_L2H                  integral           64    'h0                                                                            
+  pready_L2H                   integral           64    'h0                                                                            
+  begin_time                   time               64    516600                                                                         
+  end_time                     time               64    516600                                                                         
+  depth                        int                32    'd2                                                                            
+  parent sequence (name)       string             45    apb_master_1w1r_seq #(ADDR_WIDTH, DATA_WIDTH)                                  
+  parent sequence (full name)  string             79    uvm_test_top.master_agent[0].seqr.apb_master_1w1r_seq #(ADDR_WIDTH, DATA_WIDTH)
+  sequencer                    string             33    uvm_test_top.master_agent[0].seqr                                              
+---------------------------------------------------------------------------------------------------------------------------------------
+
+UVM_INFO ..//apb_monitor_threads.sv(222) @ 523000: reporter [uvm_test_top.slave_agent[0].mon] try collect read item
+----------------------------------------------
+Name           Type               Size  Value 
+----------------------------------------------
+apb_read_item  uvm_sequence_item  -     @12573
+  mod_t        mod_type_t         1     MASTER
+  trs_t        trs_type_t         1     RD    
+  run_t        run_type_t         2     FORCE 
+  bg_cyc       integral           64    'h209 
+  ed_cyc       integral           64    'h20a 
+  addr         integral           32    'hf   
+  data         da(integral)       4     -     
+    [0]        integral           8     'h0   
+    [1]        integral           8     'h0   
+    [2]        integral           8     'h0   
+    [3]        integral           8     'h0   
+  psel_L2H     integral           64    'h0   
+  penable_L2H  integral           64    'h0   
+  pready_L2H   integral           64    'h0   
+  begin_time   time               64    521000
+  end_time     time               64    522000
+----------------------------------------------
+
+UVM_INFO ..//apb_monitor_threads.sv(222) @ 523000: reporter [uvm_test_top.master_agent[0].mon] try collect read item
+----------------------------------------------
+Name           Type               Size  Value 
+----------------------------------------------
+apb_read_item  uvm_sequence_item  -     @12819
+  mod_t        mod_type_t         1     MASTER
+  trs_t        trs_type_t         1     RD    
+  run_t        run_type_t         2     FORCE 
+  bg_cyc       integral           64    'h209 
+  ed_cyc       integral           64    'h20a 
+  addr         integral           32    'hf   
+  data         da(integral)       4     -     
+    [0]        integral           8     'h0   
+    [1]        integral           8     'h0   
+    [2]        integral           8     'h0   
+    [3]        integral           8     'h0   
+  psel_L2H     integral           64    'h0   
+  penable_L2H  integral           64    'h0   
+  pready_L2H   integral           64    'h0   
+  begin_time   time               64    521000
+  end_time     time               64    522000
+----------------------------------------------
+
+UVM_INFO ..//apb_monitor_threads.sv(141) @ 600000: reporter [uvm_test_top.slave_agent[1].mon] try collect finish signal
+
+UVM_INFO ../seq/apb_slave_seqs.sv(67) @ 600000: uvm_test_top.slave_agent[1].seqr@@apb_slave_base_seq #(ADDR_WIDTH, DATA_WIDTH) [uvm_test_top.slave_agent[1].seqr] try collected finish signal
+
+UVM_INFO ../../smtdv_common/smtdv_sequence.sv(52) @ 600000: uvm_test_top.slave_agent[1].seqr@@apb_slave_base_seq #(ADDR_WIDTH, DATA_WIDTH) [uvm_test_top.slave_agent[1].seqr.apb_slave_base_seq #(ADDR_WIDTH, DATA_WIDTH).post_body()] drop objection in phase: run
+UVM_INFO ..//apb_monitor_threads.sv(141) @ 605000: reporter [uvm_test_top.slave_agent[0].mon] try collect finish signal
+
+UVM_INFO ../seq/apb_slave_seqs.sv(67) @ 605000: uvm_test_top.slave_agent[0].seqr@@apb_slave_base_seq #(ADDR_WIDTH, DATA_WIDTH) [uvm_test_top.slave_agent[0].seqr] try collected finish signal
+
+UVM_INFO ../../smtdv_common/smtdv_sequence.sv(52) @ 605000: uvm_test_top.slave_agent[0].seqr@@apb_slave_base_seq #(ADDR_WIDTH, DATA_WIDTH) [uvm_test_top.slave_agent[0].seqr.apb_slave_base_seq #(ADDR_WIDTH, DATA_WIDTH).post_body()] drop objection in phase: run
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_objection.svh(1245) @ 606000: reporter [TEST_DONE] All end-of-test objections have been dropped. Calling stop tasks
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_objection.svh(1268) @ 606000: reporter [TEST_DONE] 'run' phase is ready to proceed to the 'extract' phase
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1211) @ 606000: reporter [PH/TRC/EXE/ALLDROP] Phase 'common.run' (id=2482) PHASE EXIT ALL_DROPPED
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 606000: reporter [PH_READY_TO_END] Phase 'common.run' (id=2482) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 606000: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.post_shutdown' (id=3944) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 606000: reporter [PH_READY_TO_END] Phase 'apb_rst_model_domain.uvm_sched.post_shutdown' (id=11698) PHASE READY TO END
+
+--- UVM Report catcher Summary ---
+
+
+Number of demoted UVM_FATAL reports  :    0
+Number of demoted UVM_ERROR reports  :    0
+Number of demoted UVM_WARNING reports:    0
+Number of caught UVM_FATAL reports   :    0
+Number of caught UVM_ERROR reports   :    0
+Number of caught UVM_WARNING reports :    0
+
+--- UVM Report Summary ---
+
+Quit count :     0 of     2
+** Report counts by severity
+UVM_INFO :  290
+UVM_WARNING :    3
+UVM_ERROR :    0
+UVM_FATAL :    0
+** Report counts by id
+[NOSEQR]     1
+[NOTHREADHANDLER]     1
+[PH/TRC/EXE/ALLDROP]     2
+[PH/TRC/EXE/JUMP]     1
+[PHASESEQ]    72
+[PH_JUMP]     1
+[PH_JUMPB]     1
+[PH_READY_TO_END]    35
+[RNTST]     1
+[TEST_DONE]     2
+[apb_master_1w1r_seq #(ADDR_WIDTH, DATA_WIDTH)]     3
+[apb_rst_if]     2
+[apb_rst_model]    85
+[apb_rst_model_rst_mon]     6
+[apb_slave_base_seq #(ADDR_WIDTH, DATA_WIDTH)]     2
+[uvm_sequence_base]     1
+[uvm_test_top]     2
+[uvm_test_top.master_agent[0]]     2
+[uvm_test_top.master_agent[0].drv]     4
+[uvm_test_top.master_agent[0].drv.smtdv_driver_threads]     3
+[uvm_test_top.master_agent[0].mon]     5
+[uvm_test_top.master_agent[0].mon.smtdv_monitor_threads]     7
+[uvm_test_top.master_agent[0].seqr]     2
+[uvm_test_top.master_agent[0].seqr.apb_master_1w1r_seq #(ADDR_WIDTH, DATA_WIDTH).post_body()]     1
+[uvm_test_top.master_agent[0].seqr.apb_master_1w1r_seq #(ADDR_WIDTH, DATA_WIDTH).pre_body()]     1
+[uvm_test_top.slave_agent[0]]     2
+[uvm_test_top.slave_agent[0].drv]     4
+[uvm_test_top.slave_agent[0].drv.smtdv_driver_threads]     3
+[uvm_test_top.slave_agent[0].mon]     6
+[uvm_test_top.slave_agent[0].mon.smtdv_monitor_threads]     7
+[uvm_test_top.slave_agent[0].seqr]     3
+[uvm_test_top.slave_agent[0].seqr.apb_slave_base_seq #(ADDR_WIDTH, DATA_WIDTH).post_body()]     1
+[uvm_test_top.slave_agent[0].seqr.apb_slave_base_seq #(ADDR_WIDTH, DATA_WIDTH).pre_body()]     1
+[uvm_test_top.slave_agent[1]]     2
+[uvm_test_top.slave_agent[1].drv]     2
+[uvm_test_top.slave_agent[1].drv.smtdv_driver_threads]     3
+[uvm_test_top.slave_agent[1].mon]     4
+[uvm_test_top.slave_agent[1].mon.smtdv_monitor_threads]     7
+[uvm_test_top.slave_agent[1].seqr]     3
+[uvm_test_top.slave_agent[1].seqr.apb_slave_base_seq #(ADDR_WIDTH, DATA_WIDTH).post_body()]     1
+[uvm_test_top.slave_agent[1].seqr.apb_slave_base_seq #(ADDR_WIDTH, DATA_WIDTH).pre_body()]     1
+
+=============================================================
+                         TEST PASSED with 3 UVM_WARNING(S)
+=============================================================
+
+Simulation complete via $finish(1) at time 6060 NS + 46
+/stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_root.svh:457     $finish;
+ncsim> #exit
+ncsim> exit
+ncsim: *W,CGPIZE: Instance coverage for covergroup instance "apb_coverage" will not be dumped to database as per_instance option value is set to 0:../apb_monitor_threads.sv, 20.
+ncsim: *W,CGPIZE: Instance coverage for covergroup instance "apb_coverage" will not be dumped to database as per_instance option value is set to 0:../apb_monitor_threads.sv, 20.
+ncsim: *W,CGPIZE: Instance coverage for covergroup instance "apb_coverage" will not be dumped to database as per_instance option value is set to 0:../apb_monitor_threads.sv, 20.
+
+coverage setup:
+  workdir  :  ./cov_work
+  dutinst  :  top(top)
+  scope    :  scope
+  testname :  test
+
+coverage files:
+  model(design data) :  ./cov_work/scope/icc_7b7365cf_3384a289.ucm (reused)
+  data               :  ./cov_work/scope/test/icc_7b7365cf_3384a289.ucd
+  cpu                :  0.0s system + 0.1s user = 0.1s total
+ncsim: Memory Usage - 33.1M program + 366.4M data = 399.5M total
+ncsim: CPU Usage - 0.5s system + 0.8s user = 1.2s total (16.0s, 7.7% cpu)
+TOOL:	irun(64)	13.10-s011: Exiting on Aug 14, 2015 at 17:17:13 CST  (total: 00:00:26)

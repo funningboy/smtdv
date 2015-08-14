@@ -1,7 +1,0 @@
-include ./hdlrun.var
-DEFINE RUNMODEDEFAULT 1
-DEFINE LIB_MAP ( + => worklib )
-define ELAB_SNAPSHOT
-define SNAPSHOT worklib.sc_main:sc_module
-define ELAB_SNAPSHOT
-define SNAPSHOT worklib.sc_main:sc_module

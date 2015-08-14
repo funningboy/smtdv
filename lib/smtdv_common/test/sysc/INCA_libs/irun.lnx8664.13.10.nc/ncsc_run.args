@@ -1,0 +1,35 @@
+//
+// File created by:  irun
+// Do not modify this file
+//
+-RUNMODE
+-q
+-stop
+link
+-asext
+.s
+-ccext
+.c
+-objext
+.o
+-cxxext
+.cpp
+-cxxext
+.cc
+-ncscrc
+./INCA_libs/irun.lnx8664.13.10.nc/ncsc_run
+-log
+./INCA_libs/irun.lnx8664.13.10.nc/ncsc_run.log
+-STATUS
+xbus_event.cpp
+xbus_slave_listener.cpp
+-cdslib
+./INCA_libs/irun.lnx8664.13.10.nc/cdsrun.lib
+-hdlvar
+./INCA_libs/irun.lnx8664.13.10.nc/hdlrun.var
+-work
+worklib
+-test
+./INCA_libs/irun.lnx8664.13.10.nc/run
+-I/stec/apps/cadence/INCISIV13.10.011/tools/include
+-I/stec/apps/cadence/INCISIV13.10.011/tools/inca/include

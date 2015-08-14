@@ -1,0 +1,6 @@
+ncsc: -nocopyright -status -cdslib /stec/tw/users/schen/prj/smartdv/lib/smtdv_common/test/sysc/./INCA_libs/irun.lnx8664.13.10.nc/cdsrun.lib -hdlvar /stec/tw/users/schen/prj/smartdv/lib/smtdv_common/test/sysc/./INCA_libs/irun.lnx8664.13.10.nc/hdlrun.var -work worklib
+ncvlog: -nocopyright -status -cdslib /stec/tw/users/schen/prj/smartdv/lib/smtdv_common/test/sysc/./INCA_libs/irun.lnx8664.13.10.nc/cdsrun.lib -hdlvar /stec/tw/users/schen/prj/smartdv/lib/smtdv_common/test/sysc/./INCA_libs/irun.lnx8664.13.10.nc/hdlrun.var -work worklib
+ncvhdl: -nocopyright -status -cdslib /stec/tw/users/schen/prj/smartdv/lib/smtdv_common/test/sysc/./INCA_libs/irun.lnx8664.13.10.nc/cdsrun.lib -hdlvar /stec/tw/users/schen/prj/smartdv/lib/smtdv_common/test/sysc/./INCA_libs/irun.lnx8664.13.10.nc/hdlrun.var -work worklib
+ncelab: -nocopyright -status -cdslib /stec/tw/users/schen/prj/smartdv/lib/smtdv_common/test/sysc/./INCA_libs/irun.lnx8664.13.10.nc/cdsrun.lib -hdlvar /stec/tw/users/schen/prj/smartdv/lib/smtdv_common/test/sysc/./INCA_libs/irun.lnx8664.13.10.nc/hdlrun.var -work worklib
+simplus: +tb_rc_dir+./INCA_libs/irun.lnx8664.13.10.nc/ncsc_run +tb_run_dir+/stec/tw/users/schen/prj/smartdv/lib/smtdv_common/test/sysc +tb_trans_record
+vspsim: -nocopyright -status

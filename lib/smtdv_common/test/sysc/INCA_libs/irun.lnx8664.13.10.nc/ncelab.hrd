@@ -1,0 +1,15 @@
+//
+// File created by:  irun
+// Do not modify this file
+//
+-ACCESS
+rwc
+
+test
+-COVERAGE
+b:u
+-COVERAGE
+functional
+-NO_TCHK_MSG
+-NOTIMINGCHECKS
+-NONOTIFIER

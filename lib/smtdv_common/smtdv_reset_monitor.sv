@@ -13,6 +13,10 @@ class smtdv_reset_monitor #(type VIF = int) extends smtdv_monitor#(VIF);
     super.new(name, parent);
   endfunction
 
+  virtual function void build_phase(uvm_phase phase);
+    super.build_phase(phase);
+  endfunction
+
   extern virtual function void set_rst_model(smtdv_reset_model#(VIF) rst_model);
 
   extern virtual function void end_of_elaboration_phase(uvm_phase phase);

@@ -1,0 +1,50 @@
+//
+// File created by:  irun
+// Do not modify this file
+//
+-INPUT
+"@source /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/files/tcl/uvm_sim.tcl"
++UVM_VERBOSITY=UVM_DEBUG
++nccoverage+functional
++notchkmsg
++notimingchecks
++no_notifier
++define+SVA
++incdir+../../smtdv_common
++incdir+../
++incdir+../test
++incdir+../seq
++incdir+../v
++incdir+./
++incdir+../../../dpi/sqlite3
+-sv_lib
+/stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/lib/64bit/libuvmpli.so
+-STATUS
++UVM_TESTNAME=apb_1w1r_test
+-COVOVERWRITE
+-sv_lib
+../../../dpi/sqlite3/dpi_smtdv_lib.so
+-INPUT
+simvision.tcl
+-BATCH
+-MESSAGES
+-SV_LIB
+/stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/lib/64bit/libuvmdpi.so
++EMGRLOG
+irun.log
+-XLSTIME
+1439543807
+-XLKEEP
+-XLMODE
+./INCA_libs/irun.lnx8664.13.10.nc
+-RUNMODE
+-CDSLIB
+./INCA_libs/irun.lnx8664.13.10.nc/cds.lib
+-HDLVAR
+./INCA_libs/irun.lnx8664.13.10.nc/hdl.var
+-XLNAME
+irun
+-XLVERSION
+"TOOL:	irun(64)	13.10-s011"
+-XLNAME
+./INCA_libs/irun.lnx8664.13.10.nc/twlogin04_24717

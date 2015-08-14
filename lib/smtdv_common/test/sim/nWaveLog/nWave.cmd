@@ -1086,3 +1086,548 @@ wvConvertFile -win $_nWave1 -o \
            "/stec/tw/users/schen/prj/smartdv/lib/smtdv_common/test/sim/test_xbus.vcd.fsdb" \
            "/stec/tw/users/schen/prj/smartdv/lib/smtdv_common/test/sim/test_xbus.vcd"
 wvReloadFile -win $_nWave1
+wvCloseFile -win $_nWave1
+wvDisplayGridCount -win $_nWave1 -off
+wvTpfCloseForm -win $_nWave1
+wvGetSignalClose -win $_nWave1
+wvConvertFile -win $_nWave1 -o \
+           "/stec/tw/users/schen/prj/smartdv/lib/smtdv_apb_uvc/sim/test_apb.vcd.fsdb" \
+           "/stec/tw/users/schen/prj/smartdv/lib/smtdv_apb_uvc/sim/test_apb.vcd"
+wvSetPosition -win $_nWave1 {("G1" 0)}
+wvOpenFile -win $_nWave1 \
+           {/stec/tw/users/schen/prj/smartdv/lib/smtdv_apb_uvc/sim/test_apb.vcd.fsdb}
+wvSetCursor -win $_nWave1 38925007.508841
+wvGetSignalOpen -win $_nWave1
+wvGetSignalSetScope -win $_nWave1 "/top"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[0\]"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[0\]/apb_slave_if_harness/vif"
+wvGetSignalSetScope -win $_nWave1 "/top/M\[0\]/apb_master_if_harness/vif"
+wvSetPosition -win $_nWave1 {("G1" 9)}
+wvSetPosition -win $_nWave1 {("G1" 9)}
+wvAddSignal -win $_nWave1 -clear
+wvAddSignal -win $_nWave1 -group {"G1" \
+{/top/M\[0\]/apb_master_if_harness/vif/clk} \
+{/top/M\[0\]/apb_master_if_harness/vif/paddr\[31:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/penable\[0:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/prdata\[31:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/pready\[0:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/prwd\[0:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/psel\[15:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/pslverr\[0:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/pwdata\[31:0\]} \
+}
+wvAddSignal -win $_nWave1 -group {"G2" \
+}
+wvSelectSignal -win $_nWave1 {( "G1" 1 2 3 4 5 6 7 8 9 )} 
+wvSetPosition -win $_nWave1 {("G1" 9)}
+wvSetPosition -win $_nWave1 {("G1" 9)}
+wvSetPosition -win $_nWave1 {("G1" 9)}
+wvAddSignal -win $_nWave1 -clear
+wvAddSignal -win $_nWave1 -group {"G1" \
+{/top/M\[0\]/apb_master_if_harness/vif/clk} \
+{/top/M\[0\]/apb_master_if_harness/vif/paddr\[31:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/penable\[0:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/prdata\[31:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/pready\[0:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/prwd\[0:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/psel\[15:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/pslverr\[0:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/pwdata\[31:0\]} \
+}
+wvAddSignal -win $_nWave1 -group {"G2" \
+}
+wvSelectSignal -win $_nWave1 {( "G1" 1 2 3 4 5 6 7 8 9 )} 
+wvSetPosition -win $_nWave1 {("G1" 9)}
+wvGetSignalClose -win $_nWave1
+wvZoomAll -win $_nWave1
+wvZoom -win $_nWave1 0.000000 23994867.642436
+wvSetCursor -win $_nWave1 1414235.813896 -snap {("G1" 7)}
+wvZoom -win $_nWave1 0.000000 1225671.038710
+wvZoom -win $_nWave1 0.000000 60199.952785
+wvDisplayGridCount -win $_nWave1 -off
+wvGetSignalClose -win $_nWave1
+wvConvertFile -win $_nWave1 -o \
+           "/stec/tw/users/schen/prj/smartdv/lib/smtdv_apb_uvc/sim/test_apb.vcd.fsdb" \
+           "/stec/tw/users/schen/prj/smartdv/lib/smtdv_apb_uvc/sim/test_apb.vcd"
+wvReloadFile -win $_nWave1
+wvZoomOut -win $_nWave1
+wvZoomOut -win $_nWave1
+wvZoomOut -win $_nWave1
+wvZoomOut -win $_nWave1
+wvZoom -win $_nWave1 222349.530915 627309.527646
+wvZoom -win $_nWave1 375900.178005 576788.977955
+wvSelectSignal -win $_nWave1 {( "G1" 2 )} 
+wvSelectSignal -win $_nWave1 {( "G1" 3 )} 
+wvSelectSignal -win $_nWave1 {( "G1" 5 )} 
+wvSelectSignal -win $_nWave1 {( "G1" 7 )} 
+wvSetPosition -win $_nWave1 {("G1" 7)}
+wvSetPosition -win $_nWave1 {("G1" 6)}
+wvSetPosition -win $_nWave1 {("G1" 5)}
+wvSetPosition -win $_nWave1 {("G1" 4)}
+wvSetPosition -win $_nWave1 {("G1" 3)}
+wvSetPosition -win $_nWave1 {("G1" 2)}
+wvSetPosition -win $_nWave1 {("G1" 1)}
+wvMoveSelected -win $_nWave1
+wvSetPosition -win $_nWave1 {("G1" 1)}
+wvSetPosition -win $_nWave1 {("G1" 2)}
+wvSelectSignal -win $_nWave1 {( "G1" 3 )} 
+wvSelectSignal -win $_nWave1 {( "G1" 4 )} 
+wvSelectSignal -win $_nWave1 {( "G1" 3 )} 
+wvSelectSignal -win $_nWave1 {( "G1" 4 )} 
+wvSelectSignal -win $_nWave1 {( "G1" 5 )} 
+wvSelectSignal -win $_nWave1 {( "G1" 6 )} 
+wvSelectSignal -win $_nWave1 {( "G1" 7 )} 
+wvSelectSignal -win $_nWave1 {( "G1" 8 )} 
+wvSelectSignal -win $_nWave1 {( "G1" 9 )} 
+wvGetSignalOpen -win $_nWave1
+wvGetSignalSetScope -win $_nWave1 "/top/S\[0\]/apb_slave_if_harness"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[0\]/apb_slave_if_harness/vif"
+wvSetPosition -win $_nWave1 {("G1" 3)}
+wvSetPosition -win $_nWave1 {("G1" 3)}
+wvAddSignal -win $_nWave1 -clear
+wvAddSignal -win $_nWave1 -group {"G1" \
+{/top/M\[0\]/apb_master_if_harness/vif/clk} \
+{/top/M\[0\]/apb_master_if_harness/vif/psel\[15:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/vif/psel\[15:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/paddr\[31:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/penable\[0:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/prdata\[31:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/pready\[0:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/prwd\[0:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/pslverr\[0:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/pwdata\[31:0\]} \
+}
+wvAddSignal -win $_nWave1 -group {"G2" \
+}
+wvSelectSignal -win $_nWave1 {( "G1" 3 )} 
+wvSetPosition -win $_nWave1 {("G1" 3)}
+wvSetPosition -win $_nWave1 {("G1" 3)}
+wvSetPosition -win $_nWave1 {("G1" 3)}
+wvAddSignal -win $_nWave1 -clear
+wvAddSignal -win $_nWave1 -group {"G1" \
+{/top/M\[0\]/apb_master_if_harness/vif/clk} \
+{/top/M\[0\]/apb_master_if_harness/vif/psel\[15:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/vif/psel\[15:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/paddr\[31:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/penable\[0:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/prdata\[31:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/pready\[0:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/prwd\[0:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/pslverr\[0:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/pwdata\[31:0\]} \
+}
+wvAddSignal -win $_nWave1 -group {"G2" \
+}
+wvSelectSignal -win $_nWave1 {( "G1" 3 )} 
+wvSetPosition -win $_nWave1 {("G1" 3)}
+wvGetSignalClose -win $_nWave1
+wvSetPosition -win $_nWave1 {("G1" 4)}
+wvSetPosition -win $_nWave1 {("G1" 5)}
+wvSetPosition -win $_nWave1 {("G1" 6)}
+wvSetPosition -win $_nWave1 {("G1" 7)}
+wvSetPosition -win $_nWave1 {("G1" 8)}
+wvSetPosition -win $_nWave1 {("G1" 9)}
+wvSetPosition -win $_nWave1 {("G1" 10)}
+wvSetPosition -win $_nWave1 {("G2" 0)}
+wvMoveSelected -win $_nWave1
+wvSetPosition -win $_nWave1 {("G2" 1)}
+wvSetPosition -win $_nWave1 {("G2" 1)}
+wvCut -win $_nWave1
+wvSetPosition -win $_nWave1 {("G3" 0)}
+wvSetPosition -win $_nWave1 {("G2" 0)}
+wvGetSignalOpen -win $_nWave1
+wvGetSignalSetScope -win $_nWave1 "/top"
+wvGetSignalSetScope -win $_nWave1 "/top/M\[0\]"
+wvGetSignalSetScope -win $_nWave1 "/top/M\[0\]/apb_master_if_harness"
+wvGetSignalSetScope -win $_nWave1 "/top/M\[0\]/apb_master_if_harness/vif"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[0\]"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[0\]/apb_slave_if_harness"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[0\]/apb_slave_if_harness/vif"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[0\]/apb_slave_if_harness/vif"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[1\]/apb_slave_if_harness"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[1\]/apb_slave_if_harness/vif"
+wvGetSignalClose -win $_nWave1
+wvSetCursor -win $_nWave1 474371.210594 -snap {("G1" 7)}
+wvDisplayGridCount -win $_nWave1 -off
+wvGetSignalClose -win $_nWave1
+wvConvertFile -win $_nWave1 -o \
+           "/stec/tw/users/schen/prj/smartdv/lib/smtdv_apb_uvc/sim/test_apb.vcd.fsdb" \
+           "/stec/tw/users/schen/prj/smartdv/lib/smtdv_apb_uvc/sim/test_apb.vcd"
+wvReloadFile -win $_nWave1
+wvZoomOut -win $_nWave1
+wvZoomOut -win $_nWave1
+wvZoomOut -win $_nWave1
+wvZoomOut -win $_nWave1
+wvZoomOut -win $_nWave1
+wvZoom -win $_nWave1 490423.457760 521748.935167
+wvGetSignalOpen -win $_nWave1
+wvGetSignalSetScope -win $_nWave1 "/top/S\[1\]/apb_slave_if_harness"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[1\]/apb_slave_if_harness/vif"
+wvSetPosition -win $_nWave1 {("G2" 9)}
+wvSetPosition -win $_nWave1 {("G2" 9)}
+wvAddSignal -win $_nWave1 -clear
+wvAddSignal -win $_nWave1 -group {"G1" \
+{/top/M\[0\]/apb_master_if_harness/vif/clk} \
+{/top/M\[0\]/apb_master_if_harness/vif/psel\[15:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/paddr\[31:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/penable\[0:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/prdata\[31:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/pready\[0:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/prwd\[0:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/pslverr\[0:0\]} \
+{/top/M\[0\]/apb_master_if_harness/vif/pwdata\[31:0\]} \
+}
+wvAddSignal -win $_nWave1 -group {"G2" \
+{/top/S\[1\]/apb_slave_if_harness/vif/paddr\[31:0\]} \
+{/top/S\[1\]/apb_slave_if_harness/vif/penable\[0:0\]} \
+{/top/S\[1\]/apb_slave_if_harness/vif/prdata\[31:0\]} \
+{/top/S\[1\]/apb_slave_if_harness/vif/pready\[0:0\]} \
+{/top/S\[1\]/apb_slave_if_harness/vif/prwd\[0:0\]} \
+{/top/S\[1\]/apb_slave_if_harness/vif/psel\[15:0\]} \
+{/top/S\[1\]/apb_slave_if_harness/vif/pslverr\[0:0\]} \
+{/top/S\[1\]/apb_slave_if_harness/vif/pwdata\[31:0\]} \
+{/top/S\[1\]/apb_slave_if_harness/vif/resetn} \
+}
+wvAddSignal -win $_nWave1 -group {"G3" \
+}
+wvSelectSignal -win $_nWave1 {( "G2" 1 2 3 4 5 6 7 8 9 )} 
+wvSetPosition -win $_nWave1 {("G2" 9)}
+wvGetSignalClose -win $_nWave1
+wvScrollDown -win $_nWave1 1
+wvScrollDown -win $_nWave1 1
+wvScrollDown -win $_nWave1 1
+wvScrollDown -win $_nWave1 1
+wvScrollDown -win $_nWave1 1
+wvScrollDown -win $_nWave1 0
+wvScrollDown -win $_nWave1 0
+wvScrollDown -win $_nWave1 0
+wvScrollUp -win $_nWave1 1
+wvScrollUp -win $_nWave1 1
+wvScrollUp -win $_nWave1 1
+wvScrollUp -win $_nWave1 1
+wvScrollUp -win $_nWave1 1
+wvScrollDown -win $_nWave1 0
+wvScrollDown -win $_nWave1 0
+wvScrollDown -win $_nWave1 0
+wvScrollDown -win $_nWave1 0
+wvScrollDown -win $_nWave1 1
+wvScrollDown -win $_nWave1 1
+wvScrollDown -win $_nWave1 1
+wvScrollDown -win $_nWave1 1
+wvScrollDown -win $_nWave1 1
+wvScrollDown -win $_nWave1 0
+wvCut -win $_nWave1
+wvSetPosition -win $_nWave1 {("G2" 0)}
+wvSelectSignal -win $_nWave1 {( "G1" 2 )} 
+wvSelectSignal -win $_nWave1 {( "G1" 3 )} 
+wvSelectSignal -win $_nWave1 {( "G1" 3 )} 
+wvSelectSignal -win $_nWave1 {( "G1" 4 )} 
+wvSelectSignal -win $_nWave1 {( "G1" 5 )} 
+wvSelectSignal -win $_nWave1 {( "G1" 7 )} 
+wvSelectSignal -win $_nWave1 {( "G1" 6 )} 
+wvDisplayGridCount -win $_nWave1 -off
+wvGetSignalClose -win $_nWave1
+wvConvertFile -win $_nWave1 -o \
+           "/stec/tw/users/schen/prj/smartdv/lib/smtdv_apb_uvc/sim/test_apb.vcd.fsdb" \
+           "/stec/tw/users/schen/prj/smartdv/lib/smtdv_apb_uvc/sim/test_apb.vcd"
+wvReloadFile -win $_nWave1
+wvSelectSignal -win $_nWave1 {( "G1" 1 2 3 4 5 6 7 8 9 )} 
+wvCut -win $_nWave1
+wvSetPosition -win $_nWave1 {("G2" 0)}
+wvGetSignalOpen -win $_nWave1
+wvGetSignalSetScope -win $_nWave1 "/top/S\[0\]/apb_slave_if_harness"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[0\]/apb_slave_if_harness/vif"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[0\]/apb_slave_if_harness"
+wvSetPosition -win $_nWave1 {("G2" 9)}
+wvSetPosition -win $_nWave1 {("G2" 9)}
+wvAddSignal -win $_nWave1 -clear
+wvAddSignal -win $_nWave1 -group {"G1" \
+}
+wvAddSignal -win $_nWave1 -group {"G2" \
+{/top/S\[0\]/apb_slave_if_harness/paddr\[31:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/penable\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/prdata\[31:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/pready\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/prwd\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/psel\[15:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/pslverr\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/pwdata\[31:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/resetn} \
+}
+wvAddSignal -win $_nWave1 -group {"G3" \
+}
+wvSelectSignal -win $_nWave1 {( "G2" 1 2 3 4 5 6 7 8 9 )} 
+wvSetPosition -win $_nWave1 {("G2" 9)}
+wvSetPosition -win $_nWave1 {("G2" 10)}
+wvSetPosition -win $_nWave1 {("G2" 10)}
+wvAddSignal -win $_nWave1 -clear
+wvAddSignal -win $_nWave1 -group {"G1" \
+}
+wvAddSignal -win $_nWave1 -group {"G2" \
+{/top/S\[0\]/apb_slave_if_harness/paddr\[31:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/penable\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/prdata\[31:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/pready\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/prwd\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/psel\[15:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/pslverr\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/pwdata\[31:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/resetn} \
+{/top/S\[0\]/apb_slave_if_harness/clk} \
+}
+wvAddSignal -win $_nWave1 -group {"G3" \
+}
+wvSelectSignal -win $_nWave1 {( "G2" 10 )} 
+wvSetPosition -win $_nWave1 {("G2" 10)}
+wvSetPosition -win $_nWave1 {("G2" 10)}
+wvSetPosition -win $_nWave1 {("G2" 10)}
+wvAddSignal -win $_nWave1 -clear
+wvAddSignal -win $_nWave1 -group {"G1" \
+}
+wvAddSignal -win $_nWave1 -group {"G2" \
+{/top/S\[0\]/apb_slave_if_harness/paddr\[31:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/penable\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/prdata\[31:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/pready\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/prwd\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/psel\[15:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/pslverr\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/pwdata\[31:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/resetn} \
+{/top/S\[0\]/apb_slave_if_harness/clk} \
+}
+wvAddSignal -win $_nWave1 -group {"G3" \
+}
+wvSelectSignal -win $_nWave1 {( "G2" 10 )} 
+wvSetPosition -win $_nWave1 {("G2" 10)}
+wvGetSignalClose -win $_nWave1
+wvSelectSignal -win $_nWave1 {( "G2" 10 )} 
+wvSelectSignal -win $_nWave1 {( "G2" 10 )} 
+wvSelectSignal -win $_nWave1 {( "G2" 10 )} 
+wvSetPosition -win $_nWave1 {("G2" 9)}
+wvSetPosition -win $_nWave1 {("G2" 8)}
+wvSetPosition -win $_nWave1 {("G2" 7)}
+wvSetPosition -win $_nWave1 {("G2" 6)}
+wvSetPosition -win $_nWave1 {("G2" 5)}
+wvSetPosition -win $_nWave1 {("G2" 4)}
+wvSetPosition -win $_nWave1 {("G2" 3)}
+wvSetPosition -win $_nWave1 {("G2" 2)}
+wvSetPosition -win $_nWave1 {("G2" 1)}
+wvSetPosition -win $_nWave1 {("G2" 0)}
+wvSetPosition -win $_nWave1 {("G1" 0)}
+wvSetPosition -win $_nWave1 {("G2" 0)}
+wvMoveSelected -win $_nWave1
+wvSetPosition -win $_nWave1 {("G2" 0)}
+wvSetPosition -win $_nWave1 {("G2" 1)}
+wvSelectSignal -win $_nWave1 {( "G2" 2 )} 
+wvSelectSignal -win $_nWave1 {( "G2" 3 )} 
+wvSelectSignal -win $_nWave1 {( "G2" 7 )} 
+wvSetPosition -win $_nWave1 {("G2" 7)}
+wvSetPosition -win $_nWave1 {("G2" 6)}
+wvSetPosition -win $_nWave1 {("G2" 5)}
+wvSetPosition -win $_nWave1 {("G2" 4)}
+wvSetPosition -win $_nWave1 {("G2" 3)}
+wvSetPosition -win $_nWave1 {("G2" 2)}
+wvSetPosition -win $_nWave1 {("G2" 1)}
+wvSetPosition -win $_nWave1 {("G2" 0)}
+wvSetPosition -win $_nWave1 {("G2" 1)}
+wvMoveSelected -win $_nWave1
+wvSetPosition -win $_nWave1 {("G2" 1)}
+wvSetPosition -win $_nWave1 {("G2" 2)}
+wvSelectSignal -win $_nWave1 {( "G2" 4 )} 
+wvSetPosition -win $_nWave1 {("G2" 4)}
+wvSetPosition -win $_nWave1 {("G2" 3)}
+wvSetPosition -win $_nWave1 {("G2" 2)}
+wvMoveSelected -win $_nWave1
+wvSetPosition -win $_nWave1 {("G2" 2)}
+wvSetPosition -win $_nWave1 {("G2" 3)}
+wvSelectSignal -win $_nWave1 {( "G2" 4 )} 
+wvSelectSignal -win $_nWave1 {( "G2" 5 )} 
+wvSelectSignal -win $_nWave1 {( "G2" 6 )} 
+wvSelectSignal -win $_nWave1 {( "G2" 7 )} 
+wvSelectSignal -win $_nWave1 {( "G2" 8 )} 
+wvSelectSignal -win $_nWave1 {( "G2" 9 )} 
+wvSelectSignal -win $_nWave1 {( "G2" 10 )} 
+wvSetPosition -win $_nWave1 {("G2" 10)}
+wvSetPosition -win $_nWave1 {("G2" 9)}
+wvSetPosition -win $_nWave1 {("G2" 8)}
+wvSetPosition -win $_nWave1 {("G2" 7)}
+wvSetPosition -win $_nWave1 {("G2" 6)}
+wvSetPosition -win $_nWave1 {("G2" 5)}
+wvSetPosition -win $_nWave1 {("G2" 4)}
+wvSetPosition -win $_nWave1 {("G2" 3)}
+wvSetPosition -win $_nWave1 {("G2" 2)}
+wvSetPosition -win $_nWave1 {("G2" 1)}
+wvSetPosition -win $_nWave1 {("G2" 0)}
+wvMoveSelected -win $_nWave1
+wvSetPosition -win $_nWave1 {("G2" 0)}
+wvSetPosition -win $_nWave1 {("G2" 1)}
+wvDisplayGridCount -win $_nWave1 -off
+wvGetSignalClose -win $_nWave1
+wvConvertFile -win $_nWave1 -o \
+           "/stec/tw/users/schen/prj/smartdv/lib/smtdv_apb_uvc/sim/test_apb.vcd.fsdb" \
+           "/stec/tw/users/schen/prj/smartdv/lib/smtdv_apb_uvc/sim/test_apb.vcd"
+wvReloadFile -win $_nWave1
+wvZoom -win $_nWave1 504552.455090 521687.391989
+wvZoomOut -win $_nWave1
+wvZoomOut -win $_nWave1
+wvZoomOut -win $_nWave1
+wvZoomOut -win $_nWave1
+wvGetSignalOpen -win $_nWave1
+wvGetSignalSetScope -win $_nWave1 "/top/S\[0\]/apb_slave_if_harness/vif"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[1\]/apb_slave_if_harness/vif"
+wvGetSignalClose -win $_nWave1
+wvResizeWindow -win $_nWave1 54 42 1305 462
+wvSelectSignal -win $_nWave1 {( "G2" 6 )} 
+wvSetOptions -win $_nWave1 -hierName on
+wvGetSignalOpen -win $_nWave1
+wvGetSignalSetScope -win $_nWave1 "/top"
+wvGetSignalSetScope -win $_nWave1 "/top/M\[0\]"
+wvGetSignalSetScope -win $_nWave1 "/top/M\[0\]/apb_master_if_harness"
+wvGetSignalSetScope -win $_nWave1 "/top/M\[0\]/apb_master_if_harness/vif"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[0\]"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[0\]/apb_slave_if_harness"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[0\]/apb_slave_if_harness/vif"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[1\]"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[1\]/apb_slave_if_harness"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[1\]/apb_slave_if_harness/vif"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[1\]"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[1\]/apb_slave_if_harness/vif"
+wvSetPosition -win $_nWave1 {("G2" 2)}
+wvSetPosition -win $_nWave1 {("G2" 2)}
+wvAddSignal -win $_nWave1 -clear
+wvAddSignal -win $_nWave1 -group {"G1" \
+}
+wvAddSignal -win $_nWave1 -group {"G2" \
+{/top/S\[0\]/apb_slave_if_harness/resetn} \
+{/top/S\[1\]/apb_slave_if_harness/vif/psel\[15:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/clk} \
+{/top/S\[0\]/apb_slave_if_harness/psel\[15:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/penable\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/paddr\[31:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/prdata\[31:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/pready\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/prwd\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/pslverr\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/pwdata\[31:0\]} \
+}
+wvAddSignal -win $_nWave1 -group {"G3" \
+}
+wvSelectSignal -win $_nWave1 {( "G2" 2 )} 
+wvSetPosition -win $_nWave1 {("G2" 2)}
+wvSetPosition -win $_nWave1 {("G2" 2)}
+wvSetPosition -win $_nWave1 {("G2" 2)}
+wvAddSignal -win $_nWave1 -clear
+wvAddSignal -win $_nWave1 -group {"G1" \
+}
+wvAddSignal -win $_nWave1 -group {"G2" \
+{/top/S\[0\]/apb_slave_if_harness/resetn} \
+{/top/S\[1\]/apb_slave_if_harness/vif/psel\[15:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/clk} \
+{/top/S\[0\]/apb_slave_if_harness/psel\[15:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/penable\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/paddr\[31:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/prdata\[31:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/pready\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/prwd\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/pslverr\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/pwdata\[31:0\]} \
+}
+wvAddSignal -win $_nWave1 -group {"G3" \
+}
+wvSelectSignal -win $_nWave1 {( "G2" 2 )} 
+wvSetPosition -win $_nWave1 {("G2" 2)}
+wvGetSignalClose -win $_nWave1
+wvSelectSignal -win $_nWave1 {( "G2" 11 )} 
+wvSelectSignal -win $_nWave1 {( "G2" 2 )} 
+wvSetPosition -win $_nWave1 {("G2" 4)}
+wvSetPosition -win $_nWave1 {("G2" 5)}
+wvSetPosition -win $_nWave1 {("G2" 6)}
+wvSetPosition -win $_nWave1 {("G2" 7)}
+wvSetPosition -win $_nWave1 {("G2" 8)}
+wvSetPosition -win $_nWave1 {("G2" 9)}
+wvSetPosition -win $_nWave1 {("G2" 10)}
+wvSetPosition -win $_nWave1 {("G2" 11)}
+wvSetPosition -win $_nWave1 {("G3" 0)}
+wvMoveSelected -win $_nWave1
+wvSetPosition -win $_nWave1 {("G3" 1)}
+wvSetPosition -win $_nWave1 {("G3" 1)}
+wvGetSignalOpen -win $_nWave1
+wvGetSignalSetScope -win $_nWave1 "/top"
+wvGetSignalSetScope -win $_nWave1 "/top/M\[0\]"
+wvGetSignalSetScope -win $_nWave1 "/top/M\[0\]/apb_master_if_harness"
+wvGetSignalSetScope -win $_nWave1 "/top/M\[0\]/apb_master_if_harness/vif"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[0\]"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[0\]/apb_slave_if_harness"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[0\]/apb_slave_if_harness/vif"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[1\]"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[1\]/apb_slave_if_harness"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[1\]/apb_slave_if_harness/vif"
+wvGetSignalSetScope -win $_nWave1 "/top/S\[1\]/apb_slave_if_harness/vif"
+wvSetPosition -win $_nWave1 {("G3" 2)}
+wvSetPosition -win $_nWave1 {("G3" 2)}
+wvAddSignal -win $_nWave1 -clear
+wvAddSignal -win $_nWave1 -group {"G1" \
+}
+wvAddSignal -win $_nWave1 -group {"G2" \
+{/top/S\[0\]/apb_slave_if_harness/resetn} \
+{/top/S\[0\]/apb_slave_if_harness/clk} \
+{/top/S\[0\]/apb_slave_if_harness/psel\[15:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/penable\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/paddr\[31:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/prdata\[31:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/pready\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/prwd\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/pslverr\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/pwdata\[31:0\]} \
+}
+wvAddSignal -win $_nWave1 -group {"G3" \
+{/top/S\[1\]/apb_slave_if_harness/vif/psel\[15:0\]} \
+{/top/S\[1\]/apb_slave_if_harness/vif/pready\[0:0\]} \
+}
+wvAddSignal -win $_nWave1 -group {"G4" \
+}
+wvSelectSignal -win $_nWave1 {( "G3" 2 )} 
+wvSetPosition -win $_nWave1 {("G3" 2)}
+wvSetPosition -win $_nWave1 {("G3" 2)}
+wvSetPosition -win $_nWave1 {("G3" 2)}
+wvAddSignal -win $_nWave1 -clear
+wvAddSignal -win $_nWave1 -group {"G1" \
+}
+wvAddSignal -win $_nWave1 -group {"G2" \
+{/top/S\[0\]/apb_slave_if_harness/resetn} \
+{/top/S\[0\]/apb_slave_if_harness/clk} \
+{/top/S\[0\]/apb_slave_if_harness/psel\[15:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/penable\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/paddr\[31:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/prdata\[31:0\]} \
+{/top/S\[0\]/apb_slave_if_harness/pready\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/prwd\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/pslverr\[0\]} \
+{/top/S\[0\]/apb_slave_if_harness/pwdata\[31:0\]} \
+}
+wvAddSignal -win $_nWave1 -group {"G3" \
+{/top/S\[1\]/apb_slave_if_harness/vif/psel\[15:0\]} \
+{/top/S\[1\]/apb_slave_if_harness/vif/pready\[0:0\]} \
+}
+wvAddSignal -win $_nWave1 -group {"G4" \
+}
+wvSelectSignal -win $_nWave1 {( "G3" 2 )} 
+wvSetPosition -win $_nWave1 {("G3" 2)}
+wvGetSignalClose -win $_nWave1
+wvSelectSignal -win $_nWave1 {( "G2" 3 )} 
+wvSelectSignal -win $_nWave1 {( "G2" 4 )} 
+wvSelectSignal -win $_nWave1 {( "G2" 7 )} 
+wvSelectSignal -win $_nWave1 {( "G3" 2 )} 
+wvZoom -win $_nWave1 506964.751854 538814.217598
+wvSelectSignal -win $_nWave1 {( "G2" 8 )} 
+wvSelectSignal -win $_nWave1 {( "G2" 7 )} 
+wvSelectSignal -win $_nWave1 {( "G2" 3 )} 
+wvSelectSignal -win $_nWave1 {( "G2" 4 )} 
+wvSelectSignal -win $_nWave1 {( "G2" 3 )} 
+wvCollapseGroup -win $_nWave1 "G2"
+wvSetCursor -win $_nWave1 516412.233828 -snap {("G4" 0)}
+wvSelectSignal -win $_nWave1 {( "G3" 1 )} 
+wvSelectGroup -win $_nWave1 {G2}
+wvExpandGroup -win $_nWave1 "G2"
+wvSelectGroup -win $_nWave1 {G2}

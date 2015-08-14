@@ -1,0 +1,8 @@
+./apb_slave.v
+../../smtdv_common/apb_slave.v
+..//apb_slave.v
+../test/apb_slave.v
+../seq/apb_slave.v
+../v/smtdv_sqlite3_pkg.sv
+.//smtdv_sqlite3_pkg.sv
+../../../dpi/sqlite3/macros/uvm_deprecated_defines.svh

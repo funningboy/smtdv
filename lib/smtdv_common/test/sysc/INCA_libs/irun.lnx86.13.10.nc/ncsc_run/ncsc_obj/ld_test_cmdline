@@ -1,3 +1,0 @@
--L${NCSC_CDS_ROOT}/tools/cdsgcc/gcc/4.4/install/lib -lstdc++ -lgcc_s -L${NCSC_CDS_ROOT}/tools/lib -L${NCSC_CDS_ROOT}/tools/tbsc/lib/gnu/4.4 -Wl,-rpath,${NCSC_CDS_ROOT}/tools/lib:${NCSC_CDS_ROOT}/tools/tbsc/lib/gnu/4.4:${SYSC_GNU_LIB} -ltbsc -lscv -lbfd-2.17.50.0.12
--L/stec/apps/cadence/INCISIV13.10.011/tools/systemc/lib/gnu/4.4 -lsystemc_sh -lscBootstrap_sh -lncscCoroutines_sh -lovm -lncsccci_sh -lncscfactory_sh -lncsctlm2_sh -L/stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sc/lib -luvm
-./INCA_libs/irun.lnx86.13.10.nc/ncsc_run/ncsc_obj/xbus_slave_listener.o

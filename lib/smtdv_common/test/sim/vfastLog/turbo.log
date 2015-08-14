@@ -1,3 +1,3 @@
-Command Line: /stec/apps/novas/verdi_2013.09/platform/LINUXAMD64/bin/vfast -silent -del . -o /stec/tw/users/schen/prj/smartdv/lib/smtdv_common/test/sim/test_xbus.vcd.fsdb -ft verilog /stec/tw/users/schen/prj/smartdv/lib/smtdv_common/test/sim/test_xbus.vcd
+Command Line: /stec/apps/novas/verdi_2013.09/platform/LINUXAMD64/bin/vfast -silent -del . -o /stec/tw/users/schen/prj/smartdv/lib/smtdv_apb_uvc/sim/test_apb.vcd.fsdb -ft verilog /stec/tw/users/schen/prj/smartdv/lib/smtdv_apb_uvc/sim/test_apb.vcd
 uname(Linux twlogin04 2.6.18-406.el5 #1 SMP Tue Jun 2 17:25:57 EDT 2015 x86_64)
-au time 0.115772 0.008998 0.007999 delta 8175616 10276864 total 8242168 10343416
+au time 0.079108 0.016998 0.004999 delta 8175616 10276864 total 8242168 10343416

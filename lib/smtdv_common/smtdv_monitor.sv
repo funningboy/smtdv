@@ -25,6 +25,11 @@ class smtdv_monitor #(type VIF = int,
     th_handler = smtdv_thread_handler#(CFG)::type_id::create("smtdv_monitor_threads", this);
   endfunction
 
+  virtual function void end_of_elaboration_phase(uvm_phase phase);
+    if(!th_handler)
+      `uvm_warning("NOTHREADHANDLER",{"thread handler create fail: ",get_full_name()});
+  endfunction
+
   extern virtual task run_phase(uvm_phase phase);
   extern virtual task reset_monitor();
 
@@ -47,7 +52,8 @@ task smtdv_monitor::run_phase(uvm_phase phase);
         end
       join_any
 
-      th_handler.run();
+      if (th_handler)
+        th_handler.run();
     join
     disable fork;
     end

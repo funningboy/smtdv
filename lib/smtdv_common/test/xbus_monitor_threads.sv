@@ -78,7 +78,7 @@ class xbus_export_collected_items#(
     `uvm_object_param_utils_begin(`XBUS_EXPORT_COLLECTED_ITEMS)
     `uvm_object_utils_end
 
-    function new(string name = "xbus_collect_stop_signal");
+    function new(string name = "xbus_export_collected_items");
       super.new(name);
     endfunction
 
