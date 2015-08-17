@@ -3,7 +3,8 @@
 -access rwc
 -status
 -top top
-+UVM_TESTNAME=xbus_1w1r_test
+# xbus_1w1r_test, xbus_rand_test, xbus_stl_test
++UVM_TESTNAME=xbus_stl_test
 #+UVM_VERBOSITY=UVM_FULL
 +UVM_VERBOSITY=UVM_DEBUG
 -covoverwrite
@@ -22,15 +23,15 @@
 +incdir+../v
 +incdir+./
 +incdir+../../../../dpi/sqlite3
++incdir+../../../../dpi/stl
 ../../smtdv_common_pkg.sv
 ../../../../dpi/sqlite3/smtdv_sqlite3_pkg.sv
+../../../../dpi/stl/smtdv_stl_pkg.sv
 ../xbus_pkg.sv
 ../test/xbus_top.sv
 ../v/xbus_slave.v
--sysc
-../sysc/xbus_event.cpp
-../sysc/xbus_slave_listener.cpp
 -sv_lib ../../../../dpi/sqlite3/dpi_smtdv_lib.so
+-sv_lib ../../../../dpi/stl/dpi_smtdv_stl.so
 -input simvision.tcl
 -batch
 

@@ -13,6 +13,9 @@ package xbus_pkg;
   import smtdv_sqlite3_pkg::*;
   `include "smtdv_sqlite3_pkg.sv"
 
+  import smtdv_stl_pkg::*;
+  `include "smtdv_stl_pkg.sv"
+
   `include "xbus_typedefs.svh"
   `include "xbus_item.sv"
 

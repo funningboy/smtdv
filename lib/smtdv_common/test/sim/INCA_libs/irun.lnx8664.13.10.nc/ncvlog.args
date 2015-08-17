@@ -24,8 +24,11 @@ SVA
 ./
 -INCDIR
 ../../../../dpi/sqlite3
+-INCDIR
+../../../../dpi/stl
 ../../smtdv_common_pkg.sv
 ../../../../dpi/sqlite3/smtdv_sqlite3_pkg.sv
+../../../../dpi/stl/smtdv_stl_pkg.sv
 ../xbus_pkg.sv
 ../test/xbus_top.sv
 ../v/xbus_slave.v
@@ -33,8 +36,6 @@ SVA
 ./INCA_libs/irun.lnx8664.13.10.nc/cdsrun.lib
 -HDLVAR
 ./INCA_libs/irun.lnx8664.13.10.nc/hdlrun.var
--DEFINE
-NCSC
 -INCDIR
 /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv
 -DEFINE

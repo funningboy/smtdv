@@ -40,8 +40,10 @@
 `define XBUS_MASTER_BASE_SEQ xbus_master_base_seq `XBUS_PARAMETER
 `define XBUS_MASTER_1W1R_SEQ xbus_master_1w1r_seq `XBUS_PARAMETER
 `define XBUS_MASTER_RAND_SEQ xbus_master_rand_seq `XBUS_PARAMETER
+`define XBUS_MASTER_STL_SEQ xbus_master_stl_seq `XBUS_PARAMETER
 
 `define XBUS_BASE_TEST xbus_base_test
 `define XBUS_1W1R_TEST xbus_1w1r_test
 `define XBUS_RAND_TEST xbus_rand_test
 `define XBUS_CSIM_TEST xbus_csim_test
+`define XBUS_STL_TEST xbus_stl_test

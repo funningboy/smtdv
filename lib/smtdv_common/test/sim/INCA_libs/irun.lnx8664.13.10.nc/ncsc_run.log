@@ -23,7 +23,11 @@ ncsc C++ parameters:
 		-I$CDSROOT/tools/inca/include"
 
 ncsc: compiling $TESTDIR/../sysc/xbus_event.cpp
+make: *** [INCA_libs/irun.lnx8664.13.10.nc/ncsc_run/ncsc_obj/xbus_event.o] Error 1
+"$TESTDIR/../sysc/xbus_event.cpp", line 2: catastrophic error: 
+          could not open source file "XBUS_EVENT.h"
+  #include "XBUS_EVENT.h"
+                         ^
 
-ncsc: compiling $TESTDIR/../sysc/xbus_slave_listener.cpp
-
-building library run.so
+ncsc: Error executing: $CDSROOT/tools/cdsgcc/gcc/4.4/bin/g++ -DNCSC -DCADENCE  -DLNX86 -I$CDSROOT/tools/systemc/include_pch/64bit -o ./INCA_libs/irun.lnx8664.13.10.nc/ncsc_run/ncsc_obj/xbus_event.o -I$CDSROOT/tools/include -I$CDSROOT/tools/inca/include -DNCSC -I$CDSROOT/tools/systemc/include_pch -I$CDSROOT/tools/tbsc/include -I$CDSROOT/tools/vic/include -I$CDSROOT/tools/ovm/sc/src -I$CDSROOT/tools/uvm/uvm_lib/uvm_sc/sc -I$CDSROOT/tools/uvm/uvm_lib/uvm_ml/sc -I$CDSROOT/tools/systemc/include/cci -I$CDSROOT/tools/systemc/include/factory -I$CDSROOT/tools/systemc/include/tlm2 -fPIC -c -x c++  -Wall $TESTDIR/../sysc/xbus_event.cpp
+ncsc_run: *E,TBBLDF: Failed to generate object ./INCA_libs/irun.lnx8664.13.10.nc/ncsc_run/ncsc_obj/xbus_event.o

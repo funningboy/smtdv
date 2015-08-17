@@ -15,12 +15,13 @@
 +incdir+../v
 +incdir+./
 +incdir+../../../../dpi/sqlite3
++incdir+../../../../dpi/stl
 -loadpli
 /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/lib/64bit/libuvmpli.so:uvm_pli_boot
 -ACCESS
 rwc
 -STATUS
-+UVM_TESTNAME=xbus_1w1r_test
++UVM_TESTNAME=xbus_stl_test
 -COVERAGE
 b:u
 -COVERAGE
@@ -30,9 +31,6 @@ functional
 -NONOTIFIER
 -MESSAGES
 top
--SCRUN
--loadrun
-./INCA_libs/irun.lnx8664.13.10.nc/librun
 -XLMODE
 ./INCA_libs/irun.lnx8664.13.10.nc
 -RUNMODE
@@ -42,7 +40,5 @@ top
 ./INCA_libs/irun.lnx8664.13.10.nc/hdl.var
 -WORK
 worklib
--HASCC
--HASSYSC
 -IRUNHASTOP
 -HASXLMODE

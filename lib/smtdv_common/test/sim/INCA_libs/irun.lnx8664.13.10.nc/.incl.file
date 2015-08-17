@@ -1,8 +1,9 @@
-./xbus_rand_test.sv
-../..//xbus_rand_test.sv
-..//xbus_rand_test.sv
+./xbus_stl_test.sv
+../..//xbus_stl_test.sv
+..//xbus_stl_test.sv
 ../test/xbus_slave_seqs.sv
-../seq/smtdv_sqlite3_pkg.sv
-../v/smtdv_sqlite3_pkg.sv
-.//smtdv_sqlite3_pkg.sv
-../../../../dpi/sqlite3/macros/uvm_deprecated_defines.svh
+../seq/smtdv_stl_pkg.sv
+../v/smtdv_stl_pkg.sv
+.//smtdv_stl_pkg.sv
+../../../../dpi/sqlite3/smtdv_stl_pkg.sv
+../../../../dpi/stl/macros/uvm_deprecated_defines.svh

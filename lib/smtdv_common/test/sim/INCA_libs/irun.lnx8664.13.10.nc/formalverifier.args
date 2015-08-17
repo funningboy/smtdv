@@ -14,6 +14,8 @@ b:u
 functional
 -sv_lib
 ../../../../dpi/sqlite3/dpi_smtdv_lib.so
+-sv_lib
+../../../../dpi/stl/dpi_smtdv_stl.so
 -INPUT
 simvision.tcl
 -BATCH

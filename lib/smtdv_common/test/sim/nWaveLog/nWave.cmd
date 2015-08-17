@@ -1631,3 +1631,4 @@ wvSelectSignal -win $_nWave1 {( "G3" 1 )}
 wvSelectGroup -win $_nWave1 {G2}
 wvExpandGroup -win $_nWave1 "G2"
 wvSelectGroup -win $_nWave1 {G2}
+wvSetOptions -win $_nWave1 -snap off

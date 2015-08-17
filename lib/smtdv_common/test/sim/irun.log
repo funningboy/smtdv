@@ -1,5 +1,5 @@
 irun(64): 13.10-s011: (c) Copyright 1995-2013 Cadence Design Systems, Inc.
-TOOL:	irun(64)	13.10-s011: Started on Aug 13, 2015 at 14:17:05 CST
+TOOL:	irun(64)	13.10-s011: Started on Aug 17, 2015 at 11:42:52 CST
 irun
 	-f run.f
 		-uvm
@@ -7,7 +7,7 @@ irun
 		-access rwc
 		-status
 		-top top
-		+UVM_TESTNAME=xbus_1w1r_test
+		+UVM_TESTNAME=xbus_stl_test
 		+UVM_VERBOSITY=UVM_DEBUG
 		-covoverwrite
 		-coverage b:u
@@ -23,63 +23,107 @@ irun
 		+incdir+../v
 		+incdir+./
 		+incdir+../../../../dpi/sqlite3
+		+incdir+../../../../dpi/stl
 		../../smtdv_common_pkg.sv
 		../../../../dpi/sqlite3/smtdv_sqlite3_pkg.sv
+		../../../../dpi/stl/smtdv_stl_pkg.sv
 		../xbus_pkg.sv
 		../test/xbus_top.sv
 		../v/xbus_slave.v
-		-sysc
-		../sysc/xbus_event.cpp
-		../sysc/xbus_slave_listener.cpp
 		-sv_lib ../../../../dpi/sqlite3/dpi_smtdv_lib.so
+		-sv_lib ../../../../dpi/stl/dpi_smtdv_stl.so
 		-input simvision.tcl
 		-batch
 
    User defined plus("+") options:
 	+UVM_VERBOSITY=UVM_DEBUG
 
-$CDSROOT = /stec/apps/cadence/INCISIV13.10.011
-$TESTDIR = /stec/tw/users/schen/prj/smartdv/lib/smtdv_common/test/sim
-
-TOOL:	ncsc(64)	13.10-s011
-ncsc C++ parameters: 
-	ncsc -COMPILER $CDSROOT/tools/cdsgcc/gcc/4.4/bin/g++ 
-	-f ./INCA_libs/irun.lnx8664.13.10.nc/ncsc_run/ncsc_obj/ncsc.args
-	-MANUAL 
-	-CFLAGS "-DNCSC
-		-I$CDSROOT/tools/systemc/include_pch
-		-I$CDSROOT/tools/tbsc/include
-		-I$CDSROOT/tools/vic/include
-		-I$CDSROOT/tools/ovm/sc/src
-		-I$CDSROOT/tools/uvm/uvm_lib/uvm_sc/sc
-		-I$CDSROOT/tools/uvm/uvm_lib/uvm_ml/sc
-		-I$CDSROOT/tools/systemc/include/cci
-		-I$CDSROOT/tools/systemc/include/factory
-		-I$CDSROOT/tools/systemc/include/tlm2
-		-fPIC
-		-c
-		-x c++  -Wall
-		-I$CDSROOT/tools/include
-		-I$CDSROOT/tools/inca/include"
-
-ncsc: compiling $TESTDIR/../sysc/xbus_event.cpp
-
-ncsc: compiling $TESTDIR/../sysc/xbus_slave_listener.cpp
-
-building library run.so
-
+Recompiling... reason: file '../test/xbus_test_list.sv' is newer than expected.
+	expected: Thu Aug 13 10:25:41 2015
+	actual:   Mon Aug 17 11:37:27 2015
+Compiling UVM packages (uvm_pkg.sv cdns_uvm_pkg.sv) using uvmhome location /stec/apps/cadence/INCISIV13.10.011/tools/uvm
+ncvlog: Memory Usage - 17.9M program + 45.1M data = 62.9M total
+ncvlog: CPU Usage - 0.1s system + 1.2s user = 1.3s total (1.4s, 90.8% cpu)
+file: ../xbus_pkg.sv
+	interface worklib.xbus_if:sv
+		errors: 0, warnings: 0
+interface xbus_if #(
+                |
+ncvlog: *W,RECOME (..//xbus_if.sv,9|16): recompiling design unit worklib.xbus_if:sv.
+	First compiled from line 9 of ..//xbus_if.sv.
+(`include file: ..//xbus_if.sv line 9, `include file: ..//xbus_if_harness.sv line 11, file: ../xbus_pkg.sv line 42)
+	interface worklib.xbus_if:sv
+		errors: 0, warnings: 1
+file: ../test/xbus_top.sv
+	module worklib.top:sv
+		errors: 0, warnings: 0
+file: ../v/xbus_slave.v
+	module worklib.xbus_slave:v
+		errors: 0, warnings: 0
+ncvlog: Memory Usage - 17.9M program + 38.7M data = 56.6M total
+ncvlog: CPU Usage - 0.1s system + 0.3s user = 0.4s total (0.6s, 64.0% cpu)
 	Elaborating the design hierarchy:
 		Caching library 'worklib' ....... Done
 	Top level design units:
 		uvm_pkg
-		$unit_0x54334807
+		$unit_0x622d9151
 		smtdv_common_pkg
 		smtdv_sqlite3_pkg
+		smtdv_stl_pkg
 		xbus_pkg
 		top
 ncelab: *W,COVNIB: Currently, by default, coverage is scored for implicit else and case default blocks. In subsequent releases, the default scoring for such blocks will be disabled and a coverage configuration file command will be provided to revert to the old behavior. This change may prevent refinements from 13.1 releases to be applied on coverage databases generated using subsequent releases in the default mode..
 	Building instance overlay tables: .................... Done
 	Enabling instrumentation for coverage types: block functional
+	Generating native compiled code:
+		worklib.smtdv_common_pkg:sv <0x0db0430b>
+			streams: 159, words: 460134
+		worklib.smtdv_common_pkg:sv <0x12bb0d34>
+			streams: 216, words: 681605
+		worklib.smtdv_common_pkg:sv <0x690194b5>
+			streams: 300, words: 988635
+		worklib.smtdv_gen_rst_if:sv <0x3b5bf419>
+			streams:   5, words: 15036
+		worklib.top:sv <0x075779b8>
+			streams: 181, words: 529440
+		worklib.top:sv <0x3b9fa21d>
+			streams: 143, words: 500442
+		worklib.uvm_pkg:sv <0x063cb422>
+			streams: 373, words: 911153
+		worklib.uvm_pkg:sv <0x0a91cca8>
+			streams:  23, words: 37740
+		worklib.uvm_pkg:sv <0x130c30a8>
+			streams: 116, words: 350459
+		worklib.uvm_pkg:sv <0x19e6d1fc>
+			streams:  25, words: 69366
+		worklib.uvm_pkg:sv <0x2306baf8>
+			streams:  74, words: 172250
+		worklib.uvm_pkg:sv <0x246cfc23>
+			streams:  23, words: 37740
+		worklib.uvm_pkg:sv <0x30e06195>
+			streams:  25, words: 50329
+		worklib.uvm_pkg:sv <0x31f4061b>
+			streams: 135, words: 471813
+		worklib.uvm_pkg:sv <0x31f7c417>
+			streams:  25, words: 65010
+		worklib.uvm_pkg:sv <0x4596906e>
+			streams:  26, words: 75554
+		worklib.uvm_pkg:sv <0x5e343958>
+			streams:  22, words: 50561
+		worklib.uvm_pkg:sv <0x60fd4267>
+			streams:  22, words: 50574
+		worklib.uvm_pkg:sv <0x62e770ef>
+			streams:  26, words: 252654
+		worklib.uvm_pkg:sv <0x74b56bf7>
+			streams:  23, words: 37740
+		worklib.xbus_if:sv <0x2c4a8a7d>
+			streams:  64, words: 47170
+		worklib.xbus_pkg:sv <0x3e473bb4>
+			streams:  24, words: 43838
+		worklib.xbus_pkg:sv <0x6c63deff>
+			streams:   0, words:     0
+		worklib.xbus_slave_if_harness:sv <0x593aae13>
+			streams:  10, words:  6649
 	Building instance specific data structures.
 ncelab: *W,CGDOGV: The target goal, by default, is set as 100.
 ncelab: *W,CGPIDF: Covergroup "per_instance" option , by default, is set as 0.
@@ -88,31 +132,30 @@ ncelab: *W,CGPIDF: Covergroup "per_instance" option , by default, is set as 0.
 		                       Instances  Unique
 		Modules:                       2       2
 		Interfaces:                    3       3
-		Verilog packages:              4       4
-		Registers:                 18815   11384
+		Verilog packages:              5       5
+		Registers:                 18950   11422
 		Scalar wires:                  7       -
 		Expanded wires:               32       1
 		Vectored wires:                4       -
 		Named events:                  9      17
 		Always blocks:                29      29
-		Initial blocks:              429     176
+		Initial blocks:              436     179
 		Clocking blocks:               2       2
 		Clocking items:               18      18
 		Parallel blocks:              58      45
 		Pseudo assignments:            4       4
-		Assertions:                   10      11
+		Assertions:                   12      13
 		Covergroup Instances:          0       1
 		Compilation units:             1       1
-		SV Class declarations:       251     367
-		SV Class specializations:    543     543
+		SV Class declarations:       253     369
+		SV Class specializations:    547     547
 		Simulation timescale:       10ps
 	Writing initial simulation snapshot: worklib.top:sv
-ncelab: Memory Usage - 44.0M program + 176.5M data = 220.5M total (Peak 221.8M)
-ncelab: CPU Usage - 0.6s system + 1.8s user = 2.4s total (3.4s, 72.2% cpu)
+ncelab: Memory Usage - 44.0M program + 118.8M data = 162.8M total (Peak 164.1M)
+ncelab: CPU Usage - 0.8s system + 5.0s user = 5.8s total (7.9s, 73.6% cpu)
 Loading snapshot worklib.top:sv .................... Done
 SVSEED default: 1
 *Verdi3* Loading libsscore_ius131.so
-*Verdi3* : Loading SystemC dumping library libsscore_ius131_sc_gcc44.so.
 *Verdi3* : Enable Parallel Dumping.
 ncsim> source /stec/apps/cadence/INCISIV13.10.011/tools/inca/files/ncsimrc
 ncsim> source /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/files/tcl/uvm_sim.tcl
@@ -145,8 +188,7 @@ CDNS-UVM-1.1d (13.10-s011)
       (Specify +UVM_NO_RELNOTES to turn off this notice)
 
 UVM_INFO ../..//smtdv_gen_rst_if.sv(29) @ 0: reporter [xbus_rst_if] Power-On Reset Initialized ...
-UVM_INFO @ 0: reporter [RNTST] Running test xbus_1w1r_test...
-opened database xbus_db.db successfully
+UVM_INFO @ 0: reporter [RNTST] Running test xbus_stl_test...
 UVM_WARNING ..//xbus_monitor.sv(56) @ 0: uvm_test_top.master_agent[0].mon [NOSEQR] slave sequencer must be set for: uvm_test_top.master_agent[0].mon.seqr
 UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=xbus_rst_model_rst_mon
 UVM_INFO ../..//smtdv_reset_model.sv(280) @ 0: reporter [xbus_rst_model] Get comp_name=xbus_rst_model_rst_mon.smtdv_monitor_threads
@@ -222,68 +264,68 @@ UVM_INFO ../..//smtdv_component.sv(57) @ 0: xbus_rst_model_rst_mon [xbus_rst_mod
 --------------------------------------------------------------------
 Name                         Type                        Size  Value
 --------------------------------------------------------------------
-uvm_test_top                 xbus_1w1r_test              -     @541 
-  master_agent[0]            uvm_agent                   -     @4934
-    drv                      uvm_driver #(REQ,RSP)       -     @5312
-      rsp_port               uvm_analysis_port           -     @6414
-      seq_item_port          uvm_seq_item_pull_port      -     @6340
-      smtdv_driver_threads   uvm_component               -     @6267
+uvm_test_top                 xbus_stl_test               -     @4344
+  master_agent[0]            uvm_agent                   -     @4950
+    drv                      uvm_driver #(REQ,RSP)       -     @5328
+      rsp_port               uvm_analysis_port           -     @6430
+      seq_item_port          uvm_seq_item_pull_port      -     @6356
+      smtdv_driver_threads   uvm_component               -     @6283
         resetn               integral                    1     'h0  
         thread_q             da(object)                  1     -    
-          [0]                <unknown>                   -     @6504
+          [0]                <unknown>                   -     @6520
       resetn                 integral                    1     'h0  
-    mon                      uvm_monitor                 -     @55  
-      item_asserted_port     uvm_analysis_port           -     @5264
-      item_collected_port    uvm_analysis_port           -     @5190
-      smtdv_monitor_threads  uvm_component               -     @57  
+    mon                      uvm_monitor                 -     @57  
+      item_asserted_port     uvm_analysis_port           -     @5280
+      item_collected_port    uvm_analysis_port           -     @5206
+      smtdv_monitor_threads  uvm_component               -     @59  
         resetn               integral                    1     'h0  
         thread_q             da(object)                  5     -    
-          [0]                <unknown>                   -     @6559
-          [1]                <unknown>                   -     @6563
-          [2]                <unknown>                   -     @6567
-          [3]                <unknown>                   -     @6571
-          [4]                <unknown>                   -     @6576
+          [0]                <unknown>                   -     @6575
+          [1]                <unknown>                   -     @6579
+          [2]                <unknown>                   -     @6583
+          [3]                <unknown>                   -     @6587
+          [4]                <unknown>                   -     @6592
       resetn                 integral                    1     'h0  
-    seqr                     uvm_sequencer               -     @5018
-      rsp_export             uvm_analysis_export         -     @5395
-      seq_item_export        uvm_seq_item_pull_imp       -     @6219
+    seqr                     uvm_sequencer               -     @5034
+      rsp_export             uvm_analysis_export         -     @5411
+      seq_item_export        uvm_seq_item_pull_imp       -     @6235
       resetn                 integral                    1     'h0  
       arbitration_queue      array                       0     -    
       lock_queue             array                       0     -    
       num_last_reqs          integral                    32    'd1  
       num_last_rsps          integral                    32    'd1  
     resetn                   integral                    1     'h0  
-  slave_agent[0]             uvm_agent                   -     @4422
-    drv                      uvm_driver #(REQ,RSP)       -     @6839
-      rsp_port               uvm_analysis_port           -     @8004
-      seq_item_port          uvm_seq_item_pull_port      -     @7931
-      smtdv_driver_threads   uvm_component               -     @7859
+  slave_agent[0]             uvm_agent                   -     @4438
+    drv                      uvm_driver #(REQ,RSP)       -     @6855
+      rsp_port               uvm_analysis_port           -     @8020
+      seq_item_port          uvm_seq_item_pull_port      -     @7947
+      smtdv_driver_threads   uvm_component               -     @7875
         resetn               integral                    1     'h0  
         thread_q             da(object)                  1     -    
-          [0]                <unknown>                   -     @8111
+          [0]                <unknown>                   -     @8127
       resetn                 integral                    1     'h0  
-    fifo_mon_sqr             uvm_tlm_analysis_fifo #(T)  -     @4466
-      analysis_export        uvm_analysis_imp            -     @4839
-      get_ap                 uvm_analysis_port           -     @4764
-      get_peek_export        uvm_get_peek_imp            -     @4616
-      put_ap                 uvm_analysis_port           -     @4690
-      put_export             uvm_put_imp                 -     @4540
-    mon                      uvm_monitor                 -     @45  
-      item_asserted_port     uvm_analysis_port           -     @6791
-      item_collected_port    uvm_analysis_port           -     @6718
-      smtdv_monitor_threads  uvm_component               -     @8149
+    fifo_mon_sqr             uvm_tlm_analysis_fifo #(T)  -     @4482
+      analysis_export        uvm_analysis_imp            -     @4855
+      get_ap                 uvm_analysis_port           -     @4780
+      get_peek_export        uvm_get_peek_imp            -     @4632
+      put_ap                 uvm_analysis_port           -     @4706
+      put_export             uvm_put_imp                 -     @4556
+    mon                      uvm_monitor                 -     @47  
+      item_asserted_port     uvm_analysis_port           -     @6807
+      item_collected_port    uvm_analysis_port           -     @6734
+      smtdv_monitor_threads  uvm_component               -     @8165
         resetn               integral                    1     'h0  
         thread_q             da(object)                  5     -    
-          [0]                <unknown>                   -     @8190
-          [1]                <unknown>                   -     @8192
-          [2]                <unknown>                   -     @8194
-          [3]                <unknown>                   -     @8196
-          [4]                <unknown>                   -     @8199
+          [0]                <unknown>                   -     @8206
+          [1]                <unknown>                   -     @8208
+          [2]                <unknown>                   -     @8210
+          [3]                <unknown>                   -     @8212
+          [4]                <unknown>                   -     @8215
       resetn                 integral                    1     'h0  
-    seqr                     uvm_sequencer               -     @61  
-      mon_get_port           uvm_blocking_get_port       -     @7813
-      rsp_export             uvm_analysis_export         -     @6919
-      seq_item_export        uvm_seq_item_pull_imp       -     @7739
+    seqr                     uvm_sequencer               -     @63  
+      mon_get_port           uvm_blocking_get_port       -     @7829
+      rsp_export             uvm_analysis_export         -     @6935
+      seq_item_export        uvm_seq_item_pull_imp       -     @7755
       resetn                 integral                    1     'h0  
       arbitration_queue      array                       0     -    
       lock_queue             array                       0     -    
@@ -300,7 +342,7 @@ UVM_INFO ../..//smtdv_thread_handler.sv(58) @ 0: uvm_test_top.slave_agent[0].mon
 UVM_INFO ../..//smtdv_thread_handler.sv(58) @ 0: uvm_test_top.slave_agent[0].mon.smtdv_monitor_threads [uvm_test_top.slave_agent[0].mon.smtdv_monitor_threads] start to run thread "xbus_export_collected_items" in run thread queue
 UVM_INFO ..//xbus_monitor_threads.sv(95) @ 0: reporter [uvm_test_top.slave_agent[0].mon] "uvm_test_top.slave_agent[0].mon"
 UVM_INFO ../..//smtdv_thread_handler.sv(58) @ 0: uvm_test_top.slave_agent[0].drv.smtdv_driver_threads [uvm_test_top.slave_agent[0].drv.smtdv_driver_threads] start to run thread "xbus_slave_drive_items" in run thread queue
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1391) @ 0: uvm_test_top.master_agent[0].seqr [PHASESEQ] Starting default sequence 'xbus_master_1w1r_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH)' for phase 'run'
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1391) @ 0: uvm_test_top.master_agent[0].seqr [PHASESEQ] Starting default sequence 'xbus_master_stl_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH)' for phase 'run'
 UVM_INFO ../..//smtdv_thread_handler.sv(58) @ 0: uvm_test_top.master_agent[0].mon.smtdv_monitor_threads [uvm_test_top.master_agent[0].mon.smtdv_monitor_threads] start to run thread "xbus_collect_write_items" in run thread queue
 UVM_INFO ../..//smtdv_thread_handler.sv(58) @ 0: uvm_test_top.master_agent[0].mon.smtdv_monitor_threads [uvm_test_top.master_agent[0].mon.smtdv_monitor_threads] start to run thread "xbus_collect_read_items" in run thread queue
 UVM_INFO ../..//smtdv_thread_handler.sv(58) @ 0: uvm_test_top.master_agent[0].mon.smtdv_monitor_threads [uvm_test_top.master_agent[0].mon.smtdv_monitor_threads] start to run thread "xbus_collect_stop_signal" in run thread queue
@@ -309,21 +351,21 @@ UVM_INFO ../..//smtdv_thread_handler.sv(58) @ 0: uvm_test_top.master_agent[0].mo
 UVM_INFO ..//xbus_monitor_threads.sv(95) @ 0: reporter [uvm_test_top.master_agent[0].mon] "uvm_test_top.master_agent[0].mon"
 UVM_INFO ../..//smtdv_thread_handler.sv(58) @ 0: uvm_test_top.master_agent[0].drv.smtdv_driver_threads [uvm_test_top.master_agent[0].drv.smtdv_driver_threads] start to run thread "xbus_master_drive_items" in run thread queue
 UVM_INFO ../..//smtdv_sequence.sv(28) @ 0: uvm_test_top.slave_agent[0].seqr@@xbus_slave_base_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH) [uvm_test_top.slave_agent[0].seqr.xbus_slave_base_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH).pre_body()] raise objection in phase: run
-UVM_INFO ../..//smtdv_sequence.sv(28) @ 0: uvm_test_top.master_agent[0].seqr@@xbus_master_1w1r_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH) [uvm_test_top.master_agent[0].seqr.xbus_master_1w1r_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH).pre_body()] raise objection in phase: run
+UVM_INFO ../..//smtdv_sequence.sv(28) @ 0: uvm_test_top.master_agent[0].seqr@@xbus_master_stl_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH) [uvm_test_top.master_agent[0].seqr.xbus_master_stl_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH).pre_body()] raise objection in phase: run
 ----------------------------------------------------------
-0 Running sequence : [xbus_master_1w1r_seq]  !
+0 Running sequence : [xbus_master_stl_seq]  !
 ----------------------------------------------------------
-UVM_INFO ../seq/xbus_master_seqs.sv(40) @ 0: uvm_test_top.master_agent[0].seqr@@xbus_master_1w1r_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH) [xbus_master_1w1r_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH)] starting seq ... 
-UVM_INFO ../seq/xbus_master_seqs.sv(48) @ 0: uvm_test_top.master_agent[0].seqr@@xbus_master_1w1r_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH) [xbus_master_1w1r_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH)] 
+UVM_INFO ../seq/xbus_master_seqs_cb.sv(27) @ 0: uvm_test_top.master_agent[0].seqr@@xbus_master_stl_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH) [xbus_master_stl_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH)] starting seq ... 
+UVM_INFO ../seq/xbus_master_seqs_cb.sv(47) @ 0: uvm_test_top.master_agent[0].seqr@@xbus_master_stl_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH) [xbus_master_stl_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH)] 
 ------------------------------------------
 Name       Type               Size  Value 
 ------------------------------------------
-item       uvm_sequence_item  -     @9990 
+item[0]    uvm_sequence_item  -     @10006
   mod_t    mod_type_t         1     MASTER
   trs_t    trs_type_t         1     WR    
   run_t    run_type_t         2     NORMAL
-  bg_cyc   integral           64    'h0   
-  ed_cyc   integral           64    'h0   
+  bg_cyc   integral           64    'h2   
+  ed_cyc   integral           64    'h4   
   addr     integral           32    'hf   
   data     da(integral)       4     -     
     [0]    integral           8     'hff  
@@ -339,64 +381,64 @@ item       uvm_sequence_item  -     @9990
   ack_L2H  integral           64    'h0   
 ------------------------------------------
 
-UVM_WARNING @ 0: uvm_test_top.master_agent[0].seqr@@xbus_master_1w1r_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH) [uvm_sequence_base] Body definition undefined
+UVM_WARNING @ 0: uvm_test_top.master_agent[0].seqr@@xbus_master_stl_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH) [uvm_sequence_base] Body definition undefined
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_reset'
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_reset'
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.pre_reset' (id=3026) PHASE READY TO END
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.pre_reset' (id=9099) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.pre_reset' (id=3039) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.pre_reset' (id=9115) PHASE READY TO END
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'reset'
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'reset'
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.reset' (id=3109) PHASE READY TO END
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.reset' (id=9141) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.reset' (id=3122) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.reset' (id=9157) PHASE READY TO END
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_reset'
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_reset'
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.post_reset' (id=3192) PHASE READY TO END
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.post_reset' (id=9183) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.post_reset' (id=3205) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.post_reset' (id=9199) PHASE READY TO END
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_configure'
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_configure'
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.pre_configure' (id=3275) PHASE READY TO END
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.pre_configure' (id=9225) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.pre_configure' (id=3288) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.pre_configure' (id=9241) PHASE READY TO END
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'configure'
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'configure'
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.configure' (id=3358) PHASE READY TO END
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.configure' (id=9267) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.configure' (id=3371) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.configure' (id=9283) PHASE READY TO END
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_configure'
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_configure'
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.post_configure' (id=3441) PHASE READY TO END
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.post_configure' (id=9309) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.post_configure' (id=3454) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.post_configure' (id=9325) PHASE READY TO END
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_main'
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_main'
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.pre_main' (id=3524) PHASE READY TO END
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.pre_main' (id=9351) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.pre_main' (id=3537) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.pre_main' (id=9367) PHASE READY TO END
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'main'
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'main'
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.main' (id=3607) PHASE READY TO END
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.main' (id=9393) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.main' (id=3620) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.main' (id=9409) PHASE READY TO END
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_main'
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_main'
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.post_main' (id=3690) PHASE READY TO END
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.post_main' (id=9435) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.post_main' (id=3703) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.post_main' (id=9451) PHASE READY TO END
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_shutdown'
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_shutdown'
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.pre_shutdown' (id=3773) PHASE READY TO END
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.pre_shutdown' (id=9477) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.pre_shutdown' (id=3786) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.pre_shutdown' (id=9493) PHASE READY TO END
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'shutdown'
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'shutdown'
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.shutdown' (id=3856) PHASE READY TO END
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.shutdown' (id=9519) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.shutdown' (id=3869) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 0: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.shutdown' (id=9535) PHASE READY TO END
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_shutdown'
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 0: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_shutdown'
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1720) @ 3500: reporter [PH_JUMPB] jumping backward to phase reset
-UVM_INFO ../..//smtdv_reset_monitor.sv(62) @ 3500: xbus_rst_model_rst_mon [xbus_rst_model_rst_mon] wating for PWR RESET deasserted ...
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1200) @ 3500: reporter [PH/TRC/EXE/JUMP] Phase 'xbus_rst_model_domain.uvm_sched.post_shutdown' (id=9561) PHASE EXIT ON JUMP REQUEST
+UVM_INFO ../..//smtdv_reset_monitor.sv(66) @ 3500: xbus_rst_model_rst_mon [xbus_rst_model_rst_mon] wating for PWR RESET deasserted ...
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1200) @ 3500: reporter [PH/TRC/EXE/JUMP] Phase 'xbus_rst_model_domain.uvm_sched.post_shutdown' (id=9577) PHASE EXIT ON JUMP REQUEST
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1326) @ 3500: reporter [PH_JUMP] phase post_shutdown (schedule uvm_sched, domain xbus_rst_model_domain) is jumping to phase reset
-UVM_INFO ../..//smtdv_reset_monitor.sv(75) @ 3500: xbus_rst_model_rst_mon [xbus_rst_model_rst_mon] Detect RESET asserted ...
+UVM_INFO ../..//smtdv_reset_monitor.sv(79) @ 3500: xbus_rst_model_rst_mon [xbus_rst_model_rst_mon] Detect RESET asserted ...
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 3500: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'reset'
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 3500: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'reset'
 UVM_INFO ../..//smtdv_gen_rst_if.sv(42) @ 503500: reporter [xbus_rst_if] Power-On Reset Released ...
-UVM_INFO ../..//smtdv_reset_monitor.sv(82) @ 503500: xbus_rst_model_rst_mon [xbus_rst_model_rst_mon] Detect RESET deasserted ...
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1211) @ 503500: reporter [PH/TRC/EXE/ALLDROP] Phase 'xbus_rst_model_domain.uvm_sched.reset' (id=9141) PHASE EXIT ALL_DROPPED
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 503500: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.reset' (id=9141) PHASE READY TO END
+UVM_INFO ../..//smtdv_reset_monitor.sv(86) @ 503500: xbus_rst_model_rst_mon [xbus_rst_model_rst_mon] Detect RESET deasserted ...
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1211) @ 503500: reporter [PH/TRC/EXE/ALLDROP] Phase 'xbus_rst_model_domain.uvm_sched.reset' (id=9157) PHASE EXIT ALL_DROPPED
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 503500: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.reset' (id=9157) PHASE READY TO END
 UVM_INFO ../..//smtdv_component.sv(145) @ 503500: uvm_test_top.master_agent[0].drv.smtdv_driver_threads [uvm_test_top.master_agent[0].drv.smtdv_driver_threads] Detect a PWR_RST
 UVM_INFO ../..//smtdv_component.sv(145) @ 503500: uvm_test_top.master_agent[0].drv [uvm_test_top.master_agent[0].drv] Detect a PWR_RST
 UVM_INFO ../..//smtdv_component.sv(145) @ 503500: uvm_test_top.master_agent[0].mon.smtdv_monitor_threads [uvm_test_top.master_agent[0].mon.smtdv_monitor_threads] Detect a PWR_RST
@@ -414,20 +456,20 @@ UVM_INFO ../..//smtdv_component.sv(145) @ 503500: xbus_rst_model_rst_mon.smtdv_m
 UVM_INFO ../..//smtdv_component.sv(145) @ 503500: xbus_rst_model_rst_mon [xbus_rst_model_rst_mon] Detect a PWR_RST
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 503500: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_reset'
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 503500: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_reset'
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 503500: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.post_reset' (id=9183) PHASE READY TO END
-UVM_INFO ../..//smtdv_reset_monitor.sv(64) @ 503500: xbus_rst_model_rst_mon [xbus_rst_model_rst_mon] Detect PWR RESET deasserted ...
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 503500: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.post_reset' (id=9199) PHASE READY TO END
+UVM_INFO ../..//smtdv_reset_monitor.sv(68) @ 503500: xbus_rst_model_rst_mon [xbus_rst_model_rst_mon] Detect PWR RESET deasserted ...
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 503500: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_configure'
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 503500: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_configure'
-UVM_INFO ../seq/xbus_master_seqs.sv(62) @ 503500: uvm_test_top.master_agent[0].seqr@@xbus_master_1w1r_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH) [xbus_master_1w1r_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH)] 
+UVM_INFO ../seq/xbus_master_seqs_cb.sv(47) @ 503500: uvm_test_top.master_agent[0].seqr@@xbus_master_stl_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH) [xbus_master_stl_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH)] 
 ------------------------------------------
 Name       Type               Size  Value 
 ------------------------------------------
-item       uvm_sequence_item  -     @9872 
+item[1]    uvm_sequence_item  -     @9888 
   mod_t    mod_type_t         1     MASTER
   trs_t    trs_type_t         1     RD    
   run_t    run_type_t         2     NORMAL
-  bg_cyc   integral           64    'h0   
-  ed_cyc   integral           64    'h0   
+  bg_cyc   integral           64    'h7   
+  ed_cyc   integral           64    'h8   
   addr     integral           32    'hf   
   data     da(integral)       4     -     
     [0]    integral           8     'hff  
@@ -443,36 +485,36 @@ item       uvm_sequence_item  -     @9872
   ack_L2H  integral           64    'h0   
 ------------------------------------------
 
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 503500: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.pre_configure' (id=9225) PHASE READY TO END
-UVM_INFO ../..//smtdv_sequence.sv(52) @ 503500: uvm_test_top.master_agent[0].seqr@@xbus_master_1w1r_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH) [uvm_test_top.master_agent[0].seqr.xbus_master_1w1r_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH).post_body()] drop objection in phase: run
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 503500: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.pre_configure' (id=9241) PHASE READY TO END
+UVM_INFO ../..//smtdv_sequence.sv(52) @ 503500: uvm_test_top.master_agent[0].seqr@@xbus_master_stl_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH) [uvm_test_top.master_agent[0].seqr.xbus_master_stl_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH).post_body()] drop objection in phase: run
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 503500: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'configure'
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 503500: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'configure'
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 503500: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.configure' (id=9267) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 503500: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.configure' (id=9283) PHASE READY TO END
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 503500: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_configure'
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 503500: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_configure'
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 503500: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.post_configure' (id=9309) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 503500: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.post_configure' (id=9325) PHASE READY TO END
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 503500: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_main'
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 503500: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_main'
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 503500: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.pre_main' (id=9351) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 503500: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.pre_main' (id=9367) PHASE READY TO END
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 503500: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'main'
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 503500: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'main'
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 503500: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.main' (id=9393) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 503500: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.main' (id=9409) PHASE READY TO END
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 503500: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_main'
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 503500: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_main'
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 503500: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.post_main' (id=9435) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 503500: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.post_main' (id=9451) PHASE READY TO END
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 503500: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_shutdown'
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 503500: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'pre_shutdown'
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 503500: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.pre_shutdown' (id=9477) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 503500: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.pre_shutdown' (id=9493) PHASE READY TO END
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 503500: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'shutdown'
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 503500: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'shutdown'
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 503500: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.shutdown' (id=9519) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 503500: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.shutdown' (id=9535) PHASE READY TO END
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 503500: uvm_test_top.slave_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_shutdown'
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/seq/uvm_sequencer_base.svh(1385) @ 503500: uvm_test_top.master_agent[0].seqr [PHASESEQ] No default phase sequence for phase 'post_shutdown'
 UVM_INFO ../seq/xbus_slave_seqs.sv(45) @ 504000: uvm_test_top.slave_agent[0].seqr@@xbus_slave_base_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH) [xbus_slave_base_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH)] get monitor collected item
 ------------------------------------------------
 Name             Type               Size  Value 
 ------------------------------------------------
-xbus_write_item  uvm_sequence_item  -     @9961 
+xbus_write_item  uvm_sequence_item  -     @9977 
   mod_t          mod_type_t         1     MASTER
   trs_t          trs_type_t         1     WR    
   run_t          run_type_t         2     FORCE 
@@ -498,7 +540,7 @@ UVM_INFO ..//xbus_monitor_threads.sv(185) @ 506000: reporter [uvm_test_top.slave
 ------------------------------------------------
 Name             Type               Size  Value 
 ------------------------------------------------
-xbus_write_item  uvm_sequence_item  -     @9961 
+xbus_write_item  uvm_sequence_item  -     @9977 
   mod_t          mod_type_t         1     MASTER
   trs_t          trs_type_t         1     WR    
   run_t          run_type_t         2     FORCE 
@@ -525,7 +567,7 @@ UVM_INFO ..//xbus_monitor_threads.sv(185) @ 506000: reporter [uvm_test_top.maste
 ------------------------------------------------
 Name             Type               Size  Value 
 ------------------------------------------------
-xbus_write_item  uvm_sequence_item  -     @10356
+xbus_write_item  uvm_sequence_item  -     @10378
   mod_t          mod_type_t         1     MASTER
   trs_t          trs_type_t         1     WR    
   run_t          run_type_t         2     FORCE 
@@ -551,41 +593,41 @@ xbus_write_item  uvm_sequence_item  -     @10356
 UVM_INFO ..//xbus_slave_driver_threads.sv(46) @ 506500: reporter [uvm_test_top.slave_agent[0].drv] try respone write item
 
 UVM_INFO ..//xbus_master_driver_threads.sv(45) @ 506500: reporter [uvm_test_top.master_agent[0].drv] try do write item 
------------------------------------------------------------------------------------------------------------------------------------------------------
-Name                           Type               Size  Value                                                                                        
------------------------------------------------------------------------------------------------------------------------------------------------------
-req                            uvm_sequence_item  -     @9745                                                                                        
-  mod_t                        mod_type_t         1     MASTER                                                                                       
-  trs_t                        trs_type_t         1     WR                                                                                           
-  run_t                        run_type_t         2     NORMAL                                                                                       
-  bg_cyc                       integral           64    'h0                                                                                          
-  ed_cyc                       integral           64    'h0                                                                                          
-  addr                         integral           32    'hf                                                                                          
-  data                         da(integral)       4     -                                                                                            
-    [0]                        integral           8     'hff                                                                                         
-    [1]                        integral           8     'hff                                                                                         
-    [2]                        integral           8     'hff                                                                                         
-    [3]                        integral           8     'hff                                                                                         
-  byten                        da(integral)       4     -                                                                                            
-    [0]                        integral           1     'h1                                                                                          
-    [1]                        integral           1     'h0                                                                                          
-    [2]                        integral           1     'h0                                                                                          
-    [3]                        integral           1     'h0                                                                                          
-  req_L2H                      integral           64    'h0                                                                                          
-  ack_L2H                      integral           64    'h0                                                                                          
-  begin_time                   time               64    503500                                                                                       
-  end_time                     time               64    503500                                                                                       
-  depth                        int                32    'd2                                                                                          
-  parent sequence (name)       string             59    xbus_master_1w1r_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH)                                  
-  parent sequence (full name)  string             93    uvm_test_top.master_agent[0].seqr.xbus_master_1w1r_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH)
-  sequencer                    string             33    uvm_test_top.master_agent[0].seqr                                                            
------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------
+Name                           Type               Size  Value                                                                                       
+----------------------------------------------------------------------------------------------------------------------------------------------------
+req                            uvm_sequence_item  -     @9748                                                                                       
+  mod_t                        mod_type_t         1     MASTER                                                                                      
+  trs_t                        trs_type_t         1     WR                                                                                          
+  run_t                        run_type_t         2     NORMAL                                                                                      
+  bg_cyc                       integral           64    'h2                                                                                         
+  ed_cyc                       integral           64    'h4                                                                                         
+  addr                         integral           32    'hf                                                                                         
+  data                         da(integral)       4     -                                                                                           
+    [0]                        integral           8     'hff                                                                                        
+    [1]                        integral           8     'hff                                                                                        
+    [2]                        integral           8     'hff                                                                                        
+    [3]                        integral           8     'hff                                                                                        
+  byten                        da(integral)       4     -                                                                                           
+    [0]                        integral           1     'h1                                                                                         
+    [1]                        integral           1     'h0                                                                                         
+    [2]                        integral           1     'h0                                                                                         
+    [3]                        integral           1     'h0                                                                                         
+  req_L2H                      integral           64    'h0                                                                                         
+  ack_L2H                      integral           64    'h0                                                                                         
+  begin_time                   time               64    503500                                                                                      
+  end_time                     time               64    503500                                                                                      
+  depth                        int                32    'd2                                                                                         
+  parent sequence (name)       string             58    xbus_master_stl_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH)                                  
+  parent sequence (full name)  string             92    uvm_test_top.master_agent[0].seqr.xbus_master_stl_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH)
+  sequencer                    string             33    uvm_test_top.master_agent[0].seqr                                                           
+----------------------------------------------------------------------------------------------------------------------------------------------------
 
 UVM_INFO ../seq/xbus_slave_seqs.sv(45) @ 507000: uvm_test_top.slave_agent[0].seqr@@xbus_slave_base_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH) [xbus_slave_base_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH)] get monitor collected item
 -----------------------------------------------
 Name            Type               Size  Value 
 -----------------------------------------------
-xbus_read_item  uvm_sequence_item  -     @9822 
+xbus_read_item  uvm_sequence_item  -     @9828 
   mod_t         mod_type_t         1     MASTER
   trs_t         trs_type_t         1     RD    
   run_t         run_type_t         2     FORCE 
@@ -603,7 +645,7 @@ UVM_INFO ..//xbus_monitor_threads.sv(237) @ 509000: reporter [uvm_test_top.slave
 -----------------------------------------------
 Name            Type               Size  Value 
 -----------------------------------------------
-xbus_read_item  uvm_sequence_item  -     @9822 
+xbus_read_item  uvm_sequence_item  -     @9828 
   mod_t         mod_type_t         1     MASTER
   trs_t         trs_type_t         1     RD    
   run_t         run_type_t         2     FORCE 
@@ -626,7 +668,7 @@ UVM_INFO ..//xbus_monitor_threads.sv(237) @ 509000: reporter [uvm_test_top.maste
 -----------------------------------------------
 Name            Type               Size  Value 
 -----------------------------------------------
-xbus_read_item  uvm_sequence_item  -     @10682
+xbus_read_item  uvm_sequence_item  -     @10705
   mod_t         mod_type_t         1     MASTER
   trs_t         trs_type_t         1     RD    
   run_t         run_type_t         2     FORCE 
@@ -648,35 +690,35 @@ xbus_read_item  uvm_sequence_item  -     @10682
 UVM_INFO ..//xbus_slave_driver_threads.sv(58) @ 509500: reporter [uvm_test_top.slave_agent[0].drv] try respone read item
 
 UVM_INFO ..//xbus_master_driver_threads.sv(56) @ 509500: reporter [uvm_test_top.master_agent[0].drv] try do read item 
------------------------------------------------------------------------------------------------------------------------------------------------------
-Name                           Type               Size  Value                                                                                        
------------------------------------------------------------------------------------------------------------------------------------------------------
-req                            uvm_sequence_item  -     @10161                                                                                       
-  mod_t                        mod_type_t         1     MASTER                                                                                       
-  trs_t                        trs_type_t         1     RD                                                                                           
-  run_t                        run_type_t         2     NORMAL                                                                                       
-  bg_cyc                       integral           64    'h0                                                                                          
-  ed_cyc                       integral           64    'h0                                                                                          
-  addr                         integral           32    'hf                                                                                          
-  data                         da(integral)       4     -                                                                                            
-    [0]                        integral           8     'hff                                                                                         
-    [1]                        integral           8     'hff                                                                                         
-    [2]                        integral           8     'hff                                                                                         
-    [3]                        integral           8     'hff                                                                                         
-  byten                        da(integral)       4     -                                                                                            
-    [0]                        integral           1     'h1                                                                                          
-    [1]                        integral           1     'h0                                                                                          
-    [2]                        integral           1     'h0                                                                                          
-    [3]                        integral           1     'h0                                                                                          
-  req_L2H                      integral           64    'h0                                                                                          
-  ack_L2H                      integral           64    'h0                                                                                          
-  begin_time                   time               64    503500                                                                                       
-  end_time                     time               64    503500                                                                                       
-  depth                        int                32    'd2                                                                                          
-  parent sequence (name)       string             59    xbus_master_1w1r_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH)                                  
-  parent sequence (full name)  string             93    uvm_test_top.master_agent[0].seqr.xbus_master_1w1r_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH)
-  sequencer                    string             33    uvm_test_top.master_agent[0].seqr                                                            
------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------
+Name                           Type               Size  Value                                                                                       
+----------------------------------------------------------------------------------------------------------------------------------------------------
+req                            uvm_sequence_item  -     @9814                                                                                       
+  mod_t                        mod_type_t         1     MASTER                                                                                      
+  trs_t                        trs_type_t         1     RD                                                                                          
+  run_t                        run_type_t         2     NORMAL                                                                                      
+  bg_cyc                       integral           64    'h7                                                                                         
+  ed_cyc                       integral           64    'h8                                                                                         
+  addr                         integral           32    'hf                                                                                         
+  data                         da(integral)       4     -                                                                                           
+    [0]                        integral           8     'hff                                                                                        
+    [1]                        integral           8     'hff                                                                                        
+    [2]                        integral           8     'hff                                                                                        
+    [3]                        integral           8     'hff                                                                                        
+  byten                        da(integral)       4     -                                                                                           
+    [0]                        integral           1     'h1                                                                                         
+    [1]                        integral           1     'h0                                                                                         
+    [2]                        integral           1     'h0                                                                                         
+    [3]                        integral           1     'h0                                                                                         
+  req_L2H                      integral           64    'h0                                                                                         
+  ack_L2H                      integral           64    'h0                                                                                         
+  begin_time                   time               64    503500                                                                                      
+  end_time                     time               64    503500                                                                                      
+  depth                        int                32    'd2                                                                                         
+  parent sequence (name)       string             58    xbus_master_stl_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH)                                  
+  parent sequence (full name)  string             92    uvm_test_top.master_agent[0].seqr.xbus_master_stl_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH)
+  sequencer                    string             33    uvm_test_top.master_agent[0].seqr                                                           
+----------------------------------------------------------------------------------------------------------------------------------------------------
 
 UVM_INFO ..//xbus_monitor_threads.sv(151) @ 514000: reporter [uvm_test_top.slave_agent[0].mon] try collect finish signal
 
@@ -685,10 +727,10 @@ UVM_INFO ../seq/xbus_slave_seqs.sv(68) @ 514000: uvm_test_top.slave_agent[0].seq
 UVM_INFO ../..//smtdv_sequence.sv(52) @ 514000: uvm_test_top.slave_agent[0].seqr@@xbus_slave_base_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH) [uvm_test_top.slave_agent[0].seqr.xbus_slave_base_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH).post_body()] drop objection in phase: run
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_objection.svh(1245) @ 515000: reporter [TEST_DONE] All end-of-test objections have been dropped. Calling stop tasks
 UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_objection.svh(1268) @ 515000: reporter [TEST_DONE] 'run' phase is ready to proceed to the 'extract' phase
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1211) @ 515000: reporter [PH/TRC/EXE/ALLDROP] Phase 'common.run' (id=2477) PHASE EXIT ALL_DROPPED
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 515000: reporter [PH_READY_TO_END] Phase 'common.run' (id=2477) PHASE READY TO END
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 515000: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.post_shutdown' (id=3939) PHASE READY TO END
-UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 515000: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.post_shutdown' (id=9561) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1211) @ 515000: reporter [PH/TRC/EXE/ALLDROP] Phase 'common.run' (id=2490) PHASE EXIT ALL_DROPPED
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 515000: reporter [PH_READY_TO_END] Phase 'common.run' (id=2490) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 515000: reporter [PH_READY_TO_END] Phase 'uvm.uvm_sched.post_shutdown' (id=3952) PHASE READY TO END
+UVM_INFO /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/base/uvm_phase.svh(1227) @ 515000: reporter [PH_READY_TO_END] Phase 'xbus_rst_model_domain.uvm_sched.post_shutdown' (id=9577) PHASE READY TO END
 
 --- UVM Report catcher Summary ---
 
@@ -726,8 +768,8 @@ UVM_FATAL :    0
 [uvm_test_top.master_agent[0].mon]     5
 [uvm_test_top.master_agent[0].mon.smtdv_monitor_threads]     7
 [uvm_test_top.master_agent[0].seqr]     2
-[uvm_test_top.master_agent[0].seqr.xbus_master_1w1r_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH).post_body()]     1
-[uvm_test_top.master_agent[0].seqr.xbus_master_1w1r_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH).pre_body()]     1
+[uvm_test_top.master_agent[0].seqr.xbus_master_stl_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH).post_body()]     1
+[uvm_test_top.master_agent[0].seqr.xbus_master_stl_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH).pre_body()]     1
 [uvm_test_top.slave_agent[0]]     2
 [uvm_test_top.slave_agent[0].drv]     4
 [uvm_test_top.slave_agent[0].drv.smtdv_driver_threads]     3
@@ -736,7 +778,7 @@ UVM_FATAL :    0
 [uvm_test_top.slave_agent[0].seqr]     3
 [uvm_test_top.slave_agent[0].seqr.xbus_slave_base_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH).post_body()]     1
 [uvm_test_top.slave_agent[0].seqr.xbus_slave_base_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH).pre_body()]     1
-[xbus_master_1w1r_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH)]     3
+[xbus_master_stl_seq #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH)]     3
 [xbus_rst_if]     2
 [xbus_rst_model]    56
 [xbus_rst_model_rst_mon]     6
@@ -761,9 +803,9 @@ coverage setup:
   testname :  test
 
 coverage files:
-  model(design data) :  ./cov_work/scope/icc_675f3a25_1afec02a.ucm (reused)
-  data               :  ./cov_work/scope/test/icc_675f3a25_1afec02a.ucd
+  model(design data) :  ./cov_work/scope/icc_675f3a25_3b104e62.ucm (reused)
+  data               :  ./cov_work/scope/test/icc_675f3a25_3b104e62.ucd
   cpu                :  0.0s system + 0.0s user = 0.0s total
-ncsim: Memory Usage - 33.1M program + 430.6M data = 463.7M total
-ncsim: CPU Usage - 0.5s system + 1.6s user = 2.1s total (17.2s, 12.4% cpu)
-TOOL:	irun(64)	13.10-s011: Exiting on Aug 13, 2015 at 14:17:42 CST  (total: 00:00:37)
+ncsim: Memory Usage - 33.1M program + 368.1M data = 401.2M total
+ncsim: CPU Usage - 0.5s system + 0.9s user = 1.4s total (12.5s, 11.4% cpu)
+TOOL:	irun(64)	13.10-s011: Exiting on Aug 17, 2015 at 11:43:15 CST  (total: 00:00:23)
