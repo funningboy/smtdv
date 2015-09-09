@@ -9,8 +9,6 @@ class smtdv_monitor #(type VIF = int,
   VIF vif;
   CFG cfg;
 
-  smtdv_thread_handler#(CFG) th_handler;
-
   `uvm_component_param_utils_begin(smtdv_monitor#(VIF, CFG))
     // Cadence doesn't support this registration
     //`uvm_field_queue_object(thread_q, UVM_ALL_ON)
@@ -18,16 +16,6 @@ class smtdv_monitor #(type VIF = int,
 
   function new(string name = "smtdv_monitor", uvm_component parent=null);
     super.new(name, parent);
-  endfunction
-
-  virtual function void build_phase(uvm_phase phase);
-    super.build_phase(phase);
-    th_handler = smtdv_thread_handler#(CFG)::type_id::create("smtdv_monitor_threads", this);
-  endfunction
-
-  virtual function void end_of_elaboration_phase(uvm_phase phase);
-    if(!th_handler)
-      `uvm_warning("NOTHREADHANDLER",{"thread handler create fail: ",get_full_name()});
   endfunction
 
   extern virtual task run_phase(uvm_phase phase);

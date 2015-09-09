@@ -21,4 +21,5 @@ typedef enum bit [4:0] {
   SMTDV_NO_ID        = 5'b11110
 } smtdv_print_mask_t;
 
+
 `endif // end of __SMTDV_LIB_TYPEDEFS_SVH__

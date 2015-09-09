@@ -11,8 +11,6 @@ class smtdv_driver #(type VIF = int,
   VIF vif;
   CFG cfg;
 
-  smtdv_thread_handler #(CFG) th_handler;
-
   `uvm_component_param_utils_begin(smtdv_driver#(VIF, CFG))
     // Cadence doesn't support this registration
     //`uvm_field_queue_object(thread_q, UVM_ALL_ON)
@@ -20,11 +18,6 @@ class smtdv_driver #(type VIF = int,
 
   function new(string name = "smtdv_driver", uvm_component parent);
     super.new(name, parent);
-  endfunction
-
-  virtual function void build_phase(uvm_phase phase);
-    super.build_phase(phase);
-    th_handler = smtdv_thread_handler#(CFG)::type_id::create("smtdv_driver_threads", this);
   endfunction
 
   extern virtual task run_phase(uvm_phase phase);

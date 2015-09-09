@@ -44,4 +44,21 @@
     end \
   end
 
+`define SMTDV_SLAVE  0
+`define SMTDV_MASTER 1
+
+`define SMTDV_VIF2PORT(has_force, clk, vif, port)\
+  always@(clk) begin \
+    if (has_force) \
+      force port = vif; \
+    else release port; \
+  end
+
+`define SMTDV_PORT2VIF(has_force, clk, port, vif)\
+  always@(clk) begin \
+    if (has_force) \
+      force vif = port; \
+    else release vif; \
+  end
+
 `endif

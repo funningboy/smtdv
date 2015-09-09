@@ -66,7 +66,7 @@ task smtdv_test::run_phase(uvm_phase phase);
     tbprt.knobs.depth = 5;
     this.print(tbprt);
     uvm_report_object::set_report_max_quit_count(2);  // set max error quit counts
-    phase.phase_done.set_drain_time(this, 10);      // set the extend $finish time when the all trxs are done
+    phase.phase_done.set_drain_time(this, 1000);      // set the extend $finish time when the all trxs are done
     join_none
 endtask
 

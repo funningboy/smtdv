@@ -1,9 +1,0 @@
-./xbus_stl_test.sv
-../..//xbus_stl_test.sv
-..//xbus_stl_test.sv
-../test/xbus_slave_seqs.sv
-../seq/smtdv_stl_pkg.sv
-../v/smtdv_stl_pkg.sv
-.//smtdv_stl_pkg.sv
-../../../../dpi/sqlite3/smtdv_stl_pkg.sv
-../../../../dpi/stl/macros/uvm_deprecated_defines.svh
