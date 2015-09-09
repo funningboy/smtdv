@@ -24,8 +24,11 @@ SVA
 ./
 -INCDIR
 ../../../dpi/sqlite3
+-INCDIR
+../../../dpi/stl
 ../../smtdv_common/smtdv_common_pkg.sv
-./../../../dpi/sqlite3/smtdv_sqlite3_pkg.sv
+../../../dpi/sqlite3/smtdv_sqlite3_pkg.sv
+../../../dpi/stl/smtdv_stl_pkg.sv
 ../apb_pkg.sv
 ../test/apb_top.sv
 -sv

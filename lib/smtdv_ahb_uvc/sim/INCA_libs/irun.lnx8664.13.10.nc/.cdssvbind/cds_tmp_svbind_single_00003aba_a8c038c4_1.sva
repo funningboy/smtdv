@@ -1,0 +1,72 @@
+vunit cds_psl1 (ahb_master) {
+(*cds_generated_bind_instance*)
+`line 52 "../test/ahb_top.sv" 0
+ahb_master_if_harness #(.UID(0), .ADDR_WIDTH(32), .DATA_WIDTH(32)) ahb_master_if_harness (
+
+.clk(u_dut_1m1s.M[0].u_ahb_master.clk), 
+
+.resetn(u_dut_1m1s.M[0].u_ahb_master.resetn), 
+
+.hbusreq(u_dut_1m1s.M[0].u_ahb_master.hbusreq), 
+
+.hmastlock(u_dut_1m1s.M[0].u_ahb_master.hmastlock), 
+
+.hgrant(u_dut_1m1s.M[0].u_ahb_master.hgrant), 
+
+.haddr(u_dut_1m1s.M[0].u_ahb_master.haddr), 
+
+.htrans(u_dut_1m1s.M[0].u_ahb_master.htrans), 
+
+.hwrite(u_dut_1m1s.M[0].u_ahb_master.hwrite), 
+
+.hsize(u_dut_1m1s.M[0].u_ahb_master.hsize), 
+
+.hburst(u_dut_1m1s.M[0].u_ahb_master.hburst), 
+
+.hprot(u_dut_1m1s.M[0].u_ahb_master.hprot), 
+
+.hwdata(u_dut_1m1s.M[0].u_ahb_master.hwdata), 
+
+.hrdata(u_dut_1m1s.M[0].u_ahb_master.hrdata), 
+
+.hready(u_dut_1m1s.M[0].u_ahb_master.hready), 
+
+.hresp(u_dut_1m1s.M[0].u_ahb_master.hresp));
+
+}
+
+vunit cds_psl2 (ahb_slave) {
+(*cds_generated_bind_instance*)
+`line 76 "../test/ahb_top.sv" 0
+ahb_slave_if_harness #(.UID(0), .ADDR_WIDTH(32), .DATA_WIDTH(32)) ahb_slave_if_harness (
+
+.clk(u_dut_1m1s.S[0].u_ahb_slave.clk), 
+
+.resetn(u_dut_1m1s.S[0].u_ahb_slave.resetn), 
+
+.haddr(u_dut_1m1s.S[0].u_ahb_slave.haddr), 
+
+.htrans(u_dut_1m1s.S[0].u_ahb_slave.htrans), 
+
+.hwrite(u_dut_1m1s.S[0].u_ahb_slave.hwrite), 
+
+.hsize(u_dut_1m1s.S[0].u_ahb_slave.hsize), 
+
+.hburst(u_dut_1m1s.S[0].u_ahb_slave.hburst), 
+
+.hprot(u_dut_1m1s.S[0].u_ahb_slave.hprot), 
+
+.hmastlock(u_dut_1m1s.S[0].u_ahb_slave.hmastlock), 
+
+.hsel({15'h0000,u_dut_1m1s.S[0].u_ahb_slave.hsel}), 
+
+.hwdata(u_dut_1m1s.S[0].u_ahb_slave.hwdata), 
+
+.hrdata(u_dut_1m1s.S[0].u_ahb_slave.hrdata), 
+
+.hready(u_dut_1m1s.S[0].u_ahb_slave.hready), 
+
+.hresp(u_dut_1m1s.S[0].u_ahb_slave.hresp));
+
+}
+

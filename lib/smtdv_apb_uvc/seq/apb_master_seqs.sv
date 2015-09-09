@@ -10,8 +10,7 @@ class apb_master_base_seq #(
 
     `APB_ITEM item;
 
-    `uvm_object_utils_begin(`APB_MASTER_BASE_SEQ)
-    `uvm_object_utils_end
+    `uvm_sequence_utils(`APB_MASTER_BASE_SEQ, `APB_MASTER_SEQUENCER)
 
     function new(string name = "apb_master_base_seq");
       super.new(name);
@@ -20,16 +19,70 @@ class apb_master_base_seq #(
 endclass
 
 
-class apb_master_1w1r_seq #(
+class read_byte_seq #(
+  ADDR_WIDTH = 14,
+  DATA_WIDTH = 32
+  ) extends
+   `APB_MASTER_BASE_SEQ;
+
+  rand bit[ADDR_WIDTH-1:0] start_addr;
+
+  `uvm_sequence_utils(`READ_BYTE_SEQ, `APB_MASTER_SEQUENCER)
+
+    function new(string name = "read_byte_seq");
+      super.new(name);
+    endfunction
+
+    virtual task body();
+      `uvm_info(get_type_name(), {$psprintf("starting seq ... ")}, UVM_MEDIUM)
+      `uvm_do_with(req,
+        { req.addr == start_addr;
+          req.trs_t == RD;
+        })
+     get_response(rsp);
+      `uvm_info(get_type_name(), {$psprintf("\n%s", rsp.sprint())}, UVM_LOW)
+    endtask
+endclass
+
+
+class write_byte_seq #(
+  ADDR_WIDTH = 14,
+  DATA_WIDTH = 32
+  ) extends
+  `APB_MASTER_BASE_SEQ;
+
+  rand bit [ADDR_WIDTH-1:0] start_addr;
+  rand bit [7:0] data[DATA_WIDTH>>3];
+
+  `uvm_sequence_utils(`WRITE_BYTE_SEQ, `APB_MASTER_SEQUENCER)
+
+  function new(string name = "write_byte_seq");
+      super.new(name);
+    endfunction
+
+    virtual task body();
+      `uvm_info(get_type_name(), {$psprintf("starting seq ... ")}, UVM_MEDIUM)
+      `uvm_do_with(req,
+        { req.addr == start_addr;
+          req.trs_t == WR;
+          req.data == data;
+        })
+     get_response(rsp);
+      `uvm_info(get_type_name(), {$psprintf("\n%s", rsp.sprint())}, UVM_LOW)
+    endtask
+
+endclass
+
+
+class apb_master_1w_seq #(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32
   ) extends
     `APB_MASTER_BASE_SEQ;
 
-    `uvm_object_utils_begin(`APB_MASTER_1W1R_SEQ)
-    `uvm_object_utils_end
+    `uvm_sequence_utils(`APB_MASTER_1W_SEQ, `APB_MASTER_SEQUENCER)
 
-    function new(string name = "apb_master_1w1r_seq");
+    function new(string name = "apb_master_1w_seq");
       super.new(name);
     endfunction
 
@@ -37,24 +90,39 @@ class apb_master_1w1r_seq #(
       super.body();
       `uvm_info(get_type_name(), {$psprintf("starting seq ... ")}, UVM_MEDIUM)
       item = `APB_ITEM::type_id::create("item");
-      item.mod_t = MASTER;
-      item.trs_t = WR;
-      item.run_t = NORMAL;
-      item.addr = 32'h000f;
-      item.pack_data(32'hffff_ffff);
+      `SMTDV_RAND_WITH(item, {
+        mod_t == MASTER;
+        trs_t == WR;
+        run_t == NORMAL;
+        addr == `APB_START_ADDR(0)
+      })
       `uvm_info(get_type_name(), {$psprintf("\n%s", item.sprint())}, UVM_LOW)
       `uvm_create(req);
       req.copy(item);
       start_item(req);
       finish_item(req);
+    endtask
 
+endclass
+
+class apb_master_1r_seq #(
+  ADDR_WIDTH = 14,
+  DATA_WIDTH = 32
+  ) extends
+    `APB_MASTER_BASE_SEQ;
+
+    `uvm_sequence_utils(`APB_MASTER_1R_SEQ, `APB_MASTER_SEQUENCER)
+
+    virtual task body();
+      super.body();
+      `uvm_info(get_type_name(), {$psprintf("starting seq ... ")}, UVM_MEDIUM)
       item = `APB_ITEM::type_id::create("item");
-      item.mod_t = MASTER;
-      item.trs_t = RD;
-      item.run_t = NORMAL;
-      item.addr = 32'h000f;
-      // as expected data
-      item.pack_data(32'hffff_ffff);
+      `SMTDV_RAND_WITH(item, {
+        mod_t == MASTER;
+        trs_t == RD;
+        run_t == NORMAL;
+        addr == `APB_START_ADDR(0)
+      })
       `uvm_info(get_type_name(), {$psprintf("\n%s", item.sprint())}, UVM_LOW)
       `uvm_create(req);
       req.copy(item);
@@ -65,40 +133,84 @@ class apb_master_1w1r_seq #(
 endclass
 
 
-class apb_master_rand_seq #(
+//  Sequential seq
+class apb_master_1w1r_seq #(
+  ADDR_WIDTH = 14,
+  BYTEN_WIDTH = 4,
+  DATA_WIDTH = 32
+  ) extends
+    `APB_MASTER_BASE_SEQ;
+
+    `APB_MASTER_1W_SEQ wseq;
+    `APB_MASTER_1R_SEQ rseq;
+
+    `uvm_sequence_utils(`APB_MASTER_1W1R_SEQ, `APB_MASTER_SEQUENCER)
+
+    function new(string name = "apb_master_1w1r_seq");
+      super.new(name);
+    endfunction
+
+    virtual task body();
+      super.body();
+      `uvm_do(wseq); // call as wrap child seq
+      `uvm_do(rseq);
+    endtask
+
+endclass
+
+
+class apb_master_stl_seq #(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32
   ) extends
     `APB_MASTER_BASE_SEQ;
 
-    `uvm_object_utils_begin(`APB_MASTER_RAND_SEQ)
-    `uvm_object_utils_end
+    int unsigned m_id = 0;
+    static string m_file = "../stl/000010af.trx";
+    chandle m_dpi_mb;
+    chandle m_dpi_trx;
 
-    function new(string name = "apb_master_rand_seq");
+    `uvm_sequence_utils(`APB_MASTER_STL_SEQ, `APB_MASTER_SEQUENCER)
+
+    function new(string name = "apb_master_stl_seq");
       super.new(name);
     endfunction
 
     virtual task body();
       super.body();
       `uvm_info(get_type_name(), {$psprintf("starting seq ... ")}, UVM_MEDIUM)
-      item = `APB_ITEM::type_id::create("item");
-      void'(item.randomize());
-     `uvm_info(get_type_name(), {$psprintf("\n%s", item.sprint())}, UVM_LOW)
-      `uvm_create(req);
-      req.copy(item);
-      start_item(req);
-      finish_item(req);
 
-      item = `APB_ITEM::type_id::create("item");
-      item.copy(req);
-      item.trs_t = RD;
-      `uvm_info(get_type_name(), {$psprintf("\n%s", item.sprint())}, UVM_LOW)
-      `uvm_create(req);
-      req.copy(item);
-      start_item(req);
-      finish_item(req);
+      m_dpi_mb = dpi_smtdv_parse_file(m_file);
+      assert(m_dpi_mb!=null);
+
+      m_dpi_trx = dpi_smtdv_next_smtdv_transfer(m_dpi_mb);
+      assert(m_dpi_trx!=null);
+
+      while (m_dpi_trx!=null) begin
+        item = `APB_ITEM::type_id::create({$psprintf("item[%0d]", m_id++)});
+        item.mod_t = MASTER;
+        item.run_t = NORMAL;
+        item.trs_t = (dpi_smtdv_get_smtdv_transfer_rw(m_dpi_trx) == "w")? WR : RD;
+        item.addr  = dpi_hexstr_2_longint(dpi_smtdv_get_smtdv_transfer_addr(m_dpi_trx));
+        item.pack_data(dpi_hexstr_2_longint(dpi_smtdv_get_smtdv_transfer_data(m_dpi_trx)));
+        item.sel = dpi_hexstr_2_longint(dpi_smtdv_get_smtdv_transfer_id(m_dpi_trx));
+        item.rsp = (dpi_smtdv_get_smtdv_transfer_resp(m_dpi_trx) == "OKAY")? OK: ERR;
+        item.bg_cyc = dpi_hexstr_2_longint(dpi_smtdv_get_smtdv_transfer_begin_cycle(m_dpi_trx));
+        item.ed_cyc = dpi_hexstr_2_longint(dpi_smtdv_get_smtdv_transfer_end_cycle(m_dpi_trx));
+
+        `uvm_info(get_type_name(), {$psprintf("\n%s", item.sprint())}, UVM_LOW)
+        `uvm_create(req);
+        req.copy(item);
+        start_item(req);
+        finish_item(req);
+
+        m_dpi_trx = dpi_smtdv_next_smtdv_transfer(m_dpi_mb);
+      end
     endtask
 
-  endclass
+
+endclass
+
+
 
 `endif // end of __APB_MASTER_SEQS_SV__

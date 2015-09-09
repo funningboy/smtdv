@@ -22,8 +22,10 @@
 +incdir+../v
 +incdir+./
 +incdir+../../../dpi/sqlite3
++incdir+../../../dpi/stl
 ../../smtdv_common/smtdv_common_pkg.sv
-./../../../dpi/sqlite3/smtdv_sqlite3_pkg.sv
+../../../dpi/sqlite3/smtdv_sqlite3_pkg.sv
+../../../dpi/stl/smtdv_stl_pkg.sv
 ../apb_pkg.sv
 ../test/apb_top.sv
 -sv ../v/dut_apb_1m2s.v

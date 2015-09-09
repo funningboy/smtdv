@@ -1,0 +1,95 @@
+## 
+## -------------------------------------------------------------
+##    Copyright 2012 Cadence.
+##    All Rights Reserved Worldwide
+## 
+##    Licensed under the Apache License, Version 2.0 (the
+##    "License"); you may not use this file except in
+##    compliance with the License.  You may obtain a copy of
+##    the License at
+## 
+##        http://www.apache.org/licenses/LICENSE-2.0
+## 
+##    Unless required by applicable law or agreed to in
+##    writing, software distributed under the License is
+##    distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+##    CONDITIONS OF ANY KIND, either express or implied.  See
+##    the License for the specific language governing
+##    permissions and limitations under the License.
+## -------------------------------------------------------------
+## 
+
+ifdef OSCI_INSTALL
+ifndef OSCI_VERSION
+OSCI_VERSION := $(shell ${UVM_ML_HOME}/ml/tools/get_osci_version.sh)
+endif
+else
+-include ${UVM_ML_HOME}/ml/example_utils/osci_version.mk
+endif
+export OSCI_VERSION
+
+ifndef IES_VERSION
+IES_VERSION := $(shell $(UVM_ML_HOME)/ml/tools/get_ies_version.sh)
+endif
+export IES_VERSION
+
+
+#E_FILES
+#SYSC_FILES
+STUB_FILE ?= ${UVM_ML_TEST_RUN_DIR}/specman_stub.cpp
+STUB_OBJ_FILE = $(subst .cpp,${BEXT}.o,${STUB_FILE})
+STUB_DEPFILE = $(subst .cpp,${BEXT}.d,${STUB_FILE})
+#OBJS=$(subst .cpp,.o,${SYSC_FILES})
+
+SPECMAN_HOME ?= `sn_root -home`
+
+UVM_ML_BITS ?= 32
+
+EXE_NAME ?= ${UVM_ML_TEST_RUN_DIR}/e_osci${BEXT}
+EXTRA_LIBALL_OSCI_FLAGS ?= -I${SPECMAN_HOME}
+
+ifeq ($(UVM_ML_BITS),64)
+ARCH=linux64
+BIT_CFLAGS=-fPIC
+BEXT=.64
+SUBDIR=/64bit
+ALL_OSCI_LIB=${UVM_ML_TEST_RUN_DIR}/liball_osci.64.so
+ALL_OSCI_LIB_SWITCH=-lall_osci.64
+export UVM_ML_OVERRIDE=$(UVM_ML_HOME)/ml/libs/backplane/$(UVM_ML_COMPILER_VERSION)/64bit/
+export UNILANG_OVERRIDE=$(UVM_ML_HOME)/ml/libs/backplane/$(UVM_ML_COMPILER_VERSION)/64bit/
+else
+ARCH=linux
+BIT_CFLAGS=-m32
+BEXT=
+SUBDIR=
+ALL_OSCI_LIB=${UVM_ML_TEST_RUN_DIR}/liball_osci.so
+ALL_OSCI_LIB_SWITCH=-lall_osci
+export UVM_ML_OVERRIDE=$(UVM_ML_HOME)/ml/libs/backplane/$(UVM_ML_COMPILER_VERSION)/
+export UNILANG_OVERRIDE=$(UVM_ML_HOME)/ml/libs/backplane/$(UVM_ML_COMPILER_VERSION)/
+endif
+.PHONY: default
+
+default: ${EXE_NAME}
+	@echo Running ${EXE_NAME}
+	${EXE_NAME}
+
+${STUB_FILE}: ${E_FILES}
+	specman -c "load ${E_FILES} ;write stub -osci ${STUB_FILE}"
+
+${EXE_NAME}: ${STUB_OBJ_FILE} $(ALL_OSCI_LIB)
+	${UVM_ML_LD} ${BIT_CFLAGS} -g -Wall ${STUB_OBJ_FILE} -L. -Wl,-rpath -Wl,$(CURDIR) -Wl,-rpath -Wl,/vobs/urm/src/uvm_ml/babeldag/ml/libs/osci/${OSCI_VERSION}/${UVM_ML_COMPILER_VERSION}/${SUBDIR} -o $@ -Wl,-E ${ALL_OSCI_LIB_SWITCH} -lm -ldl -L${SPECMAN_HOME}/${ARCH} -losci_sn_boot
+
+clean: 
+	\rm -rf ${UVM_ML_TEST_RUN_DIR}/*.o ${EXE_NAME} ${ALL_OSCI_LIB} ${UVM_ML_TEST_RUN_DIR}/*.elog ${UVM_ML_TEST_RUN_DIR}/*.d ${STUB_FILE}
+
+${UVM_ML_TEST_RUN_DIR}/%${BEXT}.o:${UVM_ML_TEST_SRC_DIR}/%.cpp
+	${UVM_ML_CC} -g -Wall -DSN_USE_DYNAMIC_C_INTERFACE -I${SPECMAN_HOME} -I./ -I${OSCI_INSTALL}/include ${BIT_CFLAGS} -c $< -o $@  
+${UVM_ML_TEST_RUN_DIR}/%${BEXT}.d:${UVM_ML_TEST_SRC_DIR}/%.cpp
+	${UVM_ML_CC} -DSN_USE_DYNAMIC_C_INTERFACE -I${SPECMAN_HOME} -I. -I${OSCI_INSTALL}/include ${BIT_CFLAGS} -MT "$@ $(subst .d,.o,$@)" -o $@ -MM $<
+
+ifneq ($(MAKECMDGOALS),clean)
+include ${UVM_ML_HOME}/ml/example_utils/Makefile.liball_osci
+ifneq ($(findstring n,$(MAKEFLAGS)),n)	# if this is not a --dry-run 
+include ${STUB_DEPFILE}
+endif
+endif

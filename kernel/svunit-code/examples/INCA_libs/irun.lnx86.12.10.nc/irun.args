@@ -1,0 +1,42 @@
+//
+// File created by:  irun
+// Do not modify this file
+//
++define+SVUNIT_VERSION="\"SVUnit v2.7\""
+-l
+run.log
+-incdir
+./modules/apb_slave
+-incdir
+./uvm/simple_model
+-incdir
+./uvm/uvm_express
+-incdir
+./uvm/uvm_express
+-incdir
+./uvm/uvm_express
+-incdir
+./uvm/uvm_express
+-incdir
+./uvm/uvm_report_mock
+-incdir
+/stec/tw/users/schen/prj/svunit-code/examples
+-incdir
+/stec/tw/users/schen/prj/svunit-code/svunit_base
+/stec/tw/users/schen/prj/svunit-code/svunit_base/svunit_pkg.sv
+-file
+svunit.f
+-file
+svunit.f
+./modules/apb_slave/apb_slave_unit_test.sv
+./uvm/simple_model/simple_model_unit_test.sv
+./uvm/uvm_express/apb_coverage_agent_unit_test.sv
+./uvm/uvm_express/apb_mon_unit_test.sv
+./uvm/uvm_express/apb_if_unit_test.sv
+./uvm/uvm_express/apb_coverage_unit_test.sv
+./uvm/uvm_report_mock/uut_unit_test.sv
+./modules/apb_slave/.__modules_apb_slave_testsuite.sv
+./uvm/simple_model/.__uvm_simple_model_testsuite.sv
+./uvm/uvm_express/.__uvm_uvm_express_testsuite.sv
+./uvm/uvm_report_mock/.__uvm_uvm_report_mock_testsuite.sv
+/stec/tw/users/schen/prj/svunit-code/examples/.testrunner.sv

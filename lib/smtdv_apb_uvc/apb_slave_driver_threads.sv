@@ -34,8 +34,7 @@ class apb_slave_drive_items #(
 
     virtual task do_write_item(ref `APB_ITEM item);
       @(posedge this.cmp.vif.clk iff (this.cmp.vif.psel && this.cmp.vif.penable));
-      wait(!this.cmp.cfg.block_pready);
-      repeat(item.pready_L2H) @(posedge this.cmp.vif.clk);
+      if (this.cmp.cfg.block_pready) repeat(item.pready_L2H) @(posedge this.cmp.vif.clk);
       wait(this.cmp.vif.cyc >= item.bg_cyc);
       populate_begin_write_item(item);
       @(posedge this.cmp.vif.clk);
@@ -45,8 +44,7 @@ class apb_slave_drive_items #(
 
     virtual task do_read_item(ref `APB_ITEM item);
       @(posedge this.cmp.vif.clk iff (this.cmp.vif.psel && this.cmp.vif.penable));
-      wait(!this.cmp.cfg.block_pready);
-      repeat(item.pready_L2H) @(posedge this.cmp.vif.clk);
+      if (this.cmp.cfg.block_pready) repeat(item.pready_L2H) @(posedge this.cmp.vif.clk);
       wait(this.cmp.vif.cyc >= item.bg_cyc);
       populate_begin_read_item(item);
       @(posedge this.cmp.vif.clk);
@@ -55,20 +53,22 @@ class apb_slave_drive_items #(
     endtask
 
     virtual task populate_begin_write_item(ref `APB_ITEM item);
-      this.cmp.vif.pready <= 1'b1;
+      this.cmp.vif.slave.pready <= 1'b1;
+      this.cmp.vif.slave.pslverr <= item.rsp;
     endtask
 
     virtual task populate_end_write_item(ref `APB_ITEM item);
-      this.cmp.vif.pready <= 1'b0;
+      this.cmp.vif.slave.pready <= 1'b0;
     endtask
 
     virtual task populate_begin_read_item(ref `APB_ITEM item);
-      this.cmp.vif.pready <= 1'b1;
-      this.cmp.vif.prdata <= item.unpack_data();
+      this.cmp.vif.slave.pready <= 1'b1;
+      this.cmp.vif.slave.prdata <= (item.rsp == OK)? item.unpack_data(): 'hx;
+      this.cmp.vif.slave.pslverr <= item.rsp;
     endtask
 
     virtual task populate_end_read_item(ref `APB_ITEM item);
-      this.cmp.vif.pready <= 1'b0;
+      this.cmp.vif.slave.pready <= 1'b0;
     endtask
 
 endclass

@@ -1,0 +1,1 @@
+-f /stec/tw/users/schen/prj/smartdv/lib/smtdv_ahb_uvc/sim/INCA_libs/irun.lnx8664.13.10.nc/ncelab.args -CHECK_VERSION "TOOL:	irun(64)	13.10-s011" -LOG_FD 4 -reinvoke ./INCA_libs/irun.lnx8664.13.10.nc/.cdssvbind/stf_00003aba_a8c038c4.txt -symreinvoke extbind_reinvoke -nocopyright -append_log -timescale 1ns/10ps 

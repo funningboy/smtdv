@@ -1,0 +1,84 @@
+irun: 10.20-s040: (c) Copyright 1995-2011 Cadence Design Systems, Inc.
+TOOL:	irun	10.20-s040: Started on Mar 04, 2014 at 14:37:08 CST
+irun
+	-f svunit-ius.f
+		/stec/tw/users/schen/prj/svunit-code/svunit_base/svunit_pkg.sv
+		/stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_uvm_mock_pkg.sv
+		+incdir+$SVUNIT_INSTALL/svunit_base
+		+incdir+$SVUNIT_INSTALL/svunit_base/uvm-mock
+		+define+CLK_PERIOD=5
+		+define+RUN_SVUNIT_WITH_UVM
+		+define+RUN_SVUNIT_WITH_UVM_REPORT_MOCK
+		-uvmhome /stec/tw/users/schen/lib/uvm-1.1d
+		-coverage a
+		-covoverwrite
+file: /stec/tw/users/schen/prj/svunit-code/svunit_base/svunit_pkg.sv
+file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_uvm_mock_pkg.sv
+class svunit_idle_uvm_domain extends uvm_domain;
+                                              |
+ncvlog: *E,SVNOTY (/stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv,48|46): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+(`include file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv line 48, file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_uvm_mock_pkg.sv line 31)
+  static local uvm_domain m_svunit_domain;
+                        |
+ncvlog: *E,NOIPRT (/stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv,52|24): Unrecognized declaration 'uvm_domain' could be a spelling mistake [SystemVerilog].
+(`include file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv line 52, file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_uvm_mock_pkg.sv line 31)
+  static function uvm_domain get_common_domain();
+                           |
+ncvlog: *E,SVNOTY (/stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv,59|27): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+(`include file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv line 59, file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_uvm_mock_pkg.sv line 31)
+  static function uvm_domain get_common_domain();
+                                             |
+ncvlog: *E,EXPSMC (/stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv,59|45): expecting a semicolon (';') [10.3.1(IEEE)].
+(`include file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv line 59, file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_uvm_mock_pkg.sv line 31)
+    uvm_domain common;
+             |
+ncvlog: *E,NOIPRT (/stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv,60|13): Unrecognized declaration 'uvm_domain' could be a spelling mistake [SystemVerilog].
+(`include file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv line 60, file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_uvm_mock_pkg.sv line 31)
+    uvm_domain common;
+             |
+ncvlog: *E,NOTINF (/stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv,60|13): Interfaces are not allowed within functions [SystemVerilog].
+(`include file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv line 60, file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_uvm_mock_pkg.sv line 31)
+    uvm_domain domain;
+             |
+ncvlog: *E,NOIPRT (/stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv,61|13): Unrecognized declaration 'uvm_domain' could be a spelling mistake [SystemVerilog].
+(`include file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv line 61, file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_uvm_mock_pkg.sv line 31)
+    uvm_domain domain;
+             |
+ncvlog: *E,NOTINF (/stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv,61|13): Interfaces are not allowed within functions [SystemVerilog].
+(`include file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv line 61, file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_uvm_mock_pkg.sv line 31)
+  static function uvm_domain get_svunit_domain();
+                           |
+ncvlog: *E,SVNOTY (/stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv,76|27): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+(`include file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv line 76, file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_uvm_mock_pkg.sv line 31)
+  static function uvm_domain get_svunit_domain();
+                                             |
+ncvlog: *E,EXPSMC (/stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv,76|45): expecting a semicolon (';') [10.3.1(IEEE)].
+(`include file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv line 76, file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_uvm_mock_pkg.sv line 31)
+    super.new(name);
+        |
+ncvlog: *E,CLSSPX (/stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv,92|8): 'super' can only be used within a class scope that derives from a base class.
+(`include file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv line 92, file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_uvm_mock_pkg.sv line 31)
+const uvm_domain _idle_domain = svunit_idle_uvm_domain::get_svunit_domain();
+               |
+ncvlog: *E,NOIPRT (/stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv,96|15): Unrecognized declaration 'uvm_domain' could be a spelling mistake [SystemVerilog].
+(`include file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv line 96, file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_uvm_mock_pkg.sv line 31)
+const uvm_domain _idle_domain = svunit_idle_uvm_domain::get_svunit_domain();
+               |
+ncvlog: *E,NPITEM (/stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv,96|15): Not a valid package item: 'interface_declaration' [SystemVerilog].
+(`include file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv line 96, file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_uvm_mock_pkg.sv line 31)
+const uvm_domain _idle_domain = svunit_idle_uvm_domain::get_svunit_domain();
+                              |
+ncvlog: *E,EXPSMC (/stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv,96|30): expecting a semicolon (';') [12.3.2(IEEE)].
+(`include file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv line 96, file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_uvm_mock_pkg.sv line 31)
+const uvm_domain _idle_domain = svunit_idle_uvm_domain::get_svunit_domain();
+                                                       |
+ncvlog: *E,ILLHIN (/stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv,96|55): illegal location for a hierarchical name (svunit_idle_uvm_domain).
+(`include file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv line 96, file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_uvm_mock_pkg.sv line 31)
+const uvm_domain _idle_domain = svunit_idle_uvm_domain::get_svunit_domain();
+                                                                         |
+ncvlog: *E,EXPSMC (/stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv,96|73): expecting a semicolon (';') [12.3.2(IEEE)].
+(`include file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_idle_uvm_domain.sv line 96, file: /stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock/svunit_uvm_mock_pkg.sv line 31)
+	package worklib.svunit_uvm_mock_pkg:sv
+		errors: 16, warnings: 0
+irun: *E,VLGERR: An error occurred during parsing.  Review the log file for errors with the code *E and fix those identified problems to proceed.  Exiting with code (status 1).
+TOOL:	irun	10.20-s040: Exiting on Mar 04, 2014 at 14:37:08 CST  (total: 00:00:00)

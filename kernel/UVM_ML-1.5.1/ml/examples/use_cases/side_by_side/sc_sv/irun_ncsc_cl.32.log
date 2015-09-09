@@ -1,0 +1,73 @@
+TOOL:	irun	13.10-s011: Started on Sep 04, 2015 at 13:31:54 CST
+irun
+	./test.sv
+	-incdir .
+	-f /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/run_utils/ml_options.32.f
+		-ml_uvm
+	-f /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/run_utils/sv_1.1_options.32.f
+		-uvmhome /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/frameworks/uvm/sv/1.1d-ml
+		-sv_lib /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/libs/uvm_sv/4.9/libuvm_sv_ml.so
+		+UVM_NO_RELNOTES
+		-nocopyright
+	./sc.cpp
+	-f /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/run_utils/sc_options.32.f
+		-f /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/run_utils/sc_options.f
+			-sysc
+			-gcc_vers 4.9
+			-DSC_INCLUDE_DYNAMIC_PROCESSES
+			-I/stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/frameworks/uvm/sc
+			-I/stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/adapters/uvm_sc
+			-I/stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/adapters/uvm_sc/common
+			-I/stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/adapters/uvm_sc/ncsc
+		-spec /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/tools/specfiles/ml
+		Fatal
+		error
+		-
+		leaving
+		Specman:
+		Specman
+		initialization
+		failed
+		because
+		environment
+		variable
+		'SPECMAN_HOME'
+		does
+		not
+		point
+		to
+		Specman's
+		home
+		directory/specfile.lnx86.gnu.4.9
+		-L/stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/libs/ncsc/ml Fatal
+		error
+		-
+		leaving
+		Specman:
+		Specman
+		initialization
+		failed
+		because
+		environment
+		variable
+		'SPECMAN_HOME'
+		does
+		not
+		point
+		to
+		Specman's
+		home
+		directory/4.9/
+		-L/stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/libs/ncsc/4.9/
+	-I.
+	-l /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/examples/use_cases/side_by_side/sc_sv/irun_ncsc_cl.32.log
+	-exit
+	-uvmtop SV:svtop
+	-uvmtop SC:sctop
+
+   User defined plus("+") options:
+	+UVM_NO_RELNOTES
+
+irun: *E,BDOPT: Unknown option -.
+irun: *E,BDOPT: Unknown option -.
+TOOL:	irun	13.10-s011: Exiting on Sep 04, 2015 at 13:31:54 CST  (total: 00:00:00)

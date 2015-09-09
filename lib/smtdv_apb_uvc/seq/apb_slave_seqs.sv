@@ -13,7 +13,7 @@ class apb_slave_base_seq #(
     `APB_ITEM item;
     mailbox #(`APB_ITEM) mbox;
 
-    `uvm_object_utils_begin(`APB_SLAVE_BASE_SEQ)
+    `uvm_object_param_utils_begin(`APB_SLAVE_BASE_SEQ)
     `uvm_object_utils_end
 
     `uvm_declare_p_sequencer(`APB_SLAVE_SEQUENCER)
@@ -27,14 +27,20 @@ class apb_slave_base_seq #(
     virtual task do_read_item(ref `APB_ITEM item);
       // override this func
       byte data[];
-      data= new[item.data.size()];
-      gene_mem.mem_load_byte(item.addr, item.data.size(), data);
+      data= new[DATA_WIDTH>>3];
+      gene_mem.mem_load_byte(item.addr, DATA_WIDTH>>3, data);
+      foreach(data[i]) begin
+        item.data[i] = data[i];
+      end
     endtask
 
     virtual task do_write_item(ref `APB_ITEM item);
-      // overide this func
+      // overide this func like err inject or seq random resp
       byte data[];
-      data= new[item.data.size()];
+      data= new[DATA_WIDTH>>3];
+      foreach(item.data[i]) begin
+        data[i] = item.data[i];
+      end
       gene_mem.mem_store_byte(item.addr, data);
     endtask
 

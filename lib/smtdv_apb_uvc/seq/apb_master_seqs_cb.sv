@@ -1,3 +1,3 @@
 
-// adaptor: extract from sqlite3 db / or
+// adaptor: extract from sqlite3 db or TLM1 systemc analysis channel
 

@@ -28,7 +28,7 @@ extern "C" {
     return reinterpret_cast<void*>(tt);
   }
   /* new SMTDV_MailBox */
-  void* dpi_smtdv_new_smtdv_masmtdvox(char* inst_name) {
+  void* dpi_smtdv_new_smtdv_mailbox(char* inst_name) {
     SMTDV_MailBox* ft = new SMTDV_MailBox(inst_name);
     assert(ft!=NULL && "UVM_ERROR: DPI_SMTDV, new SMTDV_MailBox fail");
     return reinterpret_cast<void*>(ft);
@@ -80,6 +80,32 @@ extern "C" {
     SMTDV_Transfer* tt = reinterpret_cast<SMTDV_Transfer*>(ip);
     assert(tt!=NULL && "UVM_ERROR DPI_SMTDV, get_SMTDV_Transfer end cycle fail");
     return dpi_longint_2_hexstr(tt->end_cycle);
+  }
+  /* set id */
+  void dpi_smtdv_set_smtdv_transfer_id(void* ip, char* id) {
+    SMTDV_Transfer* tt = reinterpret_cast<SMTDV_Transfer*>(ip);
+    assert(tt!=NULL && "UVM_ERROR DPI_SMTDV, set_SMTDV_Transfer id fail");
+    tt->id = dpi_hexstr_2_longint(id);
+  }
+  /* get id */
+  char* dpi_smtdv_get_smtdv_transfer_id(void* ip) {
+    SMTDV_Transfer* tt = reinterpret_cast<SMTDV_Transfer*>(ip);
+    assert(tt!=NULL && "UVM_ERROR DPI_SMTDV, get_SMTDV_Transfer id fail");
+    return dpi_longint_2_hexstr(tt->id);
+  }
+  /* set resp */
+  void dpi_smtdv_set_smtdv_transfer_resp(void* ip, char* resp) {
+    SMTDV_Transfer* tt = reinterpret_cast<SMTDV_Transfer*>(ip);
+    assert(tt!=NULL && "UVM_ERROR DPI_SMTDV, set_SMTDV_Transfer resp fail");
+    tt->resp = resp;
+  }
+  /* get resp */
+  char* dpi_smtdv_get_smtdv_transfer_resp(void* ip) {
+    SMTDV_Transfer* tt = reinterpret_cast<SMTDV_Transfer*>(ip);
+    assert(tt!=NULL && "UVM_ERROR DPI_SMTDV, get_SMTDV_Transfer resp fail");
+    char *cstr = new char[tt->rw.length() + 1];
+    strcpy(cstr, tt->rw.c_str());
+    return cstr;
   }
   /* set rw */
   void dpi_smtdv_set_smtdv_transfer_rw(void* ip, char* rw) {

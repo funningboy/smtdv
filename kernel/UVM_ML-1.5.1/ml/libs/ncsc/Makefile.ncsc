@@ -1,0 +1,81 @@
+#    Copyright 2012 Cadence Design Systems, Inc.
+#    All Rights Reserved Worldwide
+# 
+#    Licensed under the Apache License, Version 2.0 (the
+#    "License"); you may not use this file except in
+#    compliance with the License.  You may obtain a copy of
+#    the License at
+# 
+#        http://www.apache.org/licenses/LICENSE-2.0
+# 
+#    Unless required by applicable law or agreed to in
+#    writing, software distributed under the License is
+#    distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+#    CONDITIONS OF ANY KIND, either express or implied.  See
+#    the License for the specific language governing
+#    permissions and limitations under the License.
+# ----------------------------------------------------------------------
+.PHONY: clean
+
+ifndef UVM_ML_COMPILER_VERSION
+UVM_ML_COMPILER_VERSION := $(shell $(UVM_ML_HOME)/ml/tools/get_gcc_version.sh ${UVM_ML_CC})
+endif
+
+ifndef NCROOT_DIR
+NCROOT_DIR:=$(shell ncroot)
+endif
+
+ifeq ($(BITS),)
+override BITS=32
+endif
+
+
+ifeq ($(BITS),32)
+SUBLIB_PATH:= $(UVM_ML_HOME)/ml/libs/ncsc/$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)
+SYSTEMC_ENGINE_PATH=${NCROOT_DIR}/tools/systemc/lib/gnu/${UVM_ML_COMPILER_VERSION}
+LINK_OPTIONS=-m32
+DYNAMIC_LIBRARY=$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)/libuvm.so
+STATIC_LIBRARY=$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)/libuvm.a
+
+ADAPTER_STATIC_LIB=$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)/libuvm_sc_ml.a 
+FRAMEWORK_STATIC_LIB=$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)/libuvm_sc_fw.a
+BOOST_DIR=$(UVM_ML_HOME)/ml/libs/boost/$(UVM_ML_COMPILER_VERSION)
+else
+SYSTEMC_ENGINE_PATH=${NCROOT_DIR}/tools/systemc/lib/64bit/gnu/${UVM_ML_COMPILER_VERSION}
+SUBLIB_PATH= $(UVM_ML_HOME)/ml/libs/ncsc/$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)/64bit
+LINK_OPTIONS=-m64 -fPIC
+DYNAMIC_LIBRARY=$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)/64bit/libuvm.so
+STATIC_LIBRARY=$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)/64bit/libuvm.a
+ADAPTER_STATIC_LIB=$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)/64bit/libuvm_sc_ml.a
+FRAMEWORK_STATIC_LIB=$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)/64bit/libuvm_sc_fw.a
+BOOST_DIR=$(UVM_ML_HOME)/ml/libs/boost/$(UVM_ML_COMPILER_VERSION)/64bit
+endif
+
+FULL_SUBLIBS=${FRAMEWORK_STATIC_LIB} ${ADAPTER_STATIC_LIB}
+SCRIPT=${SUBLIB_PATH}/libuvm.mri
+
+
+
+AR=ar
+
+.PHONY: default
+default:  $(DYNAMIC_LIBRARY)
+
+
+#$(STATIC_LIBRARY): $(FULL_SUBLIBS) $(BOOST_DIR)/libuvmscboost_regex.a $(SCRIPT)
+#	cat $(SCRIPT) |ar -M
+
+
+$(DYNAMIC_LIBRARY): $(FULL_SUBLIBS) 
+	$(UVM_ML_LD) -shared  -o $@ $(LINK_OPTIONS)  -L$(BOOST_DIR) -Wl,--whole-archive $(FULL_SUBLIBS) -luvmscboost_regex -Wl,--no-whole-archive -ldl -L${SYSTEMC_ENGINE_PATH}  -lscBootstrap_sh -lsystemc_sh -lncscCoroutines_sh -lncsctlm2_sh -lncsccci_sh 
+# -Wl,-Bsymbolic
+clean:
+	\rm -f $(DYNAMIC_LIBRARY) $(STATIC_LIBRARY) $(SCRIPT)
+# $(SCRIPT):
+# 	@echo create ${STATIC_LIBRARY} > $@
+# 	@echo addlib ${FRAMEWORK_STATIC_LIB} >> $@
+# 	@echo addlib ${ADAPTER_STATIC_LIB} >> $@
+# 	@echo addlib $(BOOST_DIR)/libuvmscboost_regex.a >> $@
+# 	@echo save >> $@
+# 	@echo end >> $@
+

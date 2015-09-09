@@ -10,7 +10,8 @@ package apb_pkg;
   `include "smtdv_macros.svh"
 
   import smtdv_sqlite3_pkg::*;
-  `include "smtdv_sqlite3_pkg.sv"
+
+  import smtdv_stl_pkg::*;
 
   `include "apb_typedefs.svh"
   `include "apb_item.sv"
@@ -35,6 +36,5 @@ package apb_pkg;
 endpackage
 
 `include "apb_if.sv"
-`include "apb_if_harness.sv"
 
 `endif

@@ -18,6 +18,7 @@ class apb_1w1r_test
       `APB_MASTER_1W1R_SEQ::type_id::get());
   endfunction
 
+//  check trx with sqlite3 db
 endclass
 
 `endif // end of __APB_1W1R_TEST_SV__

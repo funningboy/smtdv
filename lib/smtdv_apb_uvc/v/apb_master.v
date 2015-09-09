@@ -31,7 +31,13 @@ module apb_master #(
   input [DATA_WIDTH-1:0]  prdata;
   input [0:0]             pslverr;
   input [0:0]             pready;
+  reg [DATA_WIDTH-1:0]    pwdata;
 
   // implement your func here ...
+  assign penable = 1'b1;
+  assign psel = 15'b0;
 
+  always@(posedge clk) begin
+    pwdata <= 'hdeaddead;
+  end
 endmodule

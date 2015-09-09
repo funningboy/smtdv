@@ -1,0 +1,6 @@
+irun: 13.10-s011: (c) Copyright 1995-2013 Cadence Design Systems, Inc.
+TOOL:	irun	13.10-s011: Started on Sep 04, 2015 at 09:14:51 CST
+irun
+	-ml_uvm
+irun: *E,NOMOPT: You have not specified a -R (or a -r <snapshot>) option, nor have you specified a source file for compilation.
+TOOL:	irun	13.10-s011: Exiting on Sep 04, 2015 at 09:14:51 CST  (total: 00:00:00)

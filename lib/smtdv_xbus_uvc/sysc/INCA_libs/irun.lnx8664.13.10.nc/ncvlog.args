@@ -1,0 +1,25 @@
+//
+// File created by:  irun
+// Do not modify this file
+//
+-XLMODE
+./INCA_libs/irun.lnx8664.13.10.nc
+-RUNMODE
+-STATUS
+-DEFINE
+SVA
+-INCDIR
+./
+./test_dpi_xbus_import.sv
+-CDSLIB
+./INCA_libs/irun.lnx8664.13.10.nc/cdsrun.lib
+-HDLVAR
+./INCA_libs/irun.lnx8664.13.10.nc/hdlrun.var
+-DEFINE
+NCSC
+-MESSAGES
+-UPDATE
+-XLLIBSTORE
+./INCA_libs/irun.lnx8664.13.10.nc/xllibs
+-ALLOWUNBOUND
+-hastop

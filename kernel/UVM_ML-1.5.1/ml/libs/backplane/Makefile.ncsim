@@ -1,0 +1,103 @@
+#    Copyright 2012 Cadence Design Systems, Inc.
+#    All Rights Reserved Worldwide
+# 
+#    Licensed under the Apache License, Version 2.0 (the
+#    "License"); you may not use this file except in
+#    compliance with the License.  You may obtain a copy of
+#    the License at
+# 
+#        http://www.apache.org/licenses/LICENSE-2.0
+# 
+#    Unless required by applicable law or agreed to in
+#    writing, software distributed under the License is
+#    distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+#    CONDITIONS OF ANY KIND, either express or implied.  See
+#    the License for the specific language governing
+#    permissions and limitations under the License.
+# ----------------------------------------------------------------------
+.PHONY: clean
+ifndef UVM_ML_COMPILER_VERSION
+UVM_ML_COMPILER_VERSION := $(shell $(UVM_ML_HOME)/ml/tools/get_gcc_version.sh ${UVM_ML_CC})
+endif
+
+ifeq ($(BITS),)
+override BITS=32
+endif
+
+
+ifeq ($(BITS),32)
+BIT_FLAGS=-m32
+LINK_OPTIONS=-m32
+
+ifeq (${IES_VERSION},)
+BEXT=.${UVM_ML_COMPILER_VERSION}
+LIB_BUILD_DIR=${CURDIR}/${UVM_ML_COMPILER_VERSION}
+else
+BEXT=.${IES_VERSION}.${UVM_ML_COMPILER_VERSION}
+LIB_BUILD_DIR=$(CURDIR)/ies_${IES_VERSION}/${UVM_ML_COMPILER_VERSION}
+endif # IES_VERSION 
+
+LIB_LINK_DIR=${CURDIR}/${UVM_ML_COMPILER_VERSION}
+PATH_FROM_ORIGIN=../../${UVM_ML_COMPILER_VERSION}
+PATH_FROM_ORIGIN_FOR_UVM_SV=../../../uvm_sv/${UVM_ML_COMPILER_VERSION}
+NCSIM_TOOLS_RPATH:=-Wl,-rpath,$(shell ncroot)/tools/lib
+BACKPLANE_DIR=$(UVM_ML_HOME)/ml/libs/backplane/$(UVM_ML_COMPILER_VERSION)
+UVM_SV_ADAPTER_DIR=${UVM_ML_HOME}/ml/libs/uvm_sv/${UVM_ML_COMPILER_VERSION}
+else # 32 bits 
+UVM_SV_ADAPTER_DIR=${UVM_ML_HOME}/ml/libs/uvm_sv/${UVM_ML_COMPILER_VERSION}/64bit
+ifeq (${IES_VERSION},)
+BEXT=.${UVM_ML_COMPILER_VERSION}.64
+LIB_BUILD_DIR=${CURDIR}/${UVM_ML_COMPILER_VERSION}/64bit
+else # ies version 
+BEXT=.${IES_VERSION}.${UVM_ML_COMPILER_VERSION}.64
+LIB_BUILD_DIR=$(CURDIR)/ies_${IES_VERSION}/${UVM_ML_COMPILER_VERSION}/64bit
+endif # ies version 
+
+
+
+
+LINK_OPTIONS=-m64 -fPIC
+BIT_FLAGS=-m64 -fPIC -DBUILD_64BIT
+LIB_LINK_DIR=${CURDIR}/${UVM_ML_COMPILER_VERSION}/64bit
+PATH_FROM_ORIGIN=../../../${UVM_ML_COMPILER_VERSION}/64bit
+PATH_FROM_ORIGIN_FOR_UVM_SV=../../../../uvm_sv/${UVM_ML_COMPILER_VERSION}/64bit
+NCSIM_TOOLS_RPATH := -Wl,-rpath,$(shell ncroot)/tools/lib/64bit
+BACKPLANE_DIR=$(UVM_ML_HOME)/ml/libs/backplane/$(UVM_ML_COMPILER_VERSION)/64bit
+endif # 32 bit 
+
+TARGET_LIBRARY=$(LIB_BUILD_DIR)/libml_uvm.so 
+
+
+OBJS=bp_cdns$(BEXT).o
+DEPFILES=$(subst .o,.d,$(OBJS))
+
+COMPILE_OPTIONS=$(BIT_FLAGS) -I$(UVM_ML_HOME)/ml/backplane -I$(UVM_ML_SVDPI_DIR)/
+
+
+%$(BEXT).o:%.c
+	gcc $(COMPILE_OPTIONS) ${UVM_ML_DEBUG_FLAGS}  -c -o $@ $<
+
+%$(BEXT).d: %.c
+	gcc $(COMPILE_OPTIONS) ${UVM_ML_DEBUG_FLAGS}  -MM -MT "$@ $(subst .d,.o,$@)" -o $@ $<
+
+.PHONY: link_backplane
+default: $(LIB_BUILD_DIR) link_backplane $(TARGET_LIBRARY)
+	@echo $(TARGET_LIBRARY) was built
+
+link_backplane : ${LIB_BUILD_DIR}
+ifneq (${IES_VERSION},)
+	ln -sf ${BACKPLANE_DIR}/libuvm_ml_bp.so ${LIB_BUILD_DIR}
+endif
+	ln -sf ${UVM_ML_SV_ADAPTER_DIR}/libuvm_sv_ml.so ${LIB_BUILD_DIR}
+
+$(LIB_BUILD_DIR):
+	mkdir -p $@
+
+$(TARGET_LIBRARY): $(OBJS) 
+	gcc -shared -o $@ ${UVM_ML_DEBUG_FLAGS} $(LINK_OPTIONS) $(OBJS)  -L${LIB_LINK_DIR} -Wl,-rpath-link,${LIB_LINK_DIR}  -Wl,-rpath,'$$ORIGIN'  ${NCSIM_TOOLS_RPATH}
+
+clean:
+	\rm -f $(TARGET_LIBRARY) $(OBJS) ${LIB_BUILD_DIR}/libuvm_ml_bp.so
+ifneq ($(MAKECMDGOALS),clean)
+include $(DEPFILES)
+endif

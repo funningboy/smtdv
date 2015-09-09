@@ -44,16 +44,18 @@
      END_CYCLE = 260,
      BEGIN_TIME = 261,
      END_TIME = 262,
-     RW = 263,
-     ADDR = 264,
-     DATA = 265,
-     BYTEN = 266,
-     TLPAREN = 267,
-     TRPAREN = 268,
-     TCOMMA = 269,
-     COMMENT = 270,
-     TIDENTIFIER = 271,
-     SIDENTIFIER = 272
+     ID = 263,
+     RESP = 264,
+     RW = 265,
+     ADDR = 266,
+     DATA = 267,
+     BYTEN = 268,
+     TLPAREN = 269,
+     TRPAREN = 270,
+     TCOMMA = 271,
+     COMMENT = 272,
+     TIDENTIFIER = 273,
+     SIDENTIFIER = 274
    };
 #endif
 /* Tokens.  */
@@ -62,16 +64,18 @@
 #define END_CYCLE 260
 #define BEGIN_TIME 261
 #define END_TIME 262
-#define RW 263
-#define ADDR 264
-#define DATA 265
-#define BYTEN 266
-#define TLPAREN 267
-#define TRPAREN 268
-#define TCOMMA 269
-#define COMMENT 270
-#define TIDENTIFIER 271
-#define SIDENTIFIER 272
+#define ID 263
+#define RESP 264
+#define RW 265
+#define ADDR 266
+#define DATA 267
+#define BYTEN 268
+#define TLPAREN 269
+#define TRPAREN 270
+#define TCOMMA 271
+#define COMMENT 272
+#define TIDENTIFIER 273
+#define SIDENTIFIER 274
 
 
 
@@ -85,7 +89,7 @@ std::string *smtdv_string;
 int token;
 }
 /* Line 1529 of yacc.c.  */
-#line 89 "dpi_smtdv_parser.tab.h"
+#line 93 "dpi_smtdv_parser.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

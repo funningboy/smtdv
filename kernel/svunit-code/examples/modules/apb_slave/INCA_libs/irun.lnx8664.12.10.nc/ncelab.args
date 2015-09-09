@@ -1,0 +1,33 @@
+//
+// File created by:  irun
+// Do not modify this file
+//
++nccoverage+functional
++notchkmsg
++notimingchecks
++no_notifier
++define+SVA
++incdir+../
++incdir+/stec/tw/users/schen/prj/svunit-code/svunit_base
+-ACCESS
+rwc
+-STATUS
+-COVERAGE
+b:u
+-COVERAGE
+functional
+-NO_TCHK_MSG
+-NOTIMINGCHECKS
+-NONOTIFIER
+-MESSAGES
+apb_slave_unit_test
+-XLMODE
+./INCA_libs/irun.lnx8664.12.10.nc
+-RUNMODE
+-CDSLIB
+./INCA_libs/irun.lnx8664.12.10.nc/cds.lib
+-HDLVAR
+./INCA_libs/irun.lnx8664.12.10.nc/hdl.var
+-WORK
+worklib
+-HASXLMODE

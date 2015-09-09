@@ -3,6 +3,7 @@
 ..//apb_slave.v
 ../test/apb_slave.v
 ../seq/apb_slave.v
-../v/smtdv_sqlite3_pkg.sv
-.//smtdv_sqlite3_pkg.sv
-../../../dpi/sqlite3/macros/uvm_deprecated_defines.svh
+../v/dpi_smtdv_stl.sv
+.//dpi_smtdv_stl.sv
+../../../dpi/sqlite3/dpi_smtdv_stl.sv
+../../../dpi/stl/macros/uvm_deprecated_defines.svh

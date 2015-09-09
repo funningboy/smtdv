@@ -26,6 +26,7 @@ class apb_base_test extends smtdv_test;
 
   virtual function void build_phase(uvm_phase phase);
     string slave_cfg0, slave_cfg1;
+    bit [ADDR_WIDTH-1:0] start_addr, end_addr;
     super.build_phase(phase);
 
     // slave0 cfg, agent
@@ -53,8 +54,12 @@ class apb_base_test extends smtdv_test;
     master_cfg[0].has_force = 1;
     master_cfg[0].has_coverage = 1;
     master_cfg[0].has_export = 1;
-    master_cfg[0].add_slave(slave_cfg[0], 0, 32'h0000_0000, 32'h7FFF_FFFF);
-    master_cfg[0].add_slave(slave_cfg[1], 1, 32'h8000_0000, 32'hFFFF_FFFF);
+    start_addr = `APB_START_ADDR(0)
+    end_addr = `APB_END_ADDR(0)
+    master_cfg[0].add_slave(slave_cfg[0], 0, start_addr, end_addr);
+    start_addr = `APB_START_ADDR(1)
+    end_addr = `APB_END_ADDR(1)
+    master_cfg[0].add_slave(slave_cfg[1], 1, start_addr, end_addr);
 
     master_agent[0] = `APB_MASTER_AGENT::type_id::create("master_agent[0]", this);
     uvm_config_db#(uvm_bitstream_t)::set(null, "/.+master_agent[*0]*/", "is_active", UVM_ACTIVE);

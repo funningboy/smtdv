@@ -1,0 +1,553 @@
+irun: 13.10-s011: (c) Copyright 1995-2013 Cadence Design Systems, Inc.
+TOOL:	irun	13.10-s011: Started on Aug 24, 2015 at 09:33:23 CST
+irun
+	+define+SVUNIT_VERSION="SVUnit v2.7"
+	-l run.log
+	-incdir ./modules/apb_slave
+	-incdir ./uvm/simple_model
+	-incdir ./uvm/uvm_express
+	-incdir ./uvm/uvm_express
+	-incdir ./uvm/uvm_express
+	-incdir ./uvm/uvm_express
+	-incdir ./uvm/uvm_report_mock
+	-incdir /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/examples
+	-incdir /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base
+	/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv
+	-file svunit.f
+		/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv
+		+incdir+/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base
+		+define+CLK_PERIOD=5
+		-coverage a
+		-covoverwrite
+	-file svunit.f
+		/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv
+		+incdir+/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base
+		+define+CLK_PERIOD=5
+		-coverage a
+		-covoverwrite
+	./modules/apb_slave/apb_slave_unit_test.sv
+	./uvm/simple_model/simple_model_unit_test.sv
+	./uvm/uvm_express/apb_coverage_agent_unit_test.sv
+	./uvm/uvm_express/apb_mon_unit_test.sv
+	./uvm/uvm_express/apb_if_unit_test.sv
+	./uvm/uvm_express/apb_coverage_unit_test.sv
+	./uvm/uvm_report_mock/uut_unit_test.sv
+	./modules/apb_slave/.__modules_apb_slave_testsuite.sv
+	./uvm/simple_model/.__uvm_simple_model_testsuite.sv
+	./uvm/uvm_express/.__uvm_uvm_express_testsuite.sv
+	./uvm/uvm_report_mock/.__uvm_uvm_report_mock_testsuite.sv
+	/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/examples/.testrunner.sv
+CLK_PERIOD 5
+            |
+ncvlog: *W,MACNDF (-DEFINE macro,1|12): The text macro 'CLK_PERIOD' has also been defined on the command line using the -DEFINE command line option.  The compiler will ignore the definition found in the Verilog source code.
+file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv
+`define SVUNIT_VERSION 1.0
+                          |
+ncvlog: *W,MACNDF (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_defines.svh,22|26): The text macro 'SVUNIT_VERSION' has also been defined on the command line using the -DEFINE command line option.  The compiler will ignore the definition found in the Verilog source code.
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_defines.svh line 22, file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv line 22)
+	package worklib.svunit_pkg:sv
+		errors: 0, warnings: 0
+file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv
+`define SVUNIT_VERSION 1.0
+                          |
+ncvlog: *W,MACNDF (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_defines.svh,22|26): The text macro 'SVUNIT_VERSION' has also been defined on the command line using the -DEFINE command line option.  The compiler will ignore the definition found in the Verilog source code.
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_defines.svh line 22, file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv line 22)
+package svunit_pkg;
+                 |
+ncvlog: *W,RECOME (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv,24|17): recompiling design unit worklib.svunit_pkg:sv.
+	First compiled from line 24 of /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv.
+  protected results_t success = PASS;
+                    |
+ncvlog: *E,NOIPRT (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv,38|20): Unrecognized declaration 'results_t' could be an unsupported keyword, a spelling mistake or missing instance port list '()' [SystemVerilog].
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv line 38, file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv line 31)
+  protected results_t success = PASS;
+                              |
+ncvlog: *E,EXPSMC (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv,38|30): expecting a semicolon (';') [12.3.2(IEEE)].
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv line 38, file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv line 31)
+  extern function results_t get_results();
+                          |
+ncvlog: *E,SVNOTY (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv,45|26): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv line 45, file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv line 31)
+  extern function results_t get_results();
+                                      |
+ncvlog: *E,EXPSMC (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv,45|38): expecting a semicolon (';') [10.3.1(IEEE)].
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv line 45, file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv line 31)
+function results_t svunit_base::get_results();
+                 |
+ncvlog: *E,SVNOTY (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv,87|17): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv line 87, file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv line 31)
+function results_t svunit_base::get_results();
+                             |
+ncvlog: *E,EXPSMC (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv,87|29): expecting a semicolon (';') [10.3.1(IEEE)].
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv line 87, file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv line 31)
+	package worklib.svunit_pkg:sv
+		errors: 6, warnings: 1
+file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv
+`define SVUNIT_VERSION 1.0
+                          |
+ncvlog: *W,MACNDF (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_defines.svh,22|26): The text macro 'SVUNIT_VERSION' has also been defined on the command line using the -DEFINE command line option.  The compiler will ignore the definition found in the Verilog source code.
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_defines.svh line 22, file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv line 22)
+package svunit_pkg;
+                 |
+ncvlog: *W,RECOME (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv,24|17): recompiling design unit worklib.svunit_pkg:sv.
+	First compiled from line 24 of /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv.
+  protected results_t success = PASS;
+                    |
+ncvlog: *E,NOIPRT (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv,38|20): Unrecognized declaration 'results_t' could be an unsupported keyword, a spelling mistake or missing instance port list '()' [SystemVerilog].
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv line 38, file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv line 31)
+  protected results_t success = PASS;
+                              |
+ncvlog: *E,EXPSMC (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv,38|30): expecting a semicolon (';') [12.3.2(IEEE)].
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv line 38, file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv line 31)
+  extern function results_t get_results();
+                          |
+ncvlog: *E,SVNOTY (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv,45|26): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv line 45, file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv line 31)
+  extern function results_t get_results();
+                                      |
+ncvlog: *E,EXPSMC (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv,45|38): expecting a semicolon (';') [10.3.1(IEEE)].
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv line 45, file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv line 31)
+function results_t svunit_base::get_results();
+                 |
+ncvlog: *E,SVNOTY (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv,87|17): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv line 87, file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv line 31)
+function results_t svunit_base::get_results();
+                             |
+ncvlog: *E,EXPSMC (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv,87|29): expecting a semicolon (';') [10.3.1(IEEE)].
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv line 87, file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv line 31)
+	package worklib.svunit_pkg:sv
+		errors: 6, warnings: 1
+file: ./modules/apb_slave/apb_slave_unit_test.sv
+`define SVUNIT_VERSION 1.0
+                          |
+ncvlog: *W,MACNDF (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_defines.svh,22|26): The text macro 'SVUNIT_VERSION' has also been defined on the command line using the -DEFINE command line option.  The compiler will ignore the definition found in the Verilog source code.
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_defines.svh line 22, file: ./modules/apb_slave/apb_slave_unit_test.sv line 22)
+`define SVUNIT_VERSION 1.0
+                          |
+ncvlog: *W,MACNDF (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_defines.svh,22|26): The text macro 'SVUNIT_VERSION' has also been defined on the command line using the -DEFINE command line option.  The compiler will ignore the definition found in the Verilog source code.
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_defines.svh line 22, `include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv line 22, file: ./modules/apb_slave/apb_slave_unit_test.sv line 23)
+package svunit_pkg;
+                 |
+ncvlog: *W,RECOME (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv,24|17): recompiling design unit worklib.svunit_pkg:sv.
+	First compiled from line 24 of /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv.
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv line 24, file: ./modules/apb_slave/apb_slave_unit_test.sv line 23)
+  protected results_t success = PASS;
+                    |
+ncvlog: *E,NOIPRT (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv,38|20): Unrecognized declaration 'results_t' could be an unsupported keyword, a spelling mistake or missing instance port list '()' [SystemVerilog].
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv line 38, `include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv line 31, file: ./modules/apb_slave/apb_slave_unit_test.sv line 23)
+  protected results_t success = PASS;
+                              |
+ncvlog: *E,EXPSMC (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv,38|30): expecting a semicolon (';') [12.3.2(IEEE)].
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv line 38, `include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv line 31, file: ./modules/apb_slave/apb_slave_unit_test.sv line 23)
+  extern function results_t get_results();
+                          |
+ncvlog: *E,SVNOTY (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv,45|26): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv line 45, `include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv line 31, file: ./modules/apb_slave/apb_slave_unit_test.sv line 23)
+  extern function results_t get_results();
+                                      |
+ncvlog: *E,EXPSMC (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv,45|38): expecting a semicolon (';') [10.3.1(IEEE)].
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv line 45, `include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv line 31, file: ./modules/apb_slave/apb_slave_unit_test.sv line 23)
+function results_t svunit_base::get_results();
+                 |
+ncvlog: *E,SVNOTY (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv,87|17): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv line 87, `include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv line 31, file: ./modules/apb_slave/apb_slave_unit_test.sv line 23)
+function results_t svunit_base::get_results();
+                             |
+ncvlog: *E,EXPSMC (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv,87|29): expecting a semicolon (';') [10.3.1(IEEE)].
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_base.sv line 87, `include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_pkg.sv line 31, file: ./modules/apb_slave/apb_slave_unit_test.sv line 23)
+	package worklib.svunit_pkg:sv
+		errors: 6, warnings: 1
+	module worklib.apb_slave:sv
+		errors: 0, warnings: 0
+	module worklib.apb_slave_unit_test:sv
+		errors: 0, warnings: 0
+file: ./uvm/simple_model/simple_model_unit_test.sv
+`define SVUNIT_VERSION 1.0
+                          |
+ncvlog: *W,MACNDF (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_defines.svh,22|26): The text macro 'SVUNIT_VERSION' has also been defined on the command line using the -DEFINE command line option.  The compiler will ignore the definition found in the Verilog source code.
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_defines.svh line 22, file: ./uvm/simple_model/simple_model_unit_test.sv line 22)
+import svunit_uvm_mock_pkg::*;
+                         |
+ncvlog: *E,NOPBIND (./uvm/simple_model/simple_model_unit_test.sv,32|25): Package svunit_uvm_mock_pkg could not be bound.
+`include "uvm_macros.svh"
+                        |
+ncvlog: *E,COFILX (./uvm/simple_model/simple_model.sv,25|24): cannot open include file 'uvm_macros.svh'.
+(`include file: ./uvm/simple_model/simple_model.sv line 25, file: ./uvm/simple_model/simple_model_unit_test.sv line 38)
+`include "uvm_macros.svh"
+                        |
+ncvlog: *E,COFILX (./uvm/simple_model/simple_xaction.sv,25|24): cannot open include file 'uvm_macros.svh'.
+(`include file: ./uvm/simple_model/simple_xaction.sv line 25, `include file: ./uvm/simple_model/simple_model.sv line 26, file: ./uvm/simple_model/simple_model_unit_test.sv line 38)
+import uvm_pkg::*;
+             |
+ncvlog: *E,NOPBIND (./uvm/simple_model/simple_xaction.sv,27|13): Package uvm_pkg could not be bound.
+(`include file: ./uvm/simple_model/simple_xaction.sv line 29, `include file: ./uvm/simple_model/simple_model.sv line 26, file: ./uvm/simple_model/simple_model_unit_test.sv line 38)
+class simple_xaction extends uvm_sequence_item;
+                                             |
+ncvlog: *E,SVNOTY (./uvm/simple_model/simple_xaction.sv,29|45): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+(`include file: ./uvm/simple_model/simple_xaction.sv line 29, `include file: ./uvm/simple_model/simple_model.sv line 26, file: ./uvm/simple_model/simple_model_unit_test.sv line 38)
+  `uvm_object_utils_begin(simple_xaction)
+                        |
+ncvlog: *E,NOTDIR (./uvm/simple_model/simple_xaction.sv,32|24): `uvm_object_utils_begin: not a recognized directive or macro [2.7.3][16.3.1][16(IEEE)].
+(`include file: ./uvm/simple_model/simple_xaction.sv line 32, `include file: ./uvm/simple_model/simple_model.sv line 26, file: ./uvm/simple_model/simple_model_unit_test.sv line 38)
+  `uvm_object_utils_begin(simple_xaction)
+                         |
+ncvlog: *E,EXPENC (./uvm/simple_model/simple_xaction.sv,32|25): Expecting the keyword 'endclass'.
+(`include file: ./uvm/simple_model/simple_xaction.sv line 32, `include file: ./uvm/simple_model/simple_model.sv line 26, file: ./uvm/simple_model/simple_model_unit_test.sv line 38)
+    `uvm_field_int(field, UVM_ALL_ON)
+                 |
+ncvlog: *E,NOTDIR (./uvm/simple_model/simple_xaction.sv,33|17): `uvm_field_int: not a recognized directive or macro [2.7.3][16.3.1][16(IEEE)].
+(`include file: ./uvm/simple_model/simple_xaction.sv line 33, `include file: ./uvm/simple_model/simple_model.sv line 26, file: ./uvm/simple_model/simple_model_unit_test.sv line 38)
+  `uvm_object_utils_end
+                      |
+ncvlog: *E,NOTDIR (./uvm/simple_model/simple_xaction.sv,34|22): `uvm_object_utils_end: not a recognized directive or macro [2.7.3][16.3.1][16(IEEE)].
+(`include file: ./uvm/simple_model/simple_xaction.sv line 34, `include file: ./uvm/simple_model/simple_model.sv line 26, file: ./uvm/simple_model/simple_model_unit_test.sv line 38)
+  function new(string name = "simple_xaction");
+             |
+ncvlog: *E,NEWOIC (./uvm/simple_model/simple_xaction.sv,36|13): The class constructor method 'new' is only allowed within a class declaration.
+(`include file: ./uvm/simple_model/simple_xaction.sv line 36, `include file: ./uvm/simple_model/simple_model.sv line 26, file: ./uvm/simple_model/simple_model_unit_test.sv line 38)
+     super.new(name);
+         |
+ncvlog: *E,CLSSPX (./uvm/simple_model/simple_xaction.sv,37|9): 'super' can only be used within a class scope that derives from a base class.
+(`include file: ./uvm/simple_model/simple_xaction.sv line 37, `include file: ./uvm/simple_model/simple_model.sv line 26, file: ./uvm/simple_model/simple_model_unit_test.sv line 38)
+endclass
+       |
+ncvlog: *E,MPANDC (./uvm/simple_model/simple_xaction.sv,39|7): expecting the keyword 'module', 'macromodule', 'primitive', 'connectmodule','connect', 'discipline' or 'nature' [A.1].
+(`include file: ./uvm/simple_model/simple_xaction.sv line 39, `include file: ./uvm/simple_model/simple_model.sv line 26, file: ./uvm/simple_model/simple_model_unit_test.sv line 38)
+  `uvm_component_utils(simple_model)
+                     |
+ncvlog: *E,NOTDIR (./uvm/simple_model/simple_model.sv,41|21): `uvm_component_utils: not a recognized directive or macro [2.7.3][16.3.1][16(IEEE)].
+(`include file: ./uvm/simple_model/simple_model.sv line 41, file: ./uvm/simple_model/simple_model_unit_test.sv line 38)
+  uvm_blocking_put_port #(simple_xaction) put_port;
+                                                  |
+ncvlog: *E,EXPLPA (./uvm/simple_model/simple_model_unit_test.sv,59|50): expecting a left parenthesis ('(') [12.1.2][7.1(IEEE)].
+  uvm_tlm_fifo #(simple_xaction) in_fifo;
+                                        |
+ncvlog: *E,EXPLPA (./uvm/simple_model/simple_model_unit_test.sv,60|40): expecting a left parenthesis ('(') [12.1.2][7.1(IEEE)].
+  uvm_tlm_fifo #(simple_xaction) out_fifo;
+                                         |
+ncvlog: *E,EXPLPA (./uvm/simple_model/simple_model_unit_test.sv,62|41): expecting a left parenthesis ('(') [12.1.2][7.1(IEEE)].
+  uvm_blocking_get_port #(simple_xaction) get_port;
+                                                  |
+ncvlog: *E,EXPLPA (./uvm/simple_model/simple_model_unit_test.sv,63|50): expecting a left parenthesis ('(') [12.1.2][7.1(IEEE)].
+      simple_xaction tr = new();
+                   |
+ncvlog: *E,SVNOTY (./uvm/simple_model/simple_model_unit_test.sv,197|19): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+      simple_xaction tr = new();
+                   |
+ncvlog: *E,SVNOTY (./uvm/simple_model/simple_model_unit_test.sv,218|19): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+      simple_xaction in_tr = new();
+                   |
+ncvlog: *E,SVNOTY (./uvm/simple_model/simple_model_unit_test.sv,240|19): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+      simple_xaction out_tr;
+                          |
+ncvlog: *E,MISEXX (./uvm/simple_model/simple_model_unit_test.sv,241|26): expecting an '=' or '<=' sign in an assignment [9.2(IEEE)].
+	module worklib.simple_model_unit_test:sv
+		errors: 8, warnings: 0
+file: ./uvm/uvm_express/apb_coverage_agent_unit_test.sv
+`define SVUNIT_VERSION 1.0
+                          |
+ncvlog: *W,MACNDF (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_defines.svh,22|26): The text macro 'SVUNIT_VERSION' has also been defined on the command line using the -DEFINE command line option.  The compiler will ignore the definition found in the Verilog source code.
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_defines.svh line 22, file: ./uvm/uvm_express/apb_coverage_agent_unit_test.sv line 25)
+`include "uvm_macros.svh"
+                        |
+ncvlog: *E,COFILX (./uvm/uvm_express/apb_coverage_agent.sv,25|24): cannot open include file 'uvm_macros.svh'.
+(`include file: ./uvm/uvm_express/apb_coverage_agent.sv line 25, file: ./uvm/uvm_express/apb_coverage_agent_unit_test.sv line 26)
+import svunit_uvm_mock_pkg::*;
+                         |
+ncvlog: *E,NOPBIND (./uvm/uvm_express/apb_coverage_agent_unit_test.sv,23|25): Package svunit_uvm_mock_pkg could not be bound.
+(`include file: ./uvm/uvm_express/apb_mon.sv line 25, `include file: ./uvm/uvm_express/apb_coverage_agent.sv line 27, file: ./uvm/uvm_express/apb_coverage_agent_unit_test.sv line 26)
+`include "uvm_macros.svh"
+                        |
+ncvlog: *E,COFILX (./uvm/uvm_express/apb_xaction.sv,25|24): cannot open include file 'uvm_macros.svh'.
+(`include file: ./uvm/uvm_express/apb_xaction.sv line 25, `include file: ./uvm/uvm_express/apb_mon.sv line 26, `include file: ./uvm/uvm_express/apb_coverage_agent.sv line 27, file: ./uvm/uvm_express/apb_coverage_agent_unit_test.sv line 26)
+import uvm_pkg::*;
+             |
+ncvlog: *E,NOPBIND (./uvm/uvm_express/apb_mon.sv,25|13): Package uvm_pkg could not be bound.
+(`include file: ./uvm/uvm_express/apb_xaction.sv line 27, `include file: ./uvm/uvm_express/apb_mon.sv line 26, `include file: ./uvm/uvm_express/apb_coverage_agent.sv line 27, file: ./uvm/uvm_express/apb_coverage_agent_unit_test.sv line 26)
+import uvm_pkg::*;
+             |
+ncvlog: *E,NOPBIND (./uvm/uvm_express/apb_xaction.sv,27|13): Package uvm_pkg could not be bound.
+(`include file: ./uvm/uvm_express/apb_xaction.sv line 29, `include file: ./uvm/uvm_express/apb_mon.sv line 26, `include file: ./uvm/uvm_express/apb_coverage_agent.sv line 27, file: ./uvm/uvm_express/apb_coverage_agent_unit_test.sv line 26)
+class apb_xaction extends uvm_sequence_item;
+                                          |
+ncvlog: *E,SVNOTY (./uvm/uvm_express/apb_xaction.sv,29|42): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+(`include file: ./uvm/uvm_express/apb_xaction.sv line 29, `include file: ./uvm/uvm_express/apb_mon.sv line 26, `include file: ./uvm/uvm_express/apb_coverage_agent.sv line 27, file: ./uvm/uvm_express/apb_coverage_agent_unit_test.sv line 26)
+  `uvm_object_utils_begin(apb_xaction)
+                        |
+ncvlog: *E,NOTDIR (./uvm/uvm_express/apb_xaction.sv,37|24): `uvm_object_utils_begin: not a recognized directive or macro [2.7.3][16.3.1][16(IEEE)].
+(`include file: ./uvm/uvm_express/apb_xaction.sv line 37, `include file: ./uvm/uvm_express/apb_mon.sv line 26, `include file: ./uvm/uvm_express/apb_coverage_agent.sv line 27, file: ./uvm/uvm_express/apb_coverage_agent_unit_test.sv line 26)
+  `uvm_object_utils_begin(apb_xaction)
+                         |
+ncvlog: *E,EXPENC (./uvm/uvm_express/apb_xaction.sv,37|25): Expecting the keyword 'endclass'.
+(`include file: ./uvm/uvm_express/apb_xaction.sv line 37, `include file: ./uvm/uvm_express/apb_mon.sv line 26, `include file: ./uvm/uvm_express/apb_coverage_agent.sv line 27, file: ./uvm/uvm_express/apb_coverage_agent_unit_test.sv line 26)
+    `uvm_field_int(kind, UVM_ALL_ON)
+                 |
+ncvlog: *E,NOTDIR (./uvm/uvm_express/apb_xaction.sv,38|17): `uvm_field_int: not a recognized directive or macro [2.7.3][16.3.1][16(IEEE)].
+(`include file: ./uvm/uvm_express/apb_xaction.sv line 38, `include file: ./uvm/uvm_express/apb_mon.sv line 26, `include file: ./uvm/uvm_express/apb_coverage_agent.sv line 27, file: ./uvm/uvm_express/apb_coverage_agent_unit_test.sv line 26)
+    `uvm_field_int(addr, UVM_ALL_ON)
+                 |
+ncvlog: *E,NOTDIR (./uvm/uvm_express/apb_xaction.sv,39|17): `uvm_field_int: not a recognized directive or macro [2.7.3][16.3.1][16(IEEE)].
+(`include file: ./uvm/uvm_express/apb_xaction.sv line 39, `include file: ./uvm/uvm_express/apb_mon.sv line 26, `include file: ./uvm/uvm_express/apb_coverage_agent.sv line 27, file: ./uvm/uvm_express/apb_coverage_agent_unit_test.sv line 26)
+    `uvm_field_int(data, UVM_ALL_ON)
+                 |
+ncvlog: *E,NOTDIR (./uvm/uvm_express/apb_xaction.sv,40|17): `uvm_field_int: not a recognized directive or macro [2.7.3][16.3.1][16(IEEE)].
+(`include file: ./uvm/uvm_express/apb_xaction.sv line 40, `include file: ./uvm/uvm_express/apb_mon.sv line 26, `include file: ./uvm/uvm_express/apb_coverage_agent.sv line 27, file: ./uvm/uvm_express/apb_coverage_agent_unit_test.sv line 26)
+  `uvm_object_utils_end
+                      |
+ncvlog: *E,NOTDIR (./uvm/uvm_express/apb_xaction.sv,41|22): `uvm_object_utils_end: not a recognized directive or macro [2.7.3][16.3.1][16(IEEE)].
+(`include file: ./uvm/uvm_express/apb_xaction.sv line 41, `include file: ./uvm/uvm_express/apb_mon.sv line 26, `include file: ./uvm/uvm_express/apb_coverage_agent.sv line 27, file: ./uvm/uvm_express/apb_coverage_agent_unit_test.sv line 26)
+  function new(string name = "apb_xaction");
+             |
+ncvlog: *E,NEWOIC (./uvm/uvm_express/apb_xaction.sv,43|13): The class constructor method 'new' is only allowed within a class declaration.
+(`include file: ./uvm/uvm_express/apb_xaction.sv line 43, `include file: ./uvm/uvm_express/apb_mon.sv line 26, `include file: ./uvm/uvm_express/apb_coverage_agent.sv line 27, file: ./uvm/uvm_express/apb_coverage_agent_unit_test.sv line 26)
+     super.new(name);
+         |
+ncvlog: *E,CLSSPX (./uvm/uvm_express/apb_xaction.sv,44|9): 'super' can only be used within a class scope that derives from a base class.
+(`include file: ./uvm/uvm_express/apb_xaction.sv line 44, `include file: ./uvm/uvm_express/apb_mon.sv line 26, `include file: ./uvm/uvm_express/apb_coverage_agent.sv line 27, file: ./uvm/uvm_express/apb_coverage_agent_unit_test.sv line 26)
+endclass
+       |
+ncvlog: *E,MPANDC (./uvm/uvm_express/apb_xaction.sv,46|7): expecting the keyword 'module', 'macromodule', 'primitive', 'connectmodule','connect', 'discipline' or 'nature' [A.1].
+(`include file: ./uvm/uvm_express/apb_xaction.sv line 46, `include file: ./uvm/uvm_express/apb_mon.sv line 26, `include file: ./uvm/uvm_express/apb_coverage_agent.sv line 27, file: ./uvm/uvm_express/apb_coverage_agent_unit_test.sv line 26)
+  `uvm_component_utils(apb_mon)
+                     |
+ncvlog: *E,NOTDIR (./uvm/uvm_express/apb_mon.sv,30|21): `uvm_component_utils: not a recognized directive or macro [2.7.3][16.3.1][16(IEEE)].
+(`include file: ./uvm/uvm_express/apb_mon.sv line 30, `include file: ./uvm/uvm_express/apb_coverage_agent.sv line 27, file: ./uvm/uvm_express/apb_coverage_agent_unit_test.sv line 26)
+`include "uvm_macros.svh"
+                        |
+ncvlog: *E,COFILX (./uvm/uvm_express/apb_coverage.sv,25|24): cannot open include file 'uvm_macros.svh'.
+(`include file: ./uvm/uvm_express/apb_coverage.sv line 25, `include file: ./uvm/uvm_express/apb_coverage_agent.sv line 28, file: ./uvm/uvm_express/apb_coverage_agent_unit_test.sv line 26)
+  `uvm_component_utils(apb_coverage)
+                     |
+ncvlog: *E,NOTDIR (./uvm/uvm_express/apb_coverage.sv,31|21): `uvm_component_utils: not a recognized directive or macro [2.7.3][16.3.1][16(IEEE)].
+(`include file: ./uvm/uvm_express/apb_coverage.sv line 31, `include file: ./uvm/uvm_express/apb_coverage_agent.sv line 28, file: ./uvm/uvm_express/apb_coverage_agent_unit_test.sv line 26)
+  `uvm_component_utils(apb_coverage_agent)
+                     |
+ncvlog: *E,NOTDIR (./uvm/uvm_express/apb_coverage_agent.sv,33|21): `uvm_component_utils: not a recognized directive or macro [2.7.3][16.3.1][16(IEEE)].
+(`include file: ./uvm/uvm_express/apb_coverage_agent.sv line 33, file: ./uvm/uvm_express/apb_coverage_agent_unit_test.sv line 26)
+      `uvm_fatal("ENV", "BFM not set")
+               |
+ncvlog: *E,NOTDIR (./uvm/uvm_express/apb_coverage_agent.sv,48|15): `uvm_fatal: not a recognized directive or macro [2.7.3][16.3.1][16(IEEE)].
+(`include file: ./uvm/uvm_express/apb_coverage_agent.sv line 48, file: ./uvm/uvm_express/apb_coverage_agent_unit_test.sv line 26)
+	interface worklib.apb_if:sv
+		errors: 0, warnings: 0
+  svunit_testcase svunit_ut;
+                          |
+ncvlog: *E,NOIPRT (./uvm/uvm_express/apb_coverage_agent_unit_test.sv,32|26): Unrecognized declaration 'svunit_ut' could be an unsupported keyword, a spelling mistake or missing instance port list '()' [SystemVerilog].
+  apb_coverage_agent my_apb_coverage_agent;
+                                         |
+ncvlog: *E,NOIPRT (./uvm/uvm_express/apb_coverage_agent_unit_test.sv,47|41): Unrecognized declaration 'my_apb_coverage_agent' could be an unsupported keyword, a spelling mistake or missing instance port list '()' [SystemVerilog].
+	module worklib.apb_coverage_agent_unit_test:sv
+		errors: 2, warnings: 0
+file: ./uvm/uvm_express/apb_mon_unit_test.sv
+`define SVUNIT_VERSION 1.0
+                          |
+ncvlog: *W,MACNDF (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_defines.svh,22|26): The text macro 'SVUNIT_VERSION' has also been defined on the command line using the -DEFINE command line option.  The compiler will ignore the definition found in the Verilog source code.
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_defines.svh line 22, file: ./uvm/uvm_express/apb_mon_unit_test.sv line 25)
+import svunit_uvm_mock_pkg::*;
+                         |
+ncvlog: *E,NOPBIND (./uvm/uvm_express/apb_mon_unit_test.sv,23|25): Package svunit_uvm_mock_pkg could not be bound.
+  uvm_tlm_analysis_fifo #(apb_xaction) af;
+                                         |
+ncvlog: *E,EXPLPA (./uvm/uvm_express/apb_mon_unit_test.sv,46|41): expecting a left parenthesis ('(') [12.1.2][7.1(IEEE)].
+    uvm_transaction tr;
+                  |
+ncvlog: *E,SVNOTY (./uvm/uvm_express/apb_mon_unit_test.sv,164|18): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+            uvm_transaction tr;
+                          |
+ncvlog: *E,SVNOTY (./uvm/uvm_express/apb_mon_unit_test.sv,180|26): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+              uvm_transaction tr;
+                            |
+ncvlog: *E,SVNOTY (./uvm/uvm_express/apb_mon_unit_test.sv,220|28): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+    apb_xaction tr;
+              |
+ncvlog: *E,SVNOTY (./uvm/uvm_express/apb_mon_unit_test.sv,244|14): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+            apb_xaction tr;
+                      |
+ncvlog: *E,SVNOTY (./uvm/uvm_express/apb_mon_unit_test.sv,260|22): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+              apb_xaction tr;
+                        |
+ncvlog: *E,SVNOTY (./uvm/uvm_express/apb_mon_unit_test.sv,304|24): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+    uvm_transaction tr;
+                  |
+ncvlog: *E,SVNOTY (./uvm/uvm_express/apb_mon_unit_test.sv,338|18): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+    logic [31:0] rdata;
+        |
+ncvlog: *E,BADDCL (./uvm/uvm_express/apb_mon_unit_test.sv,339|8): identify declaration while expecting a statement.
+            uvm_transaction tr;
+                          |
+ncvlog: *E,SVNOTY (./uvm/uvm_express/apb_mon_unit_test.sv,355|26): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+              uvm_transaction tr;
+                            |
+ncvlog: *E,SVNOTY (./uvm/uvm_express/apb_mon_unit_test.sv,397|28): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+    apb_xaction tr;
+              |
+ncvlog: *E,SVNOTY (./uvm/uvm_express/apb_mon_unit_test.sv,421|14): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+    logic [31:0] rdata;
+        |
+ncvlog: *E,BADDCL (./uvm/uvm_express/apb_mon_unit_test.sv,422|8): identify declaration while expecting a statement.
+            apb_xaction tr;
+                      |
+ncvlog: *E,SVNOTY (./uvm/uvm_express/apb_mon_unit_test.sv,439|22): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+              apb_xaction tr;
+                        |
+ncvlog: *E,SVNOTY (./uvm/uvm_express/apb_mon_unit_test.sv,487|24): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+	module worklib.apb_mon_unit_test:sv
+		errors: 15, warnings: 0
+file: ./uvm/uvm_express/apb_if_unit_test.sv
+`define SVUNIT_VERSION 1.0
+                          |
+ncvlog: *W,MACNDF (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_defines.svh,22|26): The text macro 'SVUNIT_VERSION' has also been defined on the command line using the -DEFINE command line option.  The compiler will ignore the definition found in the Verilog source code.
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_defines.svh line 22, file: ./uvm/uvm_express/apb_if_unit_test.sv line 43)
+  svunit_testcase svunit_ut;
+                          |
+ncvlog: *E,NOIPRT (./uvm/uvm_express/apb_if_unit_test.sv,50|26): Unrecognized declaration 'svunit_ut' could be an unsupported keyword, a spelling mistake or missing instance port list '()' [SystemVerilog].
+	module worklib.apb_if_unit_test:sv
+		errors: 1, warnings: 0
+file: ./uvm/uvm_express/apb_coverage_unit_test.sv
+`define SVUNIT_VERSION 1.0
+                          |
+ncvlog: *W,MACNDF (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_defines.svh,22|26): The text macro 'SVUNIT_VERSION' has also been defined on the command line using the -DEFINE command line option.  The compiler will ignore the definition found in the Verilog source code.
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_defines.svh line 22, file: ./uvm/uvm_express/apb_coverage_unit_test.sv line 25)
+import svunit_uvm_mock_pkg::*;
+                         |
+ncvlog: *E,NOPBIND (./uvm/uvm_express/apb_coverage_unit_test.sv,23|25): Package svunit_uvm_mock_pkg could not be bound.
+    apb_xaction a, b;
+              |
+ncvlog: *E,SVNOTY (./uvm/uvm_express/apb_coverage_unit_test.sv,117|14): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+    apb_xaction a, b;
+                 |
+ncvlog: *E,MISEXX (./uvm/uvm_express/apb_coverage_unit_test.sv,117|17): expecting an '=' or '<=' sign in an assignment [9.2(IEEE)].
+    apb_xaction a;
+              |
+ncvlog: *E,SVNOTY (./uvm/uvm_express/apb_coverage_unit_test.sv,142|14): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+    apb_xaction a;
+              |
+ncvlog: *E,SVNOTY (./uvm/uvm_express/apb_coverage_unit_test.sv,163|14): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+    apb_xaction a;
+              |
+ncvlog: *E,SVNOTY (./uvm/uvm_express/apb_coverage_unit_test.sv,193|14): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+    apb_xaction a;
+              |
+ncvlog: *E,SVNOTY (./uvm/uvm_express/apb_coverage_unit_test.sv,213|14): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+    apb_xaction a;
+              |
+ncvlog: *E,SVNOTY (./uvm/uvm_express/apb_coverage_unit_test.sv,242|14): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+	module worklib.apb_coverage_unit_test:sv
+		errors: 7, warnings: 0
+file: ./uvm/uvm_report_mock/uut_unit_test.sv
+`include "uvm_macros.svh"
+                        |
+ncvlog: *E,COFILX (./uvm/uvm_report_mock/uut_unit_test.sv,22|24): cannot open include file 'uvm_macros.svh'.
+`define SVUNIT_VERSION 1.0
+                          |
+ncvlog: *W,MACNDF (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_defines.svh,22|26): The text macro 'SVUNIT_VERSION' has also been defined on the command line using the -DEFINE command line option.  The compiler will ignore the definition found in the Verilog source code.
+(`include file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/svunit_base/svunit_defines.svh line 22, file: ./uvm/uvm_report_mock/uut_unit_test.sv line 24)
+import uvm_pkg::*;
+             |
+ncvlog: *E,NOPBIND (./uvm/uvm_report_mock/uut_unit_test.sv,26|13): Package uvm_pkg could not be bound.
+import svunit_uvm_mock_pkg::*;
+                         |
+ncvlog: *E,NOPBIND (./uvm/uvm_report_mock/uut_unit_test.sv,28|25): Package svunit_uvm_mock_pkg could not be bound.
+(`include file: ./uvm/uvm_report_mock/uut.sv line 25, file: ./uvm/uvm_report_mock/uut_unit_test.sv line 30)
+class uut extends uvm_component;
+                              |
+ncvlog: *E,SVNOTY (./uvm/uvm_report_mock/uut.sv,25|30): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+(`include file: ./uvm/uvm_report_mock/uut.sv line 25, file: ./uvm/uvm_report_mock/uut_unit_test.sv line 30)
+  `uvm_component_utils(uut)
+                     |
+ncvlog: *E,NOTDIR (./uvm/uvm_report_mock/uut.sv,27|21): `uvm_component_utils: not a recognized directive or macro [2.7.3][16.3.1][16(IEEE)].
+(`include file: ./uvm/uvm_report_mock/uut.sv line 27, file: ./uvm/uvm_report_mock/uut_unit_test.sv line 30)
+  `uvm_component_utils(uut)
+                      |
+ncvlog: *E,EXPENC (./uvm/uvm_report_mock/uut.sv,27|22): Expecting the keyword 'endclass'.
+(`include file: ./uvm/uvm_report_mock/uut.sv line 27, file: ./uvm/uvm_report_mock/uut_unit_test.sv line 30)
+  function new(string name = "uut",
+             |
+ncvlog: *E,NEWOIC (./uvm/uvm_report_mock/uut.sv,29|13): The class constructor method 'new' is only allowed within a class declaration.
+(`include file: ./uvm/uvm_report_mock/uut.sv line 29, file: ./uvm/uvm_report_mock/uut_unit_test.sv line 30)
+               uvm_component parent = null);
+                           |
+ncvlog: *E,EXPRPA (./uvm/uvm_report_mock/uut.sv,30|27): expecting a right parenthesis (')') [A.2.6(IEEE)].
+(`include file: ./uvm/uvm_report_mock/uut.sv line 30, file: ./uvm/uvm_report_mock/uut_unit_test.sv line 30)
+               uvm_component parent = null);
+                           |
+ncvlog: *E,NOIPRT (./uvm/uvm_report_mock/uut.sv,30|27): Unrecognized declaration 'uvm_component' could be an unsupported keyword, a spelling mistake or missing instance port list '()' [SystemVerilog].
+(`include file: ./uvm/uvm_report_mock/uut.sv line 30, file: ./uvm/uvm_report_mock/uut_unit_test.sv line 30)
+               uvm_component parent = null);
+                           |
+ncvlog: *E,NOTINF (./uvm/uvm_report_mock/uut.sv,30|27): Interfaces are not allowed within tasks [SystemVerilog].
+(`include file: ./uvm/uvm_report_mock/uut.sv line 30, file: ./uvm/uvm_report_mock/uut_unit_test.sv line 30)
+               uvm_component parent = null);
+                                  |
+ncvlog: *E,ILLPDL (./uvm/uvm_report_mock/uut.sv,30|34): Mixing of ansi & non-ansi style port declaration is not legal.
+(`include file: ./uvm/uvm_report_mock/uut.sv line 30, file: ./uvm/uvm_report_mock/uut_unit_test.sv line 30)
+               uvm_component parent = null);
+                                    |
+ncvlog: *E,EXPSMC (./uvm/uvm_report_mock/uut.sv,30|36): expecting a semicolon (';') [12.3.2(IEEE)].
+(`include file: ./uvm/uvm_report_mock/uut.sv line 30, file: ./uvm/uvm_report_mock/uut_unit_test.sv line 30)
+    super.new(name, parent);
+        |
+ncvlog: *E,EXPRPA (./uvm/uvm_report_mock/uut.sv,31|8): expecting a right parenthesis (')') [A.2.6(IEEE)].
+(`include file: ./uvm/uvm_report_mock/uut.sv line 31, file: ./uvm/uvm_report_mock/uut_unit_test.sv line 30)
+    super.new(name, parent);
+        |
+ncvlog: *E,CLSSPX (./uvm/uvm_report_mock/uut.sv,31|8): 'super' can only be used within a class scope that derives from a base class.
+(`include file: ./uvm/uvm_report_mock/uut.sv line 31, file: ./uvm/uvm_report_mock/uut_unit_test.sv line 30)
+    if (arg == 99) `uvm_error("uut", "arg is 99!");
+                            |
+ncvlog: *E,NOTDIR (./uvm/uvm_report_mock/uut.sv,35|28): `uvm_error: not a recognized directive or macro [2.7.3][16.3.1][16(IEEE)].
+(`include file: ./uvm/uvm_report_mock/uut.sv line 35, file: ./uvm/uvm_report_mock/uut_unit_test.sv line 30)
+    if (arg == 99) `uvm_error("uut", "arg is 99!");
+                             |
+ncvlog: *E,NOTSTT (./uvm/uvm_report_mock/uut.sv,35|29): expecting a statement [9(IEEE)].
+(`include file: ./uvm/uvm_report_mock/uut.sv line 35, file: ./uvm/uvm_report_mock/uut_unit_test.sv line 30)
+    if (arg == 99) `uvm_error("uut", "arg is 99!");
+                                   |
+ncvlog: *E,EXPRPA (./uvm/uvm_report_mock/uut.sv,35|35): expecting a right parenthesis (')') [9.4(IEEE)].
+(`include file: ./uvm/uvm_report_mock/uut.sv line 35, file: ./uvm/uvm_report_mock/uut_unit_test.sv line 30)
+endclass
+       |
+ncvlog: *E,MPANDC (./uvm/uvm_report_mock/uut.sv,42|7): expecting the keyword 'module', 'macromodule', 'primitive', 'connectmodule','connect', 'discipline' or 'nature' [A.1].
+(`include file: ./uvm/uvm_report_mock/uut.sv line 42, file: ./uvm/uvm_report_mock/uut_unit_test.sv line 30)
+  svunit_testcase svunit_ut;
+                          |
+ncvlog: *E,NOIPRT (./uvm/uvm_report_mock/uut_unit_test.sv,35|26): Unrecognized declaration 'svunit_ut' could be an unsupported keyword, a spelling mistake or missing instance port list '()' [SystemVerilog].
+  uut my_uut;
+           |
+ncvlog: *E,NOIPRT (./uvm/uvm_report_mock/uut_unit_test.sv,42|11): Unrecognized declaration 'my_uut' could be an unsupported keyword, a spelling mistake or missing instance port list '()' [SystemVerilog].
+	module worklib.uut_unit_test:sv
+		errors: 2, warnings: 0
+file: ./modules/apb_slave/.__modules_apb_slave_testsuite.sv
+  svunit_testsuite svunit_ts;
+                           |
+ncvlog: *E,NOIPRT (./modules/apb_slave/.__modules_apb_slave_testsuite.sv,5|27): Unrecognized declaration 'svunit_ts' could be an unsupported keyword, a spelling mistake or missing instance port list '()' [SystemVerilog].
+	module worklib.__modules_apb_slave_testsuite:sv
+		errors: 1, warnings: 0
+file: ./uvm/simple_model/.__uvm_simple_model_testsuite.sv
+  svunit_testsuite svunit_ts;
+                           |
+ncvlog: *E,NOIPRT (./uvm/simple_model/.__uvm_simple_model_testsuite.sv,5|27): Unrecognized declaration 'svunit_ts' could be an unsupported keyword, a spelling mistake or missing instance port list '()' [SystemVerilog].
+	module worklib.__uvm_simple_model_testsuite:sv
+		errors: 1, warnings: 0
+file: ./uvm/uvm_express/.__uvm_uvm_express_testsuite.sv
+  svunit_testsuite svunit_ts;
+                           |
+ncvlog: *E,NOIPRT (./uvm/uvm_express/.__uvm_uvm_express_testsuite.sv,5|27): Unrecognized declaration 'svunit_ts' could be an unsupported keyword, a spelling mistake or missing instance port list '()' [SystemVerilog].
+	module worklib.__uvm_uvm_express_testsuite:sv
+		errors: 1, warnings: 0
+file: ./uvm/uvm_report_mock/.__uvm_uvm_report_mock_testsuite.sv
+  svunit_testsuite svunit_ts;
+                           |
+ncvlog: *E,NOIPRT (./uvm/uvm_report_mock/.__uvm_uvm_report_mock_testsuite.sv,5|27): Unrecognized declaration 'svunit_ts' could be an unsupported keyword, a spelling mistake or missing instance port list '()' [SystemVerilog].
+	module worklib.__uvm_uvm_report_mock_testsuite:sv
+		errors: 1, warnings: 0
+file: /stec/tw/users/schen/prj/smartdv/kernel/svunit-code/examples/.testrunner.sv
+  svunit_testrunner svunit_tr;
+                            |
+ncvlog: *E,NOIPRT (/stec/tw/users/schen/prj/smartdv/kernel/svunit-code/examples/.testrunner.sv,10|28): Unrecognized declaration 'svunit_tr' could be an unsupported keyword, a spelling mistake or missing instance port list '()' [SystemVerilog].
+	module worklib.testrunner:sv
+		errors: 1, warnings: 0
+	Total errors/warnings found outside modules and primitives:
+		errors: 52, warnings: 12
+irun: *E,VLGERR: An error occurred during parsing.  Review the log file for errors with the code *E and fix those identified problems to proceed.  Exiting with code (status 1).
+TOOL:	irun	13.10-s011: Exiting on Aug 24, 2015 at 09:33:24 CST  (total: 00:00:01)

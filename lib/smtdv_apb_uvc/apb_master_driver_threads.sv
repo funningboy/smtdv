@@ -35,13 +35,11 @@ class apb_master_drive_items #(
     virtual task do_write_item(ref `APB_ITEM item);
         wait(this.cmp.vif.cyc >= item.bg_cyc);
         // SetUp
-        wait(!this.cmp.cfg.block_psel);
-        repeat(item.psel_L2H) @(posedge this.cmp.vif.clk);
+        if (this.cmp.cfg.block_psel) repeat(item.psel_L2H) @(posedge this.cmp.vif.clk);
         populate_setup_write_item(item);
         @(posedge this.cmp.vif.clk);
         // Access
-        wait(!this.cmp.cfg.block_penable);
-        repeat(item.penable_L2H) @(posedge this.cmp.vif.clk);
+        if (this.cmp.cfg.block_penable) repeat(item.penable_L2H) @(posedge this.cmp.vif.clk);
         populate_access_write_item(item);
         // wait until pready assert
         @(posedge this.cmp.vif.clk iff (this.cmp.vif.pready));
@@ -52,13 +50,11 @@ class apb_master_drive_items #(
     virtual task do_read_item(ref `APB_ITEM item);
       wait(this.cmp.vif.cyc >= item.bg_cyc);
       // SetUp
-      wait(!this.cmp.cfg.block_psel);
-      repeat(item.psel_L2H) @(posedge this.cmp.vif.clk);
+      if (this.cmp.cfg.block_psel) repeat(item.psel_L2H) @(posedge this.cmp.vif.clk);
       populate_setup_read_item(item);
       @(posedge this.cmp.vif.clk);
       // Access
-      wait(!this.cmp.cfg.block_penable);
-      repeat(item.penable_L2H) @(posedge this.cmp.vif.clk);
+      if (this.cmp.cfg.block_penable) repeat(item.penable_L2H) @(posedge this.cmp.vif.clk);
       populate_access_read_item(item);
       // wait until pready assert
       @(posedge this.cmp.vif.clk iff (this.cmp.vif.pready));

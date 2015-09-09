@@ -1,0 +1,42 @@
+## 
+## -------------------------------------------------------------
+##    Copyright 2010 Cadence.
+##    All Rights Reserved Worldwide
+## 
+##    Licensed under the Apache License, Version 2.0 (the
+##    "License"); you may not use this file except in
+##    compliance with the License.  You may obtain a copy of
+##    the License at
+## 
+##        http://www.apache.org/licenses/LICENSE-2.0
+## 
+##    Unless required by applicable law or agreed to in
+##    writing, software distributed under the License is
+##    distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+##    CONDITIONS OF ANY KIND, either express or implied.  See
+##    the License for the specific language governing
+##    permissions and limitations under the License.
+## -------------------------------------------------------------
+## 
+
+#############################################
+# This makefile is a helper for the following usage models: 
+# cd <some_run_dir>; make -f <test location> 
+what-was-i-invoked-as = $(firstword ${MAKEFILE_LIST})
+
+THIS_MAKEFILE=$(call what-was-i-invoked-as)
+
+ifndef UVM_ML_TEST_SRC_DIR
+UVM_ML_TEST_SRC_DIR:=$(dir ${THIS_MAKEFILE})
+UVM_ML_TEST_SRC_DIR:=${UVM_ML_TEST_SRC_DIR:/=}
+export UVM_ML_TEST_SRC_DIR
+endif
+
+ifndef UVM_ML_TEST_RUN_DIR
+UVM_ML_TEST_RUN_DIR:=${CURDIR}
+UVM_ML_TEST_RUN_DIR:=${UVM_ML_TEST_RUN_DIR:/=}
+$(info UVM_ML_TEST_RUN_DIR is ${UVM_ML_TEST_RUN_DIR})
+export UVM_ML_TEST_RUN_DIR
+endif
+
+###############################################

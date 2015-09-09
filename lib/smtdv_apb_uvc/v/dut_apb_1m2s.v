@@ -21,17 +21,24 @@ module dut_1m2s #(
   wire [15:0]            w_psel; // master [15:0], slave[0:0]
   wire [0:0]             w_penable;
 
-  wire [DATA_WIDTH-1:0]  w_prdata;
-  wire [0:0]             w_pslverr;
-  wire [0:0]             w_pready;
+  wire [DATA_WIDTH-1:0]  w_prdata[3];
+  wire [0:0]             w_pslverr[3];
+  wire [0:0]             w_pready[3];
+
+  assign w_pready[2] =  (w_psel==16'h1)? w_pready[0]:
+                        (w_psel==16'h2)? w_pready[1]: w_pready[0];
+  assign w_pslverr[2] = (w_psel==16'h1)? w_pslverr[0]:
+                        (w_psel==16'h2)? w_pslverr[1]: w_pslverr[0];
+  assign w_prdata[2] =  (w_psel==16'h1)? w_prdata[0]:
+                        (w_psel==16'h2)? w_prdata[1]: w_prdata[0];
 
   genvar i;
   generate
   for (i=0; i < 1; i++) begin: M
     // instances: top.u_dut_1m2s.M[0].u_apb_master,
     apb_master #(
-      .ADDR_WIDTH   (`APB_ADDR_WIDTH),
-      .DATA_WIDTH   (`APB_DATA_WIDTH)
+      .ADDR_WIDTH   (ADDR_WIDTH),
+      .DATA_WIDTH   (DATA_WIDTH)
     ) u_apb_master (
       .clk(clk),
       .resetn(resetn),
@@ -42,9 +49,9 @@ module dut_1m2s #(
       .psel(w_psel),
       .penable(w_penable),
 
-      .prdata(w_prdata),
-      .pready(w_pready),
-      .pslverr(w_pslverr)
+      .prdata(w_prdata[2]),
+      .pready(w_pready[2]),
+      .pslverr(w_pslverr[2])
     );
   end
   endgenerate
@@ -53,8 +60,8 @@ module dut_1m2s #(
   for (i=0; i < 2; i++)  begin: S
     // instances: top.u_dut_1m2s.S[0].u_apb_slave,..
     apb_slave #(
-      .ADDR_WIDTH   (`APB_ADDR_WIDTH),
-      .DATA_WIDTH   (`APB_DATA_WIDTH)
+      .ADDR_WIDTH   (ADDR_WIDTH),
+      .DATA_WIDTH   (DATA_WIDTH)
     ) u_apb_slave (
       .clk(clk),
       .resetn(resetn),
@@ -65,9 +72,9 @@ module dut_1m2s #(
       .psel(w_psel[i]),
       .penable(w_penable),
 
-      .prdata(w_prdata),
-      .pready(w_pready),
-      .pslverr(w_pslverr)
+      .prdata(w_prdata[i]),
+      .pready(w_pready[i]),
+      .pslverr(w_pslverr[i])
     );
   end
   endgenerate

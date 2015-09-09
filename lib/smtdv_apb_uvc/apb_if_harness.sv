@@ -8,22 +8,16 @@
 // input: inout logic
 // assign out(wire): inout logic
 //
+
+`timescale 1ns/10ps
+import uvm_pkg::*;
+`include "uvm_macros.svh"
+
 `include "apb_if.sv"
-
-`define APBVIF2PORT(port)\
-  always @(vif.port) begin \
-    if (has_force) \
-      force port = vif.port; \
-    else release port; \
-  end
-
-`define APBPORT2VIF(port)\
-  always @(port) begin \
-    if (has_force) \
-      vif.port = port; \
-  end
+`include "smtdv_macros.svh"
 
 interface apb_master_if_harness #(
+  parameter integer UID = 0,
   parameter integer ADDR_WIDTH  = 14,
   parameter integer DATA_WIDTH = 32
   ) (
@@ -49,23 +43,36 @@ interface apb_master_if_harness #(
     ) vif
     (
       .clk(clk),
-      .resetn(resetn)
+      .resetn(resetn),
+
+      .paddr(),
+      .prwd(),
+      .pwdata(),
+      .psel(),
+      .penable(),
+
+      .prdata(),
+      .pslverr(),
+      .pready()
     );
 
-    `APBVIF2PORT(paddr)
-    `APBVIF2PORT(prwd)
-    `APBVIF2PORT(pwdata)
-    `APBVIF2PORT(psel)
-    `APBVIF2PORT(penable)
-
-    `APBPORT2VIF(prdata)
-    `APBPORT2VIF(pslverr)
-    `APBPORT2VIF(pready)
+    `ifndef APBMASTERATTR
+        $fatal("please define APBMASTERATTR as forced.vif at top design");
+    `endif
+      `SMTDV_VIF2PORT(has_force, clk, vif.paddr, `APBMASTERATTR(UID).paddr)
+      `SMTDV_VIF2PORT(has_force, clk, vif.prwd, `APBMASTERATTR(UID).prwd)
+      `SMTDV_VIF2PORT(has_force, clk, vif.pwdata, `APBMASTERATTR(UID).pwdata)
+      `SMTDV_VIF2PORT(has_force, clk, vif.psel, `APBMASTERATTR(UID).psel)
+      `SMTDV_VIF2PORT(has_force, clk, vif.penable, `APBMASTERATTR(UID).penable)
+      `SMTDV_PORT2VIF(has_force, clk, `APBMASTERATTR(UID).prdata, vif.prdata)
+      `SMTDV_PORT2VIF(has_force, clk, `APBMASTERATTR(UID).pslverr, vif.pslverr)
+      `SMTDV_PORT2VIF(has_force, clk, `APBMASTERATTR(UID).pready, vif.pready)
 
 endinterface
 
 
 interface apb_slave_if_harness #(
+  parameter integer UID = 0,
   parameter integer ADDR_WIDTH  = 14,
   parameter integer DATA_WIDTH = 32
   ) (
@@ -91,18 +98,30 @@ interface apb_slave_if_harness #(
     ) vif
     (
       .clk(clk),
-      .resetn(resetn)
+      .resetn(resetn),
+
+      .paddr(),
+      .prwd(),
+      .pwdata(),
+      .psel(),
+      .penable(),
+
+      .prdata(),
+      .pslverr(),
+      .pready()
     );
 
-    `APBPORT2VIF(paddr)
-    `APBPORT2VIF(prwd)
-    `APBPORT2VIF(pwdata)
-    `APBPORT2VIF(psel)
-    `APBPORT2VIF(penable)
-
-    `APBVIF2PORT(prdata)
-    `APBVIF2PORT(pslverr)
-    `APBVIF2PORT(pready)
+    `ifndef APBSLAVEATTR
+        $fatal("please define APBSLAVEATTR as forced.vif at top design");
+    `endif
+      `SMTDV_PORT2VIF(has_force, clk, `APBSLAVEATTR(UID).paddr, vif.paddr)
+      `SMTDV_PORT2VIF(has_force, clk, `APBSLAVEATTR(UID).prwd, vif.prwd)
+      `SMTDV_PORT2VIF(has_force, clk, `APBSLAVEATTR(UID).pwdata, vif.pwdata)
+      `SMTDV_PORT2VIF(has_force, clk, `APBSLAVEATTR(UID).psel, vif.psel)
+      `SMTDV_PORT2VIF(has_force, clk, `APBSLAVEATTR(UID).penable, vif.penable)
+      `SMTDV_VIF2PORT(has_force, clk, vif.prdata, `APBSLAVEATTR(UID).prdata)
+      `SMTDV_VIF2PORT(has_force, clk, vif.pslverr, `APBSLAVEATTR(UID).pslverr)
+      `SMTDV_VIF2PORT(has_force, clk, vif.pready, `APBSLAVEATTR(UID).pready)
 
 endinterface
 

@@ -1,0 +1,34 @@
+body { 
+  background:lightgrey;
+ }
+.line_number { 
+  white-space:pre;
+  width:40px;
+  text-align:right;
+  background:lightgrey;
+  color:#5C5C5C;
+  margin-right:10px;
+  padding-right:3px;
+  border-right:medium solid green;
+  font-size:8pt;
+}
+
+.code { 
+  position:absolute;
+  left:40px;
+  top:0;
+  white-space:pre;
+  color:navy;
+  font-family:courier;
+  font-size:8pt;
+  margin-left:10px;
+}
+
+.even {
+  position:relative;
+  background:white;
+}
+.odd { 
+  position:relative;
+  background:#F8F8F8;
+}

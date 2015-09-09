@@ -30,7 +30,11 @@ module apb_slave #(
   output [DATA_WIDTH-1:0]  prdata;
   output [0:0]             pslverr;
   output [0:0]             pready;
+  reg [DATA_WIDTH-1:0]     prdata;
 
   // implement your func here ...
-
+  assign pready = 1'b1;
+  always@(posedge clk) begin
+    prdata <= 'hdeaddead;
+  end
 endmodule

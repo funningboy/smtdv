@@ -1,0 +1,18 @@
+//
+// File created by:  irun
+// Do not modify this file
+//
+-INCDIR
+/stec/tw/users/schen/prj/svunit-code/svunit_base
+-INCDIR
+/stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock
+-DEFINE
+CLK_PERIOD=5
+-DEFINE
+RUN_SVUNIT_WITH_UVM
+-DEFINE
+RUN_SVUNIT_WITH_UVM_REPORT_MOCK
+-INCDIR
+/stec/tw/users/schen/lib/uvm-1.1d/src
+-DEFINE
+USE_PARAMETERIZED_WRAPPER

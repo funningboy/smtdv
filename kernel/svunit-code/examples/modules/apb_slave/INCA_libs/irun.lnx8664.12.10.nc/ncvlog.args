@@ -1,0 +1,25 @@
+//
+// File created by:  irun
+// Do not modify this file
+//
+-XLMODE
+./INCA_libs/irun.lnx8664.12.10.nc
+-RUNMODE
+-STATUS
+apb_slave_unit_test.sv
+-DEFINE
+SVA
+-INCDIR
+../
+-INCDIR
+/stec/tw/users/schen/prj/svunit-code/svunit_base
+-CDSLIB
+./INCA_libs/irun.lnx8664.12.10.nc/cdsrun.lib
+-HDLVAR
+./INCA_libs/irun.lnx8664.12.10.nc/hdlrun.var
+-MESSAGES
+-UPDATE
+-XLLIBSTORE
+./INCA_libs/irun.lnx8664.12.10.nc/xllibs
+-ALLOWUNBOUND
+-hastop

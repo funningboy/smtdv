@@ -1,4 +1,7 @@
 
+`ifndef __APB_IF_SV__
+`define __APB_IF_SV__
+
 `timescale 1ns/10ps
 import uvm_pkg::*;
 `include "uvm_macros.svh"
@@ -11,23 +14,23 @@ interface apb_if #(
   parameter integer DATA_WIDTH = 32
   ) (
     input clk,
-    input resetn
+    input resetn,
+
+    logic [ADDR_WIDTH-1:0]  paddr,
+    logic [0:0]             prwd,
+    logic [DATA_WIDTH-1:0]  pwdata,
+    logic [15:0]            psel, // master [15:0], slave[0:0]
+    logic [0:0]             penable,
+
+    logic [DATA_WIDTH-1:0]  prdata,
+    logic [0:0]             pslverr,
+    logic [0:0]             pready
   );
 
-  logic [ADDR_WIDTH-1:0]  paddr;
-  logic [0:0]             prwd;
-  logic [DATA_WIDTH-1:0]  pwdata;
-  logic [15:0]            psel; // master [15:0], slave[0:0]
-  logic [0:0]             penable;
-
-  logic [DATA_WIDTH-1:0]  prdata;
-  logic [0:0]             pslverr;
-  logic [0:0]             pready;
 
   bit has_checks = 1;
   bit has_coverage = 1;
   bit has_performance = 1;
-  bit has_force = 0;
 
   longint cyc = 0;
 
@@ -66,7 +69,7 @@ interface apb_if #(
   always @(negedge clk)
     cyc += 1;
 
-  // check XBUS protocol assertions
+  // check APB protocol assertions
   always @(negedge clk)
   begin
     // addr must not be X or Z during R/W phase (req = 1'b1)
@@ -74,8 +77,11 @@ interface apb_if #(
       disable iff(!has_checks)
       ($onehot(psel) |-> !$isunknown(paddr)))
     else
-      `uvm_error("XBUS_VIF", {$psprintf("paddr = %d went to X or Z during R/W phase when the psel = %d", paddr, psel)})
+      $error({$psprintf("APB_VIF, paddr = %d went to X or Z during R/W phase when the psel = %d", paddr, psel)});
 
+    // TODO
   end
 
 endinterface : apb_if
+
+`endif

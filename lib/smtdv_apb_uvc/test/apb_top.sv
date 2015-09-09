@@ -1,6 +1,9 @@
 
 `timescale 1ns/10ps
 
+`include "apb_defines.svh"
+`include "apb_if_harness.sv"
+
 module top();
 
   import uvm_pkg::*;
@@ -27,13 +30,12 @@ module top();
 
   smtdv_gen_rst_if apb_rst_if(resetn);
   defparam apb_rst_if.if_name       = "apb_rst_if";
-  defparam apb_rst_if.PWRST_PERIOD  = 5000;
+  defparam apb_rst_if.PWRST_PERIOD  = 100;
   defparam apb_rst_if.POLARITY      = 0;
 
 /*-------------------------------------------
 *  used as Master UVC/slave is real design
 *-------------------------------------------*/
-
   dut_1m2s #(
     .ADDR_WIDTH (`APB_ADDR_WIDTH),
     .DATA_WIDTH (`APB_DATA_WIDTH)
@@ -42,67 +44,68 @@ module top();
     .resetn(resetn)
   );
 
-  `define APBMASTERATTR(i) u_dut_1m2s.M[i].u_apb_master
-  `define APBSLAVEATTR(i) u_dut_1m2s.S[i].u_apb_slave
+  bind `APBMASTERATTR(0) apb_master_if_harness#(
+     .UID(0),
+     .ADDR_WIDTH(`APB_ADDR_WIDTH),
+     .DATA_WIDTH(`APB_DATA_WIDTH)
+  ) apb_master_if_harness (
+    .clk(`APBMASTERATTR(0).clk),
+    .resetn(`APBMASTERATTR(0).resetn),
 
-  genvar i;
-  generate
-  for (i=0; i < 1; i++) begin: M
-    apb_master_if_harness#(
-       .ADDR_WIDTH(`APB_ADDR_WIDTH),
-       .DATA_WIDTH(`APB_DATA_WIDTH)
-    ) apb_master_if_harness (
-      .clk(`APBMASTERATTR(i).clk),
-      .resetn(`APBMASTERATTR(i).resetn),
+    .paddr(`APBMASTERATTR(0).paddr),
+    .prwd(`APBMASTERATTR(0).prwd),
+    .pwdata(`APBMASTERATTR(0).pwdata),
+    .psel(`APBMASTERATTR(0).psel),
+    .penable(`APBMASTERATTR(0).penable),
 
-      .paddr(`APBMASTERATTR(i).paddr),
-      .prwd(`APBMASTERATTR(i).prwd),
-      .pwdata(`APBMASTERATTR(i).pwdata),
-      .psel(`APBMASTERATTR(i).psel),
-      .penable(`APBMASTERATTR(i).penable),
+    .prdata(`APBMASTERATTR(0).prdata),
+    .pready(`APBMASTERATTR(0).pready),
+    .pslverr(`APBMASTERATTR(0).pslverr)
+  );
 
-      .prdata(`APBMASTERATTR(i).prdata),
-      .pready(`APBMASTERATTR(i).pready),
-      .pslverr(`APBMASTERATTR(i).pslverr)
-    );
-  end
-  endgenerate
+  bind `APBSLAVEATTR(0) apb_slave_if_harness#(
+     .UID(0),
+     .ADDR_WIDTH(`APB_ADDR_WIDTH),
+     .DATA_WIDTH(`APB_DATA_WIDTH)
+  ) apb_slave_if_harness (
+    .clk(`APBSLAVEATTR(0).clk),
+    .resetn(`APBSLAVEATTR(0).resetn),
 
-  `define APBSLAVESELATTR(i)\
+    .paddr(`APBSLAVEATTR(0).paddr),
+    .prwd(`APBSLAVEATTR(0).prwd),
+    .pwdata(`APBSLAVEATTR(0).pwdata),
+    .psel({15'h0, `APBSLAVEATTR(0).psel}),
+    .penable(`APBSLAVEATTR(0).penable),
 
-  generate
-  for (i=0; i < 2; i++) begin: S
-    //bind `APBSLAVEATTR(i) apb_slave_if_harness#(
-    wire [15:0] w_psel;
-    if (i==0)
-       assign w_psel = {15'b0000_0000_0000_000,`APBSLAVEATTR(i).psel};
-    else
-       assign w_psel = {14'b0000_0000_0000_00, `APBSLAVEATTR(i).psel, 1'b0};
+    .prdata(`APBSLAVEATTR(0).prdata),
+    .pready(`APBSLAVEATTR(0).pready),
+    .pslverr(`APBSLAVEATTR(0).pslverr)
+  );
 
-    apb_slave_if_harness#(
-       .ADDR_WIDTH(`APB_ADDR_WIDTH),
-       .DATA_WIDTH(`APB_DATA_WIDTH)
-    ) apb_slave_if_harness (
-      .clk(`APBSLAVEATTR(i).clk),
-      .resetn(`APBSLAVEATTR(i).resetn),
+  bind `APBSLAVEATTR(1) apb_slave_if_harness#(
+     .UID(1),
+     .ADDR_WIDTH(`APB_ADDR_WIDTH),
+     .DATA_WIDTH(`APB_DATA_WIDTH)
+  ) apb_slave_if_harness (
+    .clk(`APBSLAVEATTR(1).clk),
+    .resetn(`APBSLAVEATTR(1).resetn),
 
-      .paddr(`APBSLAVEATTR(i).paddr),
-      .prwd(`APBSLAVEATTR(i).prwd),
-      .pwdata(`APBSLAVEATTR(i).pwdata),
-      .psel(w_psel),
-      .penable(`APBSLAVEATTR(i).penable),
+    .paddr(`APBSLAVEATTR(1).paddr),
+    .prwd(`APBSLAVEATTR(1).prwd),
+    .pwdata(`APBSLAVEATTR(1).pwdata),
+    .psel({14'h0, `APBSLAVEATTR(1).psel, 1'h0}),
+    .penable(`APBSLAVEATTR(1).penable),
 
-      .prdata(`APBSLAVEATTR(i).prdata),
-      .pready(`APBSLAVEATTR(i).pready),
-      .pslverr(`APBSLAVEATTR(i).pslverr)
-    );
-  end
-  endgenerate
+    .prdata(`APBSLAVEATTR(1).prdata),
+    .pready(`APBSLAVEATTR(1).pready),
+    .pslverr(`APBSLAVEATTR(1).pslverr)
+  );
+
 
   initial begin
-    uvm_config_db#(`APB_VIF)::set(uvm_root::get(), "*.slave_agent[*0]*", "vif", top.S[0].apb_slave_if_harness.vif);
-    uvm_config_db#(`APB_VIF)::set(uvm_root::get(), "*.slave_agent[*1]*", "vif", top.S[1].apb_slave_if_harness.vif);
-    uvm_config_db#(`APB_VIF)::set(uvm_root::get(), "*.master_agent[*0]*", "vif", top.M[0].apb_master_if_harness.vif);
+    uvm_config_db#(`APB_VIF)::set(uvm_root::get(), "*.slave_agent[*0]*", "vif", `APBSLAVEVIF(0));
+    uvm_config_db#(`APB_VIF)::set(uvm_root::get(), "*.slave_agent[*1]*", "vif", `APBSLAVEVIF(1));
+    uvm_config_db#(`APB_VIF)::set(uvm_root::get(), "*.master_agent[*0]*", "vif",`APBMASTERIVF(0));
     uvm_config_db#(`APB_RST_VIF)::set(uvm_root::get(), "*", "apb_rst_vif", apb_rst_if);
     run_test();
   end

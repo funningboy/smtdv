@@ -17,7 +17,7 @@ extern "C" {
   char* dpi_longint_2_str(long int i);
   void* dpi_smtdv_parse_file(char* file);
   void* dpi_smtdv_new_smtdv_transfer();
-  void* dpi_smtdv_new_smtdv_masmtdvox(char* inst_name);
+  void* dpi_smtdv_new_smtdv_mailbox(char* inst_name);
   /* begin cycle */
   void dpi_smtdv_set_smtdv_transfer_begin_cycle(void* ip, char* begin_cycle);
   char* dpi_smtdv_get_smtdv_transfer_begin_cycle(void* ip);
@@ -30,6 +30,12 @@ extern "C" {
   /* end_time */
   void dpi_smtdv_set_smtdv_transfer_end_time(void* ip, char* end_time);
   char* dpi_smtdv_get_smtdv_transfer_end_time(void* ip);
+  /* id */
+  void dpi_smtdv_set_smtdv_transfer_id(void* ip, char* id);
+  char* dpi_smtdv_get_smtdv_transfer_id(void *ip);
+  /* resp */
+  void dpi_smtdv_set_smtdv_transfer_resp(void* ip, char* resp);
+  char* dpi_smtdv_get_smtdv_transfer_resp(void* ip);
   /* rw */
   void dpi_smtdv_set_smtdv_transfer_rw(void* ip, char* rw);
   char* dpi_smtdv_get_smtdv_transfer_rw(void* ip);

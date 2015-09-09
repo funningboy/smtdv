@@ -1,0 +1,9 @@
+./ahb_slave.v
+../../smtdv_common/ahb_slave.v
+..//ahb_slave.v
+../test/ahb_slave.v
+../seq/ahb_slave.v
+../v/dpi_smtdv_stl.sv
+.//dpi_smtdv_stl.sv
+../../../dpi/sqlite3/dpi_smtdv_stl.sv
+../../../dpi/stl/macros/uvm_deprecated_defines.svh

@@ -1,0 +1,10 @@
+//
+// File created by:  irun
+// Do not modify this file
+//
+-DEFINE
+SVA
+-INCDIR
+../
+-INCDIR
+/stec/tw/users/schen/prj/svunit-code/svunit_base

@@ -4,6 +4,7 @@
 //
 /stec/tw/users/schen/prj/smartdv/lib/smtdv_common/smtdv_common_pkg.sv
 /stec/tw/users/schen/prj/smartdv/dpi/sqlite3/smtdv_sqlite3_pkg.sv
+/stec/tw/users/schen/prj/smartdv/dpi/stl/smtdv_stl_pkg.sv
 /stec/tw/users/schen/prj/smartdv/lib/smtdv_apb_uvc/apb_pkg.sv
 /stec/tw/users/schen/prj/smartdv/lib/smtdv_apb_uvc/test/apb_top.sv
 /stec/tw/users/schen/prj/smartdv/lib/smtdv_apb_uvc/v/dut_apb_1m2s.v

@@ -1,0 +1,41 @@
+QuestaSim-64 vlog 10.3c Compiler 2014.07 Jul 18 2014
+Start time: 10:41:20 on Sep 09,2015
+vlog -vopt -timescale 10ps/1ps "+notimingchecks" -64 -suppress 2240 -suppress 2181 -suppress 2239 -sv "+libext+_ncverilog.v+.v+.sv" -l compile.log "+incdir+../../smtdv_common" "+incdir+../" "+incdir+../test" "+incdir+../seq" "+incdir+../v" "+incdir+./" "+incdir+../../../dpi/sqlite3" "+incdir+../../../dpi/stl" ../../smtdv_common/smtdv_common_pkg.sv ../../../dpi/sqlite3/smtdv_sqlite3_pkg.sv ../../../dpi/stl/smtdv_stl_pkg.sv ../apb_pkg.sv ../test/apb_top.sv -sv ../v/dut_apb_1m2s.v 
+-- Compiling package smtdv_common_pkg
+-- Importing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)
+** Note: (vlog-2286) Using implicit +incdir+/stec/apps/mentor/questa_sim_10.3c/questasim/uvm-1.1d/../verilog_src/uvm-1.1d/src from import uvm_pkg
+-- Compiling interface smtdv_gen_rst_if
+-- Compiling package smtdv_sqlite3_pkg
+-- Compiling package smtdv_stl_pkg
+-- Compiling package apb_pkg
+-- Importing package smtdv_common_pkg
+-- Importing package smtdv_sqlite3_pkg
+-- Importing package smtdv_stl_pkg
+-- Compiling interface apb_if
+-- Compiling package apb_pkg_sv_unit
+-- Importing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)
+-- Compiling interface apb_if
+** Warning: ** while parsing file included at ../test/apb_top.sv(5)
+** while parsing file included at ..//apb_if_harness.sv(16)
+** at ..//apb_if.sv(12): (vlog-2275) 'apb_if' already exists and will be overwritten.
+-- Compiling interface apb_if
+-- Compiling interface apb_master_if_harness
+-- Compiling interface apb_slave_if_harness
+-- Compiling package apb_top_sv_unit
+-- Importing package mtiUvm.uvm_pkg (uvm-1.1d Built-in)
+-- Compiling interface apb_if
+-- Compiling interface apb_master_if_harness
+-- Compiling interface apb_slave_if_harness
+-- Compiling module top
+-- Importing package smtdv_common_pkg
+-- Importing package apb_pkg
+-- Importing package smtdv_sqlite3_pkg
+-- Importing package smtdv_stl_pkg
+-- Compiling module apb_master
+-- Compiling module apb_slave
+-- Compiling module dut_1m2s
+
+Top level modules:
+	top
+End time: 10:41:24 on Sep 09,2015, Elapsed time: 0:00:04
+Errors: 0, Warnings: 1, Suppressed Warnings: 21

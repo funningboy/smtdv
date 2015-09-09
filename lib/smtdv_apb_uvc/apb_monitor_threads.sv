@@ -30,8 +30,11 @@ class apb_collect_cover_group#(
         bins zero = {0};
         bins non_zero = {[1:32'hffff_ffff]};
       }
-
-      apb_trx  : cross apb_addr, apb_rw, apb_data;
+      apb_rsp : coverpoint item.rsp {
+        bins ok = {OK};
+        bins err = {ERR};
+      }
+      apb_trx  : cross apb_addr, apb_rw, apb_data, apb_rsp;
     endgroup
 
     function new(string name = "apb_collect_cover_group");
@@ -60,8 +63,10 @@ class apb_export_collected_items#(
     `APB_MONITOR cmp;
 
     string attr_longint[$] = {
+      "id",
       "addr",
       "rw",
+      "resp",
       "data",
       "bg_cyc",
       "ed_cyc"
@@ -94,6 +99,8 @@ class apb_export_collected_items#(
 
     virtual task populate_item(ref `APB_ITEM item);
       string table_nm = $psprintf("\"%s\"", this.cmp.get_full_name());
+      smtdv_sqlite3::insert_value(table_nm, "id",      $psprintf("%d", item.sel));
+      smtdv_sqlite3::insert_value(table_nm, "resp",    $psprintf("%d", item.rsp));
       smtdv_sqlite3::insert_value(table_nm, "addr",    $psprintf("%d", item.addr));
       smtdv_sqlite3::insert_value(table_nm, "rw",      $psprintf("%d", item.trs_t));
       smtdv_sqlite3::insert_value(table_nm, "data",    $psprintf("%d", item.unpack_data()));
@@ -128,7 +135,7 @@ class apb_collect_stop_signal#(
     virtual task do_stop();
       while (cnt < stop_cnt) begin
         @(negedge this.cmp.vif.clk);
-        cnt = (this.cmp.vif.psel || this.cmp.vif.pready || ~this.cmp.vif.resetn)? cnt : cnt+1;
+        cnt = (this.cmp.vif.psel || this.cmp.vif.penable || ~this.cmp.vif.resetn)? 0 : cnt+1;
       end
     endtask
 
@@ -139,6 +146,9 @@ class apb_collect_stop_signal#(
       if (this.cmp.seqr) begin
         this.cmp.seqr.finish = 1;
         `uvm_info(this.cmp.get_full_name(), {$psprintf("try collect finish signal\n")}, UVM_LOW)
+      end
+      else begin
+        // uvm_fatal
       end
     endtask
 
@@ -180,13 +190,16 @@ class apb_collect_write_items#(
         item = `APB_ITEM::type_id::create("apb_write_item");
         item.addr = this.cmp.vif.paddr;
         item.trs_t = WR;
+        item.run_t = NORMAL;
         item.pack_data(this.cmp.vif.pwdata);
         item.bg_cyc = this.cmp.vif.cyc;
         void'(this.cmp.begin_tr(item, this.cmp.get_full_name()));
       endfunction
 
     virtual function void populate_end_item(ref `APB_ITEM item);
+        item.pack_data(this.cmp.vif.pwdata);
         item.ed_cyc = this.cmp.vif.cyc;
+        item.rsp = (this.cmp.vif.pslverr == OK)? OK:ERR;
         void'(this.cmp.end_tr(item));
     endfunction
 
@@ -236,6 +249,7 @@ class apb_collect_read_items#(
     virtual function void populate_end_item(ref `APB_ITEM item);
         item.pack_data(this.cmp.vif.prdata);
         item.ed_cyc = this.cmp.vif.cyc;
+        item.rsp = (this.cmp.vif.pslverr == OK)? OK:ERR;
         void'(this.cmp.end_tr(item));
     endfunction
 

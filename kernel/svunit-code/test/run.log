@@ -1,0 +1,60 @@
+irun: 12.10-s005: (c) Copyright 1995-2012 Cadence Design Systems, Inc.
+TOOL:	irun	12.10-s005: Started on Mar 04, 2014 at 16:26:14 CST
+irun
+	-f run.f
+		-access rwc
+		-l run.log
+		-incdir /stec/tw/users/schen/prj/svunit-code/test/svunit_base
+		/stec/tw/users/schen/prj/svunit-code/test/svunit_base/svunit_pkg.sv
+		+define+CLK_PERIOD=5
+		-coverage a
+		-covoverwrite
+		bogus.sv
+		bogus_unit_test.sv
+file: bogus_unit_test.sv
+package svunit_pkg;
+                 |
+ncvlog: *W,RECOME (/stec/tw/users/schen/prj/svunit-code/test/svunit_base/svunit_pkg.sv,24|17): recompiling design unit worklib.svunit_pkg:sv.
+	First compiled from line 24 of /stec/tw/users/schen/prj/svunit-code/test/svunit_base/svunit_pkg.sv.
+(`include file: /stec/tw/users/schen/prj/svunit-code/test/svunit_base/svunit_pkg.sv line 24, file: bogus_unit_test.sv line 2)
+  protected results_t success = PASS;
+                    |
+ncvlog: *E,NOIPRT (/stec/tw/users/schen/prj/svunit-code/test/svunit_base/svunit_base.sv,39|20): Unrecognized declaration 'results_t' could be an unsupported keyword, a spelling mistake or missing instance port list '()' [SystemVerilog].
+(`include file: /stec/tw/users/schen/prj/svunit-code/test/svunit_base/svunit_base.sv line 39, `include file: /stec/tw/users/schen/prj/svunit-code/test/svunit_base/svunit_pkg.sv line 31, file: bogus_unit_test.sv line 2)
+  protected results_t success = PASS;
+                              |
+ncvlog: *E,EXPSMC (/stec/tw/users/schen/prj/svunit-code/test/svunit_base/svunit_base.sv,39|30): expecting a semicolon (';') [12.3.2(IEEE)].
+(`include file: /stec/tw/users/schen/prj/svunit-code/test/svunit_base/svunit_base.sv line 39, `include file: /stec/tw/users/schen/prj/svunit-code/test/svunit_base/svunit_pkg.sv line 31, file: bogus_unit_test.sv line 2)
+  extern function results_t get_results();
+                          |
+ncvlog: *E,SVNOTY (/stec/tw/users/schen/prj/svunit-code/test/svunit_base/svunit_base.sv,46|26): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+(`include file: /stec/tw/users/schen/prj/svunit-code/test/svunit_base/svunit_base.sv line 46, `include file: /stec/tw/users/schen/prj/svunit-code/test/svunit_base/svunit_pkg.sv line 31, file: bogus_unit_test.sv line 2)
+  extern function results_t get_results();
+                                      |
+ncvlog: *E,EXPSMC (/stec/tw/users/schen/prj/svunit-code/test/svunit_base/svunit_base.sv,46|38): expecting a semicolon (';') [10.3.1(IEEE)].
+(`include file: /stec/tw/users/schen/prj/svunit-code/test/svunit_base/svunit_base.sv line 46, `include file: /stec/tw/users/schen/prj/svunit-code/test/svunit_base/svunit_pkg.sv line 31, file: bogus_unit_test.sv line 2)
+function results_t svunit_base::get_results();
+                 |
+ncvlog: *E,SVNOTY (/stec/tw/users/schen/prj/svunit-code/test/svunit_base/svunit_base.sv,88|17): Syntactically this identifier appears to begin a datatype but it does not refer to a visible datatype in the current scope.
+(`include file: /stec/tw/users/schen/prj/svunit-code/test/svunit_base/svunit_base.sv line 88, `include file: /stec/tw/users/schen/prj/svunit-code/test/svunit_base/svunit_pkg.sv line 31, file: bogus_unit_test.sv line 2)
+function results_t svunit_base::get_results();
+                             |
+ncvlog: *E,EXPSMC (/stec/tw/users/schen/prj/svunit-code/test/svunit_base/svunit_base.sv,88|29): expecting a semicolon (';') [10.3.1(IEEE)].
+(`include file: /stec/tw/users/schen/prj/svunit-code/test/svunit_base/svunit_base.sv line 88, `include file: /stec/tw/users/schen/prj/svunit-code/test/svunit_base/svunit_pkg.sv line 31, file: bogus_unit_test.sv line 2)
+	package worklib.svunit_pkg:sv
+		errors: 6, warnings: 1
+    class bogus;
+              |
+ncvlog: *E,DUPIDN (bogus.sv,1|14): identifier 'bogus' previously declared [12.5(IEEE)].
+  svunit_testcase svunit_ut;
+                          |
+ncvlog: *E,NOIPRT (bogus_unit_test.sv,11|26): Unrecognized declaration 'svunit_ut' could be an unsupported keyword, a spelling mistake or missing instance port list '()' [SystemVerilog].
+  bogus my_bogus;
+               |
+ncvlog: *E,NOIPRT (bogus_unit_test.sv,18|15): Unrecognized declaration 'my_bogus' could be an unsupported keyword, a spelling mistake or missing instance port list '()' [SystemVerilog].
+	module worklib.bogus_unit_test:sv
+		errors: 2, warnings: 0
+	Total errors/warnings found outside modules and primitives:
+		errors: 1, warnings: 0
+irun: *E,VLGERR: An error occurred during parsing.  Review the log file for errors with the code *E and fix those identified problems to proceed.  Exiting with code (status 1).
+TOOL:	irun	12.10-s005: Exiting on Mar 04, 2014 at 16:26:14 CST  (total: 00:00:00)

@@ -31,6 +31,8 @@ namespace SMTDV {
       unsigned long int addr;
       unsigned long int data;
       unsigned int byten;
+      unsigned int id;
+      string resp;
       string rw;
   };
 

@@ -1,0 +1,201 @@
+# vsim -c -do "run -all; exit -f" -dpioutoftheblue 1 -sv_lib /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/examples/use_cases/side_by_side/sc_sv/libuvm_dpi.64 -sv_lib /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/libs/uvm_sv/4.4/64bit/libuvm_sv_ml -sv_lib /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/libs/osci/2.3/4.4/64bit/libuvm_sc_fw_osci -sv_lib /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/libs/osci/2.3/4.4/64bit/libuvm_sc_ml_osci -gblso /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/libs/backplane/4.4/64bit/libuvm_ml_bp.so -gblso /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/libs/uvm_sv/4.4/64bit/libuvm_sv_ml.so -gblso /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/examples/use_cases/side_by_side/sc_sv/liball_osci_questa.64.so -l questa_osci_proc.64.log topmodule 
+# Start time: 22:05:54 on Sep 04,2015
+# Loading /tmp/schen@twlogin04_dpi_8992/linux_x86_64_gcc-4.7.4/export_tramp.so
+# Loading /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/libs/backplane/4.4/64bit/libuvm_ml_bp.so
+# Loading /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/libs/uvm_sv/4.4/64bit/libuvm_sv_ml.so
+# Loading /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/examples/use_cases/side_by_side/sc_sv/liball_osci_questa.64.so
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# //  Questa Sim-64
+# //  Version 10.4c linux_x86_64 Jul 19 2015
+# //
+# //  Copyright 1991-2015 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION
+# //  WHICH IS THE PROPERTY OF MENTOR GRAPHICS CORPORATION OR ITS
+# //  LICENSORS AND IS SUBJECT TO LICENSE TERMS.
+# //  THIS DOCUMENT CONTAINS TRADE SECRETS AND COMMERCIAL OR FINANCIAL
+# //  INFORMATION THAT ARE PRIVILEGED, CONFIDENTIAL, AND EXEMPT FROM
+# //  DISCLOSURE UNDER THE FREEDOM OF INFORMATION ACT, 5 U.S.C. SECTION 552.
+# //  FURTHERMORE, THIS INFORMATION IS PROHIBITED FROM DISCLOSURE UNDER
+# //  THE TRADE SECRETS ACT, 18 U.S.C. SECTION 1905.
+# //
+# Loading sv_std.std
+# Loading work.uvm_pkg(fast)
+# Loading work.uvm_ml_adapter_imp(fast)
+# ** Note: (vsim-8785) UVM-aware debugging capabilities will be disabled since no compiled "questa_uvm_pkg" can be found.
+# This also means that later if you turn on UVM-aware debugging your debug simulations may have
+# different random seeds from your non-debug simulations.
+# Loading work.uvm_ml(fast)
+# Loading work.test_sv_unit(fast)
+# Loading work.topmodule(fast)
+# Compiling /tmp/schen@twlogin04_dpi_8992/linux_x86_64_gcc-4.7.4/exportwrapper.c
+# Loading /tmp/schen@twlogin04_dpi_8992/linux_x86_64_gcc-4.7.4/vsim_auto_compile.so
+# Loading /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/examples/use_cases/side_by_side/sc_sv/libuvm_dpi.64.so
+# run -all
+# ----------------------------------------------------------------
+# ML-OA-UVM-1.1d
+# (C) 2007-2013 Mentor Graphics Corporation
+# (C) 2007-2013 Cadence Design Systems, Inc.
+# (C) 2006-2013 Synopsys, Inc.
+# (C) 2011-2013 Cypress Semiconductor Corp.
+# ----------------------------------------------------------------
+# 
+#   ***********       IMPORTANT RELEASE NOTES         ************
+# 
+#   You are using a version of the UVM library that has been compiled
+#   with `UVM_NO_DEPRECATED undefined.
+#   See http://www.eda.org/svdb/view.php?id=3313 for more details.
+# 
+#   You are using a version of the UVM library that has been compiled
+#   with `UVM_OBJECT_MUST_HAVE_CONSTRUCTOR undefined.
+#   See http://www.eda.org/svdb/view.php?id=3770 for more details.
+# 
+#       (Specify +UVM_NO_RELNOTES to turn off this notice)
+# 
+# UVM_INFO @ 0: reporter [RNTST] Running test  set by uvm_ml_run_test...
+# SC env::env
+# SC sctop::sctop
+# UVM_INFO ./test.sv(67) @ 0: svtop [svtop] SV svtop::new
+# SC sctop::before_end_of_elaboration
+# SC env::before_end_of_elaboration
+# SC producer::build
+# SC consumer::build
+# UVM_INFO ./test.sv(72) @ 0: svtop [svtop] SV svtop::build 
+# UVM_INFO ./test.sv(34) @ 0: svtop.sv_env [env] SV env::new 
+# UVM_INFO ./test.sv(39) @ 0: svtop.sv_env [env] SV env::build
+# UVM_INFO consumer.sv(37) @ 0: svtop.sv_env.consumer [cons_type] SV consumer::new
+# UVM_INFO producer.sv(31) @ 0: svtop.sv_env.producer [prod_type] SV producer::new
+# UVM_INFO consumer.sv(44) @ 0: svtop.sv_env.consumer [cons_type] SV consumer::build
+# UVM_INFO producer.sv(42) @ 0: svtop.sv_env.producer [prod_type] SV producer::build
+# UVM_INFO ./test.sv(79) @ 0: svtop [svtop] SV svtop::build phase ended
+# UVM_INFO consumer.sv(51) @ 0: svtop.sv_env.consumer [cons_type] SV consumer::connect
+# UVM_INFO producer.sv(49) @ 0: svtop.sv_env.producer [prod_type] SV producer::connect
+# UVM_INFO ./test.sv(46) @ 0: svtop.sv_env [env] SV env::connect 
+# UVM_INFO ./test.sv(94) @ 0: svtop [svtop] SV svtop::connect 
+# SC sctop::end_of_elaboration
+# SC sctop::start_of_simulation
+# 
+# TLM2 non-blocking transactions from SC
+# [SC 0 s] creating transaction with base = 1
+# UVM_INFO ./test.sv(122) @ 0: svtop [svtop] SV svtop:run_phase
+# [SC 5 ns] producer::nb_transport_fw  address = 457 data_length = 2 m_data = 0 1  status= 0
+# UVM_INFO consumer.sv(59) @ 5: svtop.sv_env.consumer [cons_type] SV nb_transport_fw  UVM_TLM_WRITE_COMMAND [0x0000000000000457] = 00 01 (status=INCOMPLETE)
+# [SC 5 ns] nb_transport_bw 
+# [SC 5 ns] creating transaction with base = 1
+# UVM_INFO consumer.sv(59) @ 10: svtop.sv_env.consumer [cons_type] SV nb_transport_fw  UVM_TLM_READ_COMMAND [0x0000000000000457] = 00 00 (status=INCOMPLETE)
+# [SC 10 ns] nb_transport_bw 
+# [SC 10 ns] producer::nb_transport_fw  address = 457 data_length = 2 m_data = 0 1  status= 0
+# 
+# TLM2 blocking transactions from SC
+# [SC 20 ns] creating transaction with base = 3
+# [SC 20 ns] producer::b_transport sending address = d05 data_length = 4 m_data = 0 1 2 3  status= 0
+# UVM_INFO consumer.sv(77) @ 20: svtop.sv_env.consumer [cons_type] SV b_transport  UVM_TLM_WRITE_COMMAND [0x0000000000000d05] = 00 01 02 03 (status=INCOMPLETE)
+# [SC 25 ns] creating transaction with base = 3
+# UVM_INFO consumer.sv(77) @ 25: svtop.sv_env.consumer [cons_type] SV b_transport  UVM_TLM_READ_COMMAND [0x0000000000000d05] = 00 00 00 00 (status=INCOMPLETE)
+# [SC 30 ns] producer::b_transport received address = d05 data_length = 4 m_data = 0 1 2 3  status= 1
+# 
+# Nonblocking TLM1 transactions from SC
+# [SC 40 ns] producer::can_put 
+# UVM_INFO consumer.sv(110) @ 40: svtop.sv_env.consumer [cons_type] SV consumer::can_put()
+# [SC 40 ns] producer::can_put returned 1
+# [SC 45 ns] producer::sending packet packet: 17
+# UVM_INFO consumer.sv(103) @ 45: svtop.sv_env.consumer [cons_type] SV consumer::try_put          17
+# [SC 45 ns] producer::sent packet packet: 17
+# [SC 55 ns] producer::can_put 
+# UVM_INFO consumer.sv(110) @ 55: svtop.sv_env.consumer [cons_type] SV consumer::can_put()
+# [SC 55 ns] producer::can_put returned 1
+# [SC 60 ns] producer::sending packet packet: 18
+# UVM_INFO consumer.sv(103) @ 60: svtop.sv_env.consumer [cons_type] SV consumer::try_put          18
+# [SC 60 ns] producer::sent packet packet: 18
+# [SC 70 ns] producer::can_put 
+# UVM_INFO consumer.sv(110) @ 70: svtop.sv_env.consumer [cons_type] SV consumer::can_put()
+# [SC 70 ns] producer::can_put returned 1
+# [SC 75 ns] producer::sending packet packet: 19
+# UVM_INFO consumer.sv(103) @ 75: svtop.sv_env.consumer [cons_type] SV consumer::try_put          19
+# [SC 75 ns] producer::sent packet packet: 19
+# 
+# Blocking TLM1 transactions from SC
+# [SC 80 ns] producer::sending T packet: 17
+# UVM_INFO consumer.sv(95) @ 80: svtop.sv_env.consumer [cons_type] SV consumer::put          17
+# UVM_INFO consumer.sv(99) @ 81: svtop.sv_env.consumer [cons_type] SV consumer::put returns          17
+# [SC 81 ns] producer::sent T packet: 17
+# [SC 85 ns] producer::sending T packet: 18
+# UVM_INFO consumer.sv(95) @ 85: svtop.sv_env.consumer [cons_type] SV consumer::put          18
+# UVM_INFO consumer.sv(99) @ 86: svtop.sv_env.consumer [cons_type] SV consumer::put returns          18
+# [SC 86 ns] producer::sent T packet: 18
+# [SC 90 ns] producer::sending T packet: 19
+# UVM_INFO consumer.sv(95) @ 90: svtop.sv_env.consumer [cons_type] SV consumer::put          19
+# UVM_INFO consumer.sv(99) @ 91: svtop.sv_env.consumer [cons_type] SV consumer::put returns          19
+# [SC 91 ns] producer::sent T packet: 19
+# UVM_INFO producer.sv(79) @ 110: svtop.sv_env.producer [prod_type] 
+# Nonblocking TLM1 transactions from SV 
+# UVM_INFO producer.sv(81) @ 110: svtop.sv_env.producer [prod_type] SV producer::can_put 
+# [SC 110 ns] consumer::nb_can_put
+# UVM_INFO producer.sv(85) @ 110: svtop.sv_env.producer [prod_type] SV producer::can_put returned 1
+# UVM_INFO producer.sv(89) @ 115: svtop.sv_env.producer [prod_type] SV producer::try_put          18
+# [SC 115 ns] consumer::nb_put: packet: 18
+# UVM_INFO producer.sv(91) @ 115: svtop.sv_env.producer [prod_type] SV producer::try_put returned 
+# UVM_INFO producer.sv(81) @ 115: svtop.sv_env.producer [prod_type] SV producer::can_put 
+# [SC 115 ns] consumer::nb_can_put
+# UVM_INFO producer.sv(85) @ 115: svtop.sv_env.producer [prod_type] SV producer::can_put returned 1
+# UVM_INFO producer.sv(89) @ 120: svtop.sv_env.producer [prod_type] SV producer::try_put          19
+# [SC 120 ns] consumer::nb_put: packet: 19
+# UVM_INFO producer.sv(91) @ 120: svtop.sv_env.producer [prod_type] SV producer::try_put returned 
+# UVM_INFO producer.sv(81) @ 120: svtop.sv_env.producer [prod_type] SV producer::can_put 
+# [SC 120 ns] consumer::nb_can_put
+# UVM_INFO producer.sv(85) @ 120: svtop.sv_env.producer [prod_type] SV producer::can_put returned 1
+# UVM_INFO producer.sv(89) @ 125: svtop.sv_env.producer [prod_type] SV producer::try_put          20
+# [SC 125 ns] consumer::nb_put: packet: 20
+# UVM_INFO producer.sv(91) @ 125: svtop.sv_env.producer [prod_type] SV producer::try_put returned 
+# UVM_INFO producer.sv(95) @ 160: svtop.sv_env.producer [prod_type] 
+# Blocking TLM1 transactions from SV 
+# UVM_INFO producer.sv(97) @ 160: svtop.sv_env.producer [prod_type] SV producer::putting          20
+# [SC 160 ns] consumer::put: packet: 20
+# [SC 161 ns] consumer::put done 
+# UVM_INFO producer.sv(100) @ 161: svtop.sv_env.producer [prod_type] SV producer::put returned 
+# UVM_INFO producer.sv(97) @ 165: svtop.sv_env.producer [prod_type] SV producer::putting          21
+# [SC 165 ns] consumer::put: packet: 21
+# [SC 166 ns] consumer::put done 
+# UVM_INFO producer.sv(100) @ 166: svtop.sv_env.producer [prod_type] SV producer::put returned 
+# UVM_INFO producer.sv(97) @ 170: svtop.sv_env.producer [prod_type] SV producer::putting          22
+# [SC 170 ns] consumer::put: packet: 22
+# [SC 171 ns] consumer::put done 
+# UVM_INFO producer.sv(100) @ 171: svtop.sv_env.producer [prod_type] SV producer::put returned 
+# UVM_INFO producer.sv(105) @ 175: svtop.sv_env.producer [prod_type] 
+# TLM2 non-blocking transactions from SV 
+# UVM_INFO producer.sv(109) @ 210: svtop.sv_env.producer [prod_type] SV producer  UVM_TLM_WRITE_COMMAND [0x00000000000000ee] = 0c 8d ca 02 (status=INCOMPLETE)
+# [SC 210 ns] address = 238 data_length = 4 m_data = c 8d ca 2  status= 1
+# UVM_INFO producer.sv(109) @ 215: svtop.sv_env.producer [prod_type] SV producer  UVM_TLM_WRITE_COMMAND [0x00000000000000c8] = a4 fc 6e 03 (status=INCOMPLETE)
+# [SC 215 ns] address = c8 data_length = 4 m_data = a4 fc 6e 3  status= 1
+# UVM_INFO producer.sv(109) @ 220: svtop.sv_env.producer [prod_type] SV producer  UVM_TLM_WRITE_COMMAND [0x0000000000000025] = 6e 2e dc 54 (status=INCOMPLETE)
+# [SC 220 ns] address = 25 data_length = 4 m_data = 6e 2e dc 54  status= 1
+# UVM_INFO producer.sv(116) @ 225: svtop.sv_env.producer [prod_type] 
+# TLM2 blocking transactions from SV 
+# UVM_INFO producer.sv(120) @ 260: svtop.sv_env.producer [prod_type] SV producer  UVM_TLM_WRITE_COMMAND [0x000000000000007e] = f8 27 59 2c (status=INCOMPLETE)
+# [SC 260 ns] address = 7e data_length = 4 m_data = f8 27 59 2c  status= 1
+# UVM_INFO producer.sv(120) @ 270: svtop.sv_env.producer [prod_type] SV producer  UVM_TLM_WRITE_COMMAND [0x00000000000000a9] = b5 c2 e1 10 (status=INCOMPLETE)
+# [SC 270 ns] address = a9 data_length = 4 m_data = b5 c2 e1 10  status= 1
+# UVM_INFO producer.sv(120) @ 280: svtop.sv_env.producer [prod_type] SV producer  UVM_TLM_WRITE_COMMAND [0x0000000000000001] = 80 75 69 20 (status=INCOMPLETE)
+# [SC 280 ns] address = 1 data_length = 4 m_data = 80 75 69 20  status= 1
+# UVM_INFO /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/frameworks/uvm/sv/1.1d-ml/src/base/uvm_objection.svh(1268) @ 290: reporter [TEST_DONE] 'run' phase is ready to proceed to the 'extract' phase
+# UVM_INFO consumer.sv(119) @ 290: svtop.sv_env.consumer [cons_type] ** UVM TEST PASSED **
+# 
+# --- UVM Report Summary ---
+# 
+# ** Report counts by severity
+# UVM_INFO :   61
+# UVM_WARNING :    0
+# UVM_ERROR :    0
+# UVM_FATAL :    0
+# ** Report counts by id
+# [RNTST]     1
+# [TEST_DONE]     1
+# [cons_type]    20
+# [env]     3
+# [prod_type]    31
+# [svtop]     5
+# ** Note: $finish    : /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/frameworks/uvm/sv/1.1d-ml/src/base/uvm_root.svh(1033)
+#    Time: 290 ns  Iteration: 57  Region: /uvm_ml_adapter_imp::uvm_ml_phase_service::start_phasing
+# End time: 22:06:02 on Sep 04,2015, Elapsed time: 0:00:08
+# Errors: 0, Warnings: 0

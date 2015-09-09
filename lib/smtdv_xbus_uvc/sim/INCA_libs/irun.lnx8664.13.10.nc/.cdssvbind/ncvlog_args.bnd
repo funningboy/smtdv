@@ -1,0 +1,80 @@
+-MSS\ 
+-dumpxst\ 
+xbus_slave_0x5c0f62fc\ 
+-LOG_FD\ 
+4\ 
+-neverwarn\ 
+-reduce_messages\ 
+-nocopyright\ 
+-specificunit\ 
+worklib.xbus_slave:v\ 
+-SV\ 
+-DEFINE\ 
+UVM_PLI\ 
+-DEFINE\ 
+SVA\ 
+-DEFINE\ 
+IUS\ 
+-DEFINE\ 
+USE_PARAMETERIZED_WRAPPER\ 
+-INCDIR\ 
+.\ 
+-INCDIR\ 
+/stec/tw/users/schen/prj/smartdv/lib/smtdv_common\ 
+-INCDIR\ 
+/stec/tw/users/schen/prj/smartdv/lib\ 
+-INCDIR\ 
+..\ 
+-INCDIR\ 
+../test\ 
+-INCDIR\ 
+../seq\ 
+-INCDIR\ 
+../v\ 
+-INCDIR\ 
+.\ 
+-INCDIR\ 
+/stec/tw/users/schen/prj/smartdv/dpi/sqlite3\ 
+-INCDIR\ 
+/stec/tw/users/schen/prj/smartdv/dpi/stl\ 
+-INCDIR\ 
+/stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv\ 
+-cdslib\ 
+./INCA_libs/irun.lnx8664.13.10.nc/cds.lib\ 
+-hdlvar\ 
+./INCA_libs/irun.lnx8664.13.10.nc/hdl.var\ 
+-runmode\ 
+-dumpxst\ 
+xbus_master_0x7180034f\ 
+-specificunit\ 
+worklib.xbus_master:v\ 
+-SV\ 
+-INCDIR\ 
+.\ 
+-INCDIR\ 
+/stec/tw/users/schen/prj/smartdv/lib/smtdv_common\ 
+-INCDIR\ 
+/stec/tw/users/schen/prj/smartdv/lib\ 
+-INCDIR\ 
+..\ 
+-INCDIR\ 
+../test\ 
+-INCDIR\ 
+../seq\ 
+-INCDIR\ 
+../v\ 
+-INCDIR\ 
+.\ 
+-INCDIR\ 
+/stec/tw/users/schen/prj/smartdv/dpi/sqlite3\ 
+-INCDIR\ 
+/stec/tw/users/schen/prj/smartdv/dpi/stl\ 
+-INCDIR\ 
+/stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv\ 
+-propfile ./INCA_libs/irun.lnx8664.13.10.nc/.cdssvbind/cds_tmp_svbind_single_00002b75_a8c038c4_1.sva \ 
+/stec/tw/users/schen/prj/smartdv/lib/smtdv_common/smtdv_common_pkg.sv \ 
+/stec/tw/users/schen/prj/smartdv/dpi/sqlite3/smtdv_sqlite3_pkg.sv \ 
+/stec/tw/users/schen/prj/smartdv/dpi/stl/smtdv_stl_pkg.sv \ 
+/stec/tw/users/schen/prj/smartdv/lib/smtdv_xbus_uvc/xbus_pkg.sv \ 
+/stec/tw/users/schen/prj/smartdv/lib/smtdv_xbus_uvc/test/xbus_top.sv \ 
+/stec/tw/users/schen/prj/smartdv/lib/smtdv_xbus_uvc/v/dut_xbus_1m1s.v \ 

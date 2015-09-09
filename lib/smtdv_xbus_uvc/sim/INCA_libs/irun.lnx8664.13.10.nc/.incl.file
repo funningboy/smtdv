@@ -1,0 +1,10 @@
+./xbus_slave.v
+../../smtdv_common/xbus_slave.v
+../..//xbus_slave.v
+..//xbus_slave.v
+../test/xbus_slave.v
+../seq/xbus_slave.v
+../v/dpi_smtdv_stl.sv
+.//dpi_smtdv_stl.sv
+../../../dpi/sqlite3/dpi_smtdv_stl.sv
+../../../dpi/stl/macros/uvm_deprecated_defines.svh

@@ -1,8 +1,15 @@
+`ifndef __APB_TYPEDEFS_SV__
+`define __APB_TYPEDEFS_SV__
+
+`define APB_DEBUG true
+
+typedef enum bit [0:0] {OK, ERR} trx_rsp_t;
+
 `define APB_ADDR_WIDTH 32
 `define APB_DATA_WIDTH 32
 `define APB_PARAMETER #(ADDR_WIDTH, DATA_WIDTH)
 
-`define APB_RST_VIF virtual smtdv_gen_rst_if #("apb_rst_if", 5000, 0)
+`define APB_RST_VIF virtual smtdv_gen_rst_if #("apb_rst_if", 100, 0)
 
 `define APB_VIF virtual apb_if `APB_PARAMETER
 `define APB_ITEM apb_item `APB_PARAMETER
@@ -36,10 +43,45 @@
 `define APB_SLAVE_BASE_SEQ apb_slave_base_seq `APB_PARAMETER
 
 `define APB_MASTER_BASE_SEQ apb_master_base_seq `APB_PARAMETER
+`define APB_MASTER_1W_SEQ apb_master_1w_seq `APB_PARAMETER
+`define APB_MASTER_1R_SEQ apb_master_1r_seq `APB_PARAMETER
 `define APB_MASTER_1W1R_SEQ apb_master_1w1r_seq `APB_PARAMETER
 `define APB_MASTER_RAND_SEQ apb_master_rand_seq `APB_PARAMETER
+`define APB_MASTER_STL_SEQ apb_master_stl_seq `APB_PARAMETER
+
+`define READ_BYTE_SEQ read_byte_seq `APB_PARAMETER
+`define WRITE_BYTE_SEQ write_byte_seq `APB_PARAMETER
+`define READ_WORD_SEQ read_word_seq `APB_PARAMETER
+`define WRITE_WORD_SEQ write_word_seq `APB_PARAMETER
+`define READ_DWORD_SEQ read_dword_seq `APB_PARAMETER
+`define WRITE_DWORD_SEQ write_dword_seq `APB_PARAMETER
 
 `define APB_BASE_TEST apb_base_test
 `define APB_1W1R_TEST apb_1w1r_test
 `define APB_RAND_TEST apb_rand_test
 `define APB_CSIM_TEST apb_csim_test
+`define APB_STL_TEST apb_stl_test
+
+// for DEBUG only, add addr map should be registered to map table
+`define APB_SLAVE_START_ADDR_0 'h1000_0000
+`define APB_SLAVE_END_ADDR_0   'h7fff_ffff
+`define APB_SLAVE_START_ADDR_1 'h8000_0000
+`define APB_SLAVE_END_ADDR_1   'hffff_ffff
+
+bit [`APB_ADDR_WIDTH-1:0] apb_start_addr_t[] = {
+  `APB_SLAVE_START_ADDR_0,
+  `APB_SLAVE_START_ADDR_1
+};
+
+bit [`APB_ADDR_WIDTH-1:0] apb_end_addr_t[] = {
+  `APB_SLAVE_END_ADDR_0,
+  `APB_SLAVE_END_ADDR_1
+};
+
+`define APB_START_ADDR(i) \
+  apb_start_addr_t[i];
+
+`define APB_END_ADDR(i) \
+  apb_end_addr_t[i];
+
+`endif

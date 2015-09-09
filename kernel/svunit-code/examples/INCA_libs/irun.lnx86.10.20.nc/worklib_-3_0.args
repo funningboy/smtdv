@@ -1,0 +1,28 @@
+//
+// File created by:  irun
+// Do not modify this file
+//
+-RUNMODE
+-INCDIR
+/stec/tw/users/schen/prj/svunit-code/svunit_base
+-INCDIR
+/stec/tw/users/schen/prj/svunit-code/svunit_base/uvm-mock
+-DEFINE
+CLK_PERIOD=5
+-DEFINE
+RUN_SVUNIT_WITH_UVM
+-DEFINE
+RUN_SVUNIT_WITH_UVM_REPORT_MOCK
+-INCDIR
+/stec/tw/users/schen/lib/uvm-1.1d/src
+-DEFINE
+USE_PARAMETERIZED_WRAPPER
+-UPDATE
+-CDSLIB
+./INCA_libs/irun.lnx86.10.20.nc/cdsrun.lib
+-HDLVAR
+./INCA_libs/irun.lnx86.10.20.nc/hdlrun.var
+-work
+worklib
+-UVMNOSINGLESTEP
+/stec/tw/users/schen/lib/uvm-1.1d/src/uvm_pkg.sv

@@ -39,6 +39,8 @@ int token;
 %token <token> END_CYCLE
 %token <token> BEGIN_TIME
 %token <token> END_TIME
+%token <token> ID
+%token <token> RESP
 %token <token> RW
 %token <token> ADDR
 %token <token> DATA
@@ -65,6 +67,7 @@ top_stmt : instance_stmt RETURN
 
 // header
 header_stmt : header_xbus
+            | header_apb
             ;
 
 // xbus trx header
@@ -78,15 +81,39 @@ header_xbus : COMMENT
             DATA TLPAREN BYTEN TRPAREN TCOMMA
             ;
 
+// apb trx header
+header_apb : COMMENT
+           BEGIN_CYCLE TCOMMA
+           END_CYCLE TCOMMA
+           BEGIN_TIME TCOMMA
+           END_TIME TCOMMA
+           ID TCOMMA
+           RW TCOMMA
+           RESP TCOMMA
+           ADDR TCOMMA
+           DATA TCOMMA
+           ;
+
 instance_stmt : COMMENT SIDENTIFIER
-              { global_mb = dpi_smtdv_new_smtdv_masmtdvox(str2char((*$<smtdv_string>2))); }
+              { global_mb = dpi_smtdv_new_smtdv_mailbox(str2char((*$<smtdv_string>2))); }
 ;
-// body contains, register trx to smtdv masmtdvox
+// body contains, register trx to smtdv mailbox
 body_stmt : { global_trx = dpi_smtdv_new_smtdv_transfer();
               dpi_smtdv_register_smtdv_transfer(global_mb, global_trx); } sub_body_stmt;
 
 //sub body, update trx
-sub_body_stmt : TIDENTIFIER TCOMMA TIDENTIFIER TCOMMA TIDENTIFIER TCOMMA TIDENTIFIER TCOMMA TIDENTIFIER TCOMMA TIDENTIFIER TCOMMA TIDENTIFIER TLPAREN TIDENTIFIER TRPAREN TCOMMA {
+sub_body_stmt : body_xbus
+              | body_apb
+              ;
+
+body_xbus:
+         TIDENTIFIER TCOMMA
+         TIDENTIFIER TCOMMA
+         TIDENTIFIER TCOMMA
+         TIDENTIFIER TCOMMA
+         TIDENTIFIER TCOMMA
+         TIDENTIFIER TCOMMA
+         TIDENTIFIER TLPAREN TIDENTIFIER TRPAREN TCOMMA {
 dpi_smtdv_set_smtdv_transfer_begin_cycle(global_trx, str2char((*$<smtdv_string>1)));
 dpi_smtdv_set_smtdv_transfer_end_cycle(global_trx, str2char((*$<smtdv_string>3)));
 dpi_smtdv_set_smtdv_transfer_begin_time(global_trx, str2char((*$<smtdv_string>5)));
@@ -96,6 +123,28 @@ dpi_smtdv_set_smtdv_transfer_addr(global_trx, str2char((*$<smtdv_string>11)));
 dpi_smtdv_set_smtdv_transfer_data(global_trx, str2char((*$<smtdv_string>13)));
 dpi_smtdv_set_smtdv_transfer_byten(global_trx, str2char((*$<smtdv_string>15)));
 };
+
+body_apb:
+        TIDENTIFIER TCOMMA
+        TIDENTIFIER TCOMMA
+        TIDENTIFIER TCOMMA
+        TIDENTIFIER TCOMMA
+        TIDENTIFIER TCOMMA
+        TIDENTIFIER TCOMMA
+        TIDENTIFIER TCOMMA
+        TIDENTIFIER TCOMMA
+        TIDENTIFIER TCOMMA {
+dpi_smtdv_set_smtdv_transfer_begin_cycle(global_trx, str2char((*$<smtdv_string>1)));
+dpi_smtdv_set_smtdv_transfer_end_cycle(global_trx, str2char((*$<smtdv_string>3)));
+dpi_smtdv_set_smtdv_transfer_begin_time(global_trx, str2char((*$<smtdv_string>5)));
+dpi_smtdv_set_smtdv_transfer_end_time(global_trx, str2char((*$<smtdv_string>7)));
+dpi_smtdv_set_smtdv_transfer_id(global_trx, str2char((*$<smtdv_string>9)));
+dpi_smtdv_set_smtdv_transfer_rw(global_trx, str2char((*$<smtdv_string>11)));
+dpi_smtdv_set_smtdv_transfer_resp(global_trx, str2char((*$<smtdv_string>13)));
+dpi_smtdv_set_smtdv_transfer_addr(global_trx, str2char((*$<smtdv_string>15)));
+dpi_smtdv_set_smtdv_transfer_data(global_trx, str2char((*$<smtdv_string>17)));
+};
+
 %%
 
 #ifdef __cplusplus

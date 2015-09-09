@@ -1,0 +1,271 @@
+irun(64): 13.10-s011: (c) Copyright 1995-2013 Cadence Design Systems, Inc.
+TOOL:	irun(64)	13.10-s011: Started on Sep 09, 2015 at 10:05:21 CST
+irun
+	-uvm
+	-64bit
+	-access rwc
+	-status
+	-top top
+	+UVM_TESTNAME=xbus_stl_test
+	+UVM_VERBOSITY=UVM_DEBUG
+	-covoverwrite
+	-coverage b:u
+	+nccoverage+functional
+	+notchkmsg
+	+notimingchecks
+	+no_notifier
+	+define+SVA
+	+define+IUS
+	+incdir+../../smtdv_common
+	+incdir+../../
+	+incdir+../
+	+incdir+../test
+	+incdir+../seq
+	+incdir+../v
+	+incdir+./
+	+incdir+../../../dpi/sqlite3
+	+incdir+../../../dpi/stl
+	../../smtdv_common/smtdv_common_pkg.sv
+	../../../dpi/sqlite3/smtdv_sqlite3_pkg.sv
+	../../../dpi/stl/smtdv_stl_pkg.sv
+	../xbus_pkg.sv
+	../test/xbus_top.sv
+	-sv
+	../v/dut_xbus_1m1s.v
+	-sv_lib ../../../dpi/sqlite3/dpi_smtdv_lib.so
+	-sv_lib ../../../dpi/stl/dpi_smtdv_stl.so
+	-input simvision.tcl
+	-batch
+
+   User defined plus("+") options:
+	+UVM_VERBOSITY=UVM_DEBUG
+
+Recompiling... reason: file '/stec/tw/users/schen/prj/smartdv/lib/smtdv_common/smtdv_component.sv' is newer than expected.
+	expected: Wed Sep  9 09:40:50 2015
+	actual:   Wed Sep  9 09:50:24 2015
+Compiling UVM packages (uvm_pkg.sv cdns_uvm_pkg.sv) using uvmhome location /stec/apps/cadence/INCISIV13.10.011/tools/uvm
+ncvlog: Memory Usage - 17.9M program + 45.1M data = 63.0M total
+ncvlog: CPU Usage - 0.1s system + 1.1s user = 1.2s total (1.3s, 89.5% cpu)
+file: ../xbus_pkg.sv
+	package worklib.xbus_pkg:sv
+		errors: 0, warnings: 0
+file: ../test/xbus_top.sv
+	module worklib.top:sv
+		errors: 0, warnings: 0
+ncvlog: Memory Usage - 17.9M program + 40.0M data = 57.8M total
+ncvlog: CPU Usage - 0.1s system + 0.3s user = 0.4s total (0.9s, 46.2% cpu)
+	Elaborating the design hierarchy:
+		Caching library 'worklib' ....... Done
+	Top level design units:
+		uvm_pkg
+		$unit_0x5e7e2c63
+		smtdv_common_pkg
+		smtdv_sqlite3_pkg
+		smtdv_stl_pkg
+		xbus_pkg
+		top
+ncelab: *W,COVNIB: Currently, by default, coverage is scored for implicit else and case default blocks. In subsequent releases, the default scoring for such blocks will be disabled and a coverage configuration file command will be provided to revert to the old behavior. This change may prevent refinements from 13.1 releases to be applied on coverage databases generated using subsequent releases in the default mode..
+	Building instance overlay tables: ....................
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_sequence.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_reg_mem_hdl_paths_seq.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_object_registry.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS cdns_list_printer.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS cdns_uvm_recorder.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_object_registry.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_object_registry.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_object_registry.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_object_registry.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_object_registry.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_object_registry.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_object_registry.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_object_registry.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_object_registry.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_object_registry.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_object_registry.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_object_registry.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_object_registry.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_reg_fifo.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_predict_s.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_object_registry.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_tlm_time.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_object_registry.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_object_registry.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_object_registry.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_scoreboard.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_cmd_line_verb.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_heartbeat.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS sev_id_struct.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_obj_rsrc.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_string_rsrc.
+ncelab: *W,CRCCON: Matching signature found for VST_D_CLASS uvm_int_rsrc.
+ Done
+	Enabling instrumentation for coverage types: block functional
+	Generating native compiled code:
+		worklib.smtdv_common_pkg:sv <0x0b8a7ac8>
+			streams:   5, words:  4434
+		worklib.smtdv_common_pkg:sv <0x0bfeca23>
+			streams:   5, words:  4434
+		worklib.smtdv_common_pkg:sv <0x14809131>
+			streams:   5, words:  4434
+		worklib.smtdv_common_pkg:sv <0x1d80ad61>
+			streams:   5, words:  4434
+		worklib.smtdv_common_pkg:sv <0x20d4513d>
+			streams:   5, words:  4434
+		worklib.smtdv_common_pkg:sv <0x250121b1>
+			streams:   5, words:  4434
+		worklib.smtdv_common_pkg:sv <0x257dbd58>
+			streams:   5, words:  4434
+		worklib.smtdv_common_pkg:sv <0x3120005f>
+			streams:   5, words:  4434
+		worklib.smtdv_common_pkg:sv <0x3351049e>
+			streams: 161, words: 466257
+		worklib.smtdv_common_pkg:sv <0x3650ac69>
+			streams:  22, words: 122467
+		worklib.smtdv_common_pkg:sv <0x38f3b112>
+			streams: 272, words: 777662
+		worklib.smtdv_common_pkg:sv <0x459aa0a7>
+			streams:   5, words:  4434
+		worklib.smtdv_common_pkg:sv <0x4993c939>
+			streams:   5, words:  4434
+		worklib.smtdv_common_pkg:sv <0x4e57d1be>
+			streams:   5, words:  4434
+		worklib.smtdv_common_pkg:sv <0x59cff356>
+			streams:  59, words: 153062
+		worklib.smtdv_common_pkg:sv <0x5d428231>
+			streams:  36, words: 242071
+		worklib.smtdv_common_pkg:sv <0x60c24bf2>
+			streams:  22, words: 62035
+		worklib.smtdv_common_pkg:sv <0x6584850b>
+			streams: 143, words: 607643
+		worklib.smtdv_common_pkg:sv <0x7b681d71>
+			streams:   5, words:  4434
+		worklib.smtdv_common_pkg:sv <0x7ecf3860>
+			streams: 185, words: 467733
+		worklib.top:sv <0x6c224b69>
+			streams: 179, words: 518959
+		worklib.top:sv <0x7a879d54>
+			streams: 142, words: 501047
+		worklib.uvm_pkg:sv <0x00bcaacf>
+			streams:  94, words: 327960
+		worklib.uvm_pkg:sv <0x0141d724>
+			streams: 318, words: 1257286
+		worklib.uvm_pkg:sv <0x02430231>
+			streams:  25, words: 50329
+		worklib.uvm_pkg:sv <0x05087b1d>
+			streams:  22, words: 50574
+		worklib.uvm_pkg:sv <0x05fe6fb5>
+			streams: 375, words: 917535
+		worklib.uvm_pkg:sv <0x068d9d63>
+			streams:  72, words: 174868
+		worklib.uvm_pkg:sv <0x0804af05>
+			streams:  25, words: 51746
+		worklib.uvm_pkg:sv <0x1401a3a0>
+			streams:  27, words: 62234
+		worklib.uvm_pkg:sv <0x2110a319>
+			streams:  28, words: 80327
+		worklib.uvm_pkg:sv <0x31d303c5>
+			streams:  26, words: 57756
+		worklib.uvm_pkg:sv <0x3d0c659c>
+			streams:  28, words: 95782
+		worklib.uvm_pkg:sv <0x4e74e587>
+			streams:  26, words: 65621
+		worklib.uvm_pkg:sv <0x4f5af5f9>
+			streams:  26, words: 67064
+		worklib.uvm_pkg:sv <0x526b5f78>
+			streams:  23, words: 37740
+		worklib.uvm_pkg:sv <0x53995468>
+			streams:  26, words: 253472
+		worklib.uvm_pkg:sv <0x55ce11b4>
+			streams: 116, words: 350298
+		worklib.uvm_pkg:sv <0x67e792df>
+			streams: 105, words: 249396
+		worklib.uvm_pkg:sv <0x6813e750>
+			streams:  23, words: 37740
+		worklib.uvm_pkg:sv <0x70a30a34>
+			streams:  51, words: 128359
+		worklib.uvm_pkg:sv <0x762ffbe3>
+			streams:  26, words: 76401
+		worklib.uvm_pkg:sv <0x7fa6682b>
+			streams:  22, words: 50561
+		worklib.xbus_master:v <0x72926fe2>
+			streams:   6, words:   984
+		worklib.xbus_master_if_harness:sv <0x52e8bb6f>
+			streams:  15, words: 14919
+		worklib.xbus_pkg:sv <0x64b12217>
+			streams:  26, words: 48641
+		worklib.xbus_pkg:sv <0x7337b966>
+			streams:   2, words:  2600
+		worklib.xbus_slave:v <0x39f41aa3>
+			streams:   4, words:   620
+		worklib.xbus_slave_if_harness:sv <0x24fef475>
+			streams:  15, words: 14646
+	Building instance specific data structures.
+ncelab: *W,CGDOGV: The target goal, by default, is set as 100.
+ncelab: *W,CGPIDF: Covergroup "per_instance" option , by default, is set as 0.
+	Loading native compiled code:     .................... Done
+	Design hierarchy summary:
+		                       Instances  Unique
+		Modules:                       4       6
+		Interfaces:                    5       4
+		Verilog packages:              5       5
+		Registers:                 18747   11441
+		Scalar wires:                 11       -
+		Vectored wires:                6       -
+		Named events:                 14      17
+		Always blocks:                61      42
+		Initial blocks:              439     185
+		Clocking blocks:               4       2
+		Clocking items:               36      18
+		Parallel blocks:              56      45
+		Cont. assignments:             1       2
+		Pseudo assignments:            6       6
+		Assertions:                   17      13
+		Covergroup Instances:          0       1
+		Compilation units:             1       1
+		SV Class declarations:       251     369
+		SV Class specializations:    539     539
+		Simulation timescale:       10ps
+	Writing initial simulation snapshot: worklib.top:sv
+ncelab: Memory Usage - 44.0M program + 119.7M data = 163.7M total (Peak 165.0M)
+ncelab: CPU Usage - 1.1s system + 7.3s user = 8.5s total (12.5s, 67.8% cpu)
+Loading snapshot worklib.top:sv .................... Done
+SVSEED default: 1
+*Verdi3* Loading libsscore_ius131.so
+*Verdi3* : Enable Parallel Dumping.
+ncsim> source /stec/apps/cadence/INCISIV13.10.011/tools/inca/files/ncsimrc
+ncsim> source /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/files/tcl/uvm_sim.tcl
+ncsim> database -open waves -shm -statement
+ncsim: *W,DBSPE2: The database -statement option will have an adverse performance impact. The +linedebug command line option must be specified when probing statements.
+Created SHM database waves
+ncsim> probe -create -all -depth all
+Created probe 1
+ncsim> 
+ncsim> run
+ncsim: *W,COVNIB: Currently, by default, coverage is scored for implicit else and case default blocks. In subsequent releases, the default scoring for such blocks will be disabled and a coverage configuration file command will be provided to revert to the old behavior. This change may prevent refinements from 13.1 releases to be applied on coverage databases generated using subsequent releases in the default mode..
+----------------------------------------------------------------
+CDNS-UVM-1.1d (13.10-s011)
+(C) 2007-2013 Mentor Graphics Corporation
+(C) 2007-2013 Cadence Design Systems, Inc.
+(C) 2006-2013 Synopsys, Inc.
+(C) 2011-2013 Cypress Semiconductor Corp.
+----------------------------------------------------------------
+
+  ***********       IMPORTANT RELEASE NOTES         ************
+
+  You are using a version of the UVM library that has been compiled
+  with `UVM_NO_DEPRECATED undefined.
+  See http://www.eda.org/svdb/view.php?id=3313 for more details.
+
+  You are using a version of the UVM library that has been compiled
+  with `UVM_OBJECT_MUST_HAVE_CONSTRUCTOR undefined.
+  See http://www.eda.org/svdb/view.php?id=3770 for more details.
+
+      (Specify +UVM_NO_RELNOTES to turn off this notice)
+
+UVM_INFO ../../smtdv_common/smtdv_gen_rst_if.sv(29) @ 0: reporter [xbus_rst_if] Power-On Reset Initialized ...
+UVM_INFO @ 0: reporter [RNTST] Running test xbus_stl_test...
+ncsim: *W,CNTRCW: Multiple control-C's detected. One more will exit simulation.
+ncsim: *F,CNTRCF: Multiple control-C's detected. Exiting simulation.
+ncsim: Memory Usage - 33.1M program + 371.0M data = 404.1M total
+ncsim: CPU Usage - 0.6s system + 272.8s user = 273.4s total (287.3s, 95.1% cpu)
+TOOL:	irun(64)	13.10-s011: Exiting on Sep 09, 2015 at 10:10:26 CST  (total: 00:05:05)
