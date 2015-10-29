@@ -1,0 +1,30 @@
+$CDSROOT = /stec/apps/cadence/INCISIV13.10.011
+$TESTDIR = /stec/tw/users/schen/prj/smartdv/kernel/sveditor-ref-designs/uvm_ref_flow_2013.05/soc_verification_lib/sv_cb_ex_lib/uart_ctrl
+
+TOOL:	ncsc	13.10-s011
+ncsc C++ parameters: 
+	ncsc -COMPILER $CDSROOT/tools/cdsgcc/gcc/4.4/bin/g++ 
+	-f ./INCA_libs/irun.lnx86.13.10.nc/ncsc_run/ncsc_obj/ncsc.args
+	-MANUAL 
+	-CFLAGS "-DNCSC
+		-I$CDSROOT/tools/systemc/include_pch
+		-I$CDSROOT/tools/tbsc/include
+		-I$CDSROOT/tools/vic/include
+		-I$CDSROOT/tools/ovm/sc/src
+		-I$CDSROOT/tools/uvm/uvm_lib/uvm_sc/sc
+		-I$CDSROOT/tools/uvm/uvm_lib/uvm_ml/sc
+		-I$CDSROOT/tools/systemc/include/cci
+		-I$CDSROOT/tools/systemc/include/factory
+		-I$CDSROOT/tools/systemc/include/tlm2
+		-c
+		-x c++ -m32  -Wall 
+		-I$CDSROOT/tools/include
+		-I$CDSROOT/tools/inca/include"
+
+make[1]: Entering directory `/stec/tw/users/schen/prj/smartdv/kernel/sveditor-ref-designs/uvm_ref_flow_2013.05/soc_verification_lib/sv_cb_ex_lib/uart_ctrl'
+ncsc: compiling $/stec/apps/mentor/questa_sim_10.3c/questasim/verilog_src/uvm-1.1d/src/dpi/uvm_dpi.cc
+make[1]: Leaving directory `/stec/tw/users/schen/prj/smartdv/kernel/sveditor-ref-designs/uvm_ref_flow_2013.05/soc_verification_lib/sv_cb_ex_lib/uart_ctrl'
+
+make[1]: Entering directory `/stec/tw/users/schen/prj/smartdv/kernel/sveditor-ref-designs/uvm_ref_flow_2013.05/soc_verification_lib/sv_cb_ex_lib/uart_ctrl'
+building library run.so
+make[1]: Leaving directory `/stec/tw/users/schen/prj/smartdv/kernel/sveditor-ref-designs/uvm_ref_flow_2013.05/soc_verification_lib/sv_cb_ex_lib/uart_ctrl'

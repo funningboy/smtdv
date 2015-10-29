@@ -1,0 +1,1 @@
+main.o: /stec/apps/cadence/INCISIV13.10.011/tools/inca/src/main.cc

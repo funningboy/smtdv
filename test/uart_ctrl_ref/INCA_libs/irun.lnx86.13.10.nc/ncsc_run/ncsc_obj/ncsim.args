@@ -1,0 +1,4 @@
+-nocopyright
+-nowarn COVSEC
+-cdslib /stec/tw/users/schen/prj/smartdv/kernel/sveditor-ref-designs/uvm_ref_flow_2013.05/soc_verification_lib/sv_cb_ex_lib/uart_ctrl/./INCA_libs/irun.lnx86.13.10.nc/cdsrun.lib
+-hdlvar /stec/tw/users/schen/prj/smartdv/kernel/sveditor-ref-designs/uvm_ref_flow_2013.05/soc_verification_lib/sv_cb_ex_lib/uart_ctrl/./INCA_libs/irun.lnx86.13.10.nc/hdlrun.var

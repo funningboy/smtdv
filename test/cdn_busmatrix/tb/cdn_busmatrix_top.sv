@@ -1,4 +1,12 @@
 
+
+`include "busmatrix.v"
+`include "arbiter.v"
+`include "master_if.v"
+`include "multiplexer.v"
+`include "req_register.v"
+`include "slave_if.v"
+
 `timescale 1ns/10ps
 
 module tb_top();

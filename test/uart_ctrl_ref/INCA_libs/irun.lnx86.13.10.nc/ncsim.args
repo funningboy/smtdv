@@ -1,0 +1,48 @@
+//
+// File created by:  irun
+// Do not modify this file
+//
+-INPUT
+"@source /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/files/tcl/uvm_sim.tcl"
++UVM_VERBOSITY=MEDIUM
++tcl+/stec/tw/users/schen/prj/smartdv/kernel/sveditor-ref-designs/uvm_ref_flow_2013.05/soc_verification_lib/sv_cb_ex_lib/uart_ctrl/tb/scripts/assert_opt.tcl
++svseed+random
++define+UART_ABV_ON
++define+LITLE_ENDIAN
++define+DYNAMIC_SIM
++tcl+/stec/tw/users/schen/prj/smartdv/kernel/sveditor-ref-designs/uvm_ref_flow_2013.05/soc_verification_lib/sv_cb_ex_lib/uart_ctrl/tb/scripts/run_batch.tcl
+-uvmhome
+/stec/apps/mentor/questa_sim_10.3c/questasim/verilog_src/uvm-1.1d
+-sv_lib
+/stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/lib/libuvmpli.so
+-assert_count_traces
+-NOWARN
+COVSEC
+-INPUT
+/stec/tw/users/schen/prj/smartdv/kernel/sveditor-ref-designs/uvm_ref_flow_2013.05/soc_verification_lib/sv_cb_ex_lib/uart_ctrl/tb/scripts/assert_opt.tcl
+-SVSEED
+random
++UVM_TESTNAME=apb_uart_rx_tx
+-assert_logging_error_off
+-COVOVERWRITE
+-COVTEST
+apb_uart_rx_tx
+-INPUT
+/stec/tw/users/schen/prj/smartdv/kernel/sveditor-ref-designs/uvm_ref_flow_2013.05/soc_verification_lib/sv_cb_ex_lib/uart_ctrl/tb/scripts/run_batch.tcl
+-MESSAGES
++EMGRLOG
+irun.log
+-XLSTIME
+1441851729
+-XLKEEP
+-XLMODE
+./INCA_libs/irun.lnx86.13.10.nc
+-RUNMODE
+-CDSLIB
+./INCA_libs/irun.lnx86.13.10.nc/cds.lib
+-HDLVAR
+./INCA_libs/irun.lnx86.13.10.nc/hdl.var
+-XLNAME
+irun
+-XLVERSION
+"TOOL:	irun	13.10-s011"
