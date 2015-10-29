@@ -1,0 +1,61 @@
+csi-ncsim - CSI: Command line:
+ncsim
+    -f /stec/tw/users/schen/prj/smartdv/lib/smtdv_ahb_uvc/sim/INCA_libs/irun.lnx8664.13.10.nc/twlogin04_7362/ncsim.args
+        -INPUT @source /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/files/tcl/uvm_sim.tcl
+        +UVM_VERBOSITY=UVM_DEBUG
+        +nccoverage+functional
+        +notchkmsg
+        +notimingchecks
+        +no_notifier
+        +define+SVA
+        +incdir+../sv
+        +incdir+../../smtdv_common
+        +incdir+../
+        +incdir+../test
+        +incdir+../seq
+        +incdir+../v
+        +incdir+./
+        +incdir+../../../dpi/sqlite3
+        +incdir+../../../dpi/stl
+        -sv_lib /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/lib/64bit/libuvmpli.so
+        -STATUS
+        +UVM_TESTNAME=ahb_stl_test
+        -COVOVERWRITE
+        -sv_lib ../../../dpi/sqlite3/dpi_smtdv_lib.so
+        -sv_lib ../../../dpi/stl/dpi_smtdv_stl.so
+        -INPUT simvision.tcl
+        -BATCH
+        -MESSAGES
+        -SV_LIB /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/lib/64bit/libuvmdpi.so
+        +EMGRLOG irun.log
+        -XLSTIME 1445918992
+        -XLKEEP
+        -XLMODE ./INCA_libs/irun.lnx8664.13.10.nc
+        -RUNMODE
+        -CDSLIB ./INCA_libs/irun.lnx8664.13.10.nc/cds.lib
+        -HDLVAR ./INCA_libs/irun.lnx8664.13.10.nc/hdl.var
+        -XLNAME irun
+        -XLVERSION TOOL:	irun(64)	13.10-s011
+        -XLNAME ./INCA_libs/irun.lnx8664.13.10.nc/twlogin04_7362
+    -CHECK_VERSION TOOL:	irun(64)	13.10-s011
+    -LOG_FD 4
+    -LOG_FD_NAME irun.log
+    -cmdnopsim
+    -runlock /stec/tw/users/schen/prj/smartdv/lib/smtdv_ahb_uvc/sim/INCA_libs/irun.lnx8664.13.10.nc/.nclib.lock
+    -runscratch /stec/tw/users/schen/prj/smartdv/lib/smtdv_ahb_uvc/sim/INCA_libs/irun.lnx8664.13.10.nc/twlogin04_7362
+
+csi-ncsim - CSI: *F,INTERR: INTERNAL EXCEPTION
+Observed simulation time : 745 NS + 2
+-----------------------------------------------------------------
+The tool has encountered an unexpected condition and must exit.
+Contact Cadence Design Systems customer support about this
+problem and provide enough information to help us reproduce it,
+including the logfile that contains this error message.
+  TOOL:	ncsim(64)	13.10-s011
+  HOSTNAME: twlogin04
+  OPERATING SYSTEM: Linux 2.6.18-406.el5 #1 SMP Tue Jun 2 17:25:57 EDT 2015 x86_64
+  MESSAGE: Unexpected signal #6, program terminated (null)
+-----------------------------------------------------------------
+
+csi-ncsim - CSI: Cadence Support Investigation, recording details
+csi-ncsim - CSI: investigation complete took 0.000 secs, send this file to Cadence Support

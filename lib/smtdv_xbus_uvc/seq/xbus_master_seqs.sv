@@ -119,8 +119,8 @@ class xbus_master_stl_seq #(
         item.run_t = smtdv_common_pkg::NORMAL;
         item.trs_t  = (dpi_smtdv_get_smtdv_transfer_rw(m_dpi_trx) == "w")? smtdv_common_pkg::WR : smtdv_common_pkg::RD;
         item.addr   = dpi_hexstr_2_longint(dpi_smtdv_get_smtdv_transfer_addr(m_dpi_trx));
-        item.pack_data(dpi_hexstr_2_longint(dpi_smtdv_get_smtdv_transfer_data(m_dpi_trx)));
-        item.pack_byten(dpi_hexstr_2_longint(dpi_smtdv_get_smtdv_transfer_byten(m_dpi_trx)));
+        item.pack_data(dpi_hexstr_2_longint(dpi_smtdv_get_smtdv_transfer_data(m_dpi_trx, 0)));
+        item.pack_byten(dpi_hexstr_2_longint(dpi_smtdv_get_smtdv_transfer_byten(m_dpi_trx, 0)));
 
         item.bg_cyc = dpi_hexstr_2_longint(dpi_smtdv_get_smtdv_transfer_begin_cycle(m_dpi_trx));
         item.ed_cyc = dpi_hexstr_2_longint(dpi_smtdv_get_smtdv_transfer_end_cycle(m_dpi_trx));

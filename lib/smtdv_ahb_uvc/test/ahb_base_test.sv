@@ -7,6 +7,8 @@ class ahb_base_test extends smtdv_test;
 
   parameter ADDR_WIDTH = `AHB_ADDR_WIDTH;
   parameter DATA_WIDTH = `AHB_DATA_WIDTH;
+  parameter NUM_OF_INITOR = 1;
+  parameter NUM_OF_TARGETS = 1;
 
   `AHB_RST_VIF ahb_rst_vif;
 
@@ -16,6 +18,8 @@ class ahb_base_test extends smtdv_test;
   `AHB_MASTER_AGENT master_agent[$];
   `AHB_MASTER_CFG master_cfg[$];
 
+  `AHB_BASE_SCOREBOARD master_scb[$];
+
   smtdv_reset_model #(`AHB_RST_VIF) ahb_rst_model;
 
   `uvm_component_utils(`AHB_BASE_TEST)
@@ -24,32 +28,43 @@ class ahb_base_test extends smtdv_test;
     super.new(name, parent);
   endfunction
 
+  // lookup table expect from .xml or .yaml
   virtual function void build_phase(uvm_phase phase);
-    string slave_cfg0;
     bit [ADDR_WIDTH-1:0] start_addr, end_addr;
     super.build_phase(phase);
 
-    // slave0 cfg, agent
-    slave_cfg0 = {$psprintf("slave_cfg[%0d]", 0)};
-    slave_cfg[0] = `AHB_SLAVE_CFG::type_id::create(slave_cfg0, this);
-    slave_cfg[0].has_force = 0;
-    slave_cfg[0].has_coverage = 1;
-    slave_cfg[0].has_export = 1;
-    slave_agent[0] = `AHB_SLAVE_AGENT::type_id::create("slave_agent[0]", this);
+    // slaves cfg, agent
+    slave_cfg[0] = `AHB_SLAVE_CFG::type_id::create({$psprintf("slave_cfg[%0d]", 0)}, this);
+    `SMTDV_RAND_WITH(slave_cfg[0], {
+      has_force == 0;
+      has_coverage == 1;
+      has_export == 1;
+      has_error == 0;
+      has_retry == 1;
+      has_split == 0;
+    })
+    slave_agent[0] = `AHB_SLAVE_AGENT::type_id::create({$psprintf("slave_agent[%0d]", 0)}, this);
     uvm_config_db#(uvm_bitstream_t)::set(null, "/.+slave_agent[*0]*/", "is_active", UVM_ACTIVE);
     uvm_config_db#(`AHB_SLAVE_CFG)::set(null, "/.+slave_agent[*0]*/", "cfg", slave_cfg[0]);
 
-    // master cfg, agent
-    master_cfg[0] = `AHB_MASTER_CFG::type_id::create("master_cfg[0]", this);
-    master_cfg[0].has_force = 1;
-    master_cfg[0].has_coverage = 1;
-    master_cfg[0].has_export = 1;
+    // masters cfg, agent
+    master_cfg[0] = `AHB_MASTER_CFG::type_id::create({$psprintf("master_cfg[%0d]", 0)}, this);
+    `SMTDV_RAND_WITH(master_cfg[0], {
+      has_force == 1;
+      has_coverage == 1;
+      has_export == 1;
+      has_busy == 1;
+    })
     start_addr = `AHB_START_ADDR(0)
     end_addr = `AHB_END_ADDR(0)
     master_cfg[0].add_slave(slave_cfg[0], 0, start_addr, end_addr);
-    master_agent[0] = `AHB_MASTER_AGENT::type_id::create("master_agent[0]", this);
+    master_agent[0] = `AHB_MASTER_AGENT::type_id::create({$psprintf("master_agent[%0d]", 0)}, this);
     uvm_config_db#(uvm_bitstream_t)::set(null, "/.+master_agent[*0]*/", "is_active", UVM_ACTIVE);
     uvm_config_db#(`AHB_MASTER_CFG)::set(null, "/.+master_agent[*0]*/", "cfg", master_cfg[0]);
+
+    // scoreboard num of masters cross all slaves ex: 3*all, 2*all socreboard
+    // base is eq num of master
+    master_scb[0] = `AHB_BASE_SCOREBOARD::type_id::create({$psprintf("master_scb[%0d]", 0)}, this);
 
     // resetn
     ahb_rst_model = smtdv_reset_model#(`AHB_RST_VIF)::type_id::create("ahb_rst_model");
@@ -64,6 +79,8 @@ class ahb_base_test extends smtdv_test;
 
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
+    master_agent[0].mon.item_collected_port.connect(master_scb[0].initor[0]);
+    slave_agent[0].mon.item_collected_port.connect(master_scb[0].targets[0]);
   endfunction
 
   virtual function void end_of_elaboration_phase(uvm_phase phase);
@@ -73,6 +90,8 @@ class ahb_base_test extends smtdv_test;
     ahb_rst_model.show_components(0);
   endfunction
 
+  virtual function void check_phase(uvm_phase phase);
+  endfunction
 
 endclass
 

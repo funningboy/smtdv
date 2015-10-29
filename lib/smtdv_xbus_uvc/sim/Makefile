@@ -13,6 +13,7 @@ run_mti:
 	+libext+_ncverilog.v+.v+.sv \
 	-l compile.log \
 	+define+MTI \
+	+incdir+../sv \
 	+incdir+../../smtdv_common \
 	+incdir+../ \
 	+incdir+../test \
@@ -24,9 +25,11 @@ run_mti:
 	../../smtdv_common/smtdv_common_pkg.sv \
 	../../../dpi/sqlite3/smtdv_sqlite3_pkg.sv \
 	../../../dpi/stl/smtdv_stl_pkg.sv \
-	../xbus_pkg.sv \
+	../sv/xbus_pkg.sv \
 	../test/xbus_top.sv \
 	-sv ../v/dut_xbus_1m1s.v
+
+#	-c -do 'run -all; quit ' \
 
 	vsim \
 	+vopt \
@@ -37,6 +40,7 @@ run_mti:
 	-l $1_simulation.log \
 	-L work \
 	top \
+	+incdir+../sv \
 	+incdir+../../smtdv_common \
 	+incdir+../ \
 	+incdir+../test \
@@ -77,6 +81,7 @@ run_ius:
 	+no_notifier \
 	+define+SVA \
 	+define+IUS \
+	+incdir+../sv \
 	+incdir+../../smtdv_common \
 	+incdir+../../ \
 	+incdir+../ \
@@ -89,7 +94,7 @@ run_ius:
 	../../smtdv_common/smtdv_common_pkg.sv \
 	../../../dpi/sqlite3/smtdv_sqlite3_pkg.sv \
 	../../../dpi/stl/smtdv_stl_pkg.sv \
-	../xbus_pkg.sv \
+	../sv/xbus_pkg.sv \
 	../test/xbus_top.sv \
 	-sv ../v/dut_xbus_1m1s.v \
 	-sv_lib ../../../dpi/sqlite3/dpi_smtdv_lib.so \

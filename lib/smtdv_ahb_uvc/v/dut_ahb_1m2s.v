@@ -89,9 +89,10 @@ module dut_1m2s #(
       .hprot(w_hprot),
       .hwdata(w_hwdata),
       .hmastlock(w_hmastlock),
+      .hready(w_hreadyout)
 
       .hrdata(hrdata),
-      .hready(hready),
+      .hreadyout(hreadyout),
       .hresp(hresp)
     );
   end

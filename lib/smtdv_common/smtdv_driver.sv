@@ -11,6 +11,8 @@ class smtdv_driver #(type VIF = int,
   VIF vif;
   CFG cfg;
 
+  smtdv_thread_handler #(CFG) th_handler;
+
   `uvm_component_param_utils_begin(smtdv_driver#(VIF, CFG))
     // Cadence doesn't support this registration
     //`uvm_field_queue_object(thread_q, UVM_ALL_ON)
@@ -18,6 +20,11 @@ class smtdv_driver #(type VIF = int,
 
   function new(string name = "smtdv_driver", uvm_component parent);
     super.new(name, parent);
+  endfunction
+
+  virtual function void build_phase(uvm_phase phase);
+    super.build_phase(phase);
+    th_handler = smtdv_thread_handler#(CFG)::type_id::create("smtdv_driver_threads", this);
   endfunction
 
   extern virtual task run_phase(uvm_phase phase);
@@ -48,11 +55,17 @@ task smtdv_driver::run_phase(uvm_phase phase);
 
         begin
           forever begin: get_item_from_sqr
-            seq_item_port.get_next_item(req);
-            $cast(rsp, req.clone());
-            rsp.set_id_info(req);
+            // align to posege clk to drive
+            @(posedge vif.clk iff (vif.clk));
+            get_item(req);
             drive_bus();
-            seq_item_port.item_done(rsp);
+            item_done(rsp);
+            // respone queue will been blocked at rsp not been deasserted
+            //seq_item_port.get_next_item(req);
+            //$cast(rsp, req.clone());
+            //rsp.set_id_info(req);
+            //drive_bus();
+            //seq_item_port.item_done(rsp);
           end
         end
       join_any

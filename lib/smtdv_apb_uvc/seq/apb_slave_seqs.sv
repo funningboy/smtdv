@@ -8,15 +8,29 @@ class apb_slave_base_seq #(
   ) extends
     smtdv_sequence#(`APB_ITEM);
 
+    `APB_ITEM item;
+
+    `uvm_sequence_utils(`APB_SLAVE_BASE_SEQ, `APB_SLAVE_SEQUENCER)
+
+    function new(string name = "apb_slave_base_seq");
+      super.new(name);
+    endfunction
+
+endclass
+
+
+class apb_slave_base_resp_seq #(
+  ADDR_WIDTH = 14,
+  DATA_WIDTH = 32
+  ) extends
+    `APB_SLAVE_BASE_SEQ;
+
     smtdv_generic_memory#(ADDR_WIDTH)  gene_mem;
 
     `APB_ITEM item;
     mailbox #(`APB_ITEM) mbox;
 
-    `uvm_object_param_utils_begin(`APB_SLAVE_BASE_SEQ)
-    `uvm_object_utils_end
-
-    `uvm_declare_p_sequencer(`APB_SLAVE_SEQUENCER)
+    `uvm_sequence_utils(`APB_SLAVE_BASE_SEQ, `APB_SLAVE_SEQUENCER)
 
     function new(string name = "apb_slave_base_seq");
       super.new(name);
@@ -30,7 +44,7 @@ class apb_slave_base_seq #(
       data= new[DATA_WIDTH>>3];
       gene_mem.mem_load_byte(item.addr, DATA_WIDTH>>3, data);
       foreach(data[i]) begin
-        item.data[i] = data[i];
+        item.data_beat[i] = data[i];
       end
     endtask
 
@@ -38,8 +52,9 @@ class apb_slave_base_seq #(
       // overide this func like err inject or seq random resp
       byte data[];
       data= new[DATA_WIDTH>>3];
-      foreach(item.data[i]) begin
-        data[i] = item.data[i];
+      wait(item.complete && item.addr_complete && item.data_complete);
+      foreach(item.data_beat[i]) begin
+        data[i] = item.data_beat[i];
       end
       gene_mem.mem_store_byte(item.addr, data);
     endtask
@@ -49,8 +64,14 @@ class apb_slave_base_seq #(
         p_sequencer.mon_get_port.get(item);
         `uvm_info(get_type_name(), {$psprintf("get monitor collected item\n%s", item.sprint())}, UVM_LOW)
         case(item.trs_t)
-          RD: begin do_read_item(item); mbox.put(item); end
-          WR: begin do_write_item(item); mbox.put(item); end
+          RD: begin
+              do_read_item(item);
+              mbox.put(item);
+            end
+          WR: begin
+              mbox.put(item);
+              do_write_item(item);
+            end
         default:
         `uvm_fatal("UNXPCTDPKT",
             $sformatf("collected an unexpected item: \n%s", req.sprint()))

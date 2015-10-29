@@ -31,7 +31,7 @@ class xbus_slave_base_seq #(
       data= new[DATA_WIDTH>>3];
       gene_mem.mem_load_byte(item.addr, DATA_WIDTH>>3, data);
       foreach(data[i]) begin
-        item.data[i] = data[i];
+        item.data_beat[i] = data[i];
       end
     endtask
 
@@ -40,9 +40,9 @@ class xbus_slave_base_seq #(
       byte data[];
       data = new[DATA_WIDTH>>3];
       gene_mem.mem_load_byte(item.addr, DATA_WIDTH>>3, data);
-      foreach(item.data[i]) begin
-        if (item.byten[i]) begin
-          data[i] = item.data[i];
+      foreach(item.data_beat[i]) begin
+        if (item.byten_beat[i]) begin
+          data[i] = item.data_beat[i];
         end
       end
       gene_mem.mem_store_byte(item.addr, data);

@@ -10,6 +10,7 @@
 `include "ahb_lock_swap_test.sv"
 `include "ahb_unlock_incr_test.sv"
 `include "ahb_unlock_wrap_test.sv"
+`include "ahb_stl_test.sv"
 
 //`include "ahb_err_handle_test.sv"
 

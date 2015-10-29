@@ -84,10 +84,11 @@ module top();
       .hburst(`AHBSLAVEATTR(0).hburst),
       .hprot(`AHBSLAVEATTR(0).hprot),
       .hmastlock(`AHBSLAVEATTR(0).hmastlock),
-      .hsel({15'h0, `AHBSLAVEATTR(0).hsel}),
+      .hsel({15'h0, 1'b1}),
       .hwdata(`AHBSLAVEATTR(0).hwdata),
       .hrdata(`AHBSLAVEATTR(0).hrdata),
       .hready(`AHBSLAVEATTR(0).hready),
+      .hreadyout(`AHBSLAVEATTR(0).hreadyout),
       .hresp(`AHBSLAVEATTR(0).hresp)
     );
 

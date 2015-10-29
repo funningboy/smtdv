@@ -12,6 +12,7 @@ run_mti:
 	-sv \
 	+libext+_ncverilog.v+.v+.sv \
 	-l compile.log \
+	+incdir+../sv \
 	+incdir+../../smtdv_common \
 	+incdir+../ \
 	+incdir+../test \
@@ -23,7 +24,7 @@ run_mti:
 	../../smtdv_common/smtdv_common_pkg.sv \
 	../../../dpi/sqlite3/smtdv_sqlite3_pkg.sv \
 	../../../dpi/stl/smtdv_stl_pkg.sv \
-	../apb_pkg.sv \
+	../sv/apb_pkg.sv \
 	../test/apb_top.sv \
 	-sv ../v/dut_apb_1m2s.v
 
@@ -38,6 +39,7 @@ run_mti:
 	-l $1_simulation.log \
 	-L work \
 	top \
+	+incdir+../sv \
 	+incdir+../../smtdv_common \
 	+incdir+../ \
 	+incdir+../test \
@@ -48,7 +50,7 @@ run_mti:
 	+incdir+../../../dpi/stl \
 	-gblso ../../../dpi/sqlite3/dpi_smtdv_lib.so \
 	-gblso ../../../dpi/stl/dpi_smtdv_stl.so \
-	+UVM_TESTNAME=apb_1w1r_test \
+	+UVM_TESTNAME=apb_stl_test \
 	+UVM_VERBOSITY=UVM_FULL
 
 clean_mti:
@@ -68,7 +70,7 @@ run_ius:
 	-access rwc \
 	-status \
 	-top top \
-	+UVM_TESTNAME=apb_1w1r_test \
+	+UVM_TESTNAME=apb_stl_test \
 	+UVM_VERBOSITY=UVM_DEBUG \
 	-covoverwrite \
 	-coverage b:u \
@@ -77,6 +79,7 @@ run_ius:
 	+notimingchecks \
 	+no_notifier \
 	+define+SVA \
+	+incdir+../sv \
 	+incdir+../../smtdv_common \
 	+incdir+../ \
 	+incdir+../test \
@@ -88,7 +91,7 @@ run_ius:
 	../../smtdv_common/smtdv_common_pkg.sv \
 	../../../dpi/sqlite3/smtdv_sqlite3_pkg.sv \
 	../../../dpi/stl/smtdv_stl_pkg.sv \
-	../apb_pkg.sv \
+	../sv/apb_pkg.sv \
 	../test/apb_top.sv \
 	-sv ../v/dut_apb_1m2s.v \
 	-sv_lib ../../../dpi/sqlite3/dpi_smtdv_lib.so \

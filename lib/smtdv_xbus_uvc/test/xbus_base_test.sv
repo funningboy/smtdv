@@ -26,24 +26,26 @@ class xbus_base_test extends smtdv_test;
   endfunction
 
   virtual function void build_phase(uvm_phase phase);
-    string slave_cfg0;
     super.build_phase(phase);
 
     // slave cfg, agent
-    slave_cfg0 = {$psprintf("slave_cfg[%0d]", 0)};
-    slave_cfg[0] = `XBUS_SLAVE_CFG::type_id::create(slave_cfg0, this);
-    slave_cfg[0].has_force = 0;
-    slave_cfg[0].has_coverage = 1;
-    slave_cfg[0].has_export = 1;
+    slave_cfg[0] = `XBUS_SLAVE_CFG::type_id::create({$psprintf("slave_cfg[%0d]", 0)}, this);
+    `SMTDV_RAND_WITH(slave_cfg[0], {
+      has_force == 0;
+      has_coverage == 1;
+      has_export == 1;
+    })
     slave_agent[0] = `XBUS_SLAVE_AGENT::type_id::create("slave_agent[0]", this);
     uvm_config_db#(uvm_bitstream_t)::set(null, "/.+slave_agent[*0]*/", "is_active", UVM_ACTIVE);
     uvm_config_db#(`XBUS_SLAVE_CFG)::set(null, "/.+slave_agent[*0]*/", "cfg", slave_cfg[0]);
 
     // master cfg, agent
     master_cfg[0] = `XBUS_MASTER_CFG::type_id::create("master_cfg[0]", this);
-    master_cfg[0].has_force = 1;
-    master_cfg[0].has_coverage = 1;
-    master_cfg[0].has_export = 1;
+    `SMTDV_RAND_WITH(master_cfg[0], {
+      has_force == 1;
+      has_coverage == 1;
+      has_export == 1;
+    })
     master_agent[0] = `XBUS_MASTER_AGENT::type_id::create("master_agent[0]", this);
     uvm_config_db#(uvm_bitstream_t)::set(null, "/.+master_agent[*0]*/", "is_active", UVM_ACTIVE);
     uvm_config_db#(`XBUS_MASTER_CFG)::set(null, "/.+master_agent[*0]*/", "cfg", master_cfg[0]);

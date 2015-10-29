@@ -3,13 +3,18 @@
 
 class smtdv_cfg extends uvm_object;
 
-  bit has_force = 0;
-  bit has_error = 0;
-  bit clock_req = 0; // Master Cfg =1, Slave Cfg =0
-  bit has_coverage = 0;
-  bit has_export = 0;
+  rand bit has_force = 0;
+  rand bit has_error = 0;
+  rand bit clock_req = 0; // Master Cfg =1, Slave Cfg =0
+  rand bit has_coverage = 0;
+  rand bit has_export = 0;
 
   smtdv_component cmp;
+
+  constraint c_has_force { has_force inside {[0:1]}; }
+  constraint c_has_error { has_error inside {[0:1]}; }
+  constraint c_has_coverage { has_coverage inside {[0:1]}; }
+  constraint c_has_export { has_export inside {[0:1]}; }
 
   `uvm_object_param_utils_begin(smtdv_cfg)
     `uvm_field_int(has_force, UVM_DEFAULT)

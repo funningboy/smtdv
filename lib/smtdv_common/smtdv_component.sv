@@ -2,9 +2,6 @@
 `ifndef __SMTDV_COMPONENT_SV__
 `define __SMTDV_COMPONENT_SV__
 
-typedef class smtdv_run_thread;
-typedef class smtdv_thread_handler;
-
 class smtdv_component #(type COMP = uvm_component,
                         type VIF = int,
                         type CFG = uvm_object)
@@ -25,25 +22,12 @@ class smtdv_component #(type COMP = uvm_component,
   time        reset_phase_end     = 0;
   time        reset_phase_period  = 0;
 
-  // register threads
-  smtdv_thread_handler#(CFG) th_handler;
-
   `uvm_component_param_utils_begin(smtdv_component#(COMP))
     `uvm_field_int(resetn, UVM_ALL_ON)
   `uvm_component_utils_end
 
   function new(string name = "smtdv_component", uvm_component parent);
     super.new(name, parent);
-  endfunction
-
-  virtual function void build_phase(uvm_phase phase);
-    super.build_phase(phase);
-    th_handler = smtdv_thread_handler#(CFG)::type_id::create("smtdv_monitor_threads", this);
-  endfunction
-
-  virtual function void end_of_elaboration_phase(uvm_phase phase);
-    if(!th_handler)
-      `uvm_fatal("NOTHREADHANDLER",{"thread handler create fail: ",get_full_name()});
   endfunction
 
   extern virtual function void start_of_simulation_phase(uvm_phase phase);

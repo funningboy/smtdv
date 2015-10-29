@@ -1,0 +1,61 @@
+csi-ncelab - CSI: Command line:
+ncelab
+    -f ./INCA_libs/irun.lnx8664.13.10.nc/.cdssvbind/ncelab_args.bnd
+        -f /stec/tw/users/schen/prj/smartdv/lib/smtdv_xbus_uvc/sim/INCA_libs/irun.lnx8664.13.10.nc/ncelab.args
+            +UVM_VERBOSITY=UVM_DEBUG
+            +nccoverage+functional
+            +notchkmsg
+            +notimingchecks
+            +no_notifier
+            +define+SVA
+            +define+IUS
+            +incdir+../sv
+            +incdir+../../smtdv_common
+            +incdir+../../
+            +incdir+../
+            +incdir+../test
+            +incdir+../seq
+            +incdir+../v
+            +incdir+./
+            +incdir+../../../dpi/sqlite3
+            +incdir+../../../dpi/stl
+            -loadpli /stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/lib/64bit/libuvmpli.so:uvm_pli_boot
+            -ACCESS rwc
+            -STATUS
+            +UVM_TESTNAME=xbus_stl_test
+            -COVERAGE b:u
+            -COVERAGE functional
+            -NO_TCHK_MSG
+            -NOTIMINGCHECKS
+            -NONOTIFIER
+            -MESSAGES
+            top
+            -XLMODE ./INCA_libs/irun.lnx8664.13.10.nc
+            -RUNMODE
+            -CDSLIB ./INCA_libs/irun.lnx8664.13.10.nc/cds.lib
+            -HDLVAR ./INCA_libs/irun.lnx8664.13.10.nc/hdl.var
+            -WORK worklib
+            -IRUNHASTOP
+            -HASXLMODE
+        -CHECK_VERSION TOOL:	irun(64)	13.10-s011
+        -LOG_FD 4
+        -reinvoke ./INCA_libs/irun.lnx8664.13.10.nc/.cdssvbind/stf_000051b5_a8c038c4.txt
+        -symreinvoke extbind_reinvoke
+        -nocopyright
+        -append_log
+        -timescale 1ns/10ps
+
+csi-ncelab - CSI: *F,INTERR: INTERNAL EXCEPTION
+-----------------------------------------------------------------
+The tool has encountered an unexpected condition and must exit.
+Contact Cadence Design Systems customer support about this
+problem and provide enough information to help us reproduce it,
+including the logfile that contains this error message.
+  TOOL:	ncelab(64)	13.10-s011
+  HOSTNAME: twlogin04
+  OPERATING SYSTEM: Linux 2.6.18-406.el5 #1 SMP Tue Jun 2 17:25:57 EDT 2015 x86_64
+  MESSAGE: vst_get_source_marker () - unknown class struct (704)
+-----------------------------------------------------------------
+
+csi-ncelab - CSI: Cadence Support Investigation, recording details
+csi-ncelab - CSI: investigation complete took 0.000 secs, send this file to Cadence Support

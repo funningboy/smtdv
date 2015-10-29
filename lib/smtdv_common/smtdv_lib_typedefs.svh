@@ -2,6 +2,7 @@
 `ifndef __SMTDV_LIB_TYPEDEFS_SVH__
 `define __SMTDV_LIB_TYPEDEFS_SVH__
 
+typedef enum bit [0:0] {FALSE, TRUE} bool_type_t;
 typedef enum bit [2:0] {NOT_VALID, HW_RST, SW_RST, ALL_RST, PWR_RST} rst_type_t;
 typedef enum bit [0:0] {MASTER, SLAVE} mod_type_t;
 typedef enum bit [0:0] {RD, WR} trs_type_t;

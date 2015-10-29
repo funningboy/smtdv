@@ -93,4 +93,16 @@ module top();
     $dumpvars(0, top);
   end
 
+
+  initial begin
+    $display("%s", $system ("pwd"));
+    $display("--------------------------\n");
+  end
+endmodule
+
+// macro port as channel declear
+module test(
+  `XBUSPORT(m, 0)
+);
+
 endmodule

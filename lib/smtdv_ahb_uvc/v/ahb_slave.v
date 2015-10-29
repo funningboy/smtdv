@@ -21,9 +21,10 @@ module ahb_slave #(
     hprot,
     hwdata,
     hmastlock,
+    hready,
 
     hrdata,
-    hready,
+    hreadyout,
     hresp
   );
   input [0:0]             clk;
@@ -37,17 +38,17 @@ module ahb_slave #(
   input [3:0]             hprot;
   input [DATA_WIDTH-1:0]  hwdata;
   input [0:0]             hmastlock;
-
+  input [0:0]             hready;
   input [0:0]             hsel; // master [15:0], slave[0:0]
 
   output [DATA_WIDTH-1:0]  hrdata;
-  output [0:0]             hready;
+  output [0:0]             hreadyout;
   output [1:0]             hresp;
   reg [DATA_WIDTH-1:0]     hrdata;
 
   // implement your func here ...
   assign hresp = ahb_pkg::OKAY;
-  assign hready = 1'b1;
+  assign hreadyout = 1'b1;
 
   always@(posedge clk) begin
     hrdata <= 'hdeadead;

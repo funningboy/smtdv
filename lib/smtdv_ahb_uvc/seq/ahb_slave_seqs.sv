@@ -31,12 +31,13 @@ class ahb_slave_base_seq #(
       data= new[DATA_WIDTH>>3];
       item.post_addr(item.addr, item.trx_size, item.bst_len, item.bst_type, addrs);
       // preload data as max space
-      for(int i=0; i<item.bst_len; i++) begin
+      for(int i=0; i<=item.bst_len; i++) begin
         gene_mem.mem_load_byte(addrs[i], DATA_WIDTH>>3, data);
         for(int j=0; j<DATA_WIDTH>>3; j++) begin
           item.data_beat[i][j] = data[j];
         end
       end
+      item.mod_t = SLAVE;
     endtask
 
     virtual task do_write_item(ref `AHB_ITEM item);
@@ -45,6 +46,7 @@ class ahb_slave_base_seq #(
       data = new[DATA_WIDTH>>3];
       wait(item.complete);
       if (!(item.retry | item.split | item.error)) begin
+        wait(item.addr_complete && item.data_complete);
         foreach(item.data_beat[i]) begin
           foreach(item.data_beat[i][j]) begin
               data[j] = item.data_beat[i][j];
@@ -52,6 +54,7 @@ class ahb_slave_base_seq #(
           gene_mem.mem_store_byte(item.addrs[i], data);
         end
       end
+      item.mod_t = SLAVE;
     endtask
 
     virtual task rcv_from_mon();
@@ -59,11 +62,14 @@ class ahb_slave_base_seq #(
         p_sequencer.mon_get_port.get(item);
         `uvm_info(get_type_name(), {$psprintf("get monitor collected item\n%s", item.sprint())}, UVM_LOW)
         case(item.trs_t)
-          RD: begin do_read_item(item); mbox.put(item); end
+          RD: begin
+                do_read_item(item);
+                mbox.put(item);
+              end
           WR: begin
-                                    fork do_write_item(item); join_none
-                                    mbox.put(item);
-                                end
+                mbox.put(item);
+                do_write_item(item);
+              end
         default:
         `uvm_fatal("UNXPCTDPKT",
             $sformatf("collected an unexpected item: \n%s", req.sprint()))

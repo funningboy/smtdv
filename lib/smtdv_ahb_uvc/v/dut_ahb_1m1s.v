@@ -28,7 +28,7 @@ module dut_1m1s #(
   wire [15:0]              w_hsel; // master [15:0], slave[0:0]
 
   wire [DATA_WIDTH-1:0]   w_hrdata;
-  wire [0:0]              w_hready;
+  wire [0:0]              w_hreadyout;
   wire [1:0]              w_hresp;
 
   wire [0:0]              w_hbusreq;
@@ -60,7 +60,7 @@ module dut_1m1s #(
       .hprot(w_hprot),
       .hwdata(w_hwdata),
       .hrdata(w_hrdata),
-      .hready(w_hready),
+      .hready(w_hreadyout),
       .hresp(w_hresp)
     );
   end
@@ -86,9 +86,9 @@ module dut_1m1s #(
       .hprot(w_hprot),
       .hwdata(w_hwdata),
       .hmastlock(w_hmastlock),
-
+      .hready(w_hreadyout),
       .hrdata(w_hrdata),
-      .hready(w_hready),
+      .hreadyout(w_hreadyout),
       .hresp(w_hresp)
     );
   end

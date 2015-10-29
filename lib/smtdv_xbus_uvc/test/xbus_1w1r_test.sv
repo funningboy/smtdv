@@ -16,7 +16,7 @@ class xbus_1w1r_test
     uvm_config_db #(uvm_object_wrapper)::set(this,
       "*master_agent[*0]*.seqr.run_phase",
       "default_sequence",
-      `XBUS_MASTER_1W_SEQ::type_id::get());
+      `XBUS_MASTER_1W1R_SEQ::type_id::get());
   endfunction
 
 endclass

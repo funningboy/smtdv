@@ -19,61 +19,6 @@ class apb_master_base_seq #(
 endclass
 
 
-class read_byte_seq #(
-  ADDR_WIDTH = 14,
-  DATA_WIDTH = 32
-  ) extends
-   `APB_MASTER_BASE_SEQ;
-
-  rand bit[ADDR_WIDTH-1:0] start_addr;
-
-  `uvm_sequence_utils(`READ_BYTE_SEQ, `APB_MASTER_SEQUENCER)
-
-    function new(string name = "read_byte_seq");
-      super.new(name);
-    endfunction
-
-    virtual task body();
-      `uvm_info(get_type_name(), {$psprintf("starting seq ... ")}, UVM_MEDIUM)
-      `uvm_do_with(req,
-        { req.addr == start_addr;
-          req.trs_t == RD;
-        })
-     get_response(rsp);
-      `uvm_info(get_type_name(), {$psprintf("\n%s", rsp.sprint())}, UVM_LOW)
-    endtask
-endclass
-
-
-class write_byte_seq #(
-  ADDR_WIDTH = 14,
-  DATA_WIDTH = 32
-  ) extends
-  `APB_MASTER_BASE_SEQ;
-
-  rand bit [ADDR_WIDTH-1:0] start_addr;
-  rand bit [7:0] data[DATA_WIDTH>>3];
-
-  `uvm_sequence_utils(`WRITE_BYTE_SEQ, `APB_MASTER_SEQUENCER)
-
-  function new(string name = "write_byte_seq");
-      super.new(name);
-    endfunction
-
-    virtual task body();
-      `uvm_info(get_type_name(), {$psprintf("starting seq ... ")}, UVM_MEDIUM)
-      `uvm_do_with(req,
-        { req.addr == start_addr;
-          req.trs_t == WR;
-          req.data == data;
-        })
-     get_response(rsp);
-      `uvm_info(get_type_name(), {$psprintf("\n%s", rsp.sprint())}, UVM_LOW)
-    endtask
-
-endclass
-
-
 class apb_master_1w_seq #(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32
@@ -192,7 +137,7 @@ class apb_master_stl_seq #(
         item.run_t = NORMAL;
         item.trs_t = (dpi_smtdv_get_smtdv_transfer_rw(m_dpi_trx) == "w")? WR : RD;
         item.addr  = dpi_hexstr_2_longint(dpi_smtdv_get_smtdv_transfer_addr(m_dpi_trx));
-        item.pack_data(dpi_hexstr_2_longint(dpi_smtdv_get_smtdv_transfer_data(m_dpi_trx)));
+        item.pack_data(dpi_hexstr_2_longint(dpi_smtdv_get_smtdv_transfer_data(m_dpi_trx, 0)));
         item.sel = dpi_hexstr_2_longint(dpi_smtdv_get_smtdv_transfer_id(m_dpi_trx));
         item.rsp = (dpi_smtdv_get_smtdv_transfer_resp(m_dpi_trx) == "OKAY")? OK: ERR;
         item.bg_cyc = dpi_hexstr_2_longint(dpi_smtdv_get_smtdv_transfer_begin_cycle(m_dpi_trx));
