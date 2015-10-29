@@ -2,11 +2,12 @@
 `ifndef __UART_IF_SV__
 `define __UART_IF_SV__
 
-`timescalse 1ns/10ps
+`timescale 1ns/10ps
 import uvm_pkg::*;
 `include "uvm_macros.svh"
 
-interface uart_if(
+interface uart_if #(
+  )(
   input clk,
   input resetn,
 
@@ -22,7 +23,8 @@ interface uart_if(
   logic dtr_n,   // data terminal ready
   logic dcd_n,   // data carrier detect
 
-  logic baud_clk,  // Baud Rate Clock
+  logic baud_clk  // TODO: Baud Rate Clock not used ??
+);
 
   // Control flags
   bit                has_checks = 1;
@@ -31,9 +33,39 @@ interface uart_if(
 
   longint cyc = 0;
 
-  clocking tx @();
+  clocking tx @(posedge clk or negedge resetn);
+    default input #1ns output #1ns;
+    input clk;
+    input resetn;
 
-  clocking rx @();
+    output txd;
+    output rts_n;
+    output dtr_n;
+    output dcd_n;
+    output baud_clk;
+
+    input  rxd;
+    input  cts_n;
+    input  dsr_n;
+    input  ri_n;
+  endclocking
+
+  clocking rx @(posedge clk or negedge resetn);
+    input clk;
+    input resetn;
+
+    input txd;
+    input rts_n;
+    input dtr_n;
+    input dcd_n;
+    output baud_clk;
+
+    output  rxd;
+    output  cts_n;
+    output  dsr_n;
+    output  ri_n;
+  endclocking
+
 /*  FIX TO USE CONCURRENT ASSERTIONS
   always @(posedge clock)
   begin
@@ -45,4 +77,6 @@ interface uart_if(
   end
 */
 
-endinterface : uart_if
+endinterface
+
+`endif // __UART_IF_SV__

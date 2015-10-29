@@ -16,7 +16,7 @@ class uart_tx_driver #(
   bit [15:0] ua_brgr;
   bit [7:0] ua_bdiv;
   int num_of_bits_sent;
-  int num_frames_sent;
+  int num_items_sent = 0;
 
   `UART_TX_DRIVE_ITEMS th0;
   `UART_TX_SAMPLE_RATE th1;
@@ -34,12 +34,8 @@ class uart_tx_driver #(
 
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    th0 = `UART_TX_DRIVE_ITEMS::type_id::create("uart_tx_drive_items");
-    th0.cmp = this;
-    this.th_handler.add(th0);
-    th1 = `UART_TX_SAMPLE_RATE::type_id::create("uart_tx_sample_rate");
-    th1.cmp = this;
-    this.th_handler.add(th1);
+    th0 = `UART_TX_DRIVE_ITEMS::type_id::create("uart_tx_drive_items"); th0.cmp = this; this.th_handler.add(th0);
+    th1 = `UART_TX_SAMPLE_RATE::type_id::create("uart_tx_sample_rate"); th1.cmp = this; this.th_handler.add(th1);
   endfunction
 
   extern virtual task reset_driver();
@@ -54,11 +50,11 @@ task uart_tx_driver::reset_driver();
 endtask
 
 task uart_tx_driver::reset_inf();
-  this.vif.tx.txd <= 1;
-  this.vif.tx.rts_n <= 0;
-  this.vif.tx.dtr_n <= 0;
-  this.vif.tx.dcd_n <= 0;
-  this.vif.tx.baud_clk <= 0;
+  vif.tx.txd <= 1;
+  vif.tx.rts_n <= 0;
+  vif.tx.dtr_n <= 0;
+  vif.tx.dcd_n <= 0;
+  vif.tx.baud_clk <= 0;
 endtask
 
 task uart_tx_driver::drive_bus();
@@ -71,5 +67,5 @@ task uart_tx_driver::drive_bus();
   endcase
 endtask
 
-`endif // end of __uart_tx_DRIVER_SV__
+`endif // end of __UART_TX_DRIVER_SV__
 

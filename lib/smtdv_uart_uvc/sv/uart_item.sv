@@ -14,17 +14,13 @@ class uart_item #(
 
   // Control Knobs
   rand parity_e parity_type;
+  rand int transmit_delay;
 
-  `UART_ITEM      next = null;
-  `UART_ITEM      pre = null;
-
-  rand int req_L2H;
-    transmit_delay = 0;
-
-  constraint c_start_bit { start_bit == 1'b0;}
-  constraint c_stop_bits { stop_bits == 2'b11;}
-  constraint c_parity_type { parity_type==GOOD_PARITY;}
-  constraint c_error_bits { error_bits == 4'b0000;}
+  constraint default_txmit_delay {transmit_delay >= 0; transmit_delay < 20;}
+  constraint default_start_bit { start_bit == 1'b0;}
+  constraint default_stop_bits { stop_bits == 2'b11;}
+  constraint default_parity_type { parity_type==GOOD_PARITY;}
+  constraint default_error_bits { error_bits == 4'b0000;}
 
   `uvm_object_param_utils_begin(`UART_ITEM)
     `uvm_field_int(start_bit, UVM_DEFAULT)
@@ -33,9 +29,7 @@ class uart_item #(
     `uvm_field_int(stop_bits, UVM_DEFAULT)
     `uvm_field_int(error_bits, UVM_DEFAULT)
     `uvm_field_enum(parity_e,parity_type, UVM_DEFAULT)
-    `ifdef UART_DEBUG
-      `uvm_field_int(req_L2H, UVM_DEFAULT)
-    `endif
+    `uvm_field_int(transmit_delay, UVM_DEFAULT + UVM_DEC + UVM_NOCOMPARE + UVM_NOCOPY)
   `uvm_object_utils_end
 
   // Constructor - required UVM syntax  //lab1_note4
@@ -74,6 +68,10 @@ class uart_item #(
    parity = calc_parity();
   endfunction : post_randomize
 
+  function bit[7:0] unpack_data();
+    return payload;
+  endfunction
+
 endclass
 
-`endif //
+`endif // __UART_ITEM_SV__
