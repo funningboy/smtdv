@@ -32,7 +32,7 @@ class ahb_slave_base_seq #(
       item.post_addr(item.addr, item.trx_size, item.bst_len, item.bst_type, addrs);
       // preload data as max space
       for(int i=0; i<=item.bst_len; i++) begin
-        gene_mem.mem_load_byte(addrs[i], DATA_WIDTH>>3, data);
+        gene_mem.mem_load_byte(addrs[i], DATA_WIDTH>>3, data, item.bg_cyc);
         for(int j=0; j<DATA_WIDTH>>3; j++) begin
           item.data_beat[i][j] = data[j];
         end
@@ -51,7 +51,7 @@ class ahb_slave_base_seq #(
           foreach(item.data_beat[i][j]) begin
               data[j] = item.data_beat[i][j];
           end
-          gene_mem.mem_store_byte(item.addrs[i], data);
+          gene_mem.mem_store_byte(item.addrs[i], data, item.bg_cyc);
         end
       end
       item.mod_t = SLAVE;
@@ -90,6 +90,14 @@ class ahb_slave_base_seq #(
     virtual task finish_from_mon();
       wait(p_sequencer.finish);
      `uvm_info(p_sequencer.get_full_name(), {$psprintf("try collected finish signal\n")}, UVM_LOW)
+    endtask
+
+    virtual task pre_do(bit is_item);
+      // create mem table map as ini
+      if (gene_mem.mem_cb.table_nm == "") begin
+        gene_mem.mem_cb.table_nm = p_sequencer.get_full_name();
+        void'(gene_mem.mem_cb.create_table());
+      end
     endtask
 
     virtual task body();

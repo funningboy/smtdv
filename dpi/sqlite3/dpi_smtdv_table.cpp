@@ -5,7 +5,7 @@ using namespace SMTDV;
 
 /* register field */
 void SMTDV_Table::iregister(int i_typ, std::string i_fd_nm){
-  SMTDV_Data *dt = new SMTDV_Data(i_typ, "");
+  SMTDV_Data *dt = new SMTDV_Data(i_typ, "", "");
   m_record[i_fd_nm] = std::make_pair(SMTDV_Table::T_NONE, dt);
 }
 

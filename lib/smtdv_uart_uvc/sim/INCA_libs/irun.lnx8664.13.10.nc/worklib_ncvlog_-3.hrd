@@ -1,0 +1,29 @@
+//
+// File created by:  irun
+// Do not modify this file
+//
+-DEFINE
+SVA
+-INCDIR
+../sv
+-INCDIR
+../../smtdv_common
+-INCDIR
+../
+-INCDIR
+../test
+-INCDIR
+../seq
+-INCDIR
+../v
+-INCDIR
+./
+-INCDIR
+../../../dpi/sqlite3
+-INCDIR
+../../../dpi/stl
+-sv
+-INCDIR
+/stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv
+-DEFINE
+USE_PARAMETERIZED_WRAPPER

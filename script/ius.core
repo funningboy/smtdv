@@ -1,0 +1,34 @@
+[main]
+description = "ius common sim option"
+root = os.getenv("SMTDV_HOME")
+debug = FALSE
+
+[ius]
+irun =
+  -linedebug
+	-lineuvmdebug
+	-64bit
+	-access rwc
+	-status
+	-covoverwrite
+	-coverage b:u
+	+nccoverage+functional
+	+notchkmsg
+	+notimingchecks
+	+no_notifier
+	+define+SVA
+	-batch
+
+clean =
+	rm -rf INCA_libs
+	rm -rf *.log
+	rm -rf *.db
+  rm -rf *.vcd
+	rm -rf cov_work
+	rm -rf waves.shm
+
+[provider]
+name = funningboy@gmail.com
+repo_name = common mti sim option
+repo_root = ${main:root}/script
+revision = 1.0

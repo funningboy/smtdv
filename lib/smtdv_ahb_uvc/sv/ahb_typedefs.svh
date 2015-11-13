@@ -76,6 +76,10 @@ bit[3:0] trx_prt_t[] = {
 
 `define AHB_ENV ahb_env
 `define AHB_BASE_SCOREBOARD ahb_base_scoreboard `AHB_PARAMETER2
+`define AHB_MEM_BKDOR_WR_COMP ahb_mem_bkdor_wr_comp `AHB_PARAMETER2
+`define AHB_MEM_BKDOR_RD_COMP ahb_mem_bkdor_rd_comp `AHB_PARAMETER2
+`define AHB_BUS_BACKDOOR ahb_bus_backdoor `AHB_PARAMETER
+`define AHB_MEM_BACKDOOR ahb_mem_backdoor `AHB_PARAMETER
 
 `define AHB_BASE_TEST ahb_base_test
 `define AHB_LOCK_INCR_TEST ahb_lock_incr_test
@@ -90,7 +94,7 @@ bit[3:0] trx_prt_t[] = {
 `define AHB_UNLOCK_WRAP_TEST ahb_unlock_wrap_test
 `define AHB_STL_TEST ahb_stl_test
 
-// for DEBUG only
+// for DEBUG only, add addr map should be registered to map table
 `define AHB_SLAVE_START_ADDR_0 'h1000_0000
 `define AHB_SLAVE_END_ADDR_0   'h7fff_ffff
 `define AHB_SLAVE_START_ADDR_1 'h8000_0000

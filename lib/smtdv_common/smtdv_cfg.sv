@@ -31,5 +31,6 @@ class smtdv_cfg extends uvm_object;
 
 endclass
 
+
 `endif // __SMTDV_CFG_SV__
 

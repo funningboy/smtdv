@@ -21,9 +21,9 @@ run_mti:
 	+incdir+./ \
 	+incdir+../../../dpi/sqlite3 \
 	+incdir+../../../dpi/stl \
-	../../smtdv_common/smtdv_common_pkg.sv \
 	../../../dpi/sqlite3/smtdv_sqlite3_pkg.sv \
 	../../../dpi/stl/smtdv_stl_pkg.sv \
+	../../smtdv_common/smtdv_common_pkg.sv \
 	../sv/uart_pkg.sv \
 	../test/uart_top.sv \
 	-sv ../v/dut_uart_1m1s.v

@@ -33,6 +33,8 @@ package ahb_pkg;
   `include "../seq/ahb_slave_seqs_lib.sv"
   `include "ahb_slave_agent.sv"
 
+  `include "ahb_backdoor.sv"
+  `include "ahb_scoreboard_threads.sv"
   `include "ahb_scoreboard.sv"
   `include "ahb_env.sv"
 endpackage

@@ -1,0 +1,121 @@
+irun(64): 13.10-s011: (c) Copyright 1995-2013 Cadence Design Systems, Inc.
+TOOL:	irun(64)	13.10-s011: Started on Nov 13, 2015 at 17:15:05 CST
+irun
+	-uvm
+	-64bit
+	-access rwc
+	-status
+	-top top
+	+UVM_TESTNAME=uart_seq_test
+	+UVM_VERBOSITY=UVM_DEBUG
+	-covoverwrite
+	-coverage b:u
+	+nccoverage+functional
+	+notchkmsg
+	+notimingchecks
+	+no_notifier
+	+define+SVA
+	+incdir+../sv
+	+incdir+../../smtdv_common
+	+incdir+../
+	+incdir+../test
+	+incdir+../seq
+	+incdir+../v
+	+incdir+./
+	+incdir+../../../dpi/sqlite3
+	+incdir+../../../dpi/stl
+	../../smtdv_common/smtdv_common_pkg.sv
+	../../../dpi/sqlite3/smtdv_sqlite3_pkg.sv
+	../../../dpi/stl/smtdv_stl_pkg.sv
+	../sv/uart_pkg.sv
+	../test/uart_top.sv
+	-sv
+	../v/dut_uart_1m1s.v
+	-sv_lib ../../../dpi/sqlite3/dpi_smtdv_lib.so
+	-sv_lib ../../../dpi/stl/dpi_smtdv_stl.so
+	-input simvision.tcl
+	-batch
+
+   User defined plus("+") options:
+	+UVM_VERBOSITY=UVM_DEBUG
+
+Compiling UVM packages (uvm_pkg.sv cdns_uvm_pkg.sv) using uvmhome location /stec/apps/cadence/INCISIV13.10.011/tools/uvm
+ncvlog: Memory Usage - 17.9M program + 45.0M data = 62.9M total
+ncvlog: CPU Usage - 0.1s system + 1.2s user = 1.4s total (1.7s, 79.4% cpu)
+file: ../../smtdv_common/smtdv_common_pkg.sv
+package smtdv_common_pkg;
+                       |
+ncvlog: *W,TSNSPK (../../smtdv_common/smtdv_common_pkg.sv,5|23): `timescale is not specified for the package.  The default timescale of 1ns/1ns will be assumed for this package.
+file: ../sv/uart_pkg.sv
+  `include "uart_backdoor.sv"
+                            |
+ncvlog: *E,COFILX (../sv/uart_pkg.sv,38|28): cannot open include file 'uart_backdoor.sv'.
+  `include "uart_scordboard.sv"
+                              |
+ncvlog: *E,COFILX (../sv/uart_pkg.sv,39|30): cannot open include file 'uart_scordboard.sv'.
+  `include "uart_scordboard_threads.sv"
+                                      |
+ncvlog: *E,COFILX (../sv/uart_pkg.sv,40|38): cannot open include file 'uart_scordboard_threads.sv'.
+	package worklib.uart_pkg:sv
+		errors: 3, warnings: 0
+	interface worklib.uart_if:sv
+		errors: 0, warnings: 0
+file: ../test/uart_top.sv
+  import uart_pkg::*;
+                |
+ncvlog: *E,NOPBIND (../test/uart_top.sv,15|16): Package uart_pkg could not be bound.
+(`include file: ..//./test/uart_test_list.sv line 4, file: ../test/uart_top.sv line 18)
+  `UART_RX_AGENT rx_agent[$];
+               |
+ncvlog: *E,EXPENC (../test/uart_base_test.sv,12|15): Expecting the keyword 'endclass'.
+(`include file: ../test/uart_base_test.sv line 12, `include file: ..//./test/uart_test_list.sv line 6, file: ../test/uart_top.sv line 18)
+  smtdv_reset_model #(`UART_RST_VIF) uart_rst_model;
+                                   |
+ncvlog: *E,EXP1RD (../test/uart_base_test.sv,18|35): expecting at least one register variable [3.2.2(IEEE)].
+(`include file: ../test/uart_base_test.sv line 18, `include file: ..//./test/uart_test_list.sv line 6, file: ../test/uart_top.sv line 18)
+  smtdv_reset_model #(`UART_RST_VIF) uart_rst_model;
+                                   |
+ncvlog: *E,EXPSMC (../test/uart_base_test.sv,18|35): expecting a semicolon (';') [3.2.2(IEEE)].
+(`include file: ../test/uart_base_test.sv line 18, `include file: ..//./test/uart_test_list.sv line 6, file: ../test/uart_top.sv line 18)
+  `uvm_component_utils(`UART_BASE_TEST)
+                                      |
+ncvlog: *E,BADQAL (../test/uart_base_test.sv,20|38): Lifetime or qualifier(s) 'static' not allowed before function declaration.
+(`define macro: m_uvm_component_registry_internal [/stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/macros/uvm_object_defines.svh line 467], `define macro: uvm_component_utils [/stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/macros/uvm_object_defines.svh line 330], `include file: ../test/uart_base_test.sv line 20, `include file: ..//./test/uart_test_list.sv line 6, file: ../test/uart_top.sv line 18)
+  `uvm_component_utils(`UART_BASE_TEST)
+                                      |
+ncvlog: *E,BADQAL (../test/uart_base_test.sv,20|38): Lifetime or qualifier(s) 'virtual' not allowed before function declaration.
+(`define macro: m_uvm_component_registry_internal [/stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/macros/uvm_object_defines.svh line 467], `define macro: uvm_component_utils [/stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/macros/uvm_object_defines.svh line 330], `include file: ../test/uart_base_test.sv line 20, `include file: ..//./test/uart_test_list.sv line 6, file: ../test/uart_top.sv line 18)
+  `uvm_component_utils(`UART_BASE_TEST)
+                                      |
+ncvlog: *E,BADQAL (../test/uart_base_test.sv,20|38): Lifetime or qualifier(s) 'virtual' not allowed before function declaration.
+(`define macro: m_uvm_get_type_name_func [/stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/macros/uvm_object_defines.svh line 427], `define macro: uvm_component_utils [/stec/apps/cadence/INCISIV13.10.011/tools/uvm/uvm_lib/uvm_sv/sv/macros/uvm_object_defines.svh line 330], `include file: ../test/uart_base_test.sv line 20, `include file: ..//./test/uart_test_list.sv line 6, file: ../test/uart_top.sv line 18)
+  function new(string name = "uart_base_test", uvm_component parent=null);
+             |
+ncvlog: *E,NEWOIC (../test/uart_base_test.sv,22|13): The class constructor method 'new' is only allowed within a class declaration.
+(`include file: ../test/uart_base_test.sv line 22, `include file: ..//./test/uart_test_list.sv line 6, file: ../test/uart_top.sv line 18)
+    super.new(name, parent);
+        |
+ncvlog: *E,CLSSPX (../test/uart_base_test.sv,23|8): 'super' can only be used within a class scope that derives from a base class.
+(`include file: ../test/uart_base_test.sv line 23, `include file: ..//./test/uart_test_list.sv line 6, file: ../test/uart_top.sv line 18)
+  virtual function void build_phase(uvm_phase phase);
+                 |
+ncvlog: *E,BADQAL (../test/uart_base_test.sv,26|17): Lifetime or qualifier(s) 'virtual' not allowed before function declaration.
+(`include file: ../test/uart_base_test.sv line 26, `include file: ..//./test/uart_test_list.sv line 6, file: ../test/uart_top.sv line 18)
+  virtual function void connect_phase(uvm_phase phase);
+                 |
+ncvlog: *E,BADQAL (../test/uart_base_test.sv,67|17): Lifetime or qualifier(s) 'virtual' not allowed before function declaration.
+(`include file: ../test/uart_base_test.sv line 67, `include file: ..//./test/uart_test_list.sv line 6, file: ../test/uart_top.sv line 18)
+  virtual function void end_of_elaboration_phase(uvm_phase phase);
+                 |
+ncvlog: *E,BADQAL (../test/uart_base_test.sv,71|17): Lifetime or qualifier(s) 'virtual' not allowed before function declaration.
+(`include file: ../test/uart_base_test.sv line 71, `include file: ..//./test/uart_test_list.sv line 6, file: ../test/uart_top.sv line 18)
+endclass
+       |
+ncvlog: *E,EXPENM (../test/uart_base_test.sv,79|7): expecting the keyword 'endmodule' [12.1(IEEE)].
+(`include file: ../test/uart_base_test.sv line 79, `include file: ..//./test/uart_test_list.sv line 6, file: ../test/uart_top.sv line 18)
+	module worklib.top:sv
+		errors: 13, warnings: 0
+ncvlog: Memory Usage - 17.9M program + 37.5M data = 55.4M total
+ncvlog: CPU Usage - 0.1s system + 0.3s user = 0.4s total (0.7s, 56.1% cpu)
+irun: *E,VLGERR: An error occurred during parsing.  Review the log file for errors with the code *E and fix those identified problems to proceed.  Exiting with code (status 1).
+TOOL:	irun(64)	13.10-s011: Exiting on Nov 13, 2015 at 17:15:08 CST  (total: 00:00:03)

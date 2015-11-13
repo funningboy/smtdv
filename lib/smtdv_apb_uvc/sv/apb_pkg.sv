@@ -33,6 +33,9 @@ package apb_pkg;
   `include "../seq/apb_slave_seqs_lib.sv"
   `include "apb_slave_agent.sv"
 
+  `include "apb_backdoor.sv"
+  `include "apb_scoreboard_threads.sv"
+  `include "apb_scoreboard.sv"
   `include "apb_env.sv"
 endpackage
 

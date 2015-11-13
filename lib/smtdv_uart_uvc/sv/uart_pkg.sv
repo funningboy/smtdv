@@ -35,6 +35,9 @@ package uart_pkg;
   `include "../seq/uart_rx_seqs_lib.sv"
   `include "uart_rx_agent.sv"
 
+  `include "uart_backdoor.sv"
+  `include "uart_scordboard.sv"
+  `include "uart_scordboard_threads.sv"
   `include "uart_env.sv"
 endpackage
 

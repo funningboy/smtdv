@@ -1,0 +1,38 @@
+[main]
+description = "SMTDV common lib"
+root = os.getenv("SMTDV_HOME")
+debug = FALSE
+
+[cores]
+import_files =
+  ${main:root}/dpi/sqlite3/smtdv_sqlite3.core
+  ${main:root}/dpi/stl/smtdv_stl.core
+
+[systemverilog]
+src_files =
+  ${main:root}/lib/smtdv_common/smtdv_common_pkg.sv
+
+include_files =
+  ${smtdv_sqlite3.systemverilog:include_files}
+  ${smtdv_stl.systemverilog:include_files}
+
+include_dirs =
+  ${smtdv_sqlite3.systemverilog:include_dirs}
+  ${smtdv_stl.systemverilog:include_dirs}
+  ${main:root}/lib/smtdv_common
+
+[sharedlib]
+include_dirs =
+  ${smtdv_sqlite3.sharedlib:include_dirs}
+  ${smtdv_stl.sharedlib:include_dirs}
+
+include_files =
+  ${smtdv_sqlite3.sharedlib:include_files}
+  ${smtdv_stl.sharedlib:include_files}
+
+
+[provider]
+name = funningboy@gmail.com
+repo_name = smtdv
+repo_root = $PWD/lib/smtdv_common
+revision = 1

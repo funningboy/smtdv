@@ -1,0 +1,42 @@
+[main]
+description = "mti common sim option"
+root = os.getenv("SMTDV_HOME")
+debug = TRUE
+
+[mti]
+vlib = work
+
+vlog =
+	-timescale 10ps/1ps
+	+notimingchecks
+	-vopt
+	-64
+	-suppress 2240
+	-suppress 2181
+	-suppress 2239
+	-sv
+	+libext+_ncverilog.v+.v+.sv
+	-l compile.log
+
+vsim =
+	\"-c -do 'run -all; quit '\"
+	+notimingchecks
+	-suppress 3829
+	-64
+	-vopt
+	-l $1_simulation.log
+	-L work
+
+clean =
+	rm -rf work
+	rm -rf *.log
+	rm -rf *.db
+  rm -rf *.vcd
+	rm -rf cov_work
+	rm -rf waves.shm
+
+[provider]
+name = funningboy@gmail.com
+repo_name = common mti sim option
+repo_root = ${main:root}/script
+revision = 1.0

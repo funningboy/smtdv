@@ -62,15 +62,7 @@ class apb_export_collected_items#(
     `APB_ITEM item;
     `APB_MONITOR cmp;
 
-    string attr_longint[$] = {
-      "id",
-      "addr",
-      "rw",
-      "resp",
-      "data",
-      "bg_cyc",
-      "ed_cyc"
-    };
+    string attr_longint[$] = `SMTDV_BUS_VIF_ATTR_LONGINT;
 
     `uvm_object_param_utils_begin(`APB_EXPORT_COLLECTED_ITEMS)
     `uvm_object_utils_end
@@ -82,14 +74,14 @@ class apb_export_collected_items#(
     virtual task run();
       create_table();
       forever begin
-        this.cmp.cbox.get(item);
+        this.cmp.ebox.get(item);
         populate_item(item);
       end
     endtask
 
     virtual task create_table();
       string table_nm = $psprintf("\"%s\"", this.cmp.get_full_name());
-      `uvm_info(this.cmp.get_full_name(), {table_nm}, UVM_LOW)
+      `uvm_info(this.cmp.get_full_name(), {$psprintf("create mon sqlite3: %s", table_nm)}, UVM_LOW)
 
       smtdv_sqlite3::create_tb(table_nm);
       foreach (attr_longint[i])
@@ -99,13 +91,15 @@ class apb_export_collected_items#(
 
     virtual task populate_item(ref `APB_ITEM item);
       string table_nm = $psprintf("\"%s\"", this.cmp.get_full_name());
-      smtdv_sqlite3::insert_value(table_nm, "id",      $psprintf("%d", item.sel));
-      smtdv_sqlite3::insert_value(table_nm, "resp",    $psprintf("%d", item.rsp));
-      smtdv_sqlite3::insert_value(table_nm, "addr",    $psprintf("%d", item.addr));
-      smtdv_sqlite3::insert_value(table_nm, "rw",      $psprintf("%d", item.trs_t));
-      smtdv_sqlite3::insert_value(table_nm, "data",    $psprintf("%d", item.unpack_data()));
-      smtdv_sqlite3::insert_value(table_nm, "bg_cyc",  $psprintf("%d", item.bg_cyc));
-      smtdv_sqlite3::insert_value(table_nm, "ed_cyc",  $psprintf("%d", item.ed_cyc));
+      smtdv_sqlite3::insert_value(table_nm, "dec_id",      $psprintf("%d", item.sel));
+      smtdv_sqlite3::insert_value(table_nm, "dec_resp",    $psprintf("%d", item.rsp));
+      smtdv_sqlite3::insert_value(table_nm, "dec_addr",    $psprintf("%d", item.addr));
+      smtdv_sqlite3::insert_value(table_nm, "dec_rw",      $psprintf("%d", item.trs_t));
+      smtdv_sqlite3::insert_value(table_nm, "dec_data_000",$psprintf("%d", item.unpack_data()));
+      smtdv_sqlite3::insert_value(table_nm, "dec_bg_cyc",  $psprintf("%d", item.bg_cyc));
+      smtdv_sqlite3::insert_value(table_nm, "dec_ed_cyc",  $psprintf("%d", item.ed_cyc));
+      smtdv_sqlite3::insert_value(table_nm, "dec_bg_time", $psprintf("%d", item.bg_time));
+      smtdv_sqlite3::insert_value(table_nm, "dec_ed_time", $psprintf("%d", item.ed_time));
       smtdv_sqlite3::exec_value(table_nm);
       smtdv_sqlite3::flush_value(table_nm);
     endtask
@@ -193,6 +187,7 @@ class apb_collect_write_items#(
         item.run_t = NORMAL;
         item.pack_data(this.cmp.vif.pwdata);
         item.bg_cyc = this.cmp.vif.cyc;
+        item.addr_complete = 1;
         void'(this.cmp.begin_tr(item, this.cmp.get_full_name()));
       endfunction
 
@@ -200,6 +195,8 @@ class apb_collect_write_items#(
         item.pack_data(this.cmp.vif.pwdata);
         item.ed_cyc = this.cmp.vif.cyc;
         item.rsp = (this.cmp.vif.pslverr == OK)? OK:ERR;
+        item.data_complete = 1;
+        item.complete = 1;
         void'(this.cmp.end_tr(item));
     endfunction
 
@@ -245,6 +242,7 @@ class apb_collect_read_items#(
         item.addr = this.cmp.vif.paddr;
         item.trs_t = RD;
         item.bg_cyc = this.cmp.vif.cyc;
+        item.addr_complete = 1;
         void'(this.cmp.begin_tr(item, this.cmp.get_full_name()));
     endfunction
 
@@ -252,6 +250,8 @@ class apb_collect_read_items#(
         item.pack_data(this.cmp.vif.prdata);
         item.ed_cyc = this.cmp.vif.cyc;
         item.rsp = (this.cmp.vif.pslverr == OK)? OK:ERR;
+        item.data_complete = 1;
+        item.complete = 1;
         void'(this.cmp.end_tr(item));
     endfunction
 

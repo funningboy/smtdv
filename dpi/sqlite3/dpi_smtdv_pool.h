@@ -19,7 +19,7 @@ namespace SMTDV {
 
     class SMTDV_Column : public SMTDV_Data {
       public:
-        SMTDV_Column(int i_typ, std::string i_val) : SMTDV_Data(i_typ, i_val){}
+        SMTDV_Column(int i_typ, std::string i_name, std::string i_val) : SMTDV_Data(i_typ, i_name, i_val){}
         ~SMTDV_Column(){}
    };
 

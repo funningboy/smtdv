@@ -20,6 +20,10 @@ import "DPI-C" function string dpi_smtdv_set_smtdv_transfer_addr(chandle trx, st
 import "DPI-C" function string dpi_smtdv_set_smtdv_transfer_data(chandle trx, string data);
 import "DPI-C" function string dpi_smtdv_set_smtdv_transfer_byten(chandle trx, string byten);
 import "DPI-C" function string dpi_smtdv_set_smtdv_transfer_id(chandle trx, string id);
+import "DPI-C" function string dpi_smtdv_set_smtdv_transfer_bst_type(chandle trx, string bst_type);
+import "DPI-C" function string dpi_smtdv_set_smtdv_transfer_trx_size(chandle trx, string trx_size);
+import "DPI-C" function string dpi_smtdv_set_smtdv_transfer_trx_prt(chandle trx, string trx_ptr);
+import "DPI-C" function string dpi_smtdv_set_smtdv_transfer_lock(chandle trx, string lck);
 import "DPI-C" function string dpi_smtdv_set_smtdv_transfer_resp(chandle trx, string resp);
 
 /* smtdv get function calls */
@@ -29,9 +33,13 @@ import "DPI-C" function string dpi_smtdv_get_smtdv_transfer_begin_time(chandle t
 import "DPI-C" function string dpi_smtdv_get_smtdv_transfer_end_time(chandle trx);
 import "DPI-C" function string dpi_smtdv_get_smtdv_transfer_rw(chandle trx);
 import "DPI-C" function string dpi_smtdv_get_smtdv_transfer_addr(chandle trx);
-import "DPI-C" function string dpi_smtdv_get_smtdv_transfer_data(chandle trx);
-import "DPI-C" function string dpi_smtdv_get_smtdv_transfer_byten(chandle trx);
+import "DPI-C" function string dpi_smtdv_get_smtdv_transfer_data(chandle trx, int i);
+import "DPI-C" function string dpi_smtdv_get_smtdv_transfer_byten(chandle trx, int i);
 import "DPI-C" function string dpi_smtdv_get_smtdv_transfer_id(chandle trx);
+import "DPI-C" function string dpi_smtdv_get_smtdv_transfer_bst_type(chandle trx);
+import "DPI-C" function string dpi_smtdv_get_smtdv_transfer_trx_size(chandle trx);
+import "DPI-C" function string dpi_smtdv_get_smtdv_transfer_trx_prt(chandle trx);
+import "DPI-C" function string dpi_smtdv_get_smtdv_transfer_lock(chandle trx);
 import "DPI-C" function string dpi_smtdv_get_smtdv_transfer_resp(chandle trx);
 
 `endif // __SMTDV_STL__

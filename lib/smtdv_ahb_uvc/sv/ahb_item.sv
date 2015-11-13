@@ -17,6 +17,7 @@ class ahb_item #(
   rand int                      bst_len;
   rand bit [3:0]                trx_prt;
   rand bit [0:0]                hmastlock;
+  rand int                      offset;
 
   bit                           reqbus = 0;
   bit                           retry = 0;
@@ -76,6 +77,17 @@ class ahb_item #(
       (trx_size == B512) -> addr[5:0] == 0;
       (trx_size == B1024)-> addr[6:0] == 0;
     }
+  }
+
+  constraint c_offset {
+    solve trx_size before offset;
+      (trx_size == B16)  -> offset == 2;
+      (trx_size == B32)  -> offset == 4;
+      (trx_size == B64)  -> offset == 8;
+      (trx_size == B128) -> offset == 16;
+      (trx_size == B256) -> offset == 32;
+      (trx_size == B512) -> offset == 64;
+      (trx_size == B1024)-> offset == 128;
   }
 
   // TODO

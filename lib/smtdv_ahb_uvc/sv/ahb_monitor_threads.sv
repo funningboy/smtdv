@@ -67,34 +67,7 @@ class ahb_export_collected_items#(
     `AHB_ITEM item;
     `AHB_MONITOR cmp;
 
-    string attr_longint[$] = {
-      "addr",
-      "rw",
-      "len",
-      "burst",
-      "size",
-      "lock",
-      "prot",
-      "data_0",
-      "data_1",
-      "data_2",
-      "data_3",
-      "data_4",
-      "data_5",
-      "data_6",
-      "data_7",
-      "data_8",
-      "data_9",
-      "data_10",
-      "data_11",
-      "data_12",
-      "data_13",
-      "data_14",
-      "data_15",
-      "resp",
-      "bg_cyc",
-      "ed_cyc"
-    };
+    static string attr_longint[$] = `SMTDV_BUS_VIF_ATTR_LONGINT;
 
     `uvm_object_param_utils_begin(`AHB_EXPORT_COLLECTED_ITEMS)
     `uvm_object_utils_end
@@ -106,14 +79,16 @@ class ahb_export_collected_items#(
     virtual task run();
       create_table();
       forever begin
-        this.cmp.cbox.get(item);
-        populate_item(item);
+        this.cmp.ebox.get(item);
+        if (item.complete && item.addr_complete && item.data_complete) begin
+          populate_item(item);
+        end
       end
     endtask
 
     virtual task create_table();
-      string table_nm = $psprintf("\"%s\"", this.cmp.get_full_name());
-      `uvm_info(this.cmp.get_full_name(), {table_nm}, UVM_LOW)
+      string table_nm = {$psprintf("\"%s\"", this.cmp.get_full_name())};
+      `uvm_info(this.cmp.get_full_name(), {$psprintf("create mon sqlite3: %s", table_nm)}, UVM_LOW)
 
       smtdv_sqlite3::create_tb(table_nm);
       foreach (attr_longint[i])
@@ -122,19 +97,25 @@ class ahb_export_collected_items#(
     endtask
 
     virtual task populate_item(ref `AHB_ITEM item);
-      string table_nm = $psprintf("\"%s\"", this.cmp.get_full_name());
-      smtdv_sqlite3::insert_value(table_nm, "addr",    $psprintf("%d", item.addr));
-      smtdv_sqlite3::insert_value(table_nm, "rw",      $psprintf("%d", item.trs_t));
-      smtdv_sqlite3::insert_value(table_nm, "len",      $psprintf("%d", item.addrs.size()));
-      smtdv_sqlite3::insert_value(table_nm, "burst",    $psprintf("%d", item.bst_type));
-      smtdv_sqlite3::insert_value(table_nm, "size",     $psprintf("%d", item.trx_size));
-      smtdv_sqlite3::insert_value(table_nm, "lock",     $psprintf("%d", item.hmastlock));
-      smtdv_sqlite3::insert_value(table_nm, "prot",     $psprintf("%d", item.trx_prt));
+      string table_nm = {$psprintf("\"%s\"", this.cmp.get_full_name())};
+      smtdv_sqlite3::insert_value(table_nm, "dec_uuid",    $psprintf("%d", item.get_sequence_id()));
+      smtdv_sqlite3::insert_value(table_nm, "dec_addr",    $psprintf("%d", item.addr));
+      smtdv_sqlite3::insert_value(table_nm, "dec_rw",      $psprintf("%d", item.trs_t));
+      smtdv_sqlite3::insert_value(table_nm, "dec_len",      $psprintf("%d", item.bst_len));
+      smtdv_sqlite3::insert_value(table_nm, "dec_burst",    $psprintf("%d", item.bst_type));
+      smtdv_sqlite3::insert_value(table_nm, "dec_size",     $psprintf("%d", item.trx_size));
+      smtdv_sqlite3::insert_value(table_nm, "dec_lock",     $psprintf("%d", item.hmastlock));
+      smtdv_sqlite3::insert_value(table_nm, "dec_prot",     $psprintf("%d", item.trx_prt));
+      smtdv_sqlite3::insert_value(table_nm, "dec_resp",     $psprintf("%d", item.rsp));
       for (int i=0; i<item.data_beat.size(); i++) begin
-        smtdv_sqlite3::insert_value(table_nm, $psprintf("data_%0d", i),    $psprintf("%d", item.unpack_data(i)));
+        if (i<item.data_idx) begin
+          smtdv_sqlite3::insert_value(table_nm, $psprintf("dec_data_%03d", i),    $psprintf("%d", item.unpack_data(i)));
+        end
       end
-      smtdv_sqlite3::insert_value(table_nm, "bg_cyc",  $psprintf("%d", item.bg_cyc));
-      smtdv_sqlite3::insert_value(table_nm, "ed_cyc",  $psprintf("%d", item.ed_cyc));
+      smtdv_sqlite3::insert_value(table_nm, "dec_bg_cyc",  $psprintf("%d", item.bg_cyc));
+      smtdv_sqlite3::insert_value(table_nm, "dec_ed_cyc",  $psprintf("%d", item.ed_cyc));
+      smtdv_sqlite3::insert_value(table_nm, "dec_bg_time", $psprintf("%d", item.bg_time));
+      smtdv_sqlite3::insert_value(table_nm, "dec_ed_time", $psprintf("%d", item.ed_time));
       smtdv_sqlite3::exec_value(table_nm);
       smtdv_sqlite3::flush_value(table_nm);
     endtask
@@ -223,6 +204,7 @@ class ahb_collect_addr_items#(
         else if (this.cmp.vif.htrans == BUSY) begin populate_busy_item(item); end
         else if (this.cmp.vif.htrans == IDLE) begin popilate_idle_item(item); end
       end
+      populate_okay_item(item);
       populate_complete_item(item);
     endtask
 
@@ -261,7 +243,7 @@ class ahb_collect_addr_items#(
         join_any
         disable fork;
         if (this.cmp.cfg.has_coverage) begin this.cmp.cbox.put(item); end
-      `uvm_info(this.cmp.get_full_name(), {$psprintf("try collect addr item \n%s", item.sprint())}, UVM_LOW)
+        `uvm_info(this.cmp.get_full_name(), {$psprintf("try collect addr item \n%s", item.sprint())}, UVM_LOW)
       end
     endtask
 
@@ -294,6 +276,7 @@ class ahb_collect_addr_items#(
         item.bst_len = item.get_bst_len(this.cmp.vif.hburst);
         item.hmastlock = this.cmp.vif.hmastlock;
         item.bg_cyc = this.cmp.vif.cyc;
+        item.bg_time = $time;
         item.addr_idx++;
         item.addrs.push_back(this.cmp.vif.haddr);
         void'(this.cmp.begin_tr(item, this.cmp.get_full_name()));
@@ -309,6 +292,10 @@ class ahb_collect_addr_items#(
     virtual task populate_busy_item(ref `AHB_ITEM item);
     endtask
 
+    virtual task populate_okay_item(ref `AHB_ITEM item);
+        item.rsp = OKAY;
+    endtask
+
     virtual task populate_complete_item(ref `AHB_ITEM item);
         item.addr_complete = 1;
         item.complete = 1;
@@ -317,21 +304,21 @@ class ahb_collect_addr_items#(
     virtual task populate_retry_item(ref `AHB_ITEM item);
       if (!item.retry) begin
         item.retry = 1;
-        item.complete = 1;
+        item.rsp = RETRY;
       end
     endtask
 
     virtual task populate_split_item(ref `AHB_ITEM item);
       if (!item.split) begin
         item.split = 1;
-        item.complete = 1;
+        item.rsp = SPLIT;
       end
     endtask
 
     virtual task populate_error_item(ref `AHB_ITEM item);
       if (!item.error) begin
         item.error = 1;
-        item.complete = 1;
+        item.rsp = ERROR;
       end
     endtask
 
@@ -381,15 +368,14 @@ class ahb_collect_data_items#(
 
     virtual task listen_OKAY(ref `AHB_ITEM item);
       while (item.data_idx <= item.bst_len) begin
-        @(negedge this.cmp.vif.clk iff (this.cmp.vif.hready && this.cmp.vif.hresp == OKAY && this.cmp.vif.htrans inside {NONSEQ, SEQ}));
+        @(negedge this.cmp.vif.clk iff (this.cmp.vif.hready && this.cmp.vif.hresp == OKAY && this.cmp.vif.htrans inside {NONSEQ, SEQ, IDLE}));
         if(item.addr_idx > item.data_idx) begin
           populate_data_item(item);
-          if (this.cmp.cfg.has_coverage) begin this.cmp.cbox.put(item); end
-        end
+         end
       end
+      populate_okay_item(item);
       populate_complete_item(item);
     endtask
-
 
     virtual task run();
       forever begin
@@ -404,7 +390,8 @@ class ahb_collect_data_items#(
           join_any
           disable fork;
         end
-        if (this.cmp.cfg.has_export)   this.cmp.ebox.put(item);
+        if (this.cmp.cfg.has_coverage) begin this.cmp.cbox.put(item); end
+        if (this.cmp.cfg.has_export)   begin this.cmp.ebox.put(item); end
       `uvm_info(this.cmp.get_full_name(), {$psprintf("try collect data item \n%s", item.sprint())}, UVM_LOW)
       end
     endtask
@@ -419,8 +406,13 @@ class ahb_collect_data_items#(
     virtual task populate_complete_item(ref `AHB_ITEM item);
       item.data_complete = 1;
       item.complete = 1;
+      item.ed_cyc = this.cmp.vif.cyc;
+      item.ed_time = $time;
       // notify to scoreboard
       this.cmp.item_collected_port.write(item);
+    endtask
+
+    virtual task populate_okay_item(ref `AHB_ITEM item);
     endtask
 
     virtual task populate_retry_item(ref `AHB_ITEM item);

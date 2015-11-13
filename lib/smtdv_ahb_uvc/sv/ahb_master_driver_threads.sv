@@ -184,10 +184,7 @@ class ahb_master_drive_data #(
 
     virtual task listen_OKAY(ref `AHB_ITEM item);
       while (item.data_idx <= item.bst_len) begin
-        `uvm_info(this.cmp.get_full_name(), {$psprintf("xxxxxxx \n%s", item.sprint())}, UVM_LOW)
-
         @(posedge this.cmp.vif.clk iff(this.cmp.vif.hready && this.cmp.vif.hresp == OKAY && this.cmp.vif.htrans inside {NONSEQ, SEQ}));
-
         if(item.addr_idx > item.data_idx) begin
           populate_data_item(item);
         end

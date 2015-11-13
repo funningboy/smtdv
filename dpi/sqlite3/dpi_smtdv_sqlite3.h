@@ -20,7 +20,7 @@ using namespace SMTDV;
 
 namespace SMTDV {
 
-  const bool SMTDV_SQLITE3_DEBUG = false;
+  const bool SMTDV_SQLITE3_DEBUG = true;
 
   /** SMTDV Sqlite3 */
     class SMTDV_Sqlite3 {

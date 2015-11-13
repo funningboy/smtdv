@@ -53,6 +53,8 @@ extern "C" {
     void* dpi_smtdv_exec_column_step(void* i_row, int i_indx);
     /** exec as string */
     char* dpi_smtdv_exec_string_data(void* i_dt);
+    /** exec header as string */
+    char* dpi_smtdv_exec_header_data(void* i_dt);
     /** is_string_data */
     bool dpi_smtdv_is_string_data(void* i_dt);
     /** is_longint_data */

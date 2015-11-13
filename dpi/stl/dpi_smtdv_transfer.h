@@ -29,11 +29,15 @@ namespace SMTDV {
       unsigned long int begin_time;
       unsigned long int end_time;
       unsigned long int addr;
-      unsigned long int data;
-      unsigned int byten;
+      std::vector<unsigned long int> data;
+      std::vector<unsigned int> byten;
       unsigned int id;
       string resp;
       string rw;
+      string bst_type;
+      string trx_size;
+      string trx_prt;
+      unsigned int lock;
   };
 
   template <class T>

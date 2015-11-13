@@ -121,6 +121,60 @@ extern "C" {
     strcpy(cstr, tt->rw.c_str());
     return cstr;
   }
+  /* set bst_type */
+  void dpi_smtdv_set_smtdv_transfer_bst_type(void* ip, char* bst_type) {
+    SMTDV_Transfer* tt = reinterpret_cast<SMTDV_Transfer*>(ip);
+    assert(tt!=NULL && "UVM_ERROR DPI_SMTDV, set_SMTDV_Transfer bst_type fail");
+    tt->bst_type = bst_type;
+  }
+  /* get bst_type */
+  char* dpi_smtdv_get_smtdv_transfer_bst_type(void* ip) {
+    SMTDV_Transfer* tt = reinterpret_cast<SMTDV_Transfer*>(ip);
+    assert(tt!=NULL && "UVM_ERROR DPI_SMTDV, get_SMTDV_Transfer bst_type fail");
+    char *cstr = new char[tt->bst_type.length() + 1];
+    strcpy(cstr, tt->bst_type.c_str());
+    return cstr;
+  }
+  /* set trx_size */
+  void dpi_smtdv_set_smtdv_transfer_trx_size(void* ip, char* trx_size) {
+    SMTDV_Transfer* tt = reinterpret_cast<SMTDV_Transfer*>(ip);
+    assert(tt!=NULL && "UVM_ERROR DPI_SMTDV, set_SMTDV_Transfer trx_size fail");
+    tt->trx_size = trx_size;
+  }
+  /* get trx_size */
+  char* dpi_smtdv_get_smtdv_transfer_trx_size(void* ip) {
+    SMTDV_Transfer* tt = reinterpret_cast<SMTDV_Transfer*>(ip);
+    assert(tt!=NULL && "UVM_ERROR DPI_SMTDV, get_SMTDV_Transfer trx_size fail");
+    char *cstr = new char[tt->trx_size.length() + 1];
+    strcpy(cstr, tt->trx_size.c_str());
+    return cstr;
+  }
+  /* set trx_prt */
+  void dpi_smtdv_set_smtdv_transfer_trx_prt(void* ip, char* trx_prt) {
+    SMTDV_Transfer* tt = reinterpret_cast<SMTDV_Transfer*>(ip);
+    assert(tt!=NULL && "UVM_ERROR DPI_SMTDV, set_SMTDV_Transfer trx_prt fail");
+    tt->trx_prt = trx_prt;
+  }
+  /* get trx_prt */
+  char* dpi_smtdv_get_smtdv_transfer_trx_prt(void* ip) {
+    SMTDV_Transfer* tt = reinterpret_cast<SMTDV_Transfer*>(ip);
+    assert(tt!=NULL && "UVM_ERROR DPI_SMTDV, get_SMTDV_Transfer trx_prt fail");
+    char *cstr = new char[tt->trx_prt.length() + 1];
+    strcpy(cstr, tt->trx_prt.c_str());
+    return cstr;
+  }
+  /* set lock */
+  void dpi_smtdv_set_smtdv_transfer_lock(void* ip, char* lock) {
+    SMTDV_Transfer* tt = reinterpret_cast<SMTDV_Transfer*>(ip);
+    assert(tt!=NULL && "UVM_ERROR DPI_SMTDV, set_SMTDV_Transfer lock fail");
+    tt->id = dpi_hexstr_2_longint(lock);
+  }
+  /* get lock */
+  char* dpi_smtdv_get_smtdv_transfer_lock(void* ip) {
+    SMTDV_Transfer* tt = reinterpret_cast<SMTDV_Transfer*>(ip);
+    assert(tt!=NULL && "UVM_ERROR DPI_SMTDV, get_SMTDV_Transfer lock fail");
+    return dpi_longint_2_hexstr(tt->lock);
+  }
   /* set addr */
   void dpi_smtdv_set_smtdv_transfer_addr(void* ip, char* addr) {
     SMTDV_Transfer* tt = reinterpret_cast<SMTDV_Transfer*>(ip);
@@ -137,25 +191,29 @@ extern "C" {
   void dpi_smtdv_set_smtdv_transfer_data(void* ip, char* data) {
     SMTDV_Transfer* tt = reinterpret_cast<SMTDV_Transfer*>(ip);
     assert(tt!=NULL && "UVM_ERROR DPI_SMTDV, set_SMTDV_Transfer data fail");
-    tt->data = dpi_hexstr_2_longint(data);
+    tt->data.push_back(dpi_hexstr_2_longint(data));
   }
   /* get data */
-  char* dpi_smtdv_get_smtdv_transfer_data(void* ip) {
+  char* dpi_smtdv_get_smtdv_transfer_data(void* ip, int i) {
     SMTDV_Transfer* tt = reinterpret_cast<SMTDV_Transfer*>(ip);
     assert(tt!=NULL && "UVM_ERROR DPI_SMTDV, get_SMTDV_Transfer data fail");
-    return dpi_longint_2_hexstr(tt->data);
+    int size = tt->data.size();
+    assert(size > 0 && i < size && "UVM_ERROR DPI_SMTDV, get_SMTDV_Transfer data fail");
+    return dpi_longint_2_hexstr(tt->data[i]);
   }
   /* set byten */
   void dpi_smtdv_set_smtdv_transfer_byten(void* ip, char* data) {
     SMTDV_Transfer* tt = reinterpret_cast<SMTDV_Transfer*>(ip);
     assert(tt!=NULL && "UVM_ERROR DPI_SMTDV, set_SMTDV_Transfer byten fail");
-    tt->byten = dpi_hexstr_2_longint(data);
+    tt->byten.push_back(dpi_hexstr_2_longint(data));
   }
   /* get byten */
-  char* dpi_smtdv_get_smtdv_transfer_byten(void* ip) {
+  char* dpi_smtdv_get_smtdv_transfer_byten(void* ip, int i) {
     SMTDV_Transfer* tt = reinterpret_cast<SMTDV_Transfer*>(ip);
     assert(tt!=NULL && "UVM_ERROR DPI_SMTDV, get_SMTDV_Transfer byten fail");
-    return dpi_longint_2_hexstr(tt->byten);
+    int size = tt->byten.size();
+    assert(size > 0 && i < size && "UVM_ERROR DPI_SMTDV, get_SMTDV_Transfer byten fail");
+    return dpi_longint_2_hexstr(tt->byten[i]);
   }
   /* dpi register smtdv transfer 2 smtdv masmtdvox */
   void dpi_smtdv_register_smtdv_transfer(void* it, void* ip) {

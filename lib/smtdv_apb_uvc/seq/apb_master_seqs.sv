@@ -111,7 +111,7 @@ class apb_master_stl_seq #(
     `APB_MASTER_BASE_SEQ;
 
     int unsigned m_id = 0;
-    static string m_file = "../stl/000010af.trx";
+    static string m_file = "../stl/incr.stl";
     chandle m_dpi_mb;
     chandle m_dpi_trx;
 

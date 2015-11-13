@@ -295,6 +295,8 @@ class uart_export_collected_items#(
       smtdv_sqlite3::insert_value(table_nm, "data",    $psprintf("%d", item.unpack_data()));
       smtdv_sqlite3::insert_value(table_nm, "bg_cyc",  $psprintf("%d", item.bg_cyc));
       smtdv_sqlite3::insert_value(table_nm, "ed_cyc",  $psprintf("%d", item.ed_cyc));
+      smtdv_sqlite3::insert_value(table_nm, "bg_time", $psprintf("%d", item.bg_time));
+      smtdv_sqlite3::insert_value(table_nm, "ed_time", $psprintf("%d", item.ed_time));
       smtdv_sqlite3::exec_value(table_nm);
       smtdv_sqlite3::flush_value(table_nm);
     endtask

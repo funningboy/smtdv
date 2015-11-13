@@ -8,6 +8,7 @@ typedef enum bit [0:0] {OK, ERR} trx_rsp_t;
 `define APB_ADDR_WIDTH 32
 `define APB_DATA_WIDTH 32
 `define APB_PARAMETER #(ADDR_WIDTH, DATA_WIDTH)
+`define APB_PARAMETER2 #(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS)
 
 `define APB_RST_VIF virtual smtdv_gen_rst_if #("apb_rst_if", 100, 0)
 
@@ -64,6 +65,12 @@ typedef enum bit [0:0] {OK, ERR} trx_rsp_t;
 `define MEM_RESPONSE_SEQ mem_response_seq `APB_PARAMETER
 
 `define APB_ENV apb_env
+`define APB_BASE_SCOREBOARD apb_base_scoreboard `APB_PARAMETER2
+`define APB_MEM_BKDOR_WR_COMP apb_mem_bkdor_wr_comp `APB_PARAMETER2
+`define APB_MEM_BKDOR_RD_COMP apb_mem_bkdor_rd_comp `APB_PARAMETER2
+`define APB_BUS_BACKDOOR apb_bus_backdoor `APB_PARAMETER
+`define APB_MEM_BACKDOOR apb_mem_backdoor `APB_PARAMETER
+
 
 `define APB_BASE_TEST apb_base_test
 `define APB_1W1R_TEST apb_1w1r_test

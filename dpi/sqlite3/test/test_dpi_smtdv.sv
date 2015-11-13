@@ -1,6 +1,7 @@
 
 import smtdv_sqlite3_pkg::*;
 
+// record pattern
 module test();
 
 chandle m_pl;
@@ -29,8 +30,9 @@ initial begin
     smtdv_sqlite3::flush_value(table_nm);
 
     /* insert values ... */
+    cyc = 200000000;
     smtdv_sqlite3::insert_value(table_nm, "addr", "b");
-    smtdv_sqlite3::insert_value(table_nm, "cyc", "200000000");
+    smtdv_sqlite3::insert_value(table_nm, "cyc", $psprintf("%d", cyc));
     smtdv_sqlite3::exec_value(table_nm);
     smtdv_sqlite3::flush_value(table_nm);
 
@@ -42,7 +44,13 @@ initial begin
       m_col_size = smtdv_sqlite3::exec_column_size(m_row);
       for (int c=0; c<m_col_size; c++) begin
         m_col = smtdv_sqlite3::exec_column_step(m_row, c);
-        $display("r : %d, c : %d, %s", r, c, smtdv_sqlite3::exec_string_data(m_col));
+        $display("%p", m_col);
+        if (smtdv_sqlite3::is_longint_data(m_col)) begin
+          $display("r : %d, c : %d, int: %s", r, c, smtdv_sqlite3::exec_string_data(m_col));
+        end
+        else if (smtdv_sqlite3::is_string_data(m_col)) begin
+          $display("r : %d, c : %d, str: %s", r, c, smtdv_sqlite3::exec_string_data(m_col));
+        end
       end
     end
     smtdv_sqlite3::delete_pl(table_nm);

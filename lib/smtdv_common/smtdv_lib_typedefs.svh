@@ -22,5 +22,30 @@ typedef enum bit [4:0] {
   SMTDV_NO_ID        = 5'b11110
 } smtdv_print_mask_t;
 
+typedef enum bit [3:0] {
+  SMTDV_CB_UUID,
+  SMTDV_CB_ID,
+  SMTDV_CB_ADDR,
+  SMTDV_CB_RW,
+  SMTDV_CB_LEN,
+  SMTDV_CB_BURST,
+  SMTDV_CB_SIZE,
+  SMTDV_CB_LOCK,
+  SMTDV_CB_PROT,
+  SMTDV_CB_DATA,
+  SMTDV_CB_RESP,
+  SMTDV_CB_BG_CYC,
+  SMTDV_CB_ED_CYC,
+  SMTDV_CB_BG_TIME,
+  SMTDV_CB_ED_TIME
+} smtdv_backdoor_event_t;
+
+
+`define SMTDV_PARAMETER #(ADDR_WIDTH, DATA_WIDTH, NUM_OF_TARGETS, NUM_OF_TARGETS, T1, T2, CFG)
+`define SMTDV_SCOREBOARD smtdv_scoreboard `SMTDV_PARAMETER
+`define SMTDV_WATCH_WR_LIFETIME smtdv_watch_wr_lifetime `SMTDV_PARAMETER
+`define SMTDV_WATCH_RD_LIFETIME smtdv_watch_rd_lifetime `SMTDV_PARAMETER
+`define SMTDV_SEQUENCE_ITEM smtdv_sequence_item
+
 
 `endif // end of __SMTDV_LIB_TYPEDEFS_SVH__

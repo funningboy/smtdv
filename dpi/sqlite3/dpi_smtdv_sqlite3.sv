@@ -22,30 +22,48 @@
   import "DPI-C" function int  dpi_smtdv_exec_column_size(chandle i_row);
   import "DPI-C" function chandle dpi_smtdv_exec_column_step(chandle i_row, int i_indx);
   import "DPI-C" function string dpi_smtdv_exec_string_data(chandle i_dt);
+  import "DPI-C" function string dpi_smtdv_exec_header_data(chandle i_dt);
   import "DPI-C" function bit  dpi_smtdv_is_string_data(chandle i_dt);
   import "DPI-C" function bit  dpi_smtdv_is_longint_data(chandle i_dt);
   import "DPI-C" function bit  dpi_smtdv_is_longlong_data(chandle i_dt);
 
 class smtdv_sqlite3;
 
+  static int map_db[string];
+  static int map_tb[string];
+  static int indx_db = 0;
+  static int indx_tb = 0;
+
   static function void close_db();
     dpi_smtdv_close_db();
   endfunction : close_db
 
+  static function bit has_db(string i_db_nm);
+    return map_db.exists(i_db_nm);
+  endfunction : has_db
+
   static function void new_db(string i_db_nm);
     dpi_smtdv_new_db(i_db_nm);
+    map_db[i_db_nm] = indx_db++;
   endfunction : new_db
 
   static function void delete_db(string i_db_nm);
     dpi_smtdv_delete_db(i_db_nm);
+    map_db.delete(i_db_nm);
   endfunction : delete_db
+
+  static function bit has_tb(string i_tb_nm);
+    return map_tb.exists(i_tb_nm);
+  endfunction : has_tb
 
   static function void create_tb(string i_tb_nm);
     dpi_smtdv_create_tb(i_tb_nm);
+    map_tb[i_tb_nm] = indx_tb++;
   endfunction : create_tb
 
   static function void delete_tb(string i_tb_nm);
     dpi_smtdv_delete_tb(i_tb_nm);
+    map_tb.delete(i_tb_nm);
   endfunction : delete_tb
 
   static function void create_pl(string i_tb_nm);
@@ -103,6 +121,10 @@ class smtdv_sqlite3;
   static function chandle exec_column_step(chandle i_row, int i_indx);
     return dpi_smtdv_exec_column_step(i_row, i_indx);
   endfunction : exec_column_step
+
+  static function string exec_header_data(chandle i_dt);
+    return dpi_smtdv_exec_header_data(i_dt);
+  endfunction : exec_header_data
 
   static function string exec_string_data(chandle i_dt);
     return dpi_smtdv_exec_string_data(i_dt);

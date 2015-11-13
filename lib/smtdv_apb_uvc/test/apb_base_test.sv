@@ -2,7 +2,7 @@
 `ifndef __APB_TEST_SV__
 `define __APB_TEST_SV__
 
-// 1Mx2S
+// 1Mx2S cluster
 class apb_base_test extends smtdv_test;
 
   parameter ADDR_WIDTH = `APB_ADDR_WIDTH;
@@ -28,6 +28,10 @@ class apb_base_test extends smtdv_test;
     bit [ADDR_WIDTH-1:0] start_addr, end_addr;
     super.build_phase(phase);
 
+    //create sqlite3 db
+    smtdv_sqlite3::delete_db("apb_db.db");
+    smtdv_sqlite3::new_db("apb_db.db");
+
     // slave0 cfg, agent
     slave_cfg[0] = `APB_SLAVE_CFG::type_id::create({$psprintf("slave_cfg[%0d]", 0)}, this);
     `SMTDV_RAND_WITH(slave_cfg[0], {
@@ -35,7 +39,7 @@ class apb_base_test extends smtdv_test;
       has_coverage == 1;
       has_export == 1;
     })
-    slave_agent[0] = `APB_SLAVE_AGENT::type_id::create("slave_agent[0]", this);
+    slave_agent[0] = `APB_SLAVE_AGENT::type_id::create({$psprintf("slave_agent[%0d]", 0)}, this);
     uvm_config_db#(uvm_bitstream_t)::set(null, "/.+slave_agent[*0]*/", "is_active", UVM_ACTIVE);
     uvm_config_db#(`APB_SLAVE_CFG)::set(null, "/.+slave_agent[*0]*/", "cfg", slave_cfg[0]);
 
@@ -46,12 +50,12 @@ class apb_base_test extends smtdv_test;
       has_coverage == 1;
       has_export == 1;
     })
-    slave_agent[1] = `APB_SLAVE_AGENT::type_id::create("slave_agent[1]", this);
+    slave_agent[1] = `APB_SLAVE_AGENT::type_id::create({$psprintf("slave_agent[%0d]", 1)}, this);
     uvm_config_db#(uvm_bitstream_t)::set(null, "/.+slave_agent[*1]*/", "is_active", UVM_ACTIVE);
     uvm_config_db#(`APB_SLAVE_CFG)::set(null, "/.+slave_agent[*1]*/", "cfg", slave_cfg[1]);
 
     // master cfg, agent
-    master_cfg[0] = `APB_MASTER_CFG::type_id::create("master_cfg[0]", this);
+    master_cfg[0] = `APB_MASTER_CFG::type_id::create({$psprintf("master_cfg[%0d]", 0)}, this);
     `SMTDV_RAND_WITH(master_cfg[0], {
       has_force == 1;
       has_coverage == 1;
@@ -64,9 +68,10 @@ class apb_base_test extends smtdv_test;
     end_addr = `APB_END_ADDR(1)
     master_cfg[0].add_slave(slave_cfg[1], 1, start_addr, end_addr);
 
-    master_agent[0] = `APB_MASTER_AGENT::type_id::create("master_agent[0]", this);
+    master_agent[0] = `APB_MASTER_AGENT::type_id::create({$psprintf("master_agent[%0d]", 0)}, this);
     uvm_config_db#(uvm_bitstream_t)::set(null, "/.+master_agent[*0]*/", "is_active", UVM_ACTIVE);
     uvm_config_db#(`APB_MASTER_CFG)::set(null, "/.+master_agent[*0]*/", "cfg", master_cfg[0]);
+    // register master agent as scoreboard initor
 
     // resetn
     apb_rst_model = smtdv_reset_model#(`APB_RST_VIF)::type_id::create("apb_rst_model");
@@ -74,9 +79,6 @@ class apb_base_test extends smtdv_test;
       `uvm_fatal("NOVIF",{"virtual interface must be set for: ",get_full_name(),".apb_rst_vif"});
     apb_rst_model.create_rst_monitor(apb_rst_vif);
 
-    //sqlite3
-    smtdv_sqlite3::delete_db("apb_db.db");
-    smtdv_sqlite3::new_db("apb_db.db");
   endfunction
 
   virtual function void connect_phase(uvm_phase phase);

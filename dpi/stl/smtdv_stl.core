@@ -1,0 +1,34 @@
+[main]
+description = "SMTDV STL lib"
+root = os.getenv("SMTDV_HOME")
+debug = FALSE
+
+[systemverilog]
+src_files =
+
+include_files =
+  ${main:root}/dpi/stl/smtdv_stl_pkg.sv
+
+include_dirs =
+  ${main:root}/dpi/stl
+
+[sharedlib]
+src_files =
+
+include_files =
+  ${main:root}/dpi/stl/dpi_smtdv_stl.so
+
+include_dirs =
+  ${main:root}/dpi/stl
+
+[Makefile]
+exec =
+  ./run.sh
+
+clean =
+
+[provider]
+name = funningboy@gmail.com
+repo_name = smtdv stl lib
+repo_root = ${main:root}/dpi/stl
+revision = 1.0

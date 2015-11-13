@@ -138,6 +138,15 @@ extern "C" {
       return cstr;
     }
 
+    /* exec header data*/
+    char* dpi_smtdv_exec_header_data(void* i_dt) {
+      SMTDV_Data* dt = reinterpret_cast<SMTDV_Data*>(i_dt);
+      assert(dt!=NULL && "ERROR: dpi_smtdv_exec_header_data fail");
+      char *cstr = new char[dt->name.length() + 1];
+      strcpy(cstr, dt->name.c_str());
+      return cstr;
+    }
+
     /* dpi_smtdv_is_string_data */
     bool dpi_smtdv_is_string_data(void *i_dt) {
       SMTDV_Data* dt = reinterpret_cast<SMTDV_Data*>(i_dt);

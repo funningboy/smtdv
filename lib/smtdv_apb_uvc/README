@@ -1,3 +1,5 @@
+ref: https://web.eecs.umich.edu/~prabal/teaching/eecs373-f11/readings/ARM_AMBA3_APB.pdf
+
 block cfg set via async channel
 
 1. uvm ref flow
@@ -8,3 +10,6 @@ block cfg set via async channel
     err_inject:
     sysc co-sim
     tlm1 <-> tlm2
+    sqlite3
+    memory backdoor
+    fast sim

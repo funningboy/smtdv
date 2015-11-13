@@ -19,8 +19,10 @@ class apb_slave_drive_items #(
       super.new(name);
     endfunction
 
+    // blocking for R/W trx
     virtual task run();
       forever begin
+        populate_default_item(item);
         this.cmp.mbox.get(item);
         case(item.trs_t)
           WR: do_write_item(item);
@@ -30,6 +32,10 @@ class apb_slave_drive_items #(
               $sformatf("get an unexpected item \n%s", item.sprint()))
         endcase
       end
+    endtask
+
+    virtual task populate_default_item(ref `APB_ITEM item);
+      this.cmp.vif.slave.pready <= 1'b0;
     endtask
 
     virtual task do_write_item(ref `APB_ITEM item);

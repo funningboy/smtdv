@@ -148,13 +148,15 @@ SMTDV_Data::type SMTDV_Sqlite3::get_field_typ(std::string i_tb_nm, std::string i
 
 int SMTDV_Sqlite3::exec_callback(void *data, int argc, char **argv, char **col_nm){
   SMTDV_Row* row = new SMTDV_Row();
-  std::stringstream ss_nm, ss_val;
-  std::string nm, val;
 
   for(int i=0; i<argc; i++){
+    std::stringstream ss_nm, ss_val;
+    std::string nm, val;
+
+    if (SMTDV_SQLITE3_DEBUG) std::cout << col_nm[i] << '=' << argv[i] << std::endl;
     ss_nm  << col_nm[i]; ss_nm >> nm;
     ss_val << argv[i];   ss_val >> val;
-    SMTDV_Column* dt = new SMTDV_Column(get_field_typ(m_tb_nm, nm), val);
+    SMTDV_Column* dt = new SMTDV_Column(get_field_typ(m_tb_nm, nm), nm, val);
     if (SMTDV_SQLITE3_DEBUG) std::cout << nm << '=' << val << std::endl;
     row->set(dt);
   }

@@ -8,29 +8,15 @@ class apb_slave_base_seq #(
   ) extends
     smtdv_sequence#(`APB_ITEM);
 
-    `APB_ITEM item;
-
-    `uvm_sequence_utils(`APB_SLAVE_BASE_SEQ, `APB_SLAVE_SEQUENCER)
-
-    function new(string name = "apb_slave_base_seq");
-      super.new(name);
-    endfunction
-
-endclass
-
-
-class apb_slave_base_resp_seq #(
-  ADDR_WIDTH = 14,
-  DATA_WIDTH = 32
-  ) extends
-    `APB_SLAVE_BASE_SEQ;
-
     smtdv_generic_memory#(ADDR_WIDTH)  gene_mem;
 
     `APB_ITEM item;
     mailbox #(`APB_ITEM) mbox;
 
-    `uvm_sequence_utils(`APB_SLAVE_BASE_SEQ, `APB_SLAVE_SEQUENCER)
+    `uvm_object_utils_begin(`APB_SLAVE_BASE_SEQ)
+    `uvm_object_utils_end
+
+    `uvm_declare_p_sequencer(`APB_SLAVE_SEQUENCER)
 
     function new(string name = "apb_slave_base_seq");
       super.new(name);
@@ -42,7 +28,7 @@ class apb_slave_base_resp_seq #(
       // override this func
       byte data[];
       data= new[DATA_WIDTH>>3];
-      gene_mem.mem_load_byte(item.addr, DATA_WIDTH>>3, data);
+      gene_mem.mem_load_byte(item.addr, DATA_WIDTH>>3, data, item.bg_cyc);
       foreach(data[i]) begin
         item.data_beat[i] = data[i];
       end
@@ -56,7 +42,7 @@ class apb_slave_base_resp_seq #(
       foreach(item.data_beat[i]) begin
         data[i] = item.data_beat[i];
       end
-      gene_mem.mem_store_byte(item.addr, data);
+      gene_mem.mem_store_byte(item.addr, data, item.bg_cyc);
     endtask
 
     virtual task rcv_from_mon();

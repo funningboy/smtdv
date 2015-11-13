@@ -57,10 +57,13 @@ task smtdv_driver::run_phase(uvm_phase phase);
           forever begin: get_item_from_sqr
             // align to posege clk to drive
             @(posedge vif.clk iff (vif.clk));
+            // get next req item
             get_item(req);
             drive_bus();
             item_done(rsp);
+
             // respone queue will been blocked at rsp not been deasserted
+            // UVM_ERROR: Response queue overflow, response was dropped
             //seq_item_port.get_next_item(req);
             //$cast(rsp, req.clone());
             //rsp.set_id_info(req);

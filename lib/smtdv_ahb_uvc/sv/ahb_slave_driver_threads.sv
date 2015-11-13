@@ -92,11 +92,9 @@ class ahb_slave_drive_addr #(
         this.cmp.vif.slave.hresp <= OKAY;
         repeat(item.hready_L2H) @(posedge this.cmp.vif.clk);
       end
-      else begin
-        this.cmp.vif.slave.hreadyout <= 1'b1;
-        this.cmp.vif.slave.hresp <= OKAY;
-        item.addr_idx++;
-      end
+      this.cmp.vif.slave.hreadyout <= 1'b1;
+      this.cmp.vif.slave.hresp <= OKAY;
+      item.addr_idx++;
     endtask
 
     virtual task populate_error_item(ref `AHB_ITEM item);

@@ -19,6 +19,7 @@ class apb_master_drive_items #(
       super.new(name);
     endfunction
 
+    // blocking for R/W trx
     virtual task run();
       forever begin
         this.cmp.mbox.get(item);

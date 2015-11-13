@@ -2,47 +2,54 @@
 `ifndef __SMTDV_SCOREBOARD_SV__
 `define __SMTDV_SCOREBOARD_SV__
 
-// macro should been imp at your scoreboard
+// virtual macro should been imp at your scoreboard
 //`uvm_analysis_imp_decl(_initor)
 //`uvm_analysis_imp_decl(_target)
-
-`define SMTDV_SCOREBOARD smtdv_scoreboard#(ADDR_WIDTH, DATA_WIDTH, NUM_OF_TARGETS, NUM_OF_TARGETS, T1, T2)
-`define SMTDV_SEQUENCE_ITEM smtdv_sequence_item
 
 class smtdv_scoreboard #(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32,
   NUM_OF_INITOR = 1,
   NUM_OF_TARGETS = 4,
-  type T1 = smtdv_sequence_item,
-  type T2 = T1)
+  type T1 = `SMTDV_SEQUENCE_ITEM,
+  type T2 = T1,
+  CFG = uvm_object)
     extends
   smtdv_component#(uvm_scoreboard);
 
-  smtdv_sequence_item wr_pool[ADDR_WIDTH-1:0][$];
-  smtdv_sequence_item rd_pool[ADDR_WIDTH-1:0][$];
+  smtdv_thread_handler #(CFG) th_handler;
 
-  smtdv_sequence_item atmic_item;
-  int watch_per_ns = 1000;
+  `SMTDV_SEQUENCE_ITEM wr_pool[ADDR_WIDTH-1:0][$];
+  `SMTDV_SEQUENCE_ITEM rd_pool[ADDR_WIDTH-1:0][$];
 
-//  smtdv_agent initor_ptr[NUM_OF_INITOR];
-//  smtdv_agent targets_ptr[NUM_OF_TARGETS];
+  `SMTDV_WATCH_WR_LIFETIME th0;
+  `SMTDV_WATCH_RD_LIFETIME th1;
 
-// macro should been imp at your scoreboard
-//  uvm_analysis_imp_initor #(smtdv_sequence_item, `SMTDV_SCOREBOARD) initor[NUM_OF_INITOR];
-//  uvm_analysis_imp_target #(smtdv_sequence_item, `SMTDV_SCOREBOARD) targets[NUM_OF_TARGETS];
+  `SMTDV_SEQUENCE_ITEM atmic_item;
+
+// virtual macro should been imp at your scoreboard
+//  uvm_analysis_imp_initor #(`SMTDV_SEQUENCE_ITEM, `SMTDV_SCOREBOARD) initor[NUM_OF_INITOR];
+//  uvm_analysis_imp_target #(`SMTDV_SEQUENCE_ITEM, `SMTDV_SCOREBOARD) targets[NUM_OF_TARGETS];
 
   `uvm_component_param_utils(`SMTDV_SCOREBOARD)
 
   function new(string name = "smtdv_scoreboard", uvm_component parent);
     super.new(name, parent);
-// macro should been imp at your scoreboard
+    th_handler = smtdv_thread_handler#(CFG)::type_id::create("smtdv_driver_threads", this);
+
+// virtual macro should been imp at your scoreboard
 //    for(int i=0; i<NUM_OF_INITOR; i++) begin
 //      initor[i] = new({$psprintf("initor[%0d]", i)}, this);
 //    end
 //    for(int i=0; i<NUM_OF_TARGETS; i++) begin
 //      targets[i] = new({$psprintf("targets[%0d]", i)}, this);
 //    end
+  endfunction
+
+  virtual function void build_phase(uvm_phase phase);
+    super.build_phase(phase);
+    th0 = `SMTDV_WATCH_WR_LIFETIME::type_id::create("smtdv_watch_wr_lifetime"); th0.cmp = this; this.th_handler.add(th0);
+    th1 = `SMTDV_WATCH_RD_LIFETIME::type_id::create("smtdv_watch_rd_lifetime"); th1.cmp = this; this.th_handler.add(th1);
   endfunction
 
   virtual function void reset_scoreboard();
@@ -70,58 +77,20 @@ class smtdv_scoreboard #(
             @(negedge resetn);
           end
 
-          begin
-            watch_wr_life_time();
-            end
-
-          begin
-            watch_rd_life_time();
-         end
-
         join_any
+
+        th_handler.run();
       join
       disable fork;
     end
   endtask
 
-  virtual task watch_wr_life_time();
-    smtdv_sequence_item it;
-    forever begin: check_wr_pool
-      #watch_per_ns;
-      foreach(wr_pool[i])begin
-        foreach(wr_pool[i][j]) begin
-          it = wr_pool[i][j];
-          if (it.life_time<0) begin
-            `uvm_error(get_type_name(), {$psprintf("RUN OUT OF LIFE TIMEOUT DATA \n%s", it.sprint())})
-          end
-          it.life_time--;
-        end
-      end
-    end
-   endtask
-
-  virtual task watch_rd_life_time();
-    smtdv_sequence_item it;
-    forever begin: check_rd_pool
-      #watch_per_ns;
-      foreach(rd_pool[i])begin
-        foreach(rd_pool[i][j]) begin
-          it = rd_pool[i][j];
-          if (it.life_time<0) begin
-            `uvm_error(get_type_name(), {$psprintf("RUN OUT OF LIFE TIMEOUT DATA \n%s", it.sprint())})
-          end
-          it.life_time--;
-        end
-      end
-    end
-  endtask
 
   // bind at master side
-  virtual function void _write_initor(smtdv_sequence_item item);
-    smtdv_sequence_item it;
-
+  virtual function void _write_initor(`SMTDV_SEQUENCE_ITEM item);
+    `SMTDV_SEQUENCE_ITEM it;
     foreach(item.addrs[i]) begin
-      atmic_item = smtdv_sequence_item::type_id::create("smtdv_item");
+      atmic_item = `SMTDV_SEQUENCE_ITEM::type_id::create("smtdv_item");
       atmic_item.addrs[i] = item.addrs[i];
       atmic_item.data_beat[i] = item.data_beat[i];
       if (item.byten_beat.size() > 0) begin
@@ -133,7 +102,7 @@ class smtdv_scoreboard #(
       if (item.trs_t == WR) begin
         wr_pool[item.addrs[i]].push_back(atmic_item);
       end
-      // RD: cmp RD at wait pool when target sent
+      // RD: compare RD at wait pool when target sent
       else if (item.trs_t == RD)begin
         if (rd_pool[item.addrs[i]].size() > 0) begin
           it = rd_pool[item.addrs[i]].pop_front();
@@ -149,11 +118,11 @@ class smtdv_scoreboard #(
   endfunction
 
   // bind at slave side
-  virtual function void _write_target(smtdv_sequence_item item);
-    smtdv_sequence_item it;
+  virtual function void _write_target(`SMTDV_SEQUENCE_ITEM item);
+    `SMTDV_SEQUENCE_ITEM it;
 
     foreach(item.addrs[i]) begin
-      atmic_item = smtdv_sequence_item::type_id::create("smtdv_item");
+      atmic_item = `SMTDV_SEQUENCE_ITEM::type_id::create("smtdv_item");
       atmic_item.addrs[i] = item.addrs[i];
       atmic_item.data_beat[i] = item.data_beat[i];
       if (item.byten_beat.size() > 0) begin
@@ -165,7 +134,7 @@ class smtdv_scoreboard #(
       if (item.trs_t == RD) begin
         rd_pool[item.addrs[i]].push_back(atmic_item);
       end
-      // WR: cmp WR at wait pool when initor sent
+      // WR: compare WR at wait pool when initor sent
       else if (item.trs_t == WR)begin
         if (wr_pool[item.addrs[i]].size() > 0) begin
           it = wr_pool[item.addrs[i]].pop_front();

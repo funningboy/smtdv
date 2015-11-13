@@ -15,17 +15,19 @@ int main(int argc, char* argv[])
     dpi_smtdv_create_tb("\"test_tb_0.tt\"");
 
     /* build up table fields ... */
-    dpi_smtdv_register_string_field("\"test_tb_0.tt\"", "addr");
     dpi_smtdv_register_longint_field("\"test_tb_0.tt\"", "cycle");
+    dpi_smtdv_register_longint_field("\"test_tb_0.tt\"", "addr");
     dpi_smtdv_exec_field("\"test_tb_0.tt\"");
+    dpi_smtdv_flush_value("\"test_tb_0.tt\"");
 
     /* insert dec values ... */
-    dpi_smtdv_insert_value("\"test_tb_0.tt\"", "addr", "a");
     dpi_smtdv_insert_value("\"test_tb_0.tt\"", "cycle", "100000");
+    dpi_smtdv_insert_value("\"test_tb_0.tt\"", "addr", "1000");
     dpi_smtdv_exec_value("\"test_tb_0.tt\"");
     dpi_smtdv_flush_value("\"test_tb_0.tt\"");
-    dpi_smtdv_insert_value("\"test_tb_0.tt\"", "addr", "b");
-    dpi_smtdv_insert_value("\"test_tb_0.tt\"", "cycle", "2000000");
+
+    dpi_smtdv_insert_value("\"test_tb_0.tt\"", "cycle", "200000");
+    dpi_smtdv_insert_value("\"test_tb_0.tt\"", "addr", "2000");
     dpi_smtdv_exec_value("\"test_tb_0.tt\"");
     dpi_smtdv_flush_value("\"test_tb_0.tt\"");
 
@@ -42,7 +44,11 @@ int main(int argc, char* argv[])
       m_col_size  = dpi_smtdv_exec_column_size(m_row);
       for (int c=0; c<m_col_size; c++) {
         void* m_col = dpi_smtdv_exec_column_step(m_row, c);
-        std::cout << " r:" << r << " c:" << c << " => " << dpi_smtdv_exec_string_data(m_col) << std::endl;
+        std::cout << m_col << std::endl;
+        if (dpi_smtdv_is_string_data(m_col))
+          std::cout << " r:" << r << " c:" << c << " header:" <<  dpi_smtdv_exec_header_data(m_col) << " str:" << dpi_smtdv_exec_string_data(m_col) << std::endl;
+        if (dpi_smtdv_is_longint_data(m_col))
+          std::cout << " r:" << r << " c:" << c << " header:" << dpi_smtdv_exec_header_data(m_col) << " longint:" << dpi_smtdv_exec_string_data(m_col) << std::endl;
       }
     }
 
@@ -55,7 +61,7 @@ int main(int argc, char* argv[])
 //    void* m_row_1 = dpi_smtdv_exec_row_step(m_pool, 1);
 //    void* m_col_1 = dpi_smtdv_exec_column_step(m_row_1, 0);
 //    assert(std::string(dpi_smtdv_exec_string_data(m_col_1)) == "31" && "query unittest fail");
-
+//
 
     dpi_smtdv_delete_pl("\"test_tb_0.tt\"");
     dpi_smtdv_delete_tb("\"test_tb_0.tt\"");
@@ -67,7 +73,9 @@ int main(int argc, char* argv[])
     //sqlite> .tables
     //sqlite> .mode column
     //sqlite> .headers on
-    //sqlite> SELECT * FROM test_tb
+    //sqlite> .output test_file_1.txt
+    //sqlite> SELECT * "FROM test_tb";
+    //sqlite> .exit
     /* close db */
     dpi_smtdv_close_db();
 

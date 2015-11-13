@@ -13,6 +13,17 @@ class ahb_lock_incr_test
 
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
+
+    foreach(master_cfg[i])begin
+      master_cfg[i].has_busy = 0;
+    end
+
+    foreach(slave_cfg[i])begin
+      slave_cfg[i].has_error = 0;
+      slave_cfg[i].has_split = 0;
+      slave_cfg[i].has_retry = 0;
+    end
+
     uvm_config_db #(uvm_object_wrapper)::set(this,
       "*master_agent[*0]*.seqr.run_phase",
       "default_sequence",
@@ -32,14 +43,22 @@ class ahb_lock_incr_retry_test
 
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
+
+    foreach(master_cfg[i])begin
+      master_cfg[i].has_busy = 0;
+    end
+
+    foreach(slave_cfg[i])begin
+      slave_cfg[i].has_error = 0;
+      slave_cfg[i].has_split = 0;
+      slave_cfg[i].has_retry = 1;
+    end
+
     uvm_config_db #(uvm_object_wrapper)::set(this,
       "*master_agent[*0]*.seqr.run_phase",
       "default_sequence",
       `AHB_MASTER_LOCK_INCR_SEQ::type_id::get());
 
-    foreach(slave_cfg[i])begin
-      slave_cfg[i].has_retry = 1;
-    end
   endfunction
 
 endclass
@@ -55,14 +74,22 @@ class ahb_lock_incr_error_test
 
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
+
+    foreach(master_cfg[i])begin
+      master_cfg[i].has_busy = 0;
+    end
+
+    foreach(slave_cfg[i])begin
+      slave_cfg[i].has_error = 1;
+      slave_cfg[i].has_split = 0;
+      slave_cfg[i].has_retry = 0;
+    end
+
     uvm_config_db #(uvm_object_wrapper)::set(this,
       "*master_agent[*0]*.seqr.run_phase",
       "default_sequence",
       `AHB_MASTER_LOCK_INCR_SEQ::type_id::get());
 
-    foreach(slave_cfg[i])begin
-      slave_cfg[i].has_error = 1;
-    end
   endfunction
 
 endclass
@@ -78,14 +105,22 @@ class ahb_lock_incr_split_test
 
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
+
+    foreach(master_cfg[i])begin
+      master_cfg[i].has_busy = 0;
+    end
+
+    foreach(slave_cfg[i])begin
+      slave_cfg[i].has_error = 0;
+      slave_cfg[i].has_split = 1;
+      slave_cfg[i].has_retry = 0;
+    end
+
     uvm_config_db #(uvm_object_wrapper)::set(this,
       "*master_agent[*0]*.seqr.run_phase",
       "default_sequence",
       `AHB_MASTER_LOCK_INCR_SEQ::type_id::get());
 
-    foreach(slave_cfg[i])begin
-      slave_cfg[i].has_split = 1;
-    end
   endfunction
 
 endclass
@@ -101,19 +136,24 @@ class ahb_lock_incr_busy_test
 
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
+
+    foreach(master_cfg[i])begin
+      master_cfg[i].has_busy = 1;
+    end
+
+    foreach(slave_cfg[i])begin
+      slave_cfg[i].has_error = 0;
+      slave_cfg[i].has_split = 0;
+      slave_cfg[i].has_retry = 0;
+    end
+
     uvm_config_db #(uvm_object_wrapper)::set(this,
       "*master_agent[*0]*.seqr.run_phase",
       "default_sequence",
       `AHB_MASTER_LOCK_INCR_SEQ::type_id::get());
 
-    foreach(master_cfg[i])begin
-      master_cfg[i].has_busy = 1;
-    end
   endfunction
 
 endclass
-
-
-
 
 `endif // end of __AHB_LOCK_INCR_TEST_SV__

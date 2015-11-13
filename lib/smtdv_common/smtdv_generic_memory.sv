@@ -5,11 +5,13 @@
 /*################################
   Class smtdv_generic_memory START
 #################################*/
-
 class smtdv_generic_memory #(GENE_MEM_ADDR_WIDTH = 64) extends uvm_object;
 
   typedef bit [(GENE_MEM_ADDR_WIDTH-1):0] gene_mem_addr_t;
   typedef bit [15:0][7:0] byte16_t;
+
+  bit has_callback = 1;
+  smtdv_generic_memory_cb#(GENE_MEM_ADDR_WIDTH) mem_cb;
 
 //byte memory[gene_mem_addr_t];
   reg [7:0] memory[gene_mem_addr_t];
@@ -17,10 +19,10 @@ class smtdv_generic_memory #(GENE_MEM_ADDR_WIDTH = 64) extends uvm_object;
   `uvm_object_param_utils(smtdv_generic_memory#(GENE_MEM_ADDR_WIDTH))
 
   extern function new(string name = "smtdv_generic_memory");
-  extern virtual task mem_store_byte(gene_mem_addr_t addr, byte data[]);
-  extern virtual task mem_load_byte(gene_mem_addr_t addr, int bcnt, ref byte data[]);
-  extern virtual task mem_store(gene_mem_addr_t addr, byte16_t data[]);
-  extern virtual task mem_load(gene_mem_addr_t addr, int bcnt, ref byte16_t data[]);
+  extern virtual task mem_store_byte(gene_mem_addr_t addr, byte data[], longint cyc);
+  extern virtual task mem_load_byte(gene_mem_addr_t addr, int bcnt, ref byte data[], longint cyc);
+  extern virtual task mem_store(gene_mem_addr_t addr, byte16_t data[], longint cyc);
+  extern virtual task mem_load(gene_mem_addr_t addr, int bcnt, ref byte16_t data[], longint cyc);
 
 endclass : smtdv_generic_memory
 
@@ -31,10 +33,11 @@ endclass : smtdv_generic_memory
 
 function smtdv_generic_memory::new(string name = "smtdv_generic_memory");
   super.new(name);
+  mem_cb = new();
 endfunction : new
 
 
-task smtdv_generic_memory::mem_store(gene_mem_addr_t addr, byte16_t data[]);
+task smtdv_generic_memory::mem_store(gene_mem_addr_t addr, byte16_t data[], longint cyc);
   byte16_t tmp16;
   byte tmp;
 
@@ -52,12 +55,12 @@ task smtdv_generic_memory::mem_store(gene_mem_addr_t addr, byte16_t data[]);
         end
     end
 
-  mem_store_byte(addr, data_byte);
+  mem_store_byte(addr, data_byte, cyc);
 
 endtask : mem_store
 
 
-task smtdv_generic_memory::mem_load(gene_mem_addr_t addr, int bcnt, ref byte16_t data[]);
+task smtdv_generic_memory::mem_load(gene_mem_addr_t addr, int bcnt, ref byte16_t data[], longint cyc);
   byte data_byte[];
   byte16_t tmp16;
 
@@ -66,7 +69,7 @@ task smtdv_generic_memory::mem_load(gene_mem_addr_t addr, int bcnt, ref byte16_t
   data= new[byte16_size];
   byte16_idx= 0;
 
-  mem_load_byte(addr, bcnt, data_byte);
+  mem_load_byte(addr, bcnt, data_byte, cyc);
   for(int i=0; i<data_byte.size(); i++) begin
     tmp16[i[3:0]]= data_byte[i];
     if((i[3:0] == 4'hf)) begin
@@ -83,7 +86,7 @@ task smtdv_generic_memory::mem_load(gene_mem_addr_t addr, int bcnt, ref byte16_t
 endtask : mem_load
 
 
-task smtdv_generic_memory::mem_store_byte(gene_mem_addr_t addr, byte data[]);
+task smtdv_generic_memory::mem_store_byte(gene_mem_addr_t addr, byte data[], longint cyc);
   for(int i=0; i<data.size(); i++) begin
     if(memory.exists(addr+i)) begin
        if(memory[addr+i] == 0) begin
@@ -98,11 +101,13 @@ task smtdv_generic_memory::mem_store_byte(gene_mem_addr_t addr, byte data[]);
        end
     end //if
     memory[addr+i]= data[i];
+    if (has_callback) begin void'(mem_cb.mem_store_byte_cb(addr+i, data[i], cyc)); end
     end
+
 endtask : mem_store_byte
 
 
-task smtdv_generic_memory::mem_load_byte(gene_mem_addr_t addr, int bcnt, ref byte data[]);
+task smtdv_generic_memory::mem_load_byte(gene_mem_addr_t addr, int bcnt, ref byte data[], longint cyc);
   data= new[bcnt];
   for(int i=0; i<bcnt; i++) begin
     if(!memory.exists(addr+i)) begin
@@ -111,7 +116,12 @@ task smtdv_generic_memory::mem_load_byte(gene_mem_addr_t addr, int bcnt, ref byt
       memory[addr+i]= temp;
       end
     data[i]= memory[addr+i];
+    if (has_callback) begin
+      // skip RD cb while accessing MEM
+      //void'(mem_cb.mem_load_byte_cb(addr+i, data[i], cyc));
     end
+    end
+
 endtask : mem_load_byte
 
 /*################################

@@ -28,7 +28,7 @@ class apb_slave_agent #(
     uvm_config_db#(uvm_object_wrapper)::set(this,
       "seqr.run_phase",
       "default_sequence",
-      `APB_SLAVE_BASE_RESP_SEQ::type_id::get());
+      `APB_SLAVE_BASE_SEQ::type_id::get());
 
     if(this.get_is_active())
       mon.seqr = seqr;

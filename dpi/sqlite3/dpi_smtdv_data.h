@@ -15,10 +15,11 @@ namespace SMTDV {
     class SMTDV_Data{
       public:
         enum type { T_STRING, T_LONGINT, T_LONGLONG, T_HEX };          // type
-        SMTDV_Data(int i_typ, std::string i_val) : typ(i_typ), val(i_val){}
+        SMTDV_Data(int i_typ, std::string i_name, std::string i_val) : typ(i_typ), name(i_name), val(i_val){}
         ~SMTDV_Data(){}
       public :
         int         typ;
+        std::string name;
         std::string val;
     };
 }

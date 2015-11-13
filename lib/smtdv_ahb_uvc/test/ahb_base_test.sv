@@ -33,6 +33,10 @@ class ahb_base_test extends smtdv_test;
     bit [ADDR_WIDTH-1:0] start_addr, end_addr;
     super.build_phase(phase);
 
+    // create sqlite3 db
+    smtdv_sqlite3::delete_db("ahb_db.db");
+    smtdv_sqlite3::new_db("ahb_db.db");
+
     // slaves cfg, agent
     slave_cfg[0] = `AHB_SLAVE_CFG::type_id::create({$psprintf("slave_cfg[%0d]", 0)}, this);
     `SMTDV_RAND_WITH(slave_cfg[0], {
@@ -46,6 +50,8 @@ class ahb_base_test extends smtdv_test;
     slave_agent[0] = `AHB_SLAVE_AGENT::type_id::create({$psprintf("slave_agent[%0d]", 0)}, this);
     uvm_config_db#(uvm_bitstream_t)::set(null, "/.+slave_agent[*0]*/", "is_active", UVM_ACTIVE);
     uvm_config_db#(`AHB_SLAVE_CFG)::set(null, "/.+slave_agent[*0]*/", "cfg", slave_cfg[0]);
+    // register slave agent as scoreboard target
+    uvm_config_db#(`AHB_SLAVE_AGENT)::set(null, "/.+master_scb[*0]*/", "targets_s[0]", slave_agent[0]);
 
     // masters cfg, agent
     master_cfg[0] = `AHB_MASTER_CFG::type_id::create({$psprintf("master_cfg[%0d]", 0)}, this);
@@ -61,7 +67,8 @@ class ahb_base_test extends smtdv_test;
     master_agent[0] = `AHB_MASTER_AGENT::type_id::create({$psprintf("master_agent[%0d]", 0)}, this);
     uvm_config_db#(uvm_bitstream_t)::set(null, "/.+master_agent[*0]*/", "is_active", UVM_ACTIVE);
     uvm_config_db#(`AHB_MASTER_CFG)::set(null, "/.+master_agent[*0]*/", "cfg", master_cfg[0]);
-
+    // register master agent as scoreboard initor
+    uvm_config_db#(`AHB_MASTER_AGENT)::set(null, "/.+master_scb[*0]*/", "initor_m[0]", master_agent[0]);
     // scoreboard num of masters cross all slaves ex: 3*all, 2*all socreboard
     // base is eq num of master
     master_scb[0] = `AHB_BASE_SCOREBOARD::type_id::create({$psprintf("master_scb[%0d]", 0)}, this);
@@ -72,10 +79,7 @@ class ahb_base_test extends smtdv_test;
       `uvm_fatal("NOVIF",{"virtual interface must be set for: ",get_full_name(),".ahb_rst_vif"});
     ahb_rst_model.create_rst_monitor(ahb_rst_vif);
 
-    //sqlite3
-    smtdv_sqlite3::delete_db("ahb_db.db");
-    smtdv_sqlite3::new_db("ahb_db.db");
-  endfunction
+   endfunction
 
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
@@ -88,9 +92,6 @@ class ahb_base_test extends smtdv_test;
     ahb_rst_model.add_component(this);
     ahb_rst_model.set_rst_type(ALL_RST);
     ahb_rst_model.show_components(0);
-  endfunction
-
-  virtual function void check_phase(uvm_phase phase);
   endfunction
 
 endclass

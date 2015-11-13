@@ -3,7 +3,7 @@
 
 class ahb_slave_cfg
   extends
-    smtdv_cfg;
+    smtdv_slave_cfg;
 
   rand bit block_hready = 0;
   rand bit has_error = 0;

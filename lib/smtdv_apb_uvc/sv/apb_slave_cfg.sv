@@ -3,7 +3,7 @@
 
 class apb_slave_cfg
   extends
-    smtdv_cfg;
+    smtdv_slave_cfg;
 
   bit block_pready = 0;
 
