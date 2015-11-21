@@ -18,7 +18,6 @@ module top();
   `include "./test/xbus_test_list.sv"
 
   parameter ADDR_WIDTH = `XBUS_ADDR_WIDTH;
-  parameter BYTEN_WIDTH = `XBUS_BYTEN_WIDTH;
   parameter DATA_WIDTH = `XBUS_DATA_WIDTH;
 
   reg clk;
@@ -36,7 +35,6 @@ module top();
 
   dut_1m1s #(
     .ADDR_WIDTH (`XBUS_ADDR_WIDTH),
-    .BYTEN_WIDTH(`XBUS_BYTEN_WIDTH),
     .DATA_WIDTH (`XBUS_DATA_WIDTH)
   ) u_dut_1m1s (
     .clk(clk),
@@ -46,7 +44,6 @@ module top();
   bind `XBUSMASTERATTR(0) xbus_master_if_harness#(
     .UID(0),
     .ADDR_WIDTH (`XBUS_ADDR_WIDTH),
-    .BYTEN_WIDTH(`XBUS_BYTEN_WIDTH),
     .DATA_WIDTH (`XBUS_DATA_WIDTH)
   ) xbus_master_if_harness (
     .clk(`XBUSMASTERATTR(0).clk),
@@ -66,7 +63,6 @@ module top();
   bind `XBUSSLAVEATTR(0) xbus_slave_if_harness#(
      .UID(0),
      .ADDR_WIDTH(`XBUS_ADDR_WIDTH),
-     .BYTEN_WIDTH(`XBUS_BYTEN_WIDTH),
      .DATA_WIDTH(`XBUS_DATA_WIDTH)
   ) xbus_slave_if_harness (
     .clk(`XBUSSLAVEATTR(0).clk),

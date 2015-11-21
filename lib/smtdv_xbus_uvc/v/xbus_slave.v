@@ -6,7 +6,6 @@
 
 module xbus_slave #(
   parameter ADDR_WIDTH  = 14,
-  parameter BYTEN_WIDTH = 4,
   parameter DATA_WIDTH = 32
   ) (
     clk,
@@ -25,7 +24,7 @@ module xbus_slave #(
   input [0:0]    rw;
   input [ADDR_WIDTH-1:0]  addr;
   output [0:0]   ack;
-  input [BYTEN_WIDTH-1:0] byten;
+  input [(DATA_WIDTH>>3)-1:0] byten;
   output [DATA_WIDTH-1:0] rdata;
   input [DATA_WIDTH-1:0] wdata;
   reg [DATA_WIDTH-1:0] rdata;

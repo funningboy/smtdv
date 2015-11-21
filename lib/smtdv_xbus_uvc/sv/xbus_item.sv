@@ -4,7 +4,6 @@
 
 class xbus_item #(
   ADDR_WIDTH = 14,
-  BYTEN_WIDTH = 4,
   DATA_WIDTH = 32
 ) extends
     smtdv_sequence_item;
@@ -53,15 +52,15 @@ class xbus_item #(
     return odata;
   endfunction
 
-  function void pack_byten(bit [BYTEN_WIDTH-1:0] idata);
+  function void pack_byten(bit [(DATA_WIDTH>>3)-1:0] idata);
     int n = (DATA_WIDTH % 8 == 0)? DATA_WIDTH>>3 : DATA_WIDTH>>3+1;
     for (int i=0; i<n; i+=1) begin
       byten_beat[0][i] = idata[i];
     end
   endfunction
 
-  function bit[BYTEN_WIDTH-1:0] unpack_byten();
-    bit [BYTEN_WIDTH-1:0] odata;
+  function bit[(DATA_WIDTH>>3)-1:0] unpack_byten();
+    bit [(DATA_WIDTH>>3)-1:0] odata;
     int n = (DATA_WIDTH % 8 == 0)? DATA_WIDTH>>3 : DATA_WIDTH>>3+1;
     for (int i=0; i<n; i+=1) begin
       odata[i] = byten_beat[0][i];

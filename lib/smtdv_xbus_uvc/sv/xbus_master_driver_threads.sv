@@ -6,7 +6,6 @@ typedef class xbus_master_driver;
 
 class xbus_master_drive_items #(
   ADDR_WIDTH = 14,
-  BYTEN_WIDTH = 8,
   DATA_WIDTH = 32
 ) extends
     smtdv_run_thread;

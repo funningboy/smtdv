@@ -7,7 +7,6 @@ class xbus_env
 
     parameter ADDR_WIDTH = `XBUS_ADDR_WIDTH;
     parameter DATA_WIDTH = `XBUS_DATA_WIDTH;
-    parameter BYTEN_WIDTH = `XBUS_BYTEN_WIDTH;
 
     `XBUS_MASTER_CFG     m_cfg[$];
     `XBUS_MASTER_AGENT   m_agent[$];

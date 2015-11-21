@@ -34,6 +34,9 @@ package xbus_pkg;
   `include "../seq/xbus_slave_seqs_lib.sv"
   `include "xbus_slave_agent.sv"
 
+  `include "xbus_backdoor.sv"
+  `include "xbus_scoreboard_threads.sv"
+  `include "xbus_scoreboard.sv"
   `include "xbus_env.sv"
 endpackage
 

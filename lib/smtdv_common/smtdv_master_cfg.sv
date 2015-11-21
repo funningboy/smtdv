@@ -50,9 +50,11 @@ class smtdv_master_cfg
   virtual function int find_slave(int unsigned addr);
     int founds[$];
     founds = map_cfgs.find_index(item)  with (item.start_addr <= addr && addr < item.end_addr);
-    assert(founds.size()==1);
-    $cast(mcfg, map_cfgs[founds[0]]);
-    return mcfg.id;
+    if (founds.size()==1) begin
+      $cast(mcfg, map_cfgs[founds[0]]);
+      return mcfg.id;
+    end
+    return -1;
   endfunction
 
 endclass

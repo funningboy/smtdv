@@ -6,7 +6,6 @@
 
 module dut_1m1s #(
   parameter integer ADDR_WIDTH  = 14,
-  parameter integer BYTEN_WIDTH = 4,
   parameter integer DATA_WIDTH = 32
   ) (
     clk,
@@ -20,7 +19,7 @@ module dut_1m1s #(
   wire [0:0]    w_rw;
   wire [ADDR_WIDTH-1:0]  w_addr;
   wire  [0:0]   w_ack;
-  wire [BYTEN_WIDTH-1:0] w_byten;
+  wire [(DATA_WIDTH>>3)-1:0] w_byten;
   wire  [DATA_WIDTH-1:0] w_rdata;
   wire [DATA_WIDTH-1:0] w_wdata;
 

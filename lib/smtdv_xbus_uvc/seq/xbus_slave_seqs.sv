@@ -4,7 +4,6 @@
 
 class xbus_slave_base_seq #(
   ADDR_WIDTH = 14,
-  BYTEN_WIDTH = 4,
   DATA_WIDTH = 32
   ) extends
     smtdv_sequence#(`XBUS_ITEM);
@@ -29,7 +28,7 @@ class xbus_slave_base_seq #(
       // override this func
       byte data[];
       data= new[DATA_WIDTH>>3];
-      gene_mem.mem_load_byte(item.addr, DATA_WIDTH>>3, data);
+      gene_mem.mem_load_byte(item.addr, DATA_WIDTH>>3, data, item.bg_cyc);
       foreach(data[i]) begin
         item.data_beat[i] = data[i];
       end
@@ -39,13 +38,13 @@ class xbus_slave_base_seq #(
       // overide this func write after read for update
       byte data[];
       data = new[DATA_WIDTH>>3];
-      gene_mem.mem_load_byte(item.addr, DATA_WIDTH>>3, data);
+      gene_mem.mem_load_byte(item.addr, DATA_WIDTH>>3, data, item.bg_cyc);
       foreach(item.data_beat[i]) begin
         if (item.byten_beat[i]) begin
           data[i] = item.data_beat[i];
         end
       end
-      gene_mem.mem_store_byte(item.addr, data);
+      gene_mem.mem_store_byte(item.addr, data, item.bg_cyc);
     endtask
 
     virtual task rcv_from_mon();

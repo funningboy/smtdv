@@ -6,7 +6,6 @@ typedef class xbus_monitor;
 
 class xbus_collect_cover_group#(
   ADDR_WIDTH = 14,
-  BYTEN_WIDTH = 8,
   DATA_WIDTH = 32,
   type CFG = smtdv_cfg
 ) extends
@@ -57,7 +56,6 @@ endclass
 
 class xbus_export_collected_items#(
   ADDR_WIDTH = 14,
-  BYTEN_WIDTH = 8,
   DATA_WIDTH = 32,
   type CFG = smtdv_cfg
 ) extends
@@ -66,14 +64,7 @@ class xbus_export_collected_items#(
     `XBUS_ITEM item;
     `XBUS_MONITOR cmp;
 
-    string attr_longint[$] = {
-      "addr",
-      "rw",
-      "data",
-      "byten",
-      "bg_cyc",
-      "ed_cyc"
-    };
+    string attr_longint[$] = `SMTDV_BUS_VIF_ATTR_LONGINT
 
     `uvm_object_param_utils_begin(`XBUS_EXPORT_COLLECTED_ITEMS)
     `uvm_object_utils_end
@@ -85,7 +76,7 @@ class xbus_export_collected_items#(
     virtual task run();
       create_table();
       forever begin
-        this.cmp.cbox.get(item);
+        this.cmp.ebox.get(item);
         populate_item(item);
       end
     endtask
@@ -102,12 +93,15 @@ class xbus_export_collected_items#(
 
     virtual task populate_item(ref `XBUS_ITEM item);
       string table_nm = $psprintf("\"%s\"", this.cmp.get_full_name());
-      smtdv_sqlite3::insert_value(table_nm, "addr",    $psprintf("%d", item.addr));
-      smtdv_sqlite3::insert_value(table_nm, "rw",      $psprintf("%d", item.trs_t));
-      smtdv_sqlite3::insert_value(table_nm, "data",    $psprintf("%d", item.unpack_data()));
-      smtdv_sqlite3::insert_value(table_nm, "byten",   $psprintf("%d", item.unpack_byten()));
-      smtdv_sqlite3::insert_value(table_nm, "bg_cyc",  $psprintf("%d", item.bg_cyc));
-      smtdv_sqlite3::insert_value(table_nm, "ed_cyc",  $psprintf("%d", item.ed_cyc));
+      smtdv_sqlite3::insert_value(table_nm, "dec_uuid",    $psprintf("%d", item.get_sequence_id()));
+      smtdv_sqlite3::insert_value(table_nm, "dec_addr",    $psprintf("%d", item.addr));
+      smtdv_sqlite3::insert_value(table_nm, "dec_rw",      $psprintf("%d", item.trs_t));
+      smtdv_sqlite3::insert_value(table_nm, "dec_data_000",    $psprintf("%d", item.unpack_data()));
+      smtdv_sqlite3::insert_value(table_nm, "dec_byten",   $psprintf("%d", item.unpack_byten()));
+      smtdv_sqlite3::insert_value(table_nm, "dec_bg_cyc",  $psprintf("%d", item.bg_cyc));
+      smtdv_sqlite3::insert_value(table_nm, "dec_ed_cyc",  $psprintf("%d", item.ed_cyc));
+      smtdv_sqlite3::insert_value(table_nm, "dec_bg_time", $psprintf("%d", item.bg_time));
+      smtdv_sqlite3::insert_value(table_nm, "dec_ed_time", $psprintf("%d", item.ed_time));
       smtdv_sqlite3::exec_value(table_nm);
       smtdv_sqlite3::flush_value(table_nm);
     endtask
@@ -117,7 +111,6 @@ endclass
 
 class xbus_collect_stop_signal#(
   ADDR_WIDTH = 14,
-  BYTEN_WIDTH = 8,
   DATA_WIDTH = 32,
   type CFG = smtdv_cfg
 ) extends
@@ -161,7 +154,6 @@ endclass
 
 class xbus_collect_write_items#(
   ADDR_WIDTH = 14,
-  BYTEN_WIDTH = 8,
   DATA_WIDTH = 32,
   type CFG = smtdv_cfg
 ) extends
@@ -201,11 +193,13 @@ class xbus_collect_write_items#(
         item.pack_data(this.cmp.vif.wdata);
         item.pack_byten(this.cmp.vif.byten);
         item.bg_cyc = this.cmp.vif.cyc;
+        item.bg_time = $time;
         void'(this.cmp.begin_tr(item, this.cmp.get_full_name()));
       endfunction
 
     virtual function void populate_end_item(ref `XBUS_ITEM item);
         item.ed_cyc = this.cmp.vif.cyc;
+        item.ed_time = $time;
         void'(this.cmp.end_tr(item));
     endfunction
 
@@ -214,7 +208,6 @@ endclass
 
 class xbus_collect_read_items#(
   ADDR_WIDTH = 14,
-  BYTEN_WIDTH = 8,
   DATA_WIDTH = 32,
   type CFG = smtdv_cfg
 )  extends
@@ -250,12 +243,14 @@ class xbus_collect_read_items#(
         item.addr = this.cmp.vif.addr;
         item.trs_t = RD;
         item.bg_cyc = this.cmp.vif.cyc;
+        item.bg_time = $time;
         void'(this.cmp.begin_tr(item, this.cmp.get_full_name()));
     endfunction
 
     virtual function void populate_end_item(ref `XBUS_ITEM item);
         item.pack_data(this.cmp.vif.rdata);
         item.ed_cyc = this.cmp.vif.cyc;
+        item.ed_time = $time;
         void'(this.cmp.end_tr(item));
     endfunction
 

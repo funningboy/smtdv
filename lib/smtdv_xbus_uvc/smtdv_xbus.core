@@ -5,7 +5,7 @@ xbus = ${main:root}/lib/smtdv_xbus_uvc
 debug = FALSE
 spawn = TRUE
 timeout =
-simulator = ius
+simulator = mti
 test = xbus_stl_test
 # add your test below
 tests =
@@ -26,6 +26,7 @@ src_files =
 
 include_files =
   ${smtdv_common.systemverilog:include_files}
+  ${main:xbus}/sv/xbus_pkg.sv
 
 include_dirs =
   ${smtdv_common.systemverilog:include_dirs}

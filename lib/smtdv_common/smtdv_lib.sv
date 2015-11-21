@@ -26,5 +26,5 @@
 `include "smtdv_test.sv"
 `include "smtdv_runtime_phases.svh"
 `include "smtdv_report_server.sv"
-
+`include "smtdv_reg_adapter.sv"
 `endif

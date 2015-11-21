@@ -20,7 +20,6 @@ import uvm_pkg::*;
 interface xbus_master_if_harness #(
   parameter integer UID = 0,
   parameter integer ADDR_WIDTH  = 14,
-  parameter integer BYTEN_WIDTH = 4,
   parameter integer DATA_WIDTH = 32
   ) (
     input clk,
@@ -30,7 +29,7 @@ interface xbus_master_if_harness #(
     logic [0:0]    rw,
     logic [ADDR_WIDTH-1:0]  addr,
     logic [0:0]   ack,
-    logic [BYTEN_WIDTH-1:0] byten,
+    logic [(DATA_WIDTH>>3)-1:0] byten,
     logic [DATA_WIDTH-1:0] rdata,
     logic [DATA_WIDTH-1:0] wdata
   );
@@ -39,7 +38,6 @@ interface xbus_master_if_harness #(
 
     xbus_if #(
       .ADDR_WIDTH(ADDR_WIDTH),
-      .BYTEN_WIDTH(BYTEN_WIDTH),
       .DATA_WIDTH(DATA_WIDTH)
     ) vif
     (
@@ -72,7 +70,6 @@ endinterface
 interface xbus_slave_if_harness #(
   parameter integer UID = 0,
   parameter integer ADDR_WIDTH  = 14,
-  parameter integer BYTEN_WIDTH = 4,
   parameter integer DATA_WIDTH = 32
   ) (
     input clk,
@@ -82,7 +79,7 @@ interface xbus_slave_if_harness #(
     logic [0:0]    rw,
     logic [ADDR_WIDTH-1:0]  addr,
     logic [0:0]   ack,
-    logic [BYTEN_WIDTH-1:0] byten,
+    logic [(DATA_WIDTH>>3)-1:0] byten,
     logic [DATA_WIDTH-1:0] rdata,
     logic [DATA_WIDTH-1:0] wdata
   );
@@ -91,7 +88,6 @@ interface xbus_slave_if_harness #(
 
     xbus_if #(
       .ADDR_WIDTH(ADDR_WIDTH),
-      .BYTEN_WIDTH(BYTEN_WIDTH),
       .DATA_WIDTH(DATA_WIDTH)
     ) vif
     (

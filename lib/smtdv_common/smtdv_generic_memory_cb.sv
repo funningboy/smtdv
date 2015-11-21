@@ -7,7 +7,7 @@ class smtdv_generic_memory_cb#(GENE_MEM_ADDR_WIDTH = 64)
   typedef bit [(GENE_MEM_ADDR_WIDTH-1):0] gene_mem_addr_t;
   typedef bit [15:0][7:0] byte16_t;
 
-  string attr_longint[$] = `SMTDV_MEM_VIF_ATTR_LONGINT;
+  string attr_longint[$] = `SMTDV_MEM_VIF_ATTR_LONGINT
   string table_nm = "";
 
   function new(string name="smtdv_generic_memory_cb");

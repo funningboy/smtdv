@@ -6,7 +6,8 @@
 `define XBUS_ADDR_WIDTH 32
 `define XBUS_DATA_WIDTH 32
 `define XBUS_BYTEN_WIDTH 4
-`define XBUS_PARAMETER #(ADDR_WIDTH, BYTEN_WIDTH, DATA_WIDTH)
+`define XBUS_PARAMETER #(ADDR_WIDTH, DATA_WIDTH)
+`define XBUS_PARAMETER2 #(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS)
 
 `define XBUS_RST_VIF virtual smtdv_gen_rst_if #("xbus_rst_if", 100, 0)
 
@@ -48,6 +49,11 @@
 `define XBUS_MASTER_STL_SEQ xbus_master_stl_seq `XBUS_PARAMETER
 
 `define XBUS_ENV xbus_env
+`define XBUS_BASE_SCOREBOARD xbus_base_scoreboard `XBUS_PARAMETER2
+`define XBUS_MEM_BKDOR_WR_COMP xbus_mem_bkdor_wr_comp `XBUS_PARAMETER2
+`define XBUS_MEM_BKDOR_RD_COMP xbus_mem_bkdor_rd_comp `XBUS_PARAMETER2
+`define XBUS_BUS_BACKDOOR xbus_bus_backdoor `XBUS_PARAMETER
+`define XBUS_MEM_BACKDOOR xbus_mem_backdoor `XBUS_PARAMETER
 
 `define XBUS_BASE_TEST xbus_base_test
 `define XBUS_1W1R_TEST xbus_1w1r_test

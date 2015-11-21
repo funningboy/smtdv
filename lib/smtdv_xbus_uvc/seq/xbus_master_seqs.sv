@@ -4,7 +4,6 @@
 
 class xbus_master_base_seq #(
   ADDR_WIDTH = 14,
-  BYTEN_WIDTH = 4,
   DATA_WIDTH = 32
   ) extends
     smtdv_sequence#(`XBUS_ITEM);
@@ -23,7 +22,6 @@ endclass
 // as init reg set seq and register to Master sequencer
 class xbus_master_1w_seq #(
   ADDR_WIDTH = 14,
-  BYTEN_WIDTH = 4,
   DATA_WIDTH = 32
   ) extends
     `XBUS_MASTER_BASE_SEQ;
@@ -56,7 +54,6 @@ endclass
 // as init reg polling seq
 class xbus_master_1r_seq #(
   ADDR_WIDTH = 14,
-  BYTEN_WIDTH = 4,
   DATA_WIDTH = 32
   ) extends
     `XBUS_MASTER_BASE_SEQ;
@@ -87,7 +84,6 @@ endclass
 
 class xbus_master_stl_seq #(
   ADDR_WIDTH = 14,
-  BYTEN_WIDTH = 4,
   DATA_WIDTH = 32
   ) extends
     `XBUS_MASTER_BASE_SEQ;
@@ -140,7 +136,6 @@ endclass
 
 class xbus_master_1w1r_seq #(
   ADDR_WIDTH = 14,
-  BYTEN_WIDTH = 4,
   DATA_WIDTH = 32
   ) extends
     `XBUS_MASTER_BASE_SEQ;

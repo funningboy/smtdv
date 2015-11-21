@@ -5,7 +5,6 @@
 
 class xbus_master_driver #(
   ADDR_WIDTH  = 14,
-  BYTEN_WIDTH = 4,
   DATA_WIDTH = 32
   ) extends
     smtdv_driver#(
