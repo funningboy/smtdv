@@ -2,7 +2,6 @@
 
 `include "bm_defs.v"
 `include "test/cdn_busmatrix_defines.svh"
-`include "tb/cdn_busmatrix_top.sv"
 `include "test/cdn_busmatrix_if_harness.sv"
 
 module top();

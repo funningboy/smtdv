@@ -37,7 +37,7 @@ package cdn_busmatrix_pkg;
   // s7???
   `include "cdn_ahb2ocp_s8.sv"
 
-  //`include "cdn_busmatrix_env.sv"
+  `include "cdn_busmatrix_env.sv"
 endpackage
 
 `endif // __CDN_BUSMATRIX_PKG_SV__

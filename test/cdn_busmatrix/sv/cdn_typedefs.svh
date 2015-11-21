@@ -15,7 +15,6 @@
 `endif
 `define AHB_SLAVE_AGENT ahb_pkg::ahb_slave_agent `AHB_PARAMETER
 
-
 `ifdef AHB_SLAVE_CFG
   `undef AHB_SLAVE_CFG
 `endif
@@ -142,5 +141,8 @@
 
 `define CDN_BASE_TEST cdn_base_test
 `define CDN_CPU_S0_2_DMA_M0_TEST cdn_cpu_s0_2_dma_m0_test
+
+`define CDN_CLUSTER0 cdn_cluster0
+`define CDN_CLUSTER1 cdn_cluster1
 
 `endif

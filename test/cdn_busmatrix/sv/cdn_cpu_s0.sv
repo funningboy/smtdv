@@ -2,7 +2,7 @@
 `ifndef __CDN_CPU_S0_SV__
 `define __CDN_CPU_S0_SV__
 
-//
+// use Master UVC to drive cdn bus slave port
 class cdn_cpu_s0_agent #(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32
@@ -55,6 +55,7 @@ class cdn_cpu_s0_cover_group #(
         bins zero = {0};
         bins non_zero = {[1:32'hffff_ffff]};
       }
+//      ahb_trx:
       ahb_rsp : coverpoint item.rsp {
         bins ok = {OKAY};
         bins err = {ERROR};
@@ -90,14 +91,14 @@ class cdn_cpu_s0_stl_seq #(
   ) extends
     `AHB_MASTER_STL_SEQ;
 
-    `uvm_sequence_utils(`CDN_CPU_S0_STL_SEQ, `AHB_MASTER_SEQUENCER)
+   `uvm_object_param_utils_begin(`CDN_CPU_S0_STL_SEQ)
+   `uvm_object_utils_end
 
-    function new(string name = "ahb_master_stl_seq");
+    function new(string name = "cdn_cpu_s0_stl_seq");
       super.new(name);
     endfunction
 
     virtual task body();
-      m_file = "../stl/cdn_cpu_s0.stl";
       super.body();
     endtask
 

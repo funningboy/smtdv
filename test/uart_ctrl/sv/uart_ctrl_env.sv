@@ -1,190 +1,108 @@
-/*-------------------------------------------------------------------------
-File name   : uart_ctrl_env.sv
-Title       :
-Project     :
-Created     :
-Description : Module env, contains the instance of scoreboard and coverage model
-Notes       :
-----------------------------------------------------------------------*/
-//   Copyright 1999-2010 Cadence Design Systems, Inc.
-//   All Rights Reserved Worldwide
-//
-//   Licensed under the Apache License, Version 2.0 (the
-//   "License"); you may not use this file except in
-//   compliance with the License.  You may obtain a copy of
-//   the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in
-//   writing, software distributed under the License is
-//   distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-//   CONDITIONS OF ANY KIND, either express or implied.  See
-//   the License for the specific language governing
-//   permissions and limitations under the License.
-//----------------------------------------------------------------------
-
 
 `include "uart_ctrl_defines.svh"
-class uart_ctrl_env
+
+// apb env cluster
+// only use 1 master
+class apb_cluster0
   extends
-  smtdv_env;
+  `APB_ENV
 
-  // Component configuration classes
-  uart_ctrl_config cfg;
-  // These are pointers to config classes above
-  uart_config uart_cfg;
-  apb_slave_config apb_slave_cfg;
+  parameter ADDR_WIDTH = `APB_ADDR_WIDTH;
+  parameter DATA_WIDTH = `APB_DATA_WIDTH;
 
-  // Module monitor (includes scoreboards, coverage, checking)
-  uart_ctrl_monitor monitor;
+  `APB_RST_VIF apb_rst_vif;
 
-  // Control bit
-  bit div_en;
+  smtdv_reset_model #(`APB_RST_VIF) apb_rst_model;
 
-  // UVM_REG: Pointer to the Register Model
-  uart_ctrl_reg_model_c reg_model;
-  // Adapter sequence and predictor
-  reg_to_apb_adapter reg2apb;   // Adapter Object REG to APB
-  uvm_reg_predictor#(apb_transfer) apb_predictor;  // Precictor - APB to REG
-  uart_ctrl_reg_sequencer reg_sequencer;
+// UVM_REG: Point to the Register Model
+    uart_ctrl_reg_model_c reg_model;
+    // Adaptor sequence and predictor
+    `APB_REG_ADAPTER reg2apb;
+    uvm_reg_predictor#(`APB_ITEM) apb_predr;
+    uart_ctrl_reg_sequencer reg_seqr;
 
-  // TLM Connections
-  uvm_analysis_port #(uart_config) uart_cfg_out;
-  uvm_analysis_imp #(apb_transfer, uart_ctrl_env) apb_in;
-
-  `uvm_component_utils_begin(uart_ctrl_env)
-    `uvm_field_object(reg_model, UVM_DEFAULT | UVM_REFERENCE)
-    `uvm_field_object(reg2apb, UVM_DEFAULT | UVM_REFERENCE)
-    `uvm_field_object(cfg, UVM_DEFAULT)
+  `uvm_component_param_utils_begin(`APB_ENV)
+    `uvm_field_object(reg_model, UVM_DEFAULT|UVM_REFERENCE)
+    `uvm_field_object(reg2apb, UVM_DEFAULT|UVM_REFERENCE)
   `uvm_component_utils_end
 
-  // constructor
-  function new(input string name, input uvm_component parent=null);
-    super.new(name,parent);
-    // Create TLM ports
-    uart_cfg_out = new("uart_cfg_out", this);
-    apb_in = new("apb_in", this);
+  function new(string name = "apb_env", uvm_component parent=null);
+    super.new(name, parent);
   endfunction
 
-  // Additional class methods
-  extern virtual function void build_phase(uvm_phase phase);
-  extern virtual function void connect_phase(uvm_phase phase);
-  extern virtual function void write(apb_transfer transfer);
-  extern virtual function void update_config(uart_ctrl_config uart_ctrl_cfg, int index);
-  extern virtual function void set_slave_config(apb_slave_config _slave_cfg, int index);
-  extern virtual function void set_uart_config(uart_config _uart_cfg);
-  extern virtual function void write_effects(apb_transfer transfer);
-  extern virtual function void read_effects(apb_transfer transfer);
+  virtual function void build_phase(uvm_phase phase);
+    super.build_phase(phase);
 
-endclass : uart_ctrl_env
+    // master cfg, agent
+    master_cfg[0] = `UART_APB_S_CFG::type_id::create({$psprintf("master_cfg[%0d]", 0)}, this);
+    `SMTDV_RAND_WITH(master_cfg[0], {
+      has_force == 1;
+      has_coverage == 1;
+      has_export == 1;
+    })
+    start_addr = `APB_START_ADDR(0)
+    end_addr = `APB_END_ADDR(0)
+    master_cfg[0].add_slave(slave_cfg[0], 0, start_addr, end_addr);
+    start_addr = `APB_START_ADDR(1)
+    end_addr = `APB_END_ADDR(1)
+    master_cfg[0].add_slave(slave_cfg[1], 1, start_addr, end_addr);
 
-function void uart_ctrl_env::build_phase(uvm_phase phase);
-  super.build_phase(phase);
-  // Get or create the UART CONTROLLER config class
-  if (cfg == null) //begin
-    if (!uvm_config_db#(uart_ctrl_config)::get(this, "", "cfg", cfg)) begin
-    `uvm_info("NOCONFIG", "No uart_ctrl_config creating...", UVM_LOW)
-    set_inst_override_by_type("cfg", uart_ctrl_config::get_type(),
-                                     default_uart_ctrl_config::get_type());
-    cfg = uart_ctrl_config::type_id::create("cfg");
-    //if (!cfg.randomize()) `uvm_error("RNDFAIL", "Config Randomization Failed")
-  end
-  if (apb_slave_cfg == null) //begin
-    if (!uvm_config_db#(apb_slave_config)::get(this, "", "apb_slave_cfg", apb_slave_cfg)) begin
-    `uvm_info("NOCONFIG", "No apb_slave_config ..", UVM_LOW)
-    apb_slave_cfg = cfg.apb_cfg.slave_configs[0];
-  end
-  //uvm_config_db#(uart_ctrl_config)::set(this, "monitor", "cfg", cfg);
-  uvm_config_object::set(this, "monitor", "cfg", cfg);
-  uart_cfg = cfg.uart_cfg;
+    master_agent[0] = `UART_APB_S_AGENT::type_id::create({$psprintf("master_agent[%0d]", 0)}, this);
+    uvm_config_db#(uvm_bitstream_t)::set(null, "/.+master_agent[*0]*/", "is_active", UVM_ACTIVE);
+    uvm_config_db#(`UART_APB_S_CFG)::set(null, "/.+master_agent[*0]*/", "cfg", master_cfg[0]);
 
-  // UVMREG: Create the adapter and predictor
-  reg2apb = reg_to_apb_adapter::type_id::create("reg2apb");
-  apb_predictor = uvm_reg_predictor#(apb_transfer)::type_id::create("apb_predictor", this);
-  reg_sequencer = uart_ctrl_reg_sequencer::type_id::create("reg_sequencer", this);
+    // override cover group to system define
+    master_agent[0].mon.del(master_agent[0].mon.th4);
+    master_covgroup[0] = `UART_APB_S_COVER_GROUP::type_id::create({$psprintf("uart_apb_s_cover_group")})
+    master_agent[0].mom.add(master_covgroup[0])
 
-  // build system level monitor
-  monitor = uart_ctrl_monitor::type_id::create("monitor",this);
-  ////monitor.cfg = cfg;
-endfunction : build_phase
+    // resetn
+    apb_rst_model = smtdv_reset_model#(`APB_RST_VIF)::type_id::create("apb_rst_model");
+    if(!uvm_config_db#(`APB_RST_VIF)::get(this, "", "apb_rst_vif", apb_rst_vif))
+      `uvm_fatal("NOVIF",{"virtual interface must be set for: ",get_full_name(),".apb_rst_vif"});
+    apb_rst_model.create_rst_monitor(apb_rst_vif);
 
-function void uart_ctrl_env::connect_phase(uvm_phase phase);
-  super.connect_phase(phase);
-  //UVMREG - Connect adapter to register sequencer and predictor
-  apb_predictor.map = reg_model.default_map;
-  apb_predictor.adapter = reg2apb;
-endfunction : connect_phase
+    reg2apb = `APB_REG_ADAPTER::
+    apb_predr =
+    reg_seqr =
+  endfunction
 
-// UVM_REG: write method for APB transfers - handles Register Operations
-function void uart_ctrl_env::write(apb_transfer transfer);
-  if (apb_slave_cfg.check_address_range(transfer.addr)) begin
-    if (transfer.direction == APB_WRITE) begin
-      `uvm_info(get_type_name(),
-          $psprintf("APB_WRITE: addr = 'h%0h, data = 'h%0h",
-          transfer.addr, transfer.data), UVM_MEDIUM)
-      write_effects(transfer);
+  virtual function void connect_phase(uvm_phase phase);
+    super.connect_phase(phase);
+    apb_predr.map = reg_model.default_map;
+    apb_predr.adapter = reg2apb;
+  endfunction
+
+  virtual function void end_of_elaboration_phase(uvm_phase phase);
+    super.end_of_elaboration_phase(phase);
+    apb_rst_model.add_component(this);
+    apb_rst_model.set_rst_type(ALL_RST);
+    apb_rst_model.show_components(0);
+  endfunction
+
+  virtual function void
+    if (master_cfg[0].find_slave(item.addr)>=0) begin
+      if (item.trs_t == WR) begin
+        write_effects(item);
+      end
+      else if (item.trs_t == RD) begin
+        read_effects(item);
+      end
     end
-    else if (transfer.direction == APB_READ) begin
-      `uvm_info(get_type_name(),
-          $psprintf("APB_READ: addr = 'h%0h, data = 'h%0h",
-          transfer.addr, transfer.data), UVM_MEDIUM)
-        read_effects(transfer);
-    end else
-      `uvm_error("REGMEM", "Unsupported access!!!")
-  end
-endfunction : write
 
-// UVM_REG: Update CONFIG based on APB writes to config registers
-function void uart_ctrl_env::write_effects(apb_transfer transfer);
-  case (transfer.addr)
-    apb_slave_cfg.start_address + `LINE_CTRL : begin
-                                            uart_cfg.char_length = transfer.data[1:0];
-                                            uart_cfg.parity_mode = transfer.data[5:4];
-                                            uart_cfg.parity_en   = transfer.data[3];
-                                            uart_cfg.nbstop      = transfer.data[2];
-                                            div_en = transfer.data[7];
-                                            uart_cfg.ConvToIntChrl();
-                                            uart_cfg.ConvToIntStpBt();
-                                            uart_cfg_out.write(uart_cfg);
-                                          end
-    apb_slave_cfg.start_address + `DIVD_LATCH1 : begin
-                                            if (div_en) begin
-                                            uart_cfg.baud_rate_gen = transfer.data[7:0];
-                                            uart_cfg_out.write(uart_cfg);
-                                            end
-                                          end
-    apb_slave_cfg.start_address + `DIVD_LATCH2 : begin
-                                            if (div_en) begin
-                                            uart_cfg.baud_rate_div = transfer.data[7:0];
-                                            uart_cfg_out.write(uart_cfg);
-                                            end
-                                          end
-    default: `uvm_warning("REGMEM2", "Write access not to Control/Sataus Registers")
-  endcase
-  set_uart_config(uart_cfg);
-endfunction : write_effects
 
-function void uart_ctrl_env::read_effects(apb_transfer transfer);
-  // Nothing for now
-endfunction : read_effects
+endclass
 
-function void uart_ctrl_env::update_config(uart_ctrl_config uart_ctrl_cfg, int index);
-  `uvm_info(get_type_name(), {"Updating Config\n", uart_ctrl_cfg.sprint}, UVM_HIGH)
-  cfg = uart_ctrl_cfg;
-  // Update these configs also (not really necessary since all are pointers)
-  uart_cfg = uart_ctrl_cfg.uart_cfg;
-  apb_slave_cfg = cfg.apb_cfg.slave_configs[index];
-  monitor.cfg = uart_ctrl_cfg;
-endfunction : update_config
 
-function void uart_ctrl_env::set_slave_config(apb_slave_config _slave_cfg, int index);
-  monitor.cfg.apb_cfg.slave_configs[index]  = _slave_cfg;
-  monitor.set_slave_config(_slave_cfg, index);
-endfunction : set_slave_config
+class uart_env
+  smtdv_env
 
-function void uart_ctrl_env::set_uart_config(uart_config _uart_cfg);
-  `uvm_info(get_type_name(), {"Setting Config\n", _uart_cfg.sprint()}, UVM_HIGH)
-  monitor.cfg.uart_cfg  = _uart_cfg;
-  monitor.set_uart_config(_uart_cfg);
-endfunction : set_uart_config
+
+endclass
+
+
+class uart_ctl_env
+  extends
+    smtdv_env
+
+

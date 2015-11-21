@@ -14,17 +14,16 @@ class cdn_cpu_s0_2_dma_m0_test
 
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    // set type override
+    // declear p_sequencer
+    // set type override init dma
+    // set target_start addr, target_end_addr, trx size, ...
+    `CDN_CPU_S0_STL_SEQ::m_file = "../stl/cdn_cpu_s0.stl";
     uvm_config_db #(uvm_object_wrapper)::set(this,
       "*m_agent[*0]*.seqr.run_phase",
       "default_sequence",
       `CDN_CPU_S0_STL_SEQ::type_id::get());
 
-//    uvm_config_db #(uvm_object_wrapper)::set(this,
-//      "m_agent[*1]*.seqr.run_phase",
-//      "default_sequence",
-//      `CDM_SRAM_S1_STL_SEQ::type_id::get());
-
+    `CDN_SRAM
   endfunction
 
 endclass

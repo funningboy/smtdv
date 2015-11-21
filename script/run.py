@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+# multi task queue
 from ConfigParser import ConfigParser
 from collections import OrderedDict
 import subprocess
@@ -7,11 +8,13 @@ import argparse
 import re, os
 import sys, traceback
 
+
 CORELOAD_RE = re.compile(r"\/?(?P<core>(\w)+)\.core")
 INTERPOLATION_RE = re.compile(r"\$\{(?:(?P<section>[^:]+):)?(?P<key>[^}]+)\}")
 MTI_K = ['mti']
 IUS_K = ['ius']
 FILE_T = ['src_files', 'include_files', 'include_dirs']
+CONFIG = None
 
 def proc_sharedlib(simulator, files):
   rets = []
@@ -88,6 +91,10 @@ def load_shardlib(cp, section='sharedlib'):
    load_files(cp, section)
 
 def call_syscall(cp, section, option, comb=False):
+  global CONFIG
+  if cp != CONFIG:
+    return
+
   cmds = split_str(cp, section, option)
   if comb:
     cmds = [' \\'.join(cmds)]
@@ -210,9 +217,11 @@ TASKS = OrderedDict({
 
 
 def run_core(args):
+  global CONFIG
   config = ConfigParser(allow_no_value=True)
   config.read(args.file)
   print "running {0}".format(args.file)
+  CONFIG = config
 
   for section in config.sections():
     task = TASKS[section][0]
