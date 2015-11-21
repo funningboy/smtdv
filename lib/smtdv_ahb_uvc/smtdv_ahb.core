@@ -5,7 +5,7 @@ ahb = ${main:root}/lib/smtdv_ahb_uvc
 debug = FALSE
 spawn = TRUE
 timeout =
-simulator = ius
+simulator = mti
 test = ahb_stl_test
 # add your test below
 tests =
@@ -23,11 +23,11 @@ import_files =
 [systemverilog]
 src_files =
   ${smtdv_common.systemverilog:src_files}
-  ${main:ahb}/sv/ahb_pkg.sv
   ${main:ahb}/test/ahb_top.sv
 
 include_files =
   ${smtdv_common.systemverilog:include_files}
+  ${main:ahb}/sv/ahb_pkg.sv
 
 include_dirs =
   ${smtdv_common.systemverilog:include_dirs}
@@ -103,7 +103,7 @@ irun =
   +UVM_VERBOSITY=UVM_DEBUG
 
 clean =
-  ${ius.ius:clean}
+#  ${ius.ius:clean}
 
 
 [provider]

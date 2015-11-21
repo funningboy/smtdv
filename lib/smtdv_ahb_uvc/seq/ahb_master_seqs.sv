@@ -296,11 +296,15 @@ class ahb_master_stl_seq #(
     `AHB_MASTER_BASE_SEQ;
 
     int unsigned m_id = 0;
-    string m_file = "../stl/incr8.stl";
+    static string m_file = "../stl/incr8.stl";
     chandle m_dpi_mb;
     chandle m_dpi_trx;
 
-    `uvm_sequence_utils(`AHB_MASTER_STL_SEQ, `AHB_MASTER_SEQUENCER)
+  `uvm_declare_p_sequencer(`AHB_MASTER_SEQUENCER)
+
+   // register sequence with a sequencer
+   `uvm_object_param_utils_begin(`AHB_MASTER_STL_SEQ)
+   `uvm_object_utils_end
 
     function new(string name = "ahb_master_stl_seq");
       super.new(name);
@@ -308,7 +312,7 @@ class ahb_master_stl_seq #(
 
     virtual task body();
       super.body();
-      `uvm_info(get_type_name(), {$psprintf("starting seq ... ")}, UVM_MEDIUM)
+      `uvm_info(get_type_name(), {$psprintf("starting seq %s... ", m_file)}, UVM_MEDIUM)
 
       m_dpi_mb = dpi_smtdv_parse_file(m_file);
       assert(m_dpi_mb!=null);

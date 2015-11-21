@@ -13,21 +13,40 @@ class ahb_collect_cover_group#(
     `AHB_ITEM item;
     `AHB_MONITOR cmp;
 
+    bit [ADDR_WIDTH-1:0] start_addr = 32'h0000_0000;
+    bit [ADDR_WIDTH-1:0] end_addr = 32'hffff_ffff;
+    bit [DATA_WIDTH-1:0] start_data = 32'h0000_0000;
+    bit [DATA_WIDTH-1:0] end_data = 32'hffff_ffff;
+
    `uvm_object_param_utils_begin(`AHB_COLLECT_COVER_GROUP)
    `uvm_object_utils_end
 
     covergroup ahb_coverage;
       ahb_addr : coverpoint item.addr {
         bins zero = {0};
-        bins non_zero = {[1:32'hffff_ffff]};
+        bins non_zero = {[start_addr:end_addr]};
       }
       ahb_rw : coverpoint item.trs_t {
         bins read = {RD};
         bins write = {WR};
       }
+      ahb_bst_type : coverpoint item.bst_type {
+        bins INCR = {INCR, INCR4, INCR8, INCR16};
+        bins WRAP = {WRAP4, WRAP8, WRAP16};
+      }
+      ahb_trx_size : coverpoint item.trx_size {
+        bins B8 = {B8};
+        bins B16 = {B16};
+        bins B32 = {B32};
+        bins B64 = {B64};
+        bins B128 = {B128};
+        bins B256 = {B256};
+        bins B512 = {B512};
+        bins B1024 = {B1024};
+      }
       ahb_data : coverpoint item.unpack_data(item.data_idx) {
         bins zero = {0};
-        bins non_zero = {[1:32'hffff_ffff]};
+        bins non_zero = {[start_data:end_data]};
       }
       ahb_rsp : coverpoint item.rsp {
         bins ok = {OKAY};
@@ -39,7 +58,7 @@ class ahb_collect_cover_group#(
         bins lock = {1};
         bins unlock = {0};
       }
-      ahb_trx  : cross ahb_addr, ahb_rw, ahb_data, ahb_rsp, ahb_lock;
+      ahb_trx  : cross ahb_addr, ahb_rw, ahb_bst_type, ahb_trx_size, ahb_data, ahb_rsp, ahb_lock;
     endgroup
 
     function new(string name = "ahb_collect_cover_group");
@@ -67,7 +86,7 @@ class ahb_export_collected_items#(
     `AHB_ITEM item;
     `AHB_MONITOR cmp;
 
-    static string attr_longint[$] = `SMTDV_BUS_VIF_ATTR_LONGINT;
+    static string attr_longint[$] = `SMTDV_BUS_VIF_ATTR_LONGINT
 
     `uvm_object_param_utils_begin(`AHB_EXPORT_COLLECTED_ITEMS)
     `uvm_object_utils_end
