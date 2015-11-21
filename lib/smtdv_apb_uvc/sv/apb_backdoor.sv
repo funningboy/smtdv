@@ -46,25 +46,17 @@ class apb_mem_backdoor #(
   endfunction
 
   virtual function void prepare_item(ref `APB_ITEM item);
-    bit [ADDR_WIDTH-1:0] addrs[$];
-    bit [(DATA_WIDTH>>3)-1:0][7:0] data_beat[$];
-    item.post_addr(item.addr, item.trx_size, item.bst_len, item.bst_type, addrs);
-    item.post_data(item.bst_len, data_beat);
     item.addrs.delete();
     item.data_beat.delete();
     item.addr_idx = 0;
     item.data_idx = 0;
 
-    foreach(addrs[i]) begin
-      item.addrs.push_back(addrs[i]);
-    end
-    foreach(data_beat[i])begin
-      item.data_beat.push_back(0);
-    end
+    item.addrs.push_back(item.addr);
+    item.data_beat.push_back(0);
   endfunction
 
   virtual function void post_item(string table_nm, `APB_ITEM item);
-    for(item.data_idx =0; item.data_idx < item.bst_len; item.data_idx++) begin
+    for(item.data_idx =0; item.data_idx < 1; item.data_idx++) begin
       convert_2_item(
         table_nm,
         gen_query_cmd(table_nm, "LAST_WR_TRX", item),

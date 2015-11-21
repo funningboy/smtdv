@@ -26,6 +26,7 @@ src_files =
 
 include_files =
   ${smtdv_common.systemverilog:include_files}
+  ${main:apb}/sv/apb_pkg.sv
 
 include_dirs =
   ${smtdv_common.systemverilog:include_dirs}

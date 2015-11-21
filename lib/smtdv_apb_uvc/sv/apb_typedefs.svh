@@ -78,6 +78,8 @@ typedef enum bit [0:0] {OK, ERR} trx_rsp_t;
 `define APB_CSIM_TEST apb_csim_test
 `define APB_STL_TEST apb_stl_test
 
+`define APB_REG_ADAPTER apb_reg_adapter
+
 // for DEBUG only, add addr map should be registered to map table
 `define APB_SLAVE_START_ADDR_0 'h1000_0000
 `define APB_SLAVE_END_ADDR_0   'h7fff_ffff

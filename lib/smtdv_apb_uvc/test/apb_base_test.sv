@@ -7,6 +7,8 @@ class apb_base_test extends smtdv_test;
 
   parameter ADDR_WIDTH = `APB_ADDR_WIDTH;
   parameter DATA_WIDTH = `APB_DATA_WIDTH;
+  parameter NUM_OF_INITOR = 1;
+  parameter NUM_OF_TARGETS = 2;
 
   `APB_RST_VIF apb_rst_vif;
 
@@ -15,6 +17,8 @@ class apb_base_test extends smtdv_test;
 
   `APB_MASTER_AGENT master_agent[$];
   `APB_MASTER_CFG master_cfg[$];
+
+  `APB_BASE_SCOREBOARD master_scb[$];
 
   smtdv_reset_model #(`APB_RST_VIF) apb_rst_model;
 
@@ -35,24 +39,28 @@ class apb_base_test extends smtdv_test;
     // slave0 cfg, agent
     slave_cfg[0] = `APB_SLAVE_CFG::type_id::create({$psprintf("slave_cfg[%0d]", 0)}, this);
     `SMTDV_RAND_WITH(slave_cfg[0], {
-      has_force == 0;
+      has_force == 1;       // force orignal vif behavior
       has_coverage == 1;
       has_export == 1;
     })
     slave_agent[0] = `APB_SLAVE_AGENT::type_id::create({$psprintf("slave_agent[%0d]", 0)}, this);
     uvm_config_db#(uvm_bitstream_t)::set(null, "/.+slave_agent[*0]*/", "is_active", UVM_ACTIVE);
     uvm_config_db#(`APB_SLAVE_CFG)::set(null, "/.+slave_agent[*0]*/", "cfg", slave_cfg[0]);
+    // register slave agent as scoreboard target
+    uvm_config_db#(`APB_SLAVE_AGENT)::set(null, "/.+master_scb[*0]*/", "targets_s[0]", slave_agent[0]);
 
     // slave1 cfg, agent
     slave_cfg[1] = `APB_SLAVE_CFG::type_id::create({$psprintf("slave_cfg[%0d]", 1)}, this);
     `SMTDV_RAND_WITH(slave_cfg[1], {
-      has_force == 0;
+      has_force == 1;
       has_coverage == 1;
       has_export == 1;
     })
     slave_agent[1] = `APB_SLAVE_AGENT::type_id::create({$psprintf("slave_agent[%0d]", 1)}, this);
     uvm_config_db#(uvm_bitstream_t)::set(null, "/.+slave_agent[*1]*/", "is_active", UVM_ACTIVE);
     uvm_config_db#(`APB_SLAVE_CFG)::set(null, "/.+slave_agent[*1]*/", "cfg", slave_cfg[1]);
+    // register slave agent as scoreboard target
+    uvm_config_db#(`APB_SLAVE_AGENT)::set(null, "/.+master_scb[*0]*/", "targets_s[1]", slave_agent[1]);
 
     // master cfg, agent
     master_cfg[0] = `APB_MASTER_CFG::type_id::create({$psprintf("master_cfg[%0d]", 0)}, this);
@@ -72,6 +80,9 @@ class apb_base_test extends smtdv_test;
     uvm_config_db#(uvm_bitstream_t)::set(null, "/.+master_agent[*0]*/", "is_active", UVM_ACTIVE);
     uvm_config_db#(`APB_MASTER_CFG)::set(null, "/.+master_agent[*0]*/", "cfg", master_cfg[0]);
     // register master agent as scoreboard initor
+    uvm_config_db#(`APB_MASTER_AGENT)::set(null, "/.+master_scb[*0]*/", "initor_m[0]", master_agent[0]);
+    // scoreboard num of masters cross all slaves ex: 3*all, 2*all socreboard
+    master_scb[0] = `APB_BASE_SCOREBOARD::type_id::create({$psprintf("master_scb[%0d]", 0)}, this);
 
     // resetn
     apb_rst_model = smtdv_reset_model#(`APB_RST_VIF)::type_id::create("apb_rst_model");
@@ -83,6 +94,8 @@ class apb_base_test extends smtdv_test;
 
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
+    master_agent[0].mon.item_collected_port.connect(master_scb[0].initor[0]);
+    slave_agent[0].mon.item_collected_port.connect(master_scb[0].targets[0]);
   endfunction
 
   virtual function void end_of_elaboration_phase(uvm_phase phase);

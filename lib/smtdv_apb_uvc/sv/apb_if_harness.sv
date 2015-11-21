@@ -90,8 +90,6 @@ interface apb_slave_if_harness #(
     logic [0:0]             pready
   );
 
-    bit has_force = 1;
-
     apb_if #(
       .ADDR_WIDTH(ADDR_WIDTH),
       .DATA_WIDTH(DATA_WIDTH)
@@ -114,14 +112,14 @@ interface apb_slave_if_harness #(
     `ifndef APBSLAVEATTR
         $fatal("please define APBSLAVEATTR as forced.vif at top design");
     `endif
-      `SMTDV_PORT2VIF(has_force, clk, `APBSLAVEATTR(UID).paddr, vif.paddr)
-      `SMTDV_PORT2VIF(has_force, clk, `APBSLAVEATTR(UID).prwd, vif.prwd)
-      `SMTDV_PORT2VIF(has_force, clk, `APBSLAVEATTR(UID).pwdata, vif.pwdata)
-      `SMTDV_PORT2VIF(has_force, clk, `APBSLAVEATTR(UID).psel, vif.psel)
-      `SMTDV_PORT2VIF(has_force, clk, `APBSLAVEATTR(UID).penable, vif.penable)
-      `SMTDV_VIF2PORT(has_force, clk, vif.prdata, `APBSLAVEATTR(UID).prdata)
-      `SMTDV_VIF2PORT(has_force, clk, vif.pslverr, `APBSLAVEATTR(UID).pslverr)
-      `SMTDV_VIF2PORT(has_force, clk, vif.pready, `APBSLAVEATTR(UID).pready)
+      `SMTDV_PORT2VIF(vif.has_force, clk, `APBSLAVEATTR(UID).paddr, vif.paddr)
+      `SMTDV_PORT2VIF(vif.has_force, clk, `APBSLAVEATTR(UID).prwd, vif.prwd)
+      `SMTDV_PORT2VIF(vif.has_force, clk, `APBSLAVEATTR(UID).pwdata, vif.pwdata)
+      `SMTDV_PORT2VIF(vif.has_force, clk, `APBSLAVEATTR(UID).psel, vif.psel)
+      `SMTDV_PORT2VIF(vif.has_force, clk, `APBSLAVEATTR(UID).penable, vif.penable)
+      `SMTDV_VIF2PORT(vif.has_force, clk, vif.prdata, `APBSLAVEATTR(UID).prdata)
+      `SMTDV_VIF2PORT(vif.has_force, clk, vif.pslverr, `APBSLAVEATTR(UID).pslverr)
+      `SMTDV_VIF2PORT(vif.has_force, clk, vif.pready, `APBSLAVEATTR(UID).pready)
 
 endinterface
 

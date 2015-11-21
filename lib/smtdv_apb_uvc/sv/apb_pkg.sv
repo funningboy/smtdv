@@ -37,6 +37,7 @@ package apb_pkg;
   `include "apb_scoreboard_threads.sv"
   `include "apb_scoreboard.sv"
   `include "apb_env.sv"
+  `include "apb_reg_adapter.sv"
 endpackage
 
 `include "apb_if.sv"
