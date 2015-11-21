@@ -15,6 +15,7 @@ src_files =
 include_files =
   ${smtdv_sqlite3.systemverilog:include_files}
   ${smtdv_stl.systemverilog:include_files}
+  ${main:root}/lib/smtdv_common/smtdv_common_pkg.sv
 
 include_dirs =
   ${smtdv_sqlite3.systemverilog:include_dirs}
