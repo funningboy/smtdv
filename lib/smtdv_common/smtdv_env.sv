@@ -4,6 +4,11 @@
 
 class smtdv_env extends smtdv_component#(uvm_env);
 
+  smtdv_cfg   master_cfg[$];
+  smtdv_agent master_agent[$];
+  smtdv_cfg   slave_cfg[$];
+  smtdv_agent slave_agent[$];
+
   function new(string name = "smtdv_env", uvm_component parent);
     super.new(name, parent);
   endfunction

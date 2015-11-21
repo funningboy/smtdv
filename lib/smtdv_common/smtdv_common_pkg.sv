@@ -2,6 +2,7 @@
 `ifndef __SMTDV_PKG_SV__
 `define __SMTDV_PKG_SV__
 
+`timescale 1ns/10ps
 package smtdv_common_pkg;
 
   import  uvm_pkg::*;

@@ -1,16 +1,16 @@
 [main]
-description = "SMTDV APB lib"
+description = "SMTDV XBUS lib"
 root = os.getenv("SMTDV_HOME")
-apb = ${main:root}/lib/smtdv_apb_uvc
+xbus = ${main:root}/lib/smtdv_xbus_uvc
 debug = FALSE
 spawn = TRUE
 timeout =
-simulator = mti
-test = apb_stl_test
+simulator = ius
+test = xbus_stl_test
 # add your test below
 tests =
-  apb_stl_test
-  apb_1w1r_test
+  xbus_stl_test
+  xbus_1w1r_test
 
 [cores]
 import_files =
@@ -21,29 +21,28 @@ import_files =
 [systemverilog]
 src_files =
   ${smtdv_common.systemverilog:src_files}
-  ${main:apb}/sv/apb_pkg.sv
-  ${main:apb}/test/apb_top.sv
+  ${main:xbus}/sv/xbus_pkg.sv
+  ${main:xbus}/test/xbus_top.sv
 
 include_files =
   ${smtdv_common.systemverilog:include_files}
-  ${main:apb}/sv/apb_pkg.sv
 
 include_dirs =
   ${smtdv_common.systemverilog:include_dirs}
-  ${main:apb}
-  ${main:apb}/stl
-  ${main:apb}/seq
-  ${main:apb}/sv
-  ${main:apb}/test
+  ${main:xbus}
+  ${main:xbus}/stl
+  ${main:xbus}/seq
+  ${main:xbus}/sv
+  ${main:xbus}/test
 
 [verilog]
 src_files =
-  -sv ${main:apb}/v/dut_apb_1m2s.v
+  -sv ${main:xbus}/v/dut_xbus_1m1s.v
 
 include_files =
 
 include_dirs =
-  ${main:apb}/v
+  ${main:xbus}/v
 
 [systemc]
 src_files =
@@ -107,6 +106,6 @@ clean =
 
 [provider]
 name = funningboy@gmail.com
-repo_name = smtdv apb uvc
-repo_root = ${main:root}/lib/smtdv_apb_uvc
+repo_name = smtdv xbus uvc
+repo_root = ${main:root}/lib/smtdv_xbus_uvc
 revision = 1
