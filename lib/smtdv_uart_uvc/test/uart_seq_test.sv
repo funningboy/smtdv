@@ -22,10 +22,6 @@ class uart_seq_test
       "default_sequence",
       `TX_INCR_PAYLOAD_SEQ::type_id::get());
 
-    uvm_config_db#(uvm_object_wrapper)::set(this,
-      "*rx_agent[*0]*.seqr.run_phase",
-      "default_sequence",
-      `RX_SHORT_TRANSMIT_SEQ::type_id::get());
   endfunction : build_phase
 
 endclass

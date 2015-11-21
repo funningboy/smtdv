@@ -34,7 +34,9 @@ class uart_base_test
         has_force == 1;
         has_coverage == 1;
         has_export == 1;
+        parity_en == 1;
       })
+    rx_cfg[0].post_randomize();
     rx_cfg[0].is_tx_active = UVM_PASSIVE;
     rx_cfg[0].is_rx_active = UVM_ACTIVE;
     rx_agent[0] = `UART_RX_AGENT::type_id::create("rx_agent[0]", this);

@@ -66,6 +66,9 @@ interface uart_if #(
     output  ri_n;
   endclocking
 
+  always @(negedge clk)
+    cyc += 1;
+
 /*  FIX TO USE CONCURRENT ASSERTIONS
   always @(posedge clock)
   begin

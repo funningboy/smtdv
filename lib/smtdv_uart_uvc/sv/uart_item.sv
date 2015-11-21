@@ -65,7 +65,8 @@ class uart_item #(
 
   // Parity is calculated in the post_randomize() method   //lab1_note5
   function void post_randomize();
-   parity = calc_parity();
+    super.post_randomize();
+    parity = calc_parity();
   endfunction : post_randomize
 
   function bit[7:0] unpack_data();

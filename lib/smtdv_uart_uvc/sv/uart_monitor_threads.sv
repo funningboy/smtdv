@@ -200,6 +200,7 @@ class uart_sample_and_store#(
         item.start_bit = 1'b0;
         item.parity_type = GOOD_PARITY;
         item.bg_cyc = this.cmp.vif.cyc;
+        item.bg_time = $time;
         this.cmp.num_of_bits_rcvd = 0;
         void'(this.cmp.begin_tr(item, this.cmp.get_full_name()));
 
@@ -237,6 +238,7 @@ class uart_sample_and_store#(
             end
           end
        item.ed_cyc = this.cmp.vif.cyc;
+       item.ed_time = $time;
        void'(this.cmp.end_tr(item));
 
        this.cmp.num_items++;
@@ -257,12 +259,7 @@ class uart_export_collected_items#(
     `UART_ITEM item;
     `UART_MONITOR cmp;
 
-    string attr_longint[$] = {
-      "rw",
-      "data",
-      "bg_cyc",
-      "ed_cyc"
-    };
+    string attr_longint[$] = `SMTDV_BUS_VIF_ATTR_LONGINT
 
     `uvm_object_param_utils_begin(`UART_EXPORT_COLLECTED_ITEMS)
     `uvm_object_utils_end
@@ -274,7 +271,7 @@ class uart_export_collected_items#(
     virtual task run();
       create_table();
       forever begin
-        this.cmp.cbox.get(item);
+        this.cmp.ebox.get(item);
         populate_item(item);
       end
     endtask
@@ -291,12 +288,13 @@ class uart_export_collected_items#(
 
     virtual task populate_item(ref `UART_ITEM item);
       string table_nm = $psprintf("\"%s\"", this.cmp.get_full_name());
-      smtdv_sqlite3::insert_value(table_nm, "rw",      $psprintf("%d", item.trs_t));
-      smtdv_sqlite3::insert_value(table_nm, "data",    $psprintf("%d", item.unpack_data()));
-      smtdv_sqlite3::insert_value(table_nm, "bg_cyc",  $psprintf("%d", item.bg_cyc));
-      smtdv_sqlite3::insert_value(table_nm, "ed_cyc",  $psprintf("%d", item.ed_cyc));
-      smtdv_sqlite3::insert_value(table_nm, "bg_time", $psprintf("%d", item.bg_time));
-      smtdv_sqlite3::insert_value(table_nm, "ed_time", $psprintf("%d", item.ed_time));
+      smtdv_sqlite3::insert_value(table_nm, "dec_uuid",    $psprintf("%d", item.get_sequence_id()));
+      smtdv_sqlite3::insert_value(table_nm, "dec_rw",      $psprintf("%d", item.trs_t));
+      smtdv_sqlite3::insert_value(table_nm, "dec_data_000", $psprintf("%d", item.unpack_data()));
+      smtdv_sqlite3::insert_value(table_nm, "dec_bg_cyc",  $psprintf("%d", item.bg_cyc));
+      smtdv_sqlite3::insert_value(table_nm, "dec_ed_cyc",  $psprintf("%d", item.ed_cyc));
+      smtdv_sqlite3::insert_value(table_nm, "dec_bg_time", $psprintf("%d", item.bg_time));
+      smtdv_sqlite3::insert_value(table_nm, "dec_ed_time", $psprintf("%d", item.ed_time));
       smtdv_sqlite3::exec_value(table_nm);
       smtdv_sqlite3::flush_value(table_nm);
     endtask
@@ -310,7 +308,7 @@ class uart_collect_stop_signal#(
     smtdv_run_thread;
 
     `UART_MONITOR cmp;
-    int stop_cnt = 100;
+    int stop_cnt = 5000;
     int cnt = 0;
 
    `uvm_object_param_utils_begin(`UART_COLLECT_STOP_SIGNAL)

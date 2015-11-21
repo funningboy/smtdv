@@ -42,7 +42,7 @@ module dut_1m1s(
 
   generate
   for (i=0; i < 1; i++) begin: S
-    uart_tx u_uart_rx (
+    uart_rx u_uart_rx (
         .clk(clk),
         .resetn(resetn),
         .txd(w_txd),    // Transmit Data
