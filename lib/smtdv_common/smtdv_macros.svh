@@ -73,7 +73,7 @@
   "dec_ed_cyc", \
   "dec_bg_time", \
   "dec_ed_time" \
-  }
+  };
 
 // define global bus vif attr table field
 `define SMTDV_BUS_VIF_ATTR_LONGINT \
@@ -108,7 +108,7 @@
       "dec_ed_cyc", \
       "dec_bg_time", \
       "dec_ed_time" \
-    }
+    };
 
 // define global bus/mem callback event while using backdoor access
 `define SMTDV_CB_EVENT \
