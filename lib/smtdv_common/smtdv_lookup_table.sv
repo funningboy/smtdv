@@ -1,4 +1,4 @@
-// define global/local lookup table to turn on/off each smtdv module
+// define global/local lookup table(router table) to turn on/off each smtdv module
 // ex:
 //  | path | CPU |  DMA | DDR
 // ===========================

@@ -3,7 +3,7 @@
 `define __SMTDV_COMPONENT_SV__
 
 class smtdv_component #(type COMP = uvm_component,
-                        type VIF = int,
+                        type VIF = virtual interface smtdv_if,
                         type CFG = uvm_object)
         extends COMP;
 

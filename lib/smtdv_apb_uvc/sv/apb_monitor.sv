@@ -52,7 +52,7 @@ class apb_monitor #(
     // populate vif to child
     if(seqr == null) begin
       if(!uvm_config_db#(`APB_SLAVE_SEQUENCER)::get(this, "", "seqr", seqr))
-      `uvm_warning("NOSEQR",{"slave sequencer must be set for: ",get_full_name(),".seqr"});
+      `uvm_warning("NOSEQR",{"slave sequencer must be set while slave is on UVM_ACTIVE: ",get_full_name(),".seqr"});
     end
   endfunction
 

@@ -34,8 +34,6 @@ interface xbus_master_if_harness #(
     logic [DATA_WIDTH-1:0] wdata
   );
 
-    bit has_force = 1;
-
     xbus_if #(
       .ADDR_WIDTH(ADDR_WIDTH),
       .DATA_WIDTH(DATA_WIDTH)
@@ -56,13 +54,13 @@ interface xbus_master_if_harness #(
       `ifndef XBUSMASTERATTR
         $fatal("please define XBUSMASTERATTR as forced.vif at top design");
       `endif
-      `SMTDV_VIF2PORT(has_force, clk, vif.req, `XBUSMASTERATTR(UID).req)
-      `SMTDV_VIF2PORT(has_force, clk, vif.rw, `XBUSMASTERATTR(UID).rw)
-      `SMTDV_VIF2PORT(has_force, clk, vif.addr, `XBUSMASTERATTR(UID).addr)
-      `SMTDV_VIF2PORT(has_force, clk, vif.byten, `XBUSMASTERATTR(UID).byten)
-      `SMTDV_VIF2PORT(has_force, clk, vif.wdata, `XBUSMASTERATTR(UID).wdata)
-      `SMTDV_PORT2VIF(has_force, clk, `XBUSMASTERATTR(UID).ack, vif.ack)
-      `SMTDV_PORT2VIF(has_force, clk, `XBUSMASTERATTR(UID).rdata, vif.rdata)
+      `SMTDV_VIF2PORT(vif.has_force, clk, vif.req, `XBUSMASTERATTR(UID).req)
+      `SMTDV_VIF2PORT(vif.has_force, clk, vif.rw, `XBUSMASTERATTR(UID).rw)
+      `SMTDV_VIF2PORT(vif.has_force, clk, vif.addr, `XBUSMASTERATTR(UID).addr)
+      `SMTDV_VIF2PORT(vif.has_force, clk, vif.byten, `XBUSMASTERATTR(UID).byten)
+      `SMTDV_VIF2PORT(vif.has_force, clk, vif.wdata, `XBUSMASTERATTR(UID).wdata)
+      `SMTDV_PORT2VIF(vif.has_force, clk, `XBUSMASTERATTR(UID).ack, vif.ack)
+      `SMTDV_PORT2VIF(vif.has_force, clk, `XBUSMASTERATTR(UID).rdata, vif.rdata)
 
 endinterface
 
@@ -83,8 +81,6 @@ interface xbus_slave_if_harness #(
     logic [DATA_WIDTH-1:0] rdata,
     logic [DATA_WIDTH-1:0] wdata
   );
-
-    bit has_force = 1;
 
     xbus_if #(
       .ADDR_WIDTH(ADDR_WIDTH),
@@ -107,13 +103,13 @@ interface xbus_slave_if_harness #(
       `ifndef XBUSSLAVEATTR
         $error("please define XBUSSLAVEATTR as forced vif at top design");
       `endif
-      `SMTDV_PORT2VIF(has_force, clk, `XBUSSLAVEATTR(UID).req, vif.req)
-      `SMTDV_PORT2VIF(has_force, clk, `XBUSSLAVEATTR(UID).rw, vif.rw)
-      `SMTDV_PORT2VIF(has_force, clk, `XBUSSLAVEATTR(UID).addr, vif.addr)
-      `SMTDV_PORT2VIF(has_force, clk, `XBUSSLAVEATTR(UID).byten, vif.byten)
-      `SMTDV_PORT2VIF(has_force, clk, `XBUSSLAVEATTR(UID).wdata, vif.wdata)
-      `SMTDV_VIF2PORT(has_force, clk, vif.ack, `XBUSSLAVEATTR(UID).ack)
-      `SMTDV_VIF2PORT(has_force, clk, vif.rdata, `XBUSSLAVEATTR(UID).rdata)
+      `SMTDV_PORT2VIF(vif.has_force, clk, `XBUSSLAVEATTR(UID).req, vif.req)
+      `SMTDV_PORT2VIF(vif.has_force, clk, `XBUSSLAVEATTR(UID).rw, vif.rw)
+      `SMTDV_PORT2VIF(vif.has_force, clk, `XBUSSLAVEATTR(UID).addr, vif.addr)
+      `SMTDV_PORT2VIF(vif.has_force, clk, `XBUSSLAVEATTR(UID).byten, vif.byten)
+      `SMTDV_PORT2VIF(vif.has_force, clk, `XBUSSLAVEATTR(UID).wdata, vif.wdata)
+      `SMTDV_VIF2PORT(vif.has_force, clk, vif.ack, `XBUSSLAVEATTR(UID).ack)
+      `SMTDV_VIF2PORT(vif.has_force, clk, vif.rdata, `XBUSSLAVEATTR(UID).rdata)
 
 endinterface
 

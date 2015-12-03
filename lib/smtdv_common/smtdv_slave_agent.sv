@@ -1,7 +1,7 @@
 `ifndef __SMTDV_SLAVE_AGENT_SV__
 `define __SMTDV_SLAVE_AGENT_SV__
 
-class smtdv_slave_agent #( type VIF = virtual smtdv_if,
+class smtdv_slave_agent #( type VIF = virtual interface smtdv_if,
                     type CFG = smtdv_slave_cfg,
                     type SEQR = smtdv_sequencer#(),
                     type DRV = smtdv_driver#(VIF, CFG),

@@ -13,6 +13,8 @@ class uart_rx_agent #(
 
   uvm_tlm_analysis_fifo #(`UART_ITEM) fifo_mon_sqr;
 
+  `UART_TX_MONITOR txmon;
+
   `uvm_component_param_utils_begin(`UART_RX_AGENT)
   `uvm_component_utils_end
 
@@ -30,19 +32,31 @@ class uart_rx_agent #(
         "default_sequence",
         `UART_BASE_SEQ::type_id::get());
 
-    if(this.get_is_active())
-      mon.seqr = seqr;
+    if(this.get_is_active()) begin
+      txmon= `UART_TX_MONITOR::type_id::create("txmon", this);
+      txmon.seqr = seqr;
+    end
   endfunction
 
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
     // connect monitor to sequencer via tlm analysis port
-    mon.item_asserted_port.connect(fifo_mon_sqr.analysis_export);
+    txmon.item_asserted_port.connect(fifo_mon_sqr.analysis_export);
 
     if(get_is_active()) begin
       seqr.mon_get_port.connect(fifo_mon_sqr.get_export);
     end
   endfunction
+
+  virtual function void end_of_elaboration_phase(uvm_phase phase);
+    super.end_of_elaboration_phase(phase);
+    txmon.vif = vif;
+    txmon.cfg = cfg;
+    txmon.has_tx = 1;
+    mon.has_rx = 1;
+  endfunction
+
+
 
 endclass
 

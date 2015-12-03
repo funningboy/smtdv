@@ -6,10 +6,10 @@ class smtdv_backdoor
   extends
   smtdv_component#(uvm_component);
 
-  smtdv_backdoor_event_t cb_map[string] = `SMTDV_CB_EVENT
+  smtdv_backdoor_event_t cb_map[string] = `SMTDV_CB_EVENT;
   int timeout = 2;
   bit debug = TRUE;
-  bit status = TRUE;
+  bit match = FALSE;
 
   `uvm_component_param_utils_begin(smtdv_backdoor)
     `uvm_field_int(timeout, UVM_ALL_ON)

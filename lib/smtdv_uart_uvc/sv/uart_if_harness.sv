@@ -29,8 +29,6 @@ interface uart_tx_if_harness #(
   logic baud_clk  // TODO: Baud Rate Clock not used ??
   );
 
-  bit has_force = 1;
-
   uart_if #(
   ) vif
   (
@@ -55,17 +53,17 @@ interface uart_tx_if_harness #(
     `ifndef UARTTXATTR
         $fatal("please define UARTTXATTR as forced.vif at top design");
     `endif
-      `SMTDV_VIF2PORT(has_force, clk, vif.txd, `UARTTXATTR(UID).txd)
-      `SMTDV_VIF2PORT(has_force, clk, vif.rts_n, `UARTTXATTR(UID).rts_n)
-      `SMTDV_VIF2PORT(has_force, clk, vif.dtr_n, `UARTTXATTR(UID).dtr_n)
-      `SMTDV_VIF2PORT(has_force, clk, vif.dcd_n, `UARTTXATTR(UID).dcd_n)
-      `SMTDV_VIF2PORT(has_force, clk, vif.baud_clk, `UARTTXATTR(UID).baud_clk)
-      `SMTDV_VIF2PORT(has_force, clk, vif.intrpt, `UARTTXATTR(UID).intrpt)
+      `SMTDV_VIF2PORT(vif.has_force, clk, vif.txd, `UARTTXATTR(UID).txd)
+      `SMTDV_VIF2PORT(vif.has_force, clk, vif.rts_n, `UARTTXATTR(UID).rts_n)
+      `SMTDV_VIF2PORT(vif.has_force, clk, vif.dtr_n, `UARTTXATTR(UID).dtr_n)
+      `SMTDV_VIF2PORT(vif.has_force, clk, vif.dcd_n, `UARTTXATTR(UID).dcd_n)
+      `SMTDV_VIF2PORT(vif.has_force, clk, vif.baud_clk, `UARTTXATTR(UID).baud_clk)
+      `SMTDV_VIF2PORT(vif.has_force, clk, vif.intrpt, `UARTTXATTR(UID).intrpt)
 
-      `SMTDV_PORT2VIF(has_force, clk, `UARTTXATTR(UID).rxd,   vif.rxd)
-      `SMTDV_PORT2VIF(has_force, clk, `UARTTXATTR(UID).cts_n, vif.cts_n)
-      `SMTDV_PORT2VIF(has_force, clk, `UARTTXATTR(UID).dsr_n, vif.dsr_n)
-      `SMTDV_PORT2VIF(has_force, clk, `UARTTXATTR(UID).ri_n,  vif.ri_n)
+      `SMTDV_PORT2VIF(vif.has_force, clk, `UARTTXATTR(UID).rxd,   vif.rxd)
+      `SMTDV_PORT2VIF(vif.has_force, clk, `UARTTXATTR(UID).cts_n, vif.cts_n)
+      `SMTDV_PORT2VIF(vif.has_force, clk, `UARTTXATTR(UID).dsr_n, vif.dsr_n)
+      `SMTDV_PORT2VIF(vif.has_force, clk, `UARTTXATTR(UID).ri_n,  vif.ri_n)
 
 endinterface
 
@@ -91,8 +89,6 @@ interface uart_rx_if_harness #(
   logic baud_clk  // TODO: Baud Rate Clock not used ??
   );
 
-  bit has_force = 1;
-
   uart_if #(
   ) vif
   (
@@ -117,17 +113,17 @@ interface uart_rx_if_harness #(
     `ifndef UARTRXATTR
         $fatal("please define UARTRXATTR as forced.vif at top design");
     `endif
-      `SMTDV_PORT2VIF(has_force, clk, `UARTRXATTR(UID).txd, vif.txd)
-      `SMTDV_PORT2VIF(has_force, clk, `UARTRXATTR(UID).rts_n, vif.rts_n)
-      `SMTDV_PORT2VIF(has_force, clk, `UARTRXATTR(UID).dtr_n, vif.dtr_n)
-      `SMTDV_PORT2VIF(has_force, clk, `UARTRXATTR(UID).dcd_n, vif.dcd_n)
-      `SMTDV_PORT2VIF(has_force, clk, `UARTRXATTR(UID).baud_clk, vif.baud_clk)
-      `SMTDV_VIF2PORT(has_force, clk, `UARTRXATTR(UID).intrpt, vif.intrpt)
+      `SMTDV_PORT2VIF(vif.has_force, clk, `UARTRXATTR(UID).txd, vif.txd)
+      `SMTDV_PORT2VIF(vif.has_force, clk, `UARTRXATTR(UID).rts_n, vif.rts_n)
+      `SMTDV_PORT2VIF(vif.has_force, clk, `UARTRXATTR(UID).dtr_n, vif.dtr_n)
+      `SMTDV_PORT2VIF(vif.has_force, clk, `UARTRXATTR(UID).dcd_n, vif.dcd_n)
+      `SMTDV_PORT2VIF(vif.has_force, clk, `UARTRXATTR(UID).baud_clk, vif.baud_clk)
+      `SMTDV_VIF2PORT(vif.has_force, clk, `UARTRXATTR(UID).intrpt, vif.intrpt)
 
-      `SMTDV_VIF2PORT(has_force, clk, vif.rxd,   `UARTRXATTR(UID).rxd)
-      `SMTDV_VIF2PORT(has_force, clk, vif.cts_n, `UARTRXATTR(UID).cts_n)
-      `SMTDV_VIF2PORT(has_force, clk, vif.dsr_n, `UARTRXATTR(UID).dsr_n)
-      `SMTDV_VIF2PORT(has_force, clk, vif.ri_n,  `UARTRXATTR(UID).ri_n)
+      `SMTDV_VIF2PORT(vif.has_force, clk, vif.rxd,   `UARTRXATTR(UID).rxd)
+      `SMTDV_VIF2PORT(vif.has_force, clk, vif.cts_n, `UARTRXATTR(UID).cts_n)
+      `SMTDV_VIF2PORT(vif.has_force, clk, vif.dsr_n, `UARTRXATTR(UID).dsr_n)
+      `SMTDV_VIF2PORT(vif.has_force, clk, vif.ri_n,  `UARTRXATTR(UID).ri_n)
 
 endinterface
 

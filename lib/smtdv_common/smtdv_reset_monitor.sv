@@ -2,7 +2,7 @@
 `ifndef __SMTDV_RESET_MONITOR_SV__
 `define __SMTDV_RESET_MONITOR_SV__
 
-class smtdv_reset_monitor #(type VIF = int) extends smtdv_monitor#(VIF);
+class smtdv_reset_monitor #(type VIF = virtual interface smtdv_gen_rst_if) extends smtdv_monitor#(VIF);
 
   smtdv_reset_model #(VIF) rst_model;
 

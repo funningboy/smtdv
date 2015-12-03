@@ -7,13 +7,19 @@ class uart_base_test
   extends
     smtdv_test;
 
+  // one to one check
+  parameter NUM_OF_INITOR = 1;
+  parameter NUM_OF_TARGETS = 1;
+
   `UART_RST_VIF uart_rst_vif;
 
-  `UART_RX_AGENT rx_agent[$];
-  `UART_RX_CFG rx_cfg[$];
+  `UART_SLAVE_AGENT slave_agent[$];
+  `UART_SLAVE_CFG slave_cfg[$];
 
-  `UART_TX_AGENT tx_agent[$];
-  `UART_TX_CFG tx_cfg[$];
+  `UART_MASTER_AGENT master_agent[$];
+  `UART_MASTER_CFG master_cfg[$];
+
+  `UART_BASE_SCOREBOARD master_scb[$]; // tx -> rx
 
   smtdv_reset_model #(`UART_RST_VIF) uart_rst_model;
 
@@ -24,36 +30,41 @@ class uart_base_test
   endfunction
 
   virtual function void build_phase(uvm_phase phase);
-    string rx_cfg0, tx_cfg0;
+    string slave_cfg0, master_cfg0, master_cfg1;
     super.build_phase(phase);
 
-    // rx0 cfg, agent
-    rx_cfg0 = {$psprintf("rx_cfg[%0d]", 0)};
-    rx_cfg[0] = `UART_RX_CFG::type_id::create(rx_cfg0, this);
-    `SMTDV_RAND_WITH(rx_cfg[0], {
+    //sqlite3
+    smtdv_sqlite3::delete_db("uart_db.db");
+    smtdv_sqlite3::new_db("uart_db.db");
+
+    // tx0 cfg, agent
+    master_cfg0 = {$psprintf("master_cfg[%0d]", 0)};
+    master_cfg[0] = `UART_MASTER_CFG::type_id::create(master_cfg0, this);
+    `SMTDV_RAND_WITH(master_cfg[0], {
         has_force == 1;
         has_coverage == 1;
         has_export == 1;
         parity_en == 1;
+        char_length == 3; // as char_len = 8
       })
-    rx_cfg[0].post_randomize();
-    rx_cfg[0].is_tx_active = UVM_PASSIVE;
-    rx_cfg[0].is_rx_active = UVM_ACTIVE;
-    rx_agent[0] = `UART_RX_AGENT::type_id::create("rx_agent[0]", this);
-    uvm_config_db#(uvm_bitstream_t)::set(null, "/.+rx_agent[*0]*/", "is_active", UVM_ACTIVE);
-    uvm_config_db#(`UART_RX_CFG)::set(null, "/.+rx_agent[*0]*/", "cfg", rx_cfg[0]);
-    `uvm_info(get_type_name(), {"Printing rx_cfg0:\n", rx_cfg[0].sprint()}, UVM_MEDIUM)
+    master_agent[0] = `UART_MASTER_AGENT::type_id::create("master_agent[0]", this);
+    uvm_config_db#(uvm_bitstream_t)::set(null, "/.+master_agent[*0]*/", "is_active", UVM_ACTIVE);
+    uvm_config_db#(`UART_MASTER_CFG)::set(null, "/.+master_agent[*0]*/", "cfg", master_cfg[0]);
+    `uvm_info(get_type_name(), {"Printing master_cfg0:\n", master_cfg[0].sprint()}, UVM_MEDIUM)
 
-    // tx cfg, agent
-    tx_cfg0 = {$psprintf("tx_cfg[%0d]", 0)};
-    tx_cfg[0] = `UART_TX_CFG::type_id::create(tx_cfg0, this);
-    tx_cfg[0].copy(rx_cfg[0]);
-    tx_cfg[0].is_tx_active = UVM_ACTIVE;
-    tx_cfg[0].is_rx_active = UVM_PASSIVE;
-    tx_agent[0] = `UART_TX_AGENT::type_id::create("tx_agent[0]", this);
-    uvm_config_db#(uvm_bitstream_t)::set(null, "/.+tx_agent[*0]*/", "is_active", UVM_ACTIVE);
-    uvm_config_db#(`UART_TX_CFG)::set(null, "/.+tx_agent[*0]*/", "cfg", tx_cfg[0]);
-    `uvm_info(get_type_name(), {"Printing tx_cfg0:\n", tx_cfg[0].sprint()}, UVM_MEDIUM)
+    // rx0 cfg, agent
+    slave_cfg0 = {$psprintf("slave_cfg[%0d]", 0)};
+    slave_cfg[0] = `UART_SLAVE_CFG::type_id::create(slave_cfg0, this);
+    slave_cfg[0].copy(master_cfg[0]);
+    slave_agent[0] = `UART_SLAVE_AGENT::type_id::create("slave_agent[0]", this);
+    uvm_config_db#(uvm_bitstream_t)::set(null, "/.+slave_agent[*0]*/", "is_active", UVM_ACTIVE);
+    uvm_config_db#(`UART_SLAVE_CFG)::set(null, "/.+slave_agent[*0]*/", "cfg", slave_cfg[0]);
+    `uvm_info(get_type_name(), {"Printing slave_cfg0:\n", slave_cfg[0].sprint()}, UVM_MEDIUM)
+
+    // scoreboard num of masters cross all slaves ex: 3*all, 2*all socreboard
+    master_scb[0] = `UART_BASE_SCOREBOARD::type_id::create({$psprintf("master_scb[%0d]", 0)}, this);
+    uvm_config_db#(`UART_MASTER_AGENT)::set(null, "/.+master_scb[*0]*/", "initor_m[0]", master_agent[0]);
+    uvm_config_db#(`UART_SLAVE_AGENT)::set(null, "/.+master_scb[*0]*/", "targets_s[0]", slave_agent[0]);
 
     // resetn
     uart_rst_model = smtdv_reset_model#(`UART_RST_VIF)::type_id::create("uart_rst_model");
@@ -61,13 +72,12 @@ class uart_base_test
       `uvm_fatal("NOVIF",{"virtual interface must be set for: ",get_full_name(),".uart_rst_vif"});
     uart_rst_model.create_rst_monitor(uart_rst_vif);
 
-    //sqlite3
-    smtdv_sqlite3::delete_db("uart_db.db");
-    smtdv_sqlite3::new_db("uart_db.db");
   endfunction
 
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
+    master_agent[0].mon.item_collected_port.connect(master_scb[0].initor[0]);
+    slave_agent[0].mon.item_collected_port.connect(master_scb[0].targets[0]);
   endfunction
 
   virtual function void end_of_elaboration_phase(uvm_phase phase);

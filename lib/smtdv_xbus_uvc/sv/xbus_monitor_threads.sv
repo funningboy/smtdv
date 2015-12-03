@@ -64,7 +64,7 @@ class xbus_export_collected_items#(
     `XBUS_ITEM item;
     `XBUS_MONITOR cmp;
 
-    string attr_longint[$] = `SMTDV_BUS_VIF_ATTR_LONGINT
+    string attr_longint[$] = `SMTDV_BUS_VIF_ATTR_LONGINT;
 
     `uvm_object_param_utils_begin(`XBUS_EXPORT_COLLECTED_ITEMS)
     `uvm_object_utils_end

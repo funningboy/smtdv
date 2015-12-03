@@ -2,6 +2,8 @@
 `ifndef __APB_MASTER_SEQS_SV__
 `define __APB_MASTER_SEQS_SV__
 
+typedef class apb_master_agent;
+
 class apb_master_base_seq #(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32
@@ -9,12 +11,20 @@ class apb_master_base_seq #(
     smtdv_sequence#(`APB_ITEM);
 
     `APB_ITEM item;
+    `APB_MASTER_AGENT agent;
 
-    `uvm_sequence_utils(`APB_MASTER_BASE_SEQ, `APB_MASTER_SEQUENCER)
+    `uvm_object_utils_begin(`APB_MASTER_BASE_SEQ)
+    `uvm_object_utils_end
+
+    `uvm_declare_p_sequencer(`APB_MASTER_SEQUENCER)
 
     function new(string name = "apb_master_base_seq");
       super.new(name);
     endfunction
+
+    virtual task body();
+      $cast(agent, p_sequencer.get_parent());
+    endtask
 
 endclass
 
@@ -25,7 +35,8 @@ class apb_master_1w_seq #(
   ) extends
     `APB_MASTER_BASE_SEQ;
 
-    `uvm_sequence_utils(`APB_MASTER_1W_SEQ, `APB_MASTER_SEQUENCER)
+    `uvm_object_param_utils_begin(`APB_MASTER_1W_SEQ)
+    `uvm_object_utils_end
 
     function new(string name = "apb_master_1w_seq");
       super.new(name);
@@ -56,7 +67,8 @@ class apb_master_1r_seq #(
   ) extends
     `APB_MASTER_BASE_SEQ;
 
-    `uvm_sequence_utils(`APB_MASTER_1R_SEQ, `APB_MASTER_SEQUENCER)
+    `uvm_object_param_utils_begin(`APB_MASTER_1R_SEQ)
+    `uvm_object_utils_end
 
     virtual task body();
       super.body();
@@ -89,7 +101,8 @@ class apb_master_1w1r_seq #(
     `APB_MASTER_1W_SEQ wseq;
     `APB_MASTER_1R_SEQ rseq;
 
-    `uvm_sequence_utils(`APB_MASTER_1W1R_SEQ, `APB_MASTER_SEQUENCER)
+    `uvm_object_param_utils_begin(`APB_MASTER_1W1R_SEQ)
+    `uvm_object_utils_end
 
     function new(string name = "apb_master_1w1r_seq");
       super.new(name);
@@ -115,7 +128,8 @@ class apb_master_stl_seq #(
     chandle m_dpi_mb;
     chandle m_dpi_trx;
 
-    `uvm_sequence_utils(`APB_MASTER_STL_SEQ, `APB_MASTER_SEQUENCER)
+    `uvm_object_param_utils_begin(`APB_MASTER_STL_SEQ)
+    `uvm_object_utils_end
 
     function new(string name = "apb_master_stl_seq");
       super.new(name);

@@ -5,7 +5,7 @@
 
 `include "uart_base_test.sv"
 `include "uart_seq_test.sv"
-//`include "uart_1w1r_test.sv"
+`include "uart_loopback_test.sv"
 //`include "uart_rand_test.sv"
 //`include "uart_stl_test.sv"
 //`include "uart_err_handle_test.sv"

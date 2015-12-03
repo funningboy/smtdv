@@ -10,7 +10,6 @@ import_files =
 
 [systemverilog]
 src_files =
-  ${main:root}/lib/smtdv_common/smtdv_common_pkg.sv
 
 include_files =
   ${smtdv_sqlite3.systemverilog:include_files}

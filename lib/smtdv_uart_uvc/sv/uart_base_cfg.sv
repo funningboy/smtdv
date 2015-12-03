@@ -5,10 +5,6 @@ class uart_base_cfg
   extends
   smtdv_cfg;
 
-  //UART topology parameters
-  uvm_active_passive_enum  is_tx_active = UVM_ACTIVE;
-  uvm_active_passive_enum  is_rx_active = UVM_PASSIVE;
-
   // UART device parameters
   rand bit [7:0]    baud_rate_gen;  // Baud Rate Generator Register
   rand bit [7:0]    baud_rate_div;  // Baud Rate Divider Register
@@ -44,8 +40,6 @@ class uart_base_cfg
   // These declarations implement the create() and get_type_name()
   // as well as enable automation of the tx_frame's fields
   `uvm_object_utils_begin(`UART_BASE_CFG)
-    `uvm_field_enum(uvm_active_passive_enum, is_tx_active, UVM_DEFAULT)
-    `uvm_field_enum(uvm_active_passive_enum, is_rx_active, UVM_DEFAULT)
     `uvm_field_int(baud_rate_gen, UVM_DEFAULT + UVM_DEC)
     `uvm_field_int(baud_rate_div, UVM_DEFAULT + UVM_DEC)
     `uvm_field_int(char_length, UVM_DEFAULT)

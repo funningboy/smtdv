@@ -2,9 +2,6 @@
 `ifndef __APB_SCOREBOARD_SV__
 `define __APB_SCOREBOARD_SV__
 
-`uvm_analysis_imp_decl(_initor)
-`uvm_analysis_imp_decl(_target)
-
 class apb_base_scoreboard #(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32,
@@ -17,6 +14,15 @@ class apb_base_scoreboard #(
       NUM_OF_TARGETS,
       NUM_OF_TARGETS
     );
+
+  `uvm_analysis_imp_decl(_initor)
+  `uvm_analysis_imp_decl(_target)
+
+  `APB_ITEM rbox[$];  // rd mem channel backdoor
+  `APB_ITEM wbox[$];  // wr mem channel backdoor
+
+  `APB_MEM_BKDOR_WR_COMP thc0;
+  `APB_MEM_BKDOR_RD_COMP thc1;
 
   `APB_ITEM wr_pool[ADDR_WIDTH-1:0][$];
   `APB_ITEM rd_pool[ADDR_WIDTH-1:0][$];
@@ -42,6 +48,12 @@ class apb_base_scoreboard #(
     end
   endfunction
 
+  virtual function void build_phase(uvm_phase phase);
+    super.build_phase(phase);
+    thc0 = `APB_MEM_BKDOR_WR_COMP::type_id::create("apb_mem_bkdor_wr_comp"); thc0.scb = this; this.th_handler.add(thc0);
+    thc1 = `APB_MEM_BKDOR_RD_COMP::type_id::create("apb_mem_bkdor_rd_comp"); thc1.scb = this; this.th_handler.add(thc1);
+  endfunction
+
   virtual function void end_of_elaboration_phase(uvm_phase phase);
     super.end_of_elaboration_phase(phase);
     for(int i=0; i<NUM_OF_INITOR; i++) begin
@@ -61,11 +73,21 @@ class apb_base_scoreboard #(
   // bind at master side
   virtual function void write_initor(`APB_ITEM item);
     super._write_initor(item);
+
+    // make sure master RD trx is completed after slave deasserted
+    if (item.trs_t == RD) begin
+      rbox.push_back(item);
+    end
   endfunction
 
   // bind at slave side
   virtual function void write_target(`APB_ITEM item);
     super._write_target(item);
+
+  // make sure master WR trx is completed before slave asserted
+    if (item.trs_t == WR) begin
+      wbox.push_back(item);
+    end
   endfunction
 
 endclass

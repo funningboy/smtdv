@@ -116,6 +116,7 @@ class uart_start_synchronizer#(
     virtual task run();
       if ($cast(tx_cfg, this.cmp.cfg)) begin
         forever begin
+          // collect tx channel
           @(posedge this.cmp.vif.clk);
           if (!this.cmp.vif.resetn) begin
             this.cmp.serial_d1 = 1;
@@ -126,7 +127,8 @@ class uart_start_synchronizer#(
           end
         end
       end
-      if ($cast(rx_cfg, this.cmp.cfg)) begin
+      // collect rx channel
+      if ($cast(rx_cfg, this.cmp.cfg) && this.cmp.has_rx) begin
         forever begin
           @(posedge this.cmp.vif.clk);
           if (!this.cmp.vif.resetn) begin
@@ -135,6 +137,20 @@ class uart_start_synchronizer#(
           end else begin
             this.cmp.serial_d1 = this.cmp.serial_b;
             this.cmp.serial_b = this.cmp.vif.rxd;
+          end
+        end
+      end
+
+      // collect tx channel to tx with loopback condition
+      if ($cast(rx_cfg, this.cmp.cfg) && this.cmp.has_tx) begin
+        forever begin
+          @(posedge this.cmp.vif.clk);
+          if (!this.cmp.vif.resetn) begin
+            this.cmp.serial_d1 = 1;
+            this.cmp.serial_b = 1;
+          end else begin
+            this.cmp.serial_d1 = this.cmp.serial_b;
+            this.cmp.serial_b = this.cmp.vif.txd;
           end
         end
       end
@@ -193,7 +209,7 @@ class uart_sample_and_store#(
     endtask
 
     virtual task collect_item();
-        bit [7:0] payload_byte;
+        bit bb;
         `uvm_info(this.cmp.get_full_name(), $psprintf("Collecting a item: %0d", this.cmp.num_items+1), UVM_HIGH)
         item = `UART_ITEM::type_id::create("uart_item");
         item.transmit_delay = this.cmp.transmit_delay;
@@ -201,6 +217,7 @@ class uart_sample_and_store#(
         item.parity_type = GOOD_PARITY;
         item.bg_cyc = this.cmp.vif.cyc;
         item.bg_time = $time;
+        this.cmp.item_asserted_port.write(item);
         this.cmp.num_of_bits_rcvd = 0;
         void'(this.cmp.begin_tr(item, this.cmp.get_full_name()));
 
@@ -211,12 +228,12 @@ class uart_sample_and_store#(
             if (this.cmp.sample_clk) begin
               this.cmp.num_of_bits_rcvd++;
               if ((this.cmp.num_of_bits_rcvd > 0) && (this.cmp.num_of_bits_rcvd <= this.cmp.cfg.char_len_val)) begin // sending "data bits"
-                item.payload[this.cmp.num_of_bits_rcvd-1] = this.cmp.serial_b;
-                payload_byte = item.payload[this.cmp.num_of_bits_rcvd-1];
-                `uvm_info(this.cmp.get_full_name(), $psprintf("Received a item data bit:'b%0b", payload_byte), UVM_HIGH)
+                item.pack_data(this.cmp.num_of_bits_rcvd-1, this.cmp.serial_b);
+                bb = item.unpack_data(this.cmp.num_of_bits_rcvd-1);
+                `uvm_info(this.cmp.get_full_name(), $psprintf("Received a item data bit:'b%0b", bb), UVM_HIGH)
               end
-              this.cmp.msb_lsb_data[0] =  item.payload[0] ;
-              this.cmp.msb_lsb_data[1] =  item.payload[this.cmp.cfg.char_len_val-1] ;
+              this.cmp.msb_lsb_data[0] =  item.unpack_data(0) ;
+              this.cmp.msb_lsb_data[1] =  item.unpack_data(this.cmp.cfg.char_len_val-1);
               if ((this.cmp.num_of_bits_rcvd == (1 + this.cmp.cfg.char_len_val)) && (this.cmp.cfg.parity_en)) begin // sending "parity bit" if parity is enabled
                 item.parity = this.cmp.serial_b;
                 `uvm_info(this.cmp.get_full_name(), $psprintf("Received Parity bit:'b%0b", item.parity), UVM_HIGH)
@@ -239,7 +256,11 @@ class uart_sample_and_store#(
           end
        item.ed_cyc = this.cmp.vif.cyc;
        item.ed_time = $time;
+       item.complete = 1;
+       item.addr_complete = 1;
+       item.data_complete = 1;
        void'(this.cmp.end_tr(item));
+       this.cmp.item_collected_port.write(item);
 
        this.cmp.num_items++;
        `uvm_info(this.cmp.get_full_name(), $psprintf("Collected the following Item No:%0d\n%s", this.cmp.num_items, item.sprint()), UVM_MEDIUM)
@@ -259,7 +280,7 @@ class uart_export_collected_items#(
     `UART_ITEM item;
     `UART_MONITOR cmp;
 
-    string attr_longint[$] = `SMTDV_BUS_VIF_ATTR_LONGINT
+    string attr_longint[$] = `SMTDV_BUS_VIF_ATTR_LONGINT;
 
     `uvm_object_param_utils_begin(`UART_EXPORT_COLLECTED_ITEMS)
     `uvm_object_utils_end
@@ -289,8 +310,9 @@ class uart_export_collected_items#(
     virtual task populate_item(ref `UART_ITEM item);
       string table_nm = $psprintf("\"%s\"", this.cmp.get_full_name());
       smtdv_sqlite3::insert_value(table_nm, "dec_uuid",    $psprintf("%d", item.get_sequence_id()));
-      smtdv_sqlite3::insert_value(table_nm, "dec_rw",      $psprintf("%d", item.trs_t));
-      smtdv_sqlite3::insert_value(table_nm, "dec_data_000", $psprintf("%d", item.unpack_data()));
+      smtdv_sqlite3::insert_value(table_nm, "dec_addr",    $psprintf("%d", 0));
+      smtdv_sqlite3::insert_value(table_nm, "dec_rw",      $psprintf("%d", WR));
+      smtdv_sqlite3::insert_value(table_nm, "dec_data_000", $psprintf("%d", item.data_beat[0]));
       smtdv_sqlite3::insert_value(table_nm, "dec_bg_cyc",  $psprintf("%d", item.bg_cyc));
       smtdv_sqlite3::insert_value(table_nm, "dec_ed_cyc",  $psprintf("%d", item.ed_cyc));
       smtdv_sqlite3::insert_value(table_nm, "dec_bg_time", $psprintf("%d", item.bg_time));
@@ -308,7 +330,7 @@ class uart_collect_stop_signal#(
     smtdv_run_thread;
 
     `UART_MONITOR cmp;
-    int stop_cnt = 5000;
+    int stop_cnt = 1000;
     int cnt = 0;
 
    `uvm_object_param_utils_begin(`UART_COLLECT_STOP_SIGNAL)

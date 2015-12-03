@@ -33,5 +33,5 @@ include_files =
 [provider]
 name = funningboy@gmail.com
 repo_name = rtl cdn_busmatrix
-repo_root = $PWD/lib/smtdv_common
+repo_root = rtl cdn_busmatrix
 revision = 1

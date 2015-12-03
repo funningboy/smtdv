@@ -7,6 +7,9 @@ typedef enum bit {GOOD_PARITY, BAD_PARITY} parity_e;
 
 `define UART_PARAMETER #()
 `define UART_PARAMETER2 #(CFG)
+`define UART_PARAMETER3 #(NUM_OF_INITOR, NUM_OF_TARGETS)
+
+`define UART_TX_MONITOR uart_monitor `UART_PARAMETER
 
 `define UART_RST_VIF virtual smtdv_gen_rst_if #("uart_rst_if", 100, 0)
 
@@ -31,12 +34,16 @@ typedef enum bit {GOOD_PARITY, BAD_PARITY} parity_e;
 `define UART_BASE_CFG uart_base_cfg
 
 `define UART_RX_CFG uart_rx_cfg
+`define UART_SLAVE_CFG `UART_RX_CFG
 `define UART_RX_AGENT uart_rx_agent `UART_PARAMETER
+`define UART_SLAVE_AGENT `UART_RX_AGENT
 `define UART_RX_DRIVER uart_rx_driver `UART_PARAMETER
 `define UART_RX_SEQUENCER uart_rx_sequencer `UART_PARAMETER
 
 `define UART_TX_CFG uart_tx_cfg
+`define UART_MASTER_CFG `UART_TX_CFG
 `define UART_TX_AGENT uart_tx_agent `UART_PARAMETER
+`define UART_MASTER_AGENT `UART_TX_AGENT
 `define UART_TX_DRIVER uart_tx_driver `UART_PARAMETER
 `define UART_TX_SEQUENCER uart_tx_sequencer `UART_PARAMETER
 
@@ -57,8 +64,17 @@ typedef enum bit {GOOD_PARITY, BAD_PARITY} parity_e;
 `define RX_BAD_PARITY_SEQ rx_bad_parity_seq `UART_PARAMETER
 `define RX_TRANSMIT_SEQ rx_transmit_seq `UART_PARAMETER
 `define RX_SHORT_TRANSMIT_SEQ rx_short_transmit_seq `UART_PARAMETER
+`define RX_LOOPBACK_BASE_SEQ rx_loopback_base_seq `UART_PARAMETER
+
+`define UART_ENV uart_env
+`define UART_BASE_SCOREBOARD uart_base_scoreboard `UART_PARAMETER3
+`define UART_MEM_BKDOR_WR_COMP uart_mem_bkdor_wr_comp `UART_PARAMETER3
+`define UART_MEM_BKDOR_RD_COMP uart_mem_bkdor_rd_comp `UART_PARAMETER3
+`define UART_BUS_BACKDOOR uart_bus_backdoor `UART_PARAMETER
+`define UART_MEM_BACKDOOR uart_mem_backdoor `UART_PARAMETER
 
 `define UART_BASE_TEST uart_base_test
 `define UART_SEQ_TEST uart_seq_test
+`define UART_LOOPBACK_TEST uart_loopback_test
 
 `endif // __UART_TYPEDEFS_SV__

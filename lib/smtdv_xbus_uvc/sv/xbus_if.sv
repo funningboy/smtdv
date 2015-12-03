@@ -25,6 +25,7 @@ interface xbus_if #(
     logic [DATA_WIDTH-1:0] wdata
   );
 
+  bit has_force = 1;
   bit has_checks = 1;
   bit has_coverage = 1;
   bit has_performance = 1;

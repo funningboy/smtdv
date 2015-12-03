@@ -82,8 +82,8 @@ module top();
   );
 
   initial begin
-    uvm_config_db#(`UART_VIF)::set(uvm_root::get(), "*.tx_agent[*0]*", "vif", `UARTTXVIF(0));
-    uvm_config_db#(`UART_VIF)::set(uvm_root::get(), "*.rx_agent[*0]*", "vif", `UARTRXVIF(0));
+    uvm_config_db#(`UART_VIF)::set(uvm_root::get(), "*.master_agent[*0]*", "vif", `UARTTXVIF(0)); // bind TX as master
+    uvm_config_db#(`UART_VIF)::set(uvm_root::get(), "*.slave_agent[*0]*", "vif", `UARTRXVIF(0));  // bind RX as slave
     uvm_config_db#(`UART_RST_VIF)::set(uvm_root::get(), "*", "uart_rst_vif", uart_rst_if);
     run_test();
   end

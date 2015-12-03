@@ -5,18 +5,19 @@
 /*################################
   Class smtdv_generic_memory START
 #################################*/
-class smtdv_generic_memory #(GENE_MEM_ADDR_WIDTH = 64) extends uvm_object;
+class smtdv_generic_memory #(ADDR_WIDTH = 64, DATA_WIDTH = 128) extends uvm_object;
 
-  typedef bit [(GENE_MEM_ADDR_WIDTH-1):0] gene_mem_addr_t;
-  typedef bit [15:0][7:0] byte16_t;
+  typedef bit [(ADDR_WIDTH-1):0] gene_mem_addr_t;
+  typedef bit [(DATA_WIDTH>>3)-1:0][7:0] byte16_t;
 
   bit has_callback = 1;
-  smtdv_generic_memory_cb#(GENE_MEM_ADDR_WIDTH) mem_cb;
+  smtdv_generic_memory_cb#(ADDR_WIDTH, DATA_WIDTH) mem_cb;
 
 //byte memory[gene_mem_addr_t];
   reg [7:0] memory[gene_mem_addr_t];
 
-  `uvm_object_param_utils(smtdv_generic_memory#(GENE_MEM_ADDR_WIDTH))
+  `uvm_object_param_utils_begin(smtdv_generic_memory#(ADDR_WIDTH, DATA_WIDTH))
+  `uvm_object_utils_end
 
   extern function new(string name = "smtdv_generic_memory");
   extern virtual task mem_store_byte(gene_mem_addr_t addr, byte data[], longint cyc);
@@ -117,10 +118,10 @@ task smtdv_generic_memory::mem_load_byte(gene_mem_addr_t addr, int bcnt, ref byt
       end
     data[i]= memory[addr+i];
     if (has_callback) begin
-      // skip RD cb while accessing MEM
+      // skip RD cb while accessing MEM, only record wr trx
       //void'(mem_cb.mem_load_byte_cb(addr+i, data[i], cyc));
     end
-    end
+  end
 
 endtask : mem_load_byte
 

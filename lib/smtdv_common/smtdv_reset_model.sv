@@ -316,7 +316,7 @@ endtask
 //===========================================
 // Reset Model Declaration
 //===========================================
-class smtdv_reset_model #(type VIF = int) extends reset_comp_group;
+class smtdv_reset_model #(type VIF = virtual interface smtdv_gen_rst_if) extends reset_comp_group;
 
   VIF         vif;
 

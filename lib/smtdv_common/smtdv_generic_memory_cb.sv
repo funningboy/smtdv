@@ -1,14 +1,17 @@
 
 // as generic memory cb func
-class smtdv_generic_memory_cb#(GENE_MEM_ADDR_WIDTH = 64)
+class smtdv_generic_memory_cb#(ADDR_WIDTH = 64, DATA_WIDTH = 128)
   extends
   uvm_object;
 
-  typedef bit [(GENE_MEM_ADDR_WIDTH-1):0] gene_mem_addr_t;
-  typedef bit [15:0][7:0] byte16_t;
+  typedef bit [ADDR_WIDTH-1:0] gene_mem_addr_t;
+  typedef bit [(DATA_WIDTH>>3)-1:0][7:0] byte16_t;
 
-  string attr_longint[$] = `SMTDV_MEM_VIF_ATTR_LONGINT
+  string attr_longint[$] = `SMTDV_MEM_VIF_ATTR_LONGINT;
   string table_nm = "";
+
+  `uvm_object_param_utils_begin(smtdv_generic_memory_cb#(ADDR_WIDTH, DATA_WIDTH))
+  `uvm_object_utils_end
 
   function new(string name="smtdv_generic_memory_cb");
     super.new(name);
@@ -18,7 +21,6 @@ class smtdv_generic_memory_cb#(GENE_MEM_ADDR_WIDTH = 64)
     if (table_nm == "")begin
        `uvm_fatal("NOTBNM", {$psprintf("set table name at generic_mem cb")})
     end
-    table_nm = $psprintf("\"%s\"", table_nm);
     `uvm_info(this.get_full_name(), {table_nm}, UVM_LOW)
     smtdv_sqlite3::create_tb(table_nm);
     foreach (attr_longint[i])
@@ -47,6 +49,7 @@ class smtdv_generic_memory_cb#(GENE_MEM_ADDR_WIDTH = 64)
     smtdv_sqlite3::flush_value(table_nm);
   endfunction
 
+  // TODO: future tasks ....
   // find first best match trx
   // find last best match trx
   //static function void find_last_best_match_trx(string table_nm, ref smtdv_sequence_item src, ref smtdv_sequence_item ret);

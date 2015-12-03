@@ -73,7 +73,19 @@
   "dec_ed_cyc", \
   "dec_bg_time", \
   "dec_ed_time" \
-  };
+  }
+
+`define SMTDV_FIFO_VIF_ATTR_LONGINT \
+  { \
+  "dec_uuid", \
+  "dec_id", \
+  "dec_rw", \
+  "dec_data_000", \
+  "dec_bg_cyc", \
+  "dec_ed_cyc", \
+  "dec_bg_time", \
+  "dec_ed_time" \
+  }
 
 // define global bus vif attr table field
 `define SMTDV_BUS_VIF_ATTR_LONGINT \
@@ -108,7 +120,7 @@
       "dec_ed_cyc", \
       "dec_bg_time", \
       "dec_ed_time" \
-    };
+    }
 
 // define global bus/mem callback event while using backdoor access
 `define SMTDV_CB_EVENT \
@@ -143,6 +155,6 @@
     "dec_ed_cyc": SMTDV_CB_ED_CYC, \
     "dec_bg_time": SMTDV_CB_BG_TIME, \
     "dec_ed_time": SMTDV_CB_ED_TIME \
-  };
+  }
 
 `endif

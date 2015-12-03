@@ -2,7 +2,7 @@
 `ifndef __SMTDV_DRIVER_SV__
 `define __SMTDV_DRIVER_SV__
 
-class smtdv_driver #(type VIF = int,
+class smtdv_driver #(type VIF = virtual interface smtdv_if,
                     type CFG = uvm_object,
                     type REQ = uvm_sequence_item,
                     type RSP = REQ
@@ -12,8 +12,11 @@ class smtdv_driver #(type VIF = int,
   CFG cfg;
 
   smtdv_thread_handler #(CFG) th_handler;
+  // as backend services tasks/handler
+  smtdv_force_vif #(VIF, CFG, REQ, RSP) b0;
+  smtdv_thread_handler #(CFG) bk_handler;
 
-  `uvm_component_param_utils_begin(smtdv_driver#(VIF, CFG))
+  `uvm_component_param_utils_begin(smtdv_driver#(VIF, CFG, REQ, RSP))
     // Cadence doesn't support this registration
     //`uvm_field_queue_object(thread_q, UVM_ALL_ON)
   `uvm_component_utils_end
@@ -25,6 +28,9 @@ class smtdv_driver #(type VIF = int,
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
     th_handler = smtdv_thread_handler#(CFG)::type_id::create("smtdv_driver_threads", this);
+    // build backend services
+    bk_handler = smtdv_thread_handler#(CFG)::type_id::create("smtdv_backend_threads", this);
+    b0 = smtdv_force_vif#(VIF, CFG, REQ, RSP)::type_id::create("smtdv_force_vif"); b0.cmp = this; this.bk_handler.add(b0);
   endfunction
 
   extern virtual task run_phase(uvm_phase phase);

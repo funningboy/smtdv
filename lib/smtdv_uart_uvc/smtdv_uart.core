@@ -5,12 +5,13 @@ uart = ${main:root}/lib/smtdv_uart_uvc
 debug = FALSE
 spawn = TRUE
 timeout =
-simulator = ius
-test = uart_seq_test
+simulator = mti
+test = uart_loopback_test
 # add your test below
 tests =
-  uart_stl_test
+  uart_base_test
   uart_seq_test
+  uart_loopback_test
 
 [cores]
 import_files =
@@ -22,7 +23,7 @@ import_files =
 src_files =
   ${smtdv_common.systemverilog:src_files}
   ${main:uart}/sv/uart_pkg.sv
-  ${main:uart}/test/uart_top.sv
+  ${main:uart}/tb/uart_top.sv
 
 include_files =
   ${smtdv_common.systemverilog:include_files}

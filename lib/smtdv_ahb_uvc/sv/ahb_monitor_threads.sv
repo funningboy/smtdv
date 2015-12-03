@@ -86,7 +86,7 @@ class ahb_export_collected_items#(
     `AHB_ITEM item;
     `AHB_MONITOR cmp;
 
-    static string attr_longint[$] = `SMTDV_BUS_VIF_ATTR_LONGINT
+    static string attr_longint[$] = `SMTDV_BUS_VIF_ATTR_LONGINT;
 
     `uvm_object_param_utils_begin(`AHB_EXPORT_COLLECTED_ITEMS)
     `uvm_object_utils_end

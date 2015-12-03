@@ -10,9 +10,9 @@ typedef enum bit [0:0] {OK, ERR} trx_rsp_t;
 `define APB_PARAMETER #(ADDR_WIDTH, DATA_WIDTH)
 `define APB_PARAMETER2 #(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS)
 
-`define APB_RST_VIF virtual smtdv_gen_rst_if #("apb_rst_if", 100, 0)
+`define APB_RST_VIF virtual interface smtdv_gen_rst_if #("apb_rst_if", 100, 0)
 
-`define APB_VIF virtual apb_if `APB_PARAMETER
+`define APB_VIF virtual interface apb_if `APB_PARAMETER
 `define APB_ITEM apb_item `APB_PARAMETER
 
 `define APB_MONITOR apb_monitor `APB_PARAMETER
@@ -43,6 +43,8 @@ typedef enum bit [0:0] {OK, ERR} trx_rsp_t;
 
 `define APB_SLAVE_BASE_SEQ apb_slave_base_seq `APB_PARAMETER
 `define APB_SLAVE_BASE_RESP_SEQ apb_slave_base_resp_seq `APB_PARAMETER
+`define APB_SLAVE_ERR_INJECT_SEQ apb_slave_err_inject_seq `APB_PARAMETER
+`define APB_SLAVE_HIJACK_SEQ apb_slave_hijack_seq `APB_PARAMETER
 
 `define APB_MASTER_BASE_SEQ apb_master_base_seq `APB_PARAMETER
 `define APB_MASTER_1W_SEQ apb_master_1w_seq `APB_PARAMETER
@@ -77,6 +79,8 @@ typedef enum bit [0:0] {OK, ERR} trx_rsp_t;
 `define APB_RAND_TEST apb_rand_test
 `define APB_CSIM_TEST apb_csim_test
 `define APB_STL_TEST apb_stl_test
+`define APB_ERR_INJECT_TEST apb_err_inject_test
+`define APB_HIJACK_TEST apb_hijack_test
 
 `define APB_REG_ADAPTER apb_reg_adapter
 

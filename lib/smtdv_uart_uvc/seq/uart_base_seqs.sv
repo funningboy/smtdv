@@ -1,28 +1,3 @@
-/*-------------------------------------------------------------------------
-File name   : uart_seq_lib.sv
-Title       : sequence library file for uart uvc
-Project     :
-Created     :
-Description : describes all UART UVC sequences
-Notes       :
-----------------------------------------------------------------------*/
-//   Copyright 1999-2010 Cadence Design Systems, Inc.
-//   All Rights Reserved Worldwide
-//
-//   Licensed under the Apache License, Version 2.0 (the
-//   "License"); you may not use this file except in
-//   compliance with the License.  You may obtain a copy of
-//   the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in
-//   writing, software distributed under the License is
-//   distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-//   CONDITIONS OF ANY KIND, either express or implied.  See
-//   the License for the specific language governing
-//   permissions and limitations under the License.
-//----------------------------------------------------------------------
 
 `ifndef __UART_BASE_SEQS_LIB_SV__
 `define __UART_BASE_SEQS_LIB_SV__
@@ -69,7 +44,11 @@ class uart_incr_payload_seq #(
     virtual task body();
       `uvm_info(get_type_name(), "UART sequencer executing sequence...", UVM_LOW)
       for (int i = 0; i < cnt; i++) begin
-        `uvm_do_with(req, {req.payload == (start_payload +i*3)%256; })
+        start_payload = (start_payload +i*3)%256;
+
+        `uvm_info(get_type_name(), $psprintf("UART sequencer try to send: %d\n", start_payload), UVM_HIGH)
+
+        `uvm_do_with(req, {req.data_beat[0] == start_payload; })
       end
     endtask
 endclass

@@ -1,6 +1,8 @@
 `ifndef __AHB_MASTER_SEQS_SV__
 `define __AHB_MASTER_SEQS_SV__
 
+typedef class ahb_master_agent;
+
 class ahb_master_base_seq #(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32
@@ -8,12 +10,20 @@ class ahb_master_base_seq #(
     smtdv_sequence#(`AHB_ITEM);
 
     `AHB_ITEM item;
+    `AHB_MASTER_AGENT agent;
 
-    `uvm_sequence_utils(`AHB_MASTER_BASE_SEQ, `AHB_MASTER_SEQUENCER)
+    `uvm_object_utils_begin(`AHB_MASTER_BASE_SEQ)
+    `uvm_object_utils_end
+
+    `uvm_declare_p_sequencer(`AHB_MASTER_SEQUENCER)
 
     function new(string name = "ahb_master_base_seq");
       super.new(name);
     endfunction
+
+    virtual task body();
+      $cast(agent, p_sequencer.get_parent());
+    endtask
 
 endclass
 
@@ -26,7 +36,8 @@ class ahb_master_unlock_incr_seq #(
 
      mailbox #(`AHB_ITEM) tbox;
 
-    `uvm_sequence_utils(`AHB_MASTER_UNLOCK_INCR_SEQ, `AHB_MASTER_SEQUENCER)
+    `uvm_object_param_utils_begin(`AHB_MASTER_UNLOCK_INCR_SEQ)
+    `uvm_object_utils_end
 
     function new(string name = "ahb_master_unlock_incr_seq");
       super.new(name);
@@ -88,7 +99,8 @@ class ahb_master_unlock_wrap_seq #(
 
      mailbox #(`AHB_ITEM) tbox;
 
-    `uvm_sequence_utils(`AHB_MASTER_UNLOCK_WRAP_SEQ, `AHB_MASTER_SEQUENCER)
+    `uvm_object_param_utils_begin(`AHB_MASTER_UNLOCK_WRAP_SEQ)
+    `uvm_object_utils_end
 
     function new(string name = "ahb_master_unlock_wrap_seq");
       super.new(name);
@@ -150,7 +162,8 @@ class ahb_master_lock_incr_seq #(
 
      mailbox #(`AHB_ITEM) tbox;
 
-    `uvm_sequence_utils(`AHB_MASTER_LOCK_INCR_SEQ, `AHB_MASTER_SEQUENCER)
+    `uvm_object_param_utils_begin(`AHB_MASTER_LOCK_INCR_SEQ)
+    `uvm_object_utils_end
 
     function new(string name = "ahb_master_lock_incr_seq");
       super.new(name);
@@ -214,7 +227,8 @@ class ahb_master_lock_wrap_seq #(
 
      mailbox #(`AHB_ITEM) tbox;
 
-    `uvm_sequence_utils(`AHB_MASTER_LOCK_WRAP_SEQ, `AHB_MASTER_SEQUENCER)
+    `uvm_object_param_utils_begin(`AHB_MASTER_LOCK_WRAP_SEQ)
+    `uvm_object_utils_end
 
     function new(string name = "ahb_master_lock_wrap_seq");
       super.new(name);
@@ -277,7 +291,8 @@ class ahb_master_lock_swap_seq #(
 
      mailbox #(`AHB_ITEM) tbox;
 
-    `uvm_sequence_utils(`AHB_MASTER_LOCK_SWAP_SEQ, `AHB_MASTER_SEQUENCER)
+    `uvm_object_param_utils_begin(`AHB_MASTER_LOCK_SWAP_SEQ)
+    `uvm_object_utils_end
 
     function new(string name = "ahb_master_lock_swap_seq");
       super.new(name);
@@ -299,8 +314,6 @@ class ahb_master_stl_seq #(
     static string m_file = "../stl/incr8.stl";
     chandle m_dpi_mb;
     chandle m_dpi_trx;
-
-  `uvm_declare_p_sequencer(`AHB_MASTER_SEQUENCER)
 
    // register sequence with a sequencer
    `uvm_object_param_utils_begin(`AHB_MASTER_STL_SEQ)

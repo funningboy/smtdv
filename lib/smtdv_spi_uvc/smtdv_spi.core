@@ -1,16 +1,15 @@
 [main]
-description = "SMTDV XBUS lib"
+description = "SMTDV SPI lib"
 root = os.getenv("SMTDV_HOME")
 xbus = ${main:root}/lib/smtdv_xbus_uvc
 debug = FALSE
 spawn = TRUE
 timeout =
 simulator = ius
-test = xbus_stl_test
+test = spi_base_test
 # add your test below
 tests =
-  xbus_stl_test
-  xbus_1w1r_test
+  spi_base_test
 
 [cores]
 import_files =

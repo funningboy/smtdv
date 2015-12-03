@@ -11,6 +11,7 @@ class apb_item #(
   rand bit [ADDR_WIDTH-1:0] addr;
   rand bit [ADDR_WIDTH-1:0] addrs[$];
   rand bit [(DATA_WIDTH>>3)-1:0][7:0] data_beat[$];
+  int                      offset = DATA_WIDTH>>3;
 
   rand bit [15:0]           sel;
   rand trx_rsp_t	          rsp;
@@ -34,6 +35,7 @@ class apb_item #(
     `uvm_field_queue_int(addrs, UVM_DEFAULT)
     `uvm_field_queue_int(data_beat, UVM_DEFAULT)
     `uvm_field_enum(trx_rsp_t, rsp, UVM_ALL_ON)
+    `uvm_field_int(offset, UVM_ALL_ON)
     `ifdef APB_DEBUG
       `uvm_field_int(psel_L2H, UVM_DEFAULT)
       `uvm_field_int(penable_L2H, UVM_DEFAULT)

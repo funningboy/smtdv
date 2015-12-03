@@ -5,10 +5,7 @@
 import uvm_pkg::*;
 `include "uvm_macros.svh"
 
-interface smtdv_if #(
-  parameter integer ADDR_WIDTH  = 14,
-  parameter integer DATA_WIDTH = 32
-) (
+interface smtdv_if (
   input clk, // hclk
   input resetn // hresetn
   );

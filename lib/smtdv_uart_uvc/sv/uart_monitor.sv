@@ -4,11 +4,10 @@
 typedef class uart_rx_sequencer;
 
 class uart_monitor #(
-  type CFG = `UART_BASE_CFG
 ) extends
   smtdv_monitor#(
     `UART_VIF,
-    CFG
+    `UART_BASE_CFG
   );
 
   `UART_RX_SEQUENCER seqr;
@@ -26,6 +25,9 @@ class uart_monitor #(
   bit serial_b;
   bit [1:0]  msb_lsb_data;
   int transmit_delay;
+
+  bit has_rx = 0;
+  bit has_tx = 0;
 
   /* tlm analysis port to dumper/scoreboard or third part golden model(c/systemc) */
   uvm_analysis_port #(`UART_ITEM) item_collected_port;

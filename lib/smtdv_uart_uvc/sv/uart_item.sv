@@ -7,7 +7,7 @@ class uart_item #(
   smtdv_sequence_item;
 
   rand bit start_bit;
-  rand bit [7:0] payload;
+  rand bit [7:0] data_beat[$];
   bit parity;
   rand bit [1:0] stop_bits;
   rand bit [3:0] error_bits;
@@ -16,15 +16,18 @@ class uart_item #(
   rand parity_e parity_type;
   rand int transmit_delay;
 
+  // as default value
   constraint default_txmit_delay {transmit_delay >= 0; transmit_delay < 20;}
   constraint default_start_bit { start_bit == 1'b0;}
   constraint default_stop_bits { stop_bits == 2'b11;}
   constraint default_parity_type { parity_type==GOOD_PARITY;}
   constraint default_error_bits { error_bits == 4'b0000;}
 
+  constraint c_data_size { data_beat.size() == 1; }
+
   `uvm_object_param_utils_begin(`UART_ITEM)
     `uvm_field_int(start_bit, UVM_DEFAULT)
-    `uvm_field_int(payload, UVM_DEFAULT)
+    `uvm_field_queue_int(data_beat, UVM_DEFAULT)
     `uvm_field_int(parity, UVM_DEFAULT)
     `uvm_field_int(stop_bits, UVM_DEFAULT)
     `uvm_field_int(error_bits, UVM_DEFAULT)
@@ -43,11 +46,11 @@ class uart_item #(
     bit temp_parity;
 
     if (num_of_data_bits == 6)
-      temp_parity = ^payload[5:0];
+      temp_parity = ^data_beat[0][5:0];
     else if (num_of_data_bits == 7)
-      temp_parity = ^payload[6:0];
+      temp_parity = ^data_beat[0][6:0];
     else
-      temp_parity = ^payload;
+      temp_parity = ^data_beat[0];
 
     case(ParityMode[0])
       0: temp_parity = ~temp_parity;
@@ -69,8 +72,12 @@ class uart_item #(
     parity = calc_parity();
   endfunction : post_randomize
 
-  function bit[7:0] unpack_data();
-    return payload;
+  function bit unpack_data(int idx);
+    return data_beat[0][idx];
+  endfunction
+
+  function void pack_data(int idx, bit b);
+    data_beat[0][idx] = b;
   endfunction
 
 endclass

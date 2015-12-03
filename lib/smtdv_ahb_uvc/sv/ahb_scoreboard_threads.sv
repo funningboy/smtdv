@@ -28,7 +28,7 @@ class ahb_mem_bkdor_wr_comp #(
       int sid;
       string table_nm;
 
-      begin
+      forever begin
         sid = -1;
         wait(scb.rbox.size()>0);
         item = scb.rbox.pop_front();
@@ -39,20 +39,21 @@ class ahb_mem_bkdor_wr_comp #(
         table_nm = $psprintf("\"%s\"", scb.targets_s[sid].seqr.get_full_name());
 
         while(bkdor.timeout>0) begin
-          if (!bkdor.compare(table_nm, item, ritem)) begin
-            bkdor.status = FALSE;
+          if (bkdor.match == FALSE) begin
+            if (bkdor.compare(table_nm, item, ritem)) begin
+              bkdor.match = TRUE;
+            end
           end
           @(posedge scb.initor_m[0].vif.clk);
           bkdor.timeout--;
         end
 
-        if (bkdor.status == FALSE) begin
+        if (bkdor.match == FALSE) begin
           `uvm_error(scb.get_full_name(), {$psprintf("BACKDOOR COMPARE WRONG DATA \n%s, %s", item.sprint(), ritem.sprint())})
         end
-
+        bkdor.match = FALSE;
       end
     endtask
-
 
 endclass
 
@@ -91,17 +92,19 @@ class ahb_mem_bkdor_rd_comp #(
         table_nm = $psprintf("\"%s\"", scb.targets_s[sid].seqr.get_full_name());
 
         while(bkdor.timeout>0) begin
-          if (!bkdor.compare(table_nm, item, ritem)) begin
-            bkdor.status = FALSE;
+          if (bkdor.match == FALSE) begin
+            if (bkdor.compare(table_nm, item, ritem)) begin
+              bkdor.match = TRUE;
+            end
           end
           @(posedge scb.initor_m[0].vif.clk);
           bkdor.timeout--;
         end
 
-        if (bkdor.status == FALSE) begin
+        if (bkdor.match == FALSE) begin
           `uvm_error(scb.get_full_name(), {$psprintf("BACKDOOR COMPARE WRONG DATA \n%s, %s", item.sprint(), ritem.sprint())})
         end
-
+        bkdor.match = FALSE;
       end
     endtask
 

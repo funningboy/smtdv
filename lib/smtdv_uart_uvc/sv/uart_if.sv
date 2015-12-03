@@ -27,9 +27,10 @@ interface uart_if #(
 );
 
   // Control flags
-  bit                has_checks = 1;
-  bit                has_coverage = 1;
-  bit                has_performance = 1;
+  bit has_force = 1;
+  bit has_checks = 1;
+  bit has_coverage = 1;
+  bit has_performance = 1;
 
   longint cyc = 0;
 
@@ -51,6 +52,7 @@ interface uart_if #(
   endclocking
 
   clocking rx @(posedge clk or negedge resetn);
+    default input #1ns output #1ns;
     input clk;
     input resetn;
 

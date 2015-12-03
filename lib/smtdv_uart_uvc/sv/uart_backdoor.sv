@@ -2,8 +2,6 @@
 `define __UART_BACKDOOR_SV__
 
 class uart_mem_backdoor #(
-  ADDR_WIDTH = 14,
-  DATA_WIDTH = 32
 ) extends
   smtdv_backdoor;
 
@@ -18,12 +16,12 @@ class uart_mem_backdoor #(
     string cmd;
     case(map)
       "LAST_WR_TRX": begin
-          cmd = {$psprintf("SELECT * FROM %s WHERE dec_rw=%d AND dec_addr>=%d AND dec_addr<%d ORDER BY dec_ed_cyc DESC limit %d;",
-            table_nm, WR, item.addrs[item.addr_idx], item.addrs[item.addr_idx]+item.offset, item.offset)};
+          cmd = {$psprintf("SELECT * FROM %s WHERE dec_rw=%d ORDER BY dec_ed_cyc DESC limit %d;",
+            table_nm, WR, 1)};
         end
       "FRIST_WR_TRX": begin
-          cmd = {$psprintf("SELECT * FROM %s WHERE dec_rw=%d AND dec_addr>=%d AND dec_addr<%d ORDER BY dec_ed_cyc ASC limit %d;",
-            table_nm, WR, item.addrs[item.addr_idx], item.addrs[item.addr_idx]+item.offset, item.offset)};
+          cmd = {$psprintf("SELECT * FROM %s WHERE dec_rw=%d ORDER BY dec_ed_cyc ASC limit %d;",
+            table_nm, WR, 1)};
       end
       // extend your query ...
       default: begin

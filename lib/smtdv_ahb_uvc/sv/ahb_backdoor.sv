@@ -30,18 +30,22 @@ class ahb_mem_backdoor #(
           cmd = {$psprintf("SELECT * FROM %s ORDER BY dec_ed_cyc ASC;", table_nm)};
       end
     endcase
+     `uvm_info(get_full_name(), {$psprintf("get query backdoor cmd\n%s", cmd)}, UVM_LOW)
     return cmd;
   endfunction
 
   virtual function void populate_item(string header, int r, int c, string data, ref `AHB_ITEM item);
+    if (!cb_map.exists(header)) begin
+      `uvm_fatal("NOREGISTER",{"callback header must be register to cb_map: %s", header});
+    end
 
-    // construct back to seq item
     case(cb_map[header])
       // extend your cb event
       SMTDV_CB_DATA:  begin
         item.data_beat[item.data_idx] |= data.atoi() << (r*8);
       end
-      default:  begin  end
+      default:  begin
+      end
     endcase
   endfunction
 
@@ -70,6 +74,7 @@ class ahb_mem_backdoor #(
         gen_query_cmd(table_nm, "LAST_WR_TRX", item),
         item);
     end
+     `uvm_info(get_full_name(), {$psprintf("get after backdoor item\n%s", item.sprint())}, UVM_LOW)
   endfunction
 
   virtual function void convert_2_item(string table_nm, string query, `AHB_ITEM item);
@@ -84,11 +89,12 @@ class ahb_mem_backdoor #(
     smtdv_sqlite3::create_pl(table_nm);
     m_pl = smtdv_sqlite3::exec_query(table_nm, query);
     if (!m_pl) begin
-      //`uvm_warning("NOBACKDATA",{"backdoor %s not found at query: %s,", table_nm, query});
+      `uvm_warning("NOBACKDATA",{"backdoor %s not found at query: %s,", table_nm, query});
       return;
     end
 
     // iter row and col
+    m_row_size = smtdv_sqlite3::exec_row_size(m_pl);
     for (int r=0; r<m_row_size; r++) begin
       m_row = smtdv_sqlite3::exec_row_step(m_pl, r);
       m_col_size = smtdv_sqlite3::exec_column_size(m_row);
@@ -97,6 +103,7 @@ class ahb_mem_backdoor #(
         if (smtdv_sqlite3::is_longint_data(m_col)) begin
           header = smtdv_sqlite3::exec_header_data(m_col);
           data = smtdv_sqlite3::exec_string_data(m_col);
+//          `uvm_info(get_full_name(), {$psprintf("dec mem backdoor iter headr:%s r:%d c:%d, data:%h\n", header, r, c, data)}, UVM_LOW)
           populate_item(header, r, c, data, item);
         end
       end
@@ -108,6 +115,7 @@ class ahb_mem_backdoor #(
     prepare_item(item);
     $cast(ritem, item.clone());
     post_item(table_nm, ritem);
+    `uvm_info(get_full_name(), {$psprintf("backdoor compare %s, %s\n", item.sprint(), ritem.sprint())}, UVM_LOW)
     return item.compare(ritem);
   endfunction
 

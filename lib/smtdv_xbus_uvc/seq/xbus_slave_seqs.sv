@@ -30,7 +30,7 @@ class xbus_slave_base_seq #(
       data= new[DATA_WIDTH>>3];
       gene_mem.mem_load_byte(item.addr, DATA_WIDTH>>3, data, item.bg_cyc);
       foreach(data[i]) begin
-        item.data_beat[i] = data[i];
+        item.data_beat[0][i] = data[i];
       end
     endtask
 
@@ -39,9 +39,9 @@ class xbus_slave_base_seq #(
       byte data[];
       data = new[DATA_WIDTH>>3];
       gene_mem.mem_load_byte(item.addr, DATA_WIDTH>>3, data, item.bg_cyc);
-      foreach(item.data_beat[i]) begin
+      foreach(item.data_beat[0][i]) begin
         if (item.byten_beat[i]) begin
-          data[i] = item.data_beat[i];
+          data[i] = item.data_beat[0][i];
         end
       end
       gene_mem.mem_store_byte(item.addr, data, item.bg_cyc);
@@ -74,6 +74,16 @@ class xbus_slave_base_seq #(
     virtual task finish_from_mon();
       wait(p_sequencer.finish);
      `uvm_info(p_sequencer.get_full_name(), {$psprintf("try collected finish signal\n")}, UVM_LOW)
+    endtask
+
+    // create mem table map as ini
+    virtual task pre_do(bit is_item);
+      string table_nm = $psprintf("\"%s\"", p_sequencer.get_full_name());
+
+      if (gene_mem.mem_cb.table_nm == "") begin
+        gene_mem.mem_cb.table_nm = table_nm;
+        void'(gene_mem.mem_cb.create_table());
+      end
     endtask
 
     virtual task body();

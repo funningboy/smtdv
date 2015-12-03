@@ -107,11 +107,11 @@ class smtdv_scoreboard #(
         if (rd_pool[item.addrs[i]].size() > 0) begin
           it = rd_pool[item.addrs[i]].pop_front();
           if (!it.compare(atmic_item)) begin
-          `uvm_error(get_type_name(), {$psprintf("RECEIVED WRONG DATA \n%s", item.sprint())})
+          `uvm_error(get_full_name(), {$psprintf("RECEIVED WRONG DATA \n%s", item.sprint())})
           end
         end
         else begin
-          `uvm_error(get_type_name(), {$psprintf("RECEIVED NOTFOUND DATA \n%s", item.sprint())})
+          `uvm_error(get_full_name(), {$psprintf("RECEIVED NOTFOUND DATA \n%s", item.sprint())})
         end
       end
     end
@@ -139,11 +139,11 @@ class smtdv_scoreboard #(
         if (wr_pool[item.addrs[i]].size() > 0) begin
           it = wr_pool[item.addrs[i]].pop_front();
           if (!it.compare(atmic_item)) begin
-          `uvm_error(get_type_name(), {$psprintf("RECEIVED WRONG DATA \n%s", item.sprint())})
+          `uvm_error(get_full_name(), {$psprintf("RECEIVED WRONG DATA \n%s", item.sprint())})
           end
         end
         else begin
-          `uvm_error(get_type_name(), {$psprintf("RECEIVED NOTFOUND DATA \n%s", item.sprint())})
+          `uvm_error(get_full_name(), {$psprintf("RECEIVED NOTFOUND DATA \n%s", item.sprint())})
         end
       end
     end

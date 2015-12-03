@@ -35,6 +35,7 @@ interface ahb_if #(
   logic [0:0]             hgrant
   );
 
+  bit has_force = 1;
   bit has_checks = 1;
   bit has_coverage = 1;
   bit has_performance = 1;

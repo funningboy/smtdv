@@ -4,13 +4,17 @@ root = os.getenv("SMTDV_HOME")
 apb = ${main:root}/lib/smtdv_apb_uvc
 debug = FALSE
 spawn = TRUE
-timeout =
+unittest = TRUE
 simulator = mti
-test = apb_stl_test
+test = apb_hijack_test
 # add your test below
 tests =
+  apb_base_test
   apb_stl_test
   apb_1w1r_test
+  apb_err_inject_test
+  apb_hijack_test
+  #apb_csim_test
 
 [cores]
 import_files =
@@ -21,8 +25,7 @@ import_files =
 [systemverilog]
 src_files =
   ${smtdv_common.systemverilog:src_files}
-  ${main:apb}/sv/apb_pkg.sv
-  ${main:apb}/test/apb_top.sv
+  ${main:apb}/tb/apb_top.sv
 
 include_files =
   ${smtdv_common.systemverilog:include_files}
@@ -34,6 +37,7 @@ include_dirs =
   ${main:apb}/stl
   ${main:apb}/seq
   ${main:apb}/sv
+  ${main:apb}/tb
   ${main:apb}/test
 
 [verilog]

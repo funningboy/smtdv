@@ -1,7 +1,6 @@
 `ifndef __APB_STL_TEST_SV__
 `define __APB_STL_TEST_SV__
 
-// TODO: debug
 class apb_stl_test
   extends `APB_BASE_TEST;
 

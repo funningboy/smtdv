@@ -3,6 +3,7 @@ ref: https://web.eecs.umich.edu/~prabal/teaching/eecs373-f11/readings/ARM_AMBA3_
 block cfg set via async channel
 
 1. uvm ref flow
+  only work for ius flow
 
 2. smtdv flow
   feature:

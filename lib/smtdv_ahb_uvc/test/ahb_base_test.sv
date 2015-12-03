@@ -40,7 +40,7 @@ class ahb_base_test extends smtdv_test;
     // slaves cfg, agent
     slave_cfg[0] = `AHB_SLAVE_CFG::type_id::create({$psprintf("slave_cfg[%0d]", 0)}, this);
     `SMTDV_RAND_WITH(slave_cfg[0], {
-      has_force == 0;
+      has_force == 1;
       has_coverage == 1;
       has_export == 1;
       has_error == 0;
@@ -50,8 +50,6 @@ class ahb_base_test extends smtdv_test;
     slave_agent[0] = `AHB_SLAVE_AGENT::type_id::create({$psprintf("slave_agent[%0d]", 0)}, this);
     uvm_config_db#(uvm_bitstream_t)::set(null, "/.+slave_agent[*0]*/", "is_active", UVM_ACTIVE);
     uvm_config_db#(`AHB_SLAVE_CFG)::set(null, "/.+slave_agent[*0]*/", "cfg", slave_cfg[0]);
-    // register slave agent as scoreboard target
-    uvm_config_db#(`AHB_SLAVE_AGENT)::set(null, "/.+master_scb[*0]*/", "targets_s[0]", slave_agent[0]);
 
     // masters cfg, agent
     master_cfg[0] = `AHB_MASTER_CFG::type_id::create({$psprintf("master_cfg[%0d]", 0)}, this);
@@ -67,11 +65,11 @@ class ahb_base_test extends smtdv_test;
     master_agent[0] = `AHB_MASTER_AGENT::type_id::create({$psprintf("master_agent[%0d]", 0)}, this);
     uvm_config_db#(uvm_bitstream_t)::set(null, "/.+master_agent[*0]*/", "is_active", UVM_ACTIVE);
     uvm_config_db#(`AHB_MASTER_CFG)::set(null, "/.+master_agent[*0]*/", "cfg", master_cfg[0]);
-    // register master agent as scoreboard initor
-    uvm_config_db#(`AHB_MASTER_AGENT)::set(null, "/.+master_scb[*0]*/", "initor_m[0]", master_agent[0]);
+
     // scoreboard num of masters cross all slaves ex: 3*all, 2*all socreboard
-    // base is eq num of master
     master_scb[0] = `AHB_BASE_SCOREBOARD::type_id::create({$psprintf("master_scb[%0d]", 0)}, this);
+    uvm_config_db#(`AHB_MASTER_AGENT)::set(null, "/.+master_scb[*0]*/", "initor_m[0]", master_agent[0]);
+    uvm_config_db#(`AHB_SLAVE_AGENT)::set(null, "/.+master_scb[*0]*/", "targets_s[0]", slave_agent[0]);
 
     // resetn
     ahb_rst_model = smtdv_reset_model#(`AHB_RST_VIF)::type_id::create("ahb_rst_model");

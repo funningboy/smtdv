@@ -24,6 +24,7 @@ class apb_slave_drive_items #(
       forever begin
         populate_default_item(item);
         this.cmp.mbox.get(item);
+        wait(this.cmp.vif.has_force);
         case(item.trs_t)
           WR: do_write_item(item);
           RD: do_read_item(item);
@@ -69,7 +70,7 @@ class apb_slave_drive_items #(
 
     virtual task populate_begin_read_item(ref `APB_ITEM item);
       this.cmp.vif.slave.pready <= 1'b1;
-      this.cmp.vif.slave.prdata <= (item.rsp == OK)? item.unpack_data(): 'hx;
+      this.cmp.vif.slave.prdata <= item.unpack_data();
       this.cmp.vif.slave.pslverr <= item.rsp;
     endtask
 

@@ -33,8 +33,6 @@ interface ahb_master_if_harness #(
   logic [1:0]             hresp
   );
 
-  bit has_force = 1;
-
   ahb_if #(
     .ADDR_WIDTH(ADDR_WIDTH),
     .DATA_WIDTH(DATA_WIDTH)
@@ -64,20 +62,20 @@ interface ahb_master_if_harness #(
     `ifndef AHBMASTERATTR
         $fatal("please define AHBMASTERATTR as forced.vif at top design");
     `endif
-    `SMTDV_VIF2PORT(has_force, clk, vif.haddr, `AHBMASTERATTR(UID).haddr)
-    `SMTDV_VIF2PORT(has_force, clk, vif.htrans, `AHBMASTERATTR(UID).htrans)
-    `SMTDV_VIF2PORT(has_force, clk, vif.hwrite, `AHBMASTERATTR(UID).hwrite)
-    `SMTDV_VIF2PORT(has_force, clk, vif.hsize, `AHBMASTERATTR(UID).hsize)
-    `SMTDV_VIF2PORT(has_force, clk, vif.hburst, `AHBMASTERATTR(UID).hburst)
-    `SMTDV_VIF2PORT(has_force, clk, vif.hprot, `AHBMASTERATTR(UID).hprot)
-    `SMTDV_VIF2PORT(has_force, clk, vif.hwdata, `AHBMASTERATTR(UID).hwdata)
-    `SMTDV_VIF2PORT(has_force, clk, vif.hmastlock, `AHBMASTERATTR(UID).hmastlock)
-    `SMTDV_VIF2PORT(has_force, clk, vif.hburst, `AHBMASTERATTR(UID).hburst)
-    `SMTDV_VIF2PORT(has_force, clk, vif.hbusreq, `AHBMASTERATTR(UID).hbusreq)
-    `SMTDV_PORT2VIF(has_force, clk, `AHBMASTERATTR(UID).hgrant, vif.hgrant)
-    `SMTDV_PORT2VIF(has_force, clk, `AHBMASTERATTR(UID).hrdata, vif.hrdata)
-    `SMTDV_PORT2VIF(has_force, clk, `AHBMASTERATTR(UID).hready, vif.hready)
-    `SMTDV_PORT2VIF(has_force, clk, `AHBMASTERATTR(UID).hresp, vif.hresp)
+    `SMTDV_VIF2PORT(vif.has_force, clk, vif.haddr, `AHBMASTERATTR(UID).haddr)
+    `SMTDV_VIF2PORT(vif.has_force, clk, vif.htrans, `AHBMASTERATTR(UID).htrans)
+    `SMTDV_VIF2PORT(vif.has_force, clk, vif.hwrite, `AHBMASTERATTR(UID).hwrite)
+    `SMTDV_VIF2PORT(vif.has_force, clk, vif.hsize, `AHBMASTERATTR(UID).hsize)
+    `SMTDV_VIF2PORT(vif.has_force, clk, vif.hburst, `AHBMASTERATTR(UID).hburst)
+    `SMTDV_VIF2PORT(vif.has_force, clk, vif.hprot, `AHBMASTERATTR(UID).hprot)
+    `SMTDV_VIF2PORT(vif.has_force, clk, vif.hwdata, `AHBMASTERATTR(UID).hwdata)
+    `SMTDV_VIF2PORT(vif.has_force, clk, vif.hmastlock, `AHBMASTERATTR(UID).hmastlock)
+    `SMTDV_VIF2PORT(vif.has_force, clk, vif.hburst, `AHBMASTERATTR(UID).hburst)
+    `SMTDV_VIF2PORT(vif.has_force, clk, vif.hbusreq, `AHBMASTERATTR(UID).hbusreq)
+    `SMTDV_PORT2VIF(vif.has_force, clk, `AHBMASTERATTR(UID).hgrant, vif.hgrant)
+    `SMTDV_PORT2VIF(vif.has_force, clk, `AHBMASTERATTR(UID).hrdata, vif.hrdata)
+    `SMTDV_PORT2VIF(vif.has_force, clk, `AHBMASTERATTR(UID).hready, vif.hready)
+    `SMTDV_PORT2VIF(vif.has_force, clk, `AHBMASTERATTR(UID).hresp, vif.hresp)
 
 endinterface
 
@@ -105,8 +103,6 @@ interface ahb_slave_if_harness #(
   logic [0:0]             hreadyout,
   logic [1:0]             hresp
   );
-
-  bit has_force = 1;
 
   ahb_if #(
     .ADDR_WIDTH(ADDR_WIDTH),
@@ -138,20 +134,20 @@ interface ahb_slave_if_harness #(
     `ifndef AHBSLAVEATTR
         $fatal("please define AHBSLAVEATTR as forced.vif at top design");
     `endif
-    `SMTDV_PORT2VIF(has_force, clk, `AHBSLAVEATTR(UID).haddr, vif.haddr)
-    `SMTDV_PORT2VIF(has_force, clk, `AHBSLAVEATTR(UID).htrans, vif.htrans)
-    `SMTDV_PORT2VIF(has_force, clk, `AHBSLAVEATTR(UID).hwrite, vif.hwrite)
-    `SMTDV_PORT2VIF(has_force, clk, `AHBSLAVEATTR(UID).hsize, vif.hsize)
-    `SMTDV_PORT2VIF(has_force, clk, `AHBSLAVEATTR(UID).hburst, vif.hburst)
-    `SMTDV_PORT2VIF(has_force, clk, `AHBSLAVEATTR(UID).hprot, vif.hprot)
-    `SMTDV_PORT2VIF(has_force, clk, `AHBSLAVEATTR(UID).hwdata, vif.hwdata)
-    `SMTDV_PORT2VIF(has_force, clk, `AHBSLAVEATTR(UID).hmastlock, vif.hmastlock)
-    `SMTDV_PORT2VIF(has_force, clk, `AHBSLAVEATTR(UID).hburst, vif.hburst)
-    `SMTDV_PORT2VIF(has_force, clk, `AHBSLAVEATTR(UID).hsel, vif.hsel)
-    `SMTDV_PORT2VIF(has_force, clk, `AHBSLAVEATTR(UID).hready, vif.hready)
-    `SMTDV_VIF2PORT(has_force, clk, vif.hrdata, `AHBSLAVEATTR(UID).hrdata)
-    `SMTDV_VIF2PORT(has_force, clk, vif.hreadyout, `AHBSLAVEATTR(UID).hreadyout)
-    `SMTDV_VIF2PORT(has_force, clk, vif.hresp, `AHBSLAVEATTR(UID).hresp)
+    `SMTDV_PORT2VIF(vif.has_force, clk, `AHBSLAVEATTR(UID).haddr, vif.haddr)
+    `SMTDV_PORT2VIF(vif.has_force, clk, `AHBSLAVEATTR(UID).htrans, vif.htrans)
+    `SMTDV_PORT2VIF(vif.has_force, clk, `AHBSLAVEATTR(UID).hwrite, vif.hwrite)
+    `SMTDV_PORT2VIF(vif.has_force, clk, `AHBSLAVEATTR(UID).hsize, vif.hsize)
+    `SMTDV_PORT2VIF(vif.has_force, clk, `AHBSLAVEATTR(UID).hburst, vif.hburst)
+    `SMTDV_PORT2VIF(vif.has_force, clk, `AHBSLAVEATTR(UID).hprot, vif.hprot)
+    `SMTDV_PORT2VIF(vif.has_force, clk, `AHBSLAVEATTR(UID).hwdata, vif.hwdata)
+    `SMTDV_PORT2VIF(vif.has_force, clk, `AHBSLAVEATTR(UID).hmastlock, vif.hmastlock)
+    `SMTDV_PORT2VIF(vif.has_force, clk, `AHBSLAVEATTR(UID).hburst, vif.hburst)
+    `SMTDV_PORT2VIF(vif.has_force, clk, `AHBSLAVEATTR(UID).hsel, vif.hsel)
+    `SMTDV_PORT2VIF(vif.has_force, clk, `AHBSLAVEATTR(UID).hready, vif.hready)
+    `SMTDV_VIF2PORT(vif.has_force, clk, vif.hrdata, `AHBSLAVEATTR(UID).hrdata)
+    `SMTDV_VIF2PORT(vif.has_force, clk, vif.hreadyout, `AHBSLAVEATTR(UID).hreadyout)
+    `SMTDV_VIF2PORT(vif.has_force, clk, vif.hresp, `AHBSLAVEATTR(UID).hresp)
 
 endinterface
 

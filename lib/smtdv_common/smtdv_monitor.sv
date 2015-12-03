@@ -2,7 +2,7 @@
 `ifndef __SMTDV_MONITOR_SV__
 `define __SMTDV_MONITOR_SV__
 
-class smtdv_monitor #(type VIF = int,
+class smtdv_monitor #(type VIF = virtual interface smtdv_if,
                      type CFG = smtdv_cfg)
                 extends smtdv_component#(uvm_monitor);
 

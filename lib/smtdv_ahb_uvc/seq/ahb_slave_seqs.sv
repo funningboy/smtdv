@@ -13,7 +13,7 @@ class ahb_slave_base_seq #(
     `AHB_ITEM item;
     mailbox #(`AHB_ITEM) mbox;
 
-    `uvm_object_utils_begin(`AHB_SLAVE_BASE_SEQ)
+    `uvm_object_param_utils_begin(`AHB_SLAVE_BASE_SEQ)
     `uvm_object_utils_end
 
     `uvm_declare_p_sequencer(`AHB_SLAVE_SEQUENCER)
@@ -92,10 +92,12 @@ class ahb_slave_base_seq #(
      `uvm_info(p_sequencer.get_full_name(), {$psprintf("try collected finish signal\n")}, UVM_LOW)
     endtask
 
+    // create mem table map as ini
     virtual task pre_do(bit is_item);
-      // create mem table map as ini
+      string table_nm = $psprintf("\"%s\"", p_sequencer.get_full_name());
+
       if (gene_mem.mem_cb.table_nm == "") begin
-        gene_mem.mem_cb.table_nm = p_sequencer.get_full_name();
+        gene_mem.mem_cb.table_nm = table_nm;
         void'(gene_mem.mem_cb.create_table());
       end
     endtask

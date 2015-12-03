@@ -54,7 +54,7 @@ class uart_rx_drive_items#(
    endfunction
 
   virtual task run();
-    bit [7:0] payload_byte;
+    bit bb;
 
     forever begin
       this.cmp.mbox.get(item);
@@ -84,11 +84,11 @@ class uart_rx_drive_items#(
           end
           if ((this.cmp.num_of_bits_sent > 0) && (this.cmp.num_of_bits_sent < (1 + this.cmp.cfg.char_len_val))) begin
             // sending "data bits"
-            payload_byte = item.payload[this.cmp.num_of_bits_sent-1] ;
-            this.cmp.vif.rx.rxd <= item.payload[this.cmp.num_of_bits_sent-1];
+            bb = item.unpack_data(this.cmp.num_of_bits_sent-1);
+            this.cmp.vif.rx.rxd <= item.unpack_data(this.cmp.num_of_bits_sent-1);
             `uvm_info(this.cmp.get_full_name(),
                  $psprintf("Driver Sending item data bit number:%0d value:'b%b",
-                 (this.cmp.num_of_bits_sent-1), payload_byte), UVM_HIGH)
+                 (this.cmp.num_of_bits_sent-1), bb), UVM_HIGH)
           end
           if ((this.cmp.num_of_bits_sent == (1 + this.cmp.cfg.char_len_val)) && (this.cmp.cfg.parity_en)) begin
             // sending "parity bit" if parity is enabled

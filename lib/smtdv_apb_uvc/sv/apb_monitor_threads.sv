@@ -14,6 +14,7 @@ class apb_collect_cover_group#(
     `APB_ITEM item;
     `APB_MONITOR cmp;
 
+    // should been override
     bit [ADDR_WIDTH-1:0] start_addr = 32'h0000_0000;
     bit [ADDR_WIDTH-1:0] end_addr = 32'hffff_ffff;
     bit [DATA_WIDTH-1:0] start_data = 32'h0000_0000;
@@ -67,7 +68,7 @@ class apb_export_collected_items#(
     `APB_ITEM item;
     `APB_MONITOR cmp;
 
-    string attr_longint[$] = `SMTDV_BUS_VIF_ATTR_LONGINT
+    string attr_longint[$] = `SMTDV_BUS_VIF_ATTR_LONGINT;
 
     `uvm_object_param_utils_begin(`APB_EXPORT_COLLECTED_ITEMS)
     `uvm_object_utils_end

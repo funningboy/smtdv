@@ -12,13 +12,13 @@ class uart_seq_test
   endfunction : new
 
   virtual function void build_phase(uvm_phase phase);
-    //set_type_override_by_type(`UART_RX_SEQUENCER::get_type(), `UART_TX_SEQUENCER::get_type());
-
+    // override passive RX loopback seq
+    set_type_override_by_type(`RX_LOOPBACK_BASE_SEQ::get_type(), `RX_INCR_PAYLOAD_SEQ::get_type());
     super.build_phase(phase);
 
-    // Set the default sequence for the tx and rx
+    // Set the default sequence for master as tx
     uvm_config_db#(uvm_object_wrapper)::set(this,
-      "*tx_agent[*0]*.seqr.run_phase",
+      "*master_agent[*0]*.seqr.run_phase",
       "default_sequence",
       `TX_INCR_PAYLOAD_SEQ::type_id::get());
 
