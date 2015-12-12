@@ -1,6 +1,9 @@
 `ifndef __SMTDV_MACROS_SVH__
 `define __SMTDV_MACROS_SVH__
 
+`define TRUE 1
+`define FALSE 0
+
 `define SMTDV_RAND_VAR(RANDVAR) \
   begin \
     if (!std::randomize(RANDVAR)) begin \
@@ -59,6 +62,9 @@
       force vif = port; \
     else release vif; \
   end
+
+`define SMTDV_CFG(inst, attr, val) \
+  inst.``attr`` = val;
 
 // define global mem vif attr table field
 // 128 bit = 16 * 8(bit) = byte[8];
