@@ -24,7 +24,7 @@ package smtdv_common_pkg;
   `include "smtdv_generic_fifo.sv"
   `include "smtdv_reset_model.sv"
   `include "smtdv_reset_monitor.sv"
-  `include "smtdv_backdoor.sv"
+  `include "seq/smtdv_slave_seqs.sv"
   // smtdv_lowpower_model.sv
 endpackage
 

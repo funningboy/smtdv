@@ -2,7 +2,7 @@
 `ifndef __SMTDV_LIB_SV__
 `define __SMTDV_LIB_SV__
 
-
+`include "smtdv_vif.sv"
 `include "smtdv_lib_typedefs.svh"
 `include "smtdv_lib_utils.sv"
 `include "smtdv_sequence.sv"
@@ -12,6 +12,8 @@
 `include "smtdv_slave_cfg.sv"
 `include "smtdv_master_cfg.sv"
 `include "smtdv_event.sv"
+`include "smtdv_event_handler.sv"
+`include "smtdv_thread.sv"
 `include "smtdv_thread_handler.sv"
 `include "smtdv_sequencer.sv"
 `include "smtdv_push_sequencer.sv"
@@ -23,6 +25,8 @@
 `include "smtdv_agent.sv"
 `include "smtdv_master_agent.sv"
 `include "smtdv_slave_agent.sv"
+`include "smtdv_backdoor_threads.sv"
+`include "smtdv_backdoor.sv"
 `include "smtdv_scoreboard_threads.sv"
 `include "smtdv_scoreboard.sv"
 `include "smtdv_env.sv"
