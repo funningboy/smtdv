@@ -17,7 +17,7 @@ class smtdv_generic_memory_cb#(ADDR_WIDTH = 64, DATA_WIDTH = 128)
     super.new(name);
   endfunction
 
-  virtual function create_table();
+  virtual function void create_table();
     if (table_nm == "")begin
        `uvm_fatal("NOTBNM", {$psprintf("set table name at generic_mem cb")})
     end
@@ -29,7 +29,7 @@ class smtdv_generic_memory_cb#(ADDR_WIDTH = 64, DATA_WIDTH = 128)
   endfunction
 
   // need be stream byte
-  virtual function mem_store_byte_cb(gene_mem_addr_t addr, byte unsigned data, longint cyc);
+  virtual function void mem_store_byte_cb(gene_mem_addr_t addr, byte unsigned data, longint cyc);
     smtdv_sqlite3::insert_value(table_nm, "dec_addr",    $psprintf("%d", addr));
     smtdv_sqlite3::insert_value(table_nm, "dec_rw",      $psprintf("%d", WR));
     smtdv_sqlite3::insert_value(table_nm, {$psprintf("dec_data_%03d", 0)}, $psprintf("%d", data));
@@ -39,7 +39,7 @@ class smtdv_generic_memory_cb#(ADDR_WIDTH = 64, DATA_WIDTH = 128)
     smtdv_sqlite3::flush_value(table_nm);
   endfunction
 
-  virtual function mem_load_byte_cb(gene_mem_addr_t addr, byte unsigned  data, longint cyc);
+  virtual function void mem_load_byte_cb(gene_mem_addr_t addr, byte unsigned  data, longint cyc);
     smtdv_sqlite3::insert_value(table_nm, "dec_addr",    $psprintf("%d", addr));
     smtdv_sqlite3::insert_value(table_nm, "dec_rw",      $psprintf("%d", RD));
     smtdv_sqlite3::insert_value(table_nm, {$psprintf("dec_data_%03d", 0)}, $psprintf("%d", data));

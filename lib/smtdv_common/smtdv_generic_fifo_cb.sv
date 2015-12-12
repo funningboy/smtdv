@@ -15,7 +15,7 @@ class smtdv_generic_fifo_cb #(DEEP = 100, DATA_WIDTH = 128)
     super.new(name);
   endfunction
 
-  virtual function create_table();
+  virtual function void create_table();
     if (table_nm == "") begin
       `uvm_fatal("NOTBNM", {$psprintf("set table name at generic_fifo cb")})
     end

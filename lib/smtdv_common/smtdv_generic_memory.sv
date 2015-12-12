@@ -10,7 +10,7 @@ class smtdv_generic_memory #(ADDR_WIDTH = 64, DATA_WIDTH = 128) extends uvm_obje
   typedef bit [(ADDR_WIDTH-1):0] gene_mem_addr_t;
   typedef bit [(DATA_WIDTH>>3)-1:0][7:0] byte16_t;
 
-  bit has_callback = 1;
+  bit has_callback = TRUE;
   smtdv_generic_memory_cb#(ADDR_WIDTH, DATA_WIDTH) mem_cb;
 
 //byte memory[gene_mem_addr_t];

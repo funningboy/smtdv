@@ -10,7 +10,7 @@ class smtdv_generic_fifo #(DEEP = 100, DATA_WIDTH = 128)
   bit[DATA_WIDTH-1:0] fifo[$];
   int unsigned ix = 0;
 
-  bit has_callback = 1;
+  bit has_callback = TRUE;
   smtdv_generic_fifo_cb#(DEEP, DATA_WIDTH) fifo_cb;
 
   `uvm_object_param_utils_begin(smtdv_generic_fifo#(DATA_WIDTH))
