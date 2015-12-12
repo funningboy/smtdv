@@ -41,11 +41,18 @@ typedef enum bit [3:0] {
 } smtdv_backdoor_event_t;
 
 
-`define SMTDV_PARAMETER #(ADDR_WIDTH, DATA_WIDTH, NUM_OF_TARGETS, NUM_OF_TARGETS, T1, T2, CFG)
+`define SMTDV_PARAMETER #(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS, T1, T2, T3, CFG)
 `define SMTDV_SCOREBOARD smtdv_scoreboard `SMTDV_PARAMETER
+`define SMTDV_SCOREBOARD_BASE_THREAD smtdv_scoreboard_base_thread `SMTDV_PARAMETER
+`define SMTDV_BACKDOOR smtdv_backdoor #(ADDR_WIDTH, DATA_WIDTH, T1)
+`define SMTDV_SLAVE_BASE_SEQ
+`define SMTDV_SLAVE_MEM_SEQ
+`define SMTDV_SLAVE_FIFO_SEQ
+`define SMTDV_BACKDOOR_BASE_THREAD smtdv_backdoor_base_thread `SMTDV_PARAMETER
+
 `define SMTDV_WATCH_WR_LIFETIME smtdv_watch_wr_lifetime `SMTDV_PARAMETER
 `define SMTDV_WATCH_RD_LIFETIME smtdv_watch_rd_lifetime `SMTDV_PARAMETER
-`define SMTDV_SEQUENCE_ITEM smtdv_sequence_item
-
+`define SMTDV_MEM_BKDOR_RD_COMP smtdv_mem_bkdor_rd_comp `SMTDV_PARAMETER
+`define SMTDV_MEM_BKDOR_WR_COMP smtdv_mem_bkdor_wr_comp `SMTDV_PARAMETER
 
 `endif // end of __SMTDV_LIB_TYPEDEFS_SVH__
