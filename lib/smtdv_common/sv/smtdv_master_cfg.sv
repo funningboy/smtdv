@@ -12,6 +12,11 @@ class smtdv_map_slave_cfg
   int unsigned start_addr;
   int unsigned end_addr;
 
+  // interrupt callback when preload seq is completed
+  event interrupt;
+  // select preload/reproduce img when fw ini is completed
+  int preload = 0;
+
   `uvm_object_param_utils_begin(smtdv_map_slave_cfg)
   `uvm_object_utils_end
 

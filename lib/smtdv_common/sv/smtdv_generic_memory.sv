@@ -2,9 +2,6 @@
 `ifndef __SMTDV_GENERIC_MEMORY_SV__
 `define __SMTDV_GENERIC_MEMORY_SV__
 
-/*################################
-  Class smtdv_generic_memory START
-#################################*/
 class smtdv_generic_memory #(ADDR_WIDTH = 64, DATA_WIDTH = 128) extends uvm_object;
 
   typedef bit [(ADDR_WIDTH-1):0] gene_mem_addr_t;

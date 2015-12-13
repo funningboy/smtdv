@@ -2,12 +2,14 @@
 `ifndef __SMTDV_AGENT_SV__
 `define __SMTDV_AGENT_SV__
 
-class smtdv_agent #(type VIF = virtual interface smtdv_if,
-                    type CFG = smtdv_master_cfg,
-                    type SEQR = smtdv_sequencer#(),
-                    type DRV = smtdv_driver#(VIF, CFG),
-                    type MON = smtdv_monitor#(VIF, CFG))
-              extends smtdv_component#(uvm_agent);
+class smtdv_agent #(
+  type VIF = virtual interface smtdv_if,
+  type CFG = smtdv_master_cfg,
+  type SEQR = smtdv_sequencer#(),
+  type DRV = smtdv_driver#(VIF, CFG),
+  type MON = smtdv_monitor#(VIF, CFG))
+  extends
+    smtdv_component#(uvm_agent);
 
   SEQR seqr;
   DRV drv;

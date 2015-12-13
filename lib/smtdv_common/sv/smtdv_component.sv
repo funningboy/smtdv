@@ -2,10 +2,12 @@
 `ifndef __SMTDV_COMPONENT_SV__
 `define __SMTDV_COMPONENT_SV__
 
-class smtdv_component #(type COMP = uvm_component,
-                        type VIF = virtual interface smtdv_if,
-                        type CFG = uvm_object)
-        extends COMP;
+class smtdv_component #(
+  type COMP = uvm_component,
+  type VIF = virtual interface smtdv_if,
+  type CFG = uvm_object)
+    extends
+    COMP;
 
   VIF vif;
   CFG cfg;

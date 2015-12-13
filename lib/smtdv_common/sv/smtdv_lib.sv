@@ -2,7 +2,6 @@
 `ifndef __SMTDV_LIB_SV__
 `define __SMTDV_LIB_SV__
 
-`include "smtdv_vif.sv"
 `include "smtdv_lib_typedefs.svh"
 `include "smtdv_lib_utils.sv"
 `include "smtdv_sequence.sv"

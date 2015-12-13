@@ -4,9 +4,6 @@
 
 `timescale 1ns/10ps
 
-`include "smtdv_vif.sv"
-`include "smtdv_gen_rst_if.sv"
-
 package smtdv_common_pkg;
 
   import  uvm_pkg::*;
@@ -24,8 +21,12 @@ package smtdv_common_pkg;
   `include "smtdv_generic_fifo.sv"
   `include "smtdv_reset_model.sv"
   `include "smtdv_reset_monitor.sv"
-  `include "seq/smtdv_slave_seqs.sv"
+  `include "../seq/smtdv_slave_seqs.sv"
   // smtdv_lowpower_model.sv
 endpackage
+
+`include "smtdv_vif.sv"
+`include "smtdv_gen_rst_if.sv"
+
 
 `endif

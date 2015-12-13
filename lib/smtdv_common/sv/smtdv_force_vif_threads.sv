@@ -18,8 +18,8 @@ class smtdv_force_vif#(
   `uvm_object_param_utils_begin(smtdv_force_vif#(VIF,CFG,REQ,RSP))
   `uvm_object_utils_end
 
-  function new(string name = "auto_update_if");
-    super.new(name);
+  function new(string name = "auto_update_if", smtdv_component parent=null);
+    super.new(name, parent);
   endfunction
 
   virtual task run();

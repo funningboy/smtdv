@@ -2,18 +2,20 @@
 `ifndef __SMTDV_DRIVER_SV__
 `define __SMTDV_DRIVER_SV__
 
-class smtdv_driver #(type VIF = virtual interface smtdv_if,
-                    type CFG = uvm_object,
-                    type REQ = uvm_sequence_item,
-                    type RSP = REQ
-                    ) extends smtdv_component#(uvm_driver#(REQ, RSP));
+class smtdv_driver #(
+  type VIF = virtual interface smtdv_if,
+  type CFG = uvm_object,
+  type REQ = uvm_sequence_item,
+  type RSP = REQ)
+  extends
+    smtdv_component#(uvm_driver#(REQ, RSP));
 
   VIF vif;
   CFG cfg;
 
   smtdv_thread_handler #(CFG) th_handler;
   // as backend services tasks/handler
-  smtdv_force_vif #(VIF, CFG, REQ, RSP) b0;
+  //smtdv_force_vif #(VIF, CFG, REQ, RSP) b0;
   smtdv_thread_handler #(CFG) bk_handler;
 
   `uvm_component_param_utils_begin(smtdv_driver#(VIF, CFG, REQ, RSP))
@@ -30,7 +32,12 @@ class smtdv_driver #(type VIF = virtual interface smtdv_if,
     th_handler = smtdv_thread_handler#(CFG)::type_id::create("smtdv_driver_threads", this);
     // build backend services
     bk_handler = smtdv_thread_handler#(CFG)::type_id::create("smtdv_backend_threads", this);
-    b0 = smtdv_force_vif#(VIF, CFG, REQ, RSP)::type_id::create("smtdv_force_vif"); b0.cmp = this; this.bk_handler.add(b0);
+    //b0 = smtdv_force_vif#(VIF, CFG, REQ, RSP)::type_id::create("smtdv_force_vif", this);
+  endfunction
+
+  virtual function void connect_phase(uvm_phase phase);
+    super.connect_phase(phase);
+    //b0.cmp = this; this.bk_handler.add(b0);
   endfunction
 
   extern virtual task run_phase(uvm_phase phase);

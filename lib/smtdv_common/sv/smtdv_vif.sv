@@ -11,11 +11,10 @@ interface smtdv_if (
   input resetn // hresetn
   );
 
-//  bit has_force = `TRUE;
-//  bit has_checks = `TRUE;
-//  bit has_coverage = `TRUE;
-//  bit has_performance = `TRUE;
-
+  bit has_force = `TRUE;
+  bit has_checks = `TRUE;
+  bit has_coverage = `TRUE;
+  bit has_performance = `TRUE;
 
 endinterface: smtdv_if
 
