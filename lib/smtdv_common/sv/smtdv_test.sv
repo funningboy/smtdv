@@ -2,9 +2,21 @@
 `ifndef __SMTDV_TEST_SV__
 `define __SMTDV_TEST_SV__
 
+typedef class smtdv_timeout_cb;
 typedef class smtdv_report_server;
+typedef class smtdv_component;
 
-class smtdv_test extends smtdv_component#(uvm_test);
+/**
+* smtdv_test
+*
+* extends smtdv_component
+*
+* @class smtdv_test
+*
+*/
+class smtdv_test
+  extends
+  smtdv_component#(uvm_test);
 
   smtdv_timeout_cb tout_cb;
   uvm_table_printer tbprt;
@@ -14,23 +26,28 @@ class smtdv_test extends smtdv_component#(uvm_test);
   function new(string name = "smtdv_test", uvm_component parent=null);
     super.new(name, parent);
     tbprt = new();
-  endfunction
+  endfunction : new
 
   extern virtual function void build_phase(uvm_phase phase);
   extern virtual task run_phase(uvm_phase phase);
 
 endclass : smtdv_test
 
-
+/**
+ *  @param rpt_svr smtdv_report_server - define display/output customer uvm_report format by report_server
+ *  @param glb_rpt_svr uvm_report_global_server - map uvm_report_global_server
+ *  to our smtdv_report_server
+ *  @return void
+ */
 function void smtdv_test::build_phase(uvm_phase phase);
   smtdv_report_server          rpt_svr;
-  uvm_report_global_server    glb_rpt_svr;
+  uvm_report_global_server     glb_rpt_svr;
   smtdv_print_mask_t           print_mask  = SMTDV_ALL_ON,
-                              no_filename = SMTDV_ALL_ON,
-                              no_line     = SMTDV_ALL_ON,
-                              no_time     = SMTDV_ALL_ON,
-                              no_name     = SMTDV_ALL_ON,
-                              no_id       = SMTDV_ALL_ON;
+  no_filename = SMTDV_ALL_ON,
+  no_line     = SMTDV_ALL_ON,
+  no_time     = SMTDV_ALL_ON,
+  no_name     = SMTDV_ALL_ON,
+  no_id       = SMTDV_ALL_ON;
 
   super.build_phase(phase);
 
@@ -56,9 +73,14 @@ function void smtdv_test::build_phase(uvm_phase phase);
   print_mask= smtdv_print_mask_t'(no_filename & no_line & no_time & no_name & no_id);
 
   rpt_svr.set_display_mode(print_mask);
-endfunction
+endfunction : build_phase
 
 
+/**
+ *  @param tbptr.knobs.depth - display hier registered object deep
+ *  @param uvm_report_object::set_report_max_quit_count(2) - set max error quit counts
+ *  @return void
+ */
 task smtdv_test::run_phase(uvm_phase phase);
   fork
     super.run_phase(phase);
@@ -67,7 +89,7 @@ task smtdv_test::run_phase(uvm_phase phase);
     this.print(tbprt);
     uvm_report_object::set_report_max_quit_count(2);  // set max error quit counts
     phase.phase_done.set_drain_time(this, 1000);      // set the extend $finish time when the all trxs are done
-    join_none
-endtask
+  join_none
+endtask : run_phase
 
 `endif // end of __SMTDV_TEST_SV__

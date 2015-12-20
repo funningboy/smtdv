@@ -4,72 +4,66 @@
 
 typedef class smtdv_reset_monitor;
 
-//===========================================
-// Component Reset Group Declaration
-//===========================================
-class reset_comp_group extends uvm_object;
+/**
+* smtdv_reset_comp_group
+* group comps by reset type, such as sw_rst group, hw_rst group ...
+*
+* @class smtdv_reset_comp_group
+*
+*/
+class smtdv_reset_comp_group extends uvm_object;
 
-    static reset_comp_group sw_rst_aa [string];
-    static reset_comp_group hw_rst_aa [string];
-    static reset_comp_group comp_registered [uvm_component];
-    static reset_comp_group grp_registered [string];
+    static smtdv_reset_comp_group sw_rst_aa [string]; // registered sw_rst uvm_component
+    static smtdv_reset_comp_group hw_rst_aa [string]; // registered hw_rst uvm_component
+    static smtdv_reset_comp_group comp_registered [uvm_component];
+    static smtdv_reset_comp_group grp_registered [string];
 
     uvm_component m_root_comp_q[$];
     uvm_component m_root_comp_ex_q[$];
     uvm_component m_comps_q[$];
 
-    uvm_domain  m_rst_domain;
+    uvm_domain  m_rst_domain; // like cluster per domain
 
-    `uvm_object_utils(reset_comp_group)
+    `uvm_object_utils(smtdv_reset_comp_group)
 
-    function new(string name = "reset_comp_group");
+    function new(string name = "smtdv_reset_comp_group");
       super.new(name);
-    endfunction
+    endfunction : new
 
-    extern virtual function reset_comp_group get_rst_grp(string rst_grp_name,
+    extern virtual function smtdv_reset_comp_group get_rst_grp(string rst_grp_name,
                                                          rst_type_t rst_typ);
 
-
-    extern virtual function void set_rst_domain(reset_comp_group rst_grp,
+    extern virtual function void set_rst_domain(smtdv_reset_comp_group rst_grp,
                                                 uvm_domain domain);
 
-
-    extern virtual function void create_rst_domain(reset_comp_group rst_grp);
-
+    extern virtual function void create_rst_domain(smtdv_reset_comp_group rst_grp);
 
     extern virtual function void set_reset_type(string rst_grp_name,
                                                 rst_type_t rst_typ);
 
-
     extern virtual function void add_comp(string rst_grp_name,
                                           uvm_component comp_obj);
-
 
     extern virtual function void add_except_comp(string rst_grp_name,
                                                  uvm_component comp_obj);
 
-
-    extern virtual function void resolve_comps(reset_comp_group rst_grp);
-
+    extern virtual function void resolve_comps(smtdv_reset_comp_group rst_grp);
 
     extern virtual function void resolve_comps_recur(uvm_component root_comp,
                                                      ref uvm_component comps_q [$]);
 
-
     extern virtual function void show_comps(string rst_grp_name, bit show_root = 1);
-
-
     extern virtual task do_reset_jump(rst_type_t rst_typ);
-
-
     extern virtual task hw_reset();
-
-
     extern virtual task sw_reset();
 endclass
 
-
-function reset_comp_group reset_comp_group::get_rst_grp(string rst_grp_name,
+/**
+ * get_rst_grp, default supoort HW_RST, SW_RST
+ * @param rst_grp_name string - get rst group by name and type
+ * @param rst_typ rst_type_t -
+ */
+function smtdv_reset_comp_group smtdv_reset_comp_group::get_rst_grp(string rst_grp_name,
                                                         rst_type_t rst_typ);
   case(rst_typ)
   HW_RST: begin
@@ -91,10 +85,12 @@ function reset_comp_group reset_comp_group::get_rst_grp(string rst_grp_name,
       rst_typ.name()))
     end
   endcase
-endfunction
+endfunction : get_rst_grp
 
-
-function void reset_comp_group::set_rst_domain(reset_comp_group rst_grp,
+/**
+ * set_reset_domain, set group per domain
+ */
+function void smtdv_reset_comp_group::set_rst_domain(smtdv_reset_comp_group rst_grp,
                                                uvm_domain domain);
   rst_grp.m_rst_domain= domain;
   foreach(rst_grp.m_comps_q[i]) begin
@@ -107,10 +103,12 @@ function void reset_comp_group::set_rst_domain(reset_comp_group rst_grp,
     rst_grp.m_comps_q[i].set_domain(domain, 0);
     comp_registered[rst_grp.m_comps_q[i]]= rst_grp;
     end
-endfunction
+endfunction : set_rst_domain
 
-
-function void reset_comp_group::create_rst_domain(reset_comp_group rst_grp);
+/**
+ * add reset_domain as external uvm runtime phase and then reschedule all phases
+ */
+function void smtdv_reset_comp_group::create_rst_domain(smtdv_reset_comp_group rst_grp);
   uvm_domain                      domain, common_domain;
   uvm_phase                       schedule;
 
@@ -148,12 +146,14 @@ function void reset_comp_group::create_rst_domain(reset_comp_group rst_grp);
   common_domain.add(domain,
     .with_phase(common_domain.find(uvm_run_phase::get())));
   set_rst_domain(rst_grp, domain);
-endfunction
+endfunction : create_rst_domain
 
-
-function void reset_comp_group::set_reset_type(string rst_grp_name,
+/**
+ *
+ */
+function void smtdv_reset_comp_group::set_reset_type(string rst_grp_name,
                                                rst_type_t rst_typ);
-  reset_comp_group rst_grp;
+  smtdv_reset_comp_group rst_grp;
 
   if(!grp_registered.exists(rst_grp_name))
     `uvm_fatal(get_full_name(), $sformatf(
@@ -190,38 +190,42 @@ function void reset_comp_group::set_reset_type(string rst_grp_name,
   endcase
   resolve_comps(rst_grp);
   create_rst_domain(rst_grp);
-endfunction
+endfunction : set_reset_type
 
-
-function void reset_comp_group::add_comp(string rst_grp_name,
+/**
+ * add comp to rst_group by rst type
+ */
+function void smtdv_reset_comp_group::add_comp(string rst_grp_name,
                                          uvm_component comp_obj);
-  reset_comp_group rst_grp;
+  smtdv_reset_comp_group rst_grp;
 
   if(!grp_registered.exists(rst_grp_name)) begin
-    rst_grp= reset_comp_group::type_id::create(rst_grp_name);
+    rst_grp= smtdv_reset_comp_group::type_id::create(rst_grp_name);
     grp_registered[rst_grp_name]= rst_grp;
     end
 
   rst_grp= grp_registered[rst_grp_name];
   rst_grp.m_root_comp_q.push_back(comp_obj);
-endfunction
+endfunction : add_comp
 
-
-function void reset_comp_group::add_except_comp(string rst_grp_name,
+/**
+ * except comp to rst_group by rst type
+ */
+function void smtdv_reset_comp_group::add_except_comp(string rst_grp_name,
                                                 uvm_component comp_obj);
-  reset_comp_group rst_grp;
+  smtdv_reset_comp_group rst_grp;
 
   if(!grp_registered.exists(rst_grp_name)) begin
-    rst_grp= reset_comp_group::type_id::create(rst_grp_name);
+    rst_grp= smtdv_reset_comp_group::type_id::create(rst_grp_name);
     grp_registered[rst_grp_name]= rst_grp;
     end
 
   rst_grp= grp_registered[rst_grp_name];
   rst_grp.m_root_comp_ex_q.push_back(comp_obj);
-endfunction
+endfunction : add_except_comp
 
 
-function void reset_comp_group::resolve_comps(reset_comp_group rst_grp);
+function void smtdv_reset_comp_group::resolve_comps(smtdv_reset_comp_group rst_grp);
   uvm_component comps_ex_q[$];
   uvm_component comp_q[$];
   int           idx_q[$];
@@ -248,10 +252,10 @@ function void reset_comp_group::resolve_comps(reset_comp_group rst_grp);
     uvm_config_db#(bit)::set(null, {comps_ex_q[i].get_full_name(), "*"}, "resetn", 1);
     idx_q.delete();
     end
-endfunction
+endfunction : resolve_comps
 
 
-function void reset_comp_group::resolve_comps_recur(uvm_component root_comp, ref uvm_component comps_q [$]);
+function void smtdv_reset_comp_group::resolve_comps_recur(uvm_component root_comp, ref uvm_component comps_q [$]);
   uvm_component comp_q[$], child_comp_q[$];
 
   root_comp.get_children(child_comp_q);
@@ -260,12 +264,12 @@ function void reset_comp_group::resolve_comps_recur(uvm_component root_comp, ref
     resolve_comps_recur(child_comp_q[i], comp_q);
     comps_q= {comps_q, child_comp_q[i], comp_q};
     end
-endfunction
+endfunction : resolve_comps_recur
 
 
-function void reset_comp_group::show_comps(string rst_grp_name, bit show_root = 1);
+function void smtdv_reset_comp_group::show_comps(string rst_grp_name, bit show_root = 1);
   uvm_component q[$];
-  reset_comp_group rst_grp;
+  smtdv_reset_comp_group rst_grp;
 
   if(!grp_registered.exists(rst_grp_name))
     `uvm_fatal(get_full_name(), $sformatf(
@@ -279,17 +283,17 @@ function void reset_comp_group::show_comps(string rst_grp_name, bit show_root = 
       (show_root) ? "root_" : "", q[i].get_full_name()),
       UVM_LOW);
     end
-endfunction
+endfunction : show_comps
 
 
-task reset_comp_group::do_reset_jump(rst_type_t rst_typ);
+task smtdv_reset_comp_group::do_reset_jump(rst_type_t rst_typ);
   m_rst_domain.jump(m_rst_domain.find_by_name("reset"));
-endtask
+endtask : do_reset_jump
 
 
-task reset_comp_group::hw_reset();
+task smtdv_reset_comp_group::hw_reset();
   string grp_name= this.get_name();
-  reset_comp_group rst_grp;
+  smtdv_reset_comp_group rst_grp;
 
   if(!hw_rst_aa.exists(grp_name)) begin
     `uvm_fatal(get_full_name(), $sformatf("Can't find the HW reset group named: %s",
@@ -297,12 +301,12 @@ task reset_comp_group::hw_reset();
     end
   rst_grp= hw_rst_aa[grp_name];
   rst_grp.do_reset_jump(HW_RST);
-endtask
+endtask : hw_reset
 
 
-task reset_comp_group::sw_reset();
+task smtdv_reset_comp_group::sw_reset();
   string grp_name= this.get_name();
-  reset_comp_group rst_grp;
+  smtdv_reset_comp_group rst_grp;
 
   if(!sw_rst_aa.exists(grp_name)) begin
     `uvm_fatal(get_full_name(), $sformatf("Can't find the SW reset group named: %s",
@@ -310,19 +314,27 @@ task reset_comp_group::sw_reset();
     end
   rst_grp= sw_rst_aa[grp_name];
   rst_grp.do_reset_jump(SW_RST);
-endtask
+endtask : sw_reset
 
 
 //===========================================
 // Reset Model Declaration
 //===========================================
-class smtdv_reset_model #(type VIF = virtual interface smtdv_gen_rst_if) extends reset_comp_group;
+class smtdv_reset_model #(
+  ADDR_WIDTH = 14,
+  DATA_WIDTH = 32,
+  type VIF = virtual interface smtdv_gen_rst_if
+  ) extends
+  smtdv_reset_comp_group;
+
+  typedef smtdv_reset_model #(ADDR_WIDTH, DATA_WIDTH, VIF) rst_model_t;
+  typedef smtdv_reset_monitor #(ADDR_WIDTH, DATA_WIDTH, VIF) rst_mon_t;
 
   VIF         vif;
 
   rst_type_t  rst_typ;
 
-  `uvm_object_param_utils(smtdv_reset_model#(VIF))
+  `uvm_object_param_utils(rst_model_t)
 
   function new(string name = "smtdv_reset_model");
     super.new(name);
@@ -366,9 +378,9 @@ endfunction
 
 
 function void smtdv_reset_model::create_rst_monitor(VIF vif = null);
-  smtdv_reset_monitor #(VIF) rst_mon;
+  rst_mon_t rst_mon;
 
-  rst_mon= smtdv_reset_monitor#(VIF)::type_id::create({get_name(), "_rst_mon"}, null);
+  rst_mon= rst_mon_t::type_id::create({get_name(), "_rst_mon"}, null);
   rst_mon.vif= vif;
   rst_mon.set_rst_model(this);
   add_component(rst_mon);
@@ -383,7 +395,7 @@ endfunction
 
 
 task smtdv_reset_model::do_hw_reset(time rst_period = 1000);
-  reset_comp_group rst_grp;
+  smtdv_reset_comp_group rst_grp;
 
   rst_grp= get_rst_grp(get_name(), HW_RST);
   vif.do_reset(rst_period);
@@ -410,7 +422,7 @@ endtask
 
 
 task smtdv_reset_model::do_sw_reset();
-  reset_comp_group rst_grp;
+  smtdv_reset_comp_group rst_grp;
 
   rst_grp= get_rst_grp(get_name(), SW_RST);
   rst_grp.sw_reset();

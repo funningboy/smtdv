@@ -2,6 +2,12 @@
 `ifndef __SMTDV_REPORT_SERVER_SV__
 `define __SMTDV_REPORT_SERVER_SV__
 
+/**
+* smtdv_report_server
+*
+* @class smtdv_report_server
+*
+*/
 class smtdv_report_server extends uvm_report_server;
 
   bit en_filename = 1;

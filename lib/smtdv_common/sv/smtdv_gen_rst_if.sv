@@ -3,6 +3,14 @@
 
 `timescale 1ns/10ps
 
+/**
+* smtdv_gen_rst_vif
+* as smart rst to notify all registered comp to do reset methodology
+* default is negative reset
+*
+* @class smtdv_gen_rst_if(output logic rst)
+*
+*/
 interface smtdv_gen_rst_if (output logic rst);
 
   parameter string  if_name       = "smtdv_gen_rst_if";

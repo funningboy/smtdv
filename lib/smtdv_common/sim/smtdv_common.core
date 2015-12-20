@@ -1,1 +1,103 @@
-../smtdv_common.core
+[main]
+description = "SMTDV common lib"
+root = os.getenv("SMTDV_HOME")
+common = ${main:root}/lib/smtdv_common
+debug = FALSE
+spawn = TRUE
+unittest = TRUE
+simulator = mti
+test = smtdv_base_test
+tests = smtdv_base_test
+
+[cores]
+import_files =
+  ${main:root}/script/mti.core
+  ${main:root}/script/ius.core
+  ${main:root}/dpi/sqlite3/smtdv_sqlite3.core
+  ${main:root}/dpi/stl/smtdv_stl.core
+
+[systemverilog]
+src_files =
+  ${main:common}/tb/smtdv_top.sv
+
+include_files =
+  ${smtdv_sqlite3.systemverilog:include_files}
+  ${smtdv_stl.systemverilog:include_files}
+  ${main:common}/sv/smtdv_common_pkg.sv
+  ${main:common}/test/smtdv_test_list.sv
+
+include_dirs =
+  ${smtdv_sqlite3.systemverilog:include_dirs}
+  ${smtdv_stl.systemverilog:include_dirs}
+  ${main:common}
+  ${main:common}/seq
+  ${main:common}/sv
+  ${main:common}/tb
+  ${main:common}/test
+
+[verilog]
+src_files =
+
+include_files =
+
+include_dirs =
+  ${main:common}/v
+
+[sharedlib]
+include_dirs =
+  ${smtdv_sqlite3.sharedlib:include_dirs}
+  ${smtdv_stl.sharedlib:include_dirs}
+
+include_files =
+  ${smtdv_sqlite3.sharedlib:include_files}
+  ${smtdv_stl.sharedlib:include_files}
+
+[mti]
+vlib =
+  vlib ${mti.mti:vlib}
+
+vlog =
+  vlog ${mti.mti:vlog}
+  proc_incdir(\"mti\", \"${systemverilog:include_dirs}\")
+  proc_incfile(\"mti\", \"${systemverilog:include_files}\")
+  proc_srcfile(\"mti\", \"${systemverilog:src_files}\")
+  proc_incdir(\"mti\", \"${verilog:include_dirs}\")
+  proc_incdir(\"mti\", \"${verilog:include_files}\")
+  proc_srcfile(\"mti\", \"${verilog:src_files}\")
+
+vsim =
+  vsim ${mti.mti:vsim}
+  proc_incdir(\"mti\", \"${sharedlib:include_dirs}\")
+  proc_sharedlib(\"mti\", \"${sharedlib:include_files}\")
+  proc_incdir(\"mti\", \"${systemverilog:include_dirs}\")
+  proc_incdir(\"mti\", \"${verilog:include_dirs}\")
+  +UVM_TESTNAME=${main:test}
+  +UVM_VERBOSITY=UVM_DEBUG
+  top
+
+clean =
+  ${mti.mti:clean}
+
+[ius]
+irun =
+  irun ${ius.ius:irun}
+  proc_incdir(\"ius\", \"${systemverilog:include_dirs}\")
+  proc_incfile(\"ius\", \"${systemverilog:include_files}\")
+  proc_srcfile(\"ius\", \"${systemverilog:src_files}\")
+  proc_incdir(\"ius\", \"${verilog:include_dirs}\")
+  proc_incdir(\"ius\", \"${verilog:include_files}\")
+  proc_srcfile(\"ius\", \"${verilog:src_files}\")
+  proc_incdir(\"ius\", \"${sharedlib:include_dirs}\")
+  proc_sharedlib(\"ius\", \"${sharedlib:include_files}\")
+  -uvm
+  +UVM_TESTNAME=${main:test}
+  +UVM_VERBOSITY=UVM_DEBUG
+
+clean =
+  ${ius.ius:clean}
+
+[provider]
+name = funningboy@gmail.com
+repo_name = smtdv
+repo_root = $PWD/lib/smtdv_common
+revision = 1

@@ -2,6 +2,13 @@
 `ifndef __SMTDV_SEQUENCE_ITEM_SV__
 `define __SMTDV_SEQUENCE_ITEM_SV__
 
+/**
+* smtdv_base_item
+* a lightweight oo item, pre, next, parent
+*
+* @class smtdv_base_item
+*
+*/
 class smtdv_base_item
   extends
   uvm_sequence_item;
@@ -27,6 +34,15 @@ class smtdv_base_item
 
 endclass
 
+/**
+* smtdv_sequence_item
+* a parameterize sequence item
+*
+* extends smtdv_base_item
+*
+* @class smtdv_base_item
+*
+*/
 class smtdv_sequence_item #(
     ADDR_WIDTH = 14,
     DATA_WIDTH = 32
@@ -41,6 +57,7 @@ class smtdv_sequence_item #(
   rand int            offset = DATA_WIDTH>>3;
 
   bit                 success = FALSE;
+  bit                 retry = FALSE;
   bit                 mem_complete = FALSE;
   bit                 fifo_complete = FALSE;
   bit                 addr_complete = FALSE;
@@ -62,13 +79,18 @@ class smtdv_sequence_item #(
   longint       ed_time;
   rand int      life_time = 0;
 
+  /**
+   * life_time Int Constraint.
+   * Constrain item life_time.
+   *
+   */
   constraint c_life_time  {
     life_time inside {[10:20]};
   }
 
   `uvm_object_param_utils_begin(smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH))
     `uvm_field_int(id, UVM_ALL_ON)
-    // virtual field should been imp at top level
+    // virtual field should be imp at top level
     `uvm_field_int(addr, UVM_ALL_ON)
     `uvm_field_int(bst_len, UVM_ALL_ON)
     `uvm_field_int(rsp, UVM_ALL_ON)
@@ -79,6 +101,7 @@ class smtdv_sequence_item #(
     if (debug) begin
       `uvm_field_int(offset, UVM_ALL_ON)
       `uvm_field_int(success, UVM_ALL_ON)
+      `uvm_field_int(retry, UVM_ALL_ON)
       `uvm_field_int(mem_complete, UVM_ALL_ON)
       `uvm_field_int(fifo_complete, UVM_ALL_ON)
       `uvm_field_int(addr_complete, UVM_ALL_ON)
@@ -100,53 +123,70 @@ class smtdv_sequence_item #(
     super.new(name);
   endfunction
 
-  virtual function void pack_data(int idx=0, bit [DATA_WIDTH-1:0] idata=0);
-    int n = (DATA_WIDTH>>3);
-    for (int i=0; i<n; i+=1) begin
-      data_beat[idx][i] = idata[i*8+:8];
-    end
-  endfunction
-
-  virtual function bit[DATA_WIDTH-1:0] unpack_data(int idx=0);
-    bit [DATA_WIDTH-1:0] odata;
-    int n = (DATA_WIDTH>>3);
-    for (int i=0; i<n; i+=1) begin
-      odata[i*8+:8] = data_beat[idx][i];
-    end
-    return odata;
-  endfunction
-
-  virtual function bit compare(smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH) cmp);
-    // addr cmp
-    if (addrs.size() != cmp.addrs.size() ) begin
-      return FALSE;
-    end
-    foreach(addrs[i]) begin
-      if (addrs[i] != cmp.addrs[i]) begin
-        return FALSE;
-      end
-    end
-    // data_beat cmp
-    if (data_beat.size() != cmp.data_beat.size() ) begin
-        return FALSE;
-    end
-    foreach(data_beat[i]) begin
-      if (data_beat[i] != cmp.data_beat[i]) begin
-        return FALSE;
-      end
-    end
-    // byten cmp
-    if (byten_beat.size() != cmp.byten_beat.size() ) begin
-      return FALSE;
-    end
-    foreach(byten_beat[i]) begin
-      if (byten_beat[i] != cmp.byten_beat[i]) begin
-        return FALSE;
-      end
-    end
-    return TRUE;
-  endfunction
+  extern virtual function void pack_data(int idx=0, bit [DATA_WIDTH-1:0] idata=0);
+  extern virtual function bit[DATA_WIDTH-1:0] unpack_data(int idx=0);
+  extern virtual function bit compare(smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH) cmp);
 
 endclass : smtdv_sequence_item
+
+/**
+ *  pack serial data to byte arr data_beat
+ *  @return void
+ */
+function void smtdv_sequence_item::pack_data(int idx=0, bit [DATA_WIDTH-1:0] idata=0);
+  int n = (DATA_WIDTH>>3);
+  for (int i=0; i<n; i+=1) begin
+    data_beat[idx][i] = idata[i*8+:8];
+  end
+endfunction : pack_data
+
+/**
+ *  unpack byte arr data_beat to serial data
+ *  @return bit[DATA_WIDTH-1:0]
+ */
+function bit[smtdv_sequence_item::DATA_WIDTH-1:0] smtdv_sequence_item::unpack_data(int idx=0);
+  bit [DATA_WIDTH-1:0] odata;
+  int n = (DATA_WIDTH>>3);
+  for (int i=0; i<n; i+=1) begin
+    odata[i*8+:8] = data_beat[idx][i];
+  end
+  return odata;
+endfunction : unpack_data
+
+/**
+ *  compare addrs, data_beat, ...
+ *  @return bool
+ */
+function bit smtdv_sequence_item::compare(smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH) cmp);
+  // addr cmp
+  if (addrs.size() != cmp.addrs.size() ) begin
+    return FALSE;
+  end
+  foreach(addrs[i]) begin
+    if (addrs[i] != cmp.addrs[i]) begin
+      return FALSE;
+    end
+  end
+  // data_beat cmp
+  if (data_beat.size() != cmp.data_beat.size() ) begin
+    return FALSE;
+  end
+  foreach(data_beat[i]) begin
+    if (data_beat[i] != cmp.data_beat[i]) begin
+      return FALSE;
+    end
+  end
+  // byten cmp
+  if (byten_beat.size() != cmp.byten_beat.size() ) begin
+    return FALSE;
+  end
+  foreach(byten_beat[i]) begin
+    if (byten_beat[i] != cmp.byten_beat[i]) begin
+      return FALSE;
+    end
+  end
+  return TRUE;
+endfunction : compare
+
 
 `endif // end of __SMTDV_SEQUENCE_ITEM_SV__

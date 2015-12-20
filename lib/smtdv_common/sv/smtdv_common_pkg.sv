@@ -22,6 +22,10 @@ package smtdv_common_pkg;
   `include "smtdv_reset_model.sv"
   `include "smtdv_reset_monitor.sv"
   `include "../seq/smtdv_slave_seqs.sv"
+  `include "../seq/smtdv_slave_mem_seq.sv"
+  `include "../seq/smtdv_slave_fifo_seq.sv"
+  `include "../seq/smtdv_master_seqs.sv"
+  `include "../seq/smtdv_master_retry_seq.sv"
   // smtdv_lowpower_model.sv
 endpackage
 

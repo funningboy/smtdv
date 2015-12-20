@@ -2,8 +2,22 @@
 `ifndef __SMTDV_GENERIC_MEMORY_SV__
 `define __SMTDV_GENERIC_MEMORY_SV__
 
-class smtdv_generic_memory #(ADDR_WIDTH = 64, DATA_WIDTH = 128) extends uvm_object;
+typedef class smtdv_generic_memory_cb;
 
+/**
+* smtdv_generic_memory
+* as basic memory
+*
+* @class smtdv_generic_fifo#(ADDR_WIDTH, DATA_WIDTH)
+*
+*/
+class smtdv_generic_memory #(
+  ADDR_WIDTH = 64,
+  DATA_WIDTH = 128
+  ) extends
+  uvm_object;
+
+  typedef smtdv_generic_memory#(ADDR_WIDTH, DATA_WIDTH) mem_t;
   typedef bit [(ADDR_WIDTH-1):0] gene_mem_addr_t;
   typedef bit [(DATA_WIDTH>>3)-1:0][7:0] byte16_t;
 
@@ -13,7 +27,7 @@ class smtdv_generic_memory #(ADDR_WIDTH = 64, DATA_WIDTH = 128) extends uvm_obje
 //byte memory[gene_mem_addr_t];
   reg [7:0] memory[gene_mem_addr_t];
 
-  `uvm_object_param_utils_begin(smtdv_generic_memory#(ADDR_WIDTH, DATA_WIDTH))
+  `uvm_object_param_utils_begin(mem_t)
   `uvm_object_utils_end
 
   extern function new(string name = "smtdv_generic_memory");
@@ -111,6 +125,8 @@ task smtdv_generic_memory::mem_load_byte(gene_mem_addr_t addr, int bcnt, ref byt
     if(!memory.exists(addr+i)) begin
       byte temp;
       `SMTDV_RAND_VAR(temp)
+      // return 0 while data is not found
+      temp = temp & ~temp;
       memory[addr+i]= temp;
       end
     data[i]= memory[addr+i];
@@ -126,4 +142,4 @@ endtask : mem_load_byte
   Class smtdv_generic_memory END
 #################################*/
 
-`endif
+`endif // end of __SMTDV_GENERIC_MEMORY_SV__

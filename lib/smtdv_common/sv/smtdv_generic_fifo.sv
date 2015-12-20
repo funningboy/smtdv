@@ -4,16 +4,31 @@
 `ifndef __SMTDV_GENERIC_FIFO_SV__
 `define __SMTDV_GENERIC_FIFO_SV__
 
-class smtdv_generic_fifo #(DEEP = 100, DATA_WIDTH = 128)
-  extends uvm_object;
+typedef class smtdv_generic_fifo_cb;
+
+/**
+* smtdv_generic_fifo
+* as basic fifo
+*
+* @class smtdv_generic_fifo#(DEEP, DATA_WIDTH)
+*
+*/
+class smtdv_generic_fifo #(
+  DEEP = 100,
+  DATA_WIDTH = 128
+  )extends
+  uvm_object;
+
+  typedef smtdv_generic_fifo#(DEEP, DATA_WIDTH) fifo_t;
+  typedef smtdv_generic_fifo_cb#(DEEP, DATA_WIDTH) fifo_cb_t;
 
   bit[DATA_WIDTH-1:0] fifo[$];
   int unsigned ix = 0;
 
   bit has_callback = TRUE;
-  smtdv_generic_fifo_cb#(DEEP, DATA_WIDTH) fifo_cb;
+  fifo_cb_t fifo_cb;
 
-  `uvm_object_param_utils_begin(smtdv_generic_fifo#(DATA_WIDTH))
+  `uvm_object_param_utils_begin(fifo_t)
   `uvm_object_utils_end
 
   function new(string name = "smtdv_generic_fifo");
@@ -21,47 +36,54 @@ class smtdv_generic_fifo #(DEEP = 100, DATA_WIDTH = 128)
     fifo_cb = new();
   endfunction
 
-  virtual function bit is_full();
-    return ix == DEEP;
-  endfunction
+  extern virtual function bit is_full();
+  extern virtual function bit is_empty();
+  extern virtual task push_back(bit [DATA_WIDTH-1:0] data, longint cyc);
+  extern virtual task push_front(bit [DATA_WIDTH-1:0] data, longint cyc);
+  extern virtual task pop_back(ref bit [DATA_WIDTH-1:0] data, longint cyc);
+  extern virtual task pop_front(ref bit [DATA_WIDTH-1:0] data, longint cyc);
 
-  virtual function bit is_empty();
-    return ix == 0;
-  endfunction
+endclass : smtdv_generic_fifo
 
-  virtual task push_back(bit [DATA_WIDTH-1:0] data, longint cyc);
-    if (!is_full()) begin
-      fifo.push_back(data);
-      ix++;
-      if (has_callback) begin void'(fifo_cb.push_cb(data, cyc)); end
-    end
-  endtask
+function bit smtdv_generic_fifo::is_full();
+  return ix == DEEP;
+endfunction : is_full
 
-  virtual task push_front(bit [DATA_WIDTH-1:0] data, longint cyc);
-    if (!is_full()) begin
-      fifo.push_front(data);
-      ix++;
-      if (has_callback) begin void'(fifo_cb.push_cb(data, cyc)); end
-    end
-  endtask
+function bit smtdv_generic_fifo::is_empty();
+  return ix == 0;
+endfunction : is_empty
 
-  virtual task pop_back(ref bit [DATA_WIDTH-1:0] data, longint cyc);
-    if (!is_empty()) begin
-      data = fifo.pop_back();
-      ix--;
-      if (has_callback) begin void'(fifo_cb.pop_cb(data, cyc)); end
-    end
-  endtask
+task smtdv_generic_fifo::push_back(bit [DATA_WIDTH-1:0] data, longint cyc);
+  if (!is_full()) begin
+    fifo.push_back(data);
+    ix++;
+    if (has_callback) begin void'(fifo_cb.push_cb(data, cyc)); end
+  end
+endtask : push_back
 
-  virtual task pop_front(ref bit [DATA_WIDTH-1:0] data, longint cyc);
-    if (!is_empty()) begin
-      data = fifo.pop_front();
-      ix--;
-      if (has_callback) begin void'(fifo_cb.pop_cb(data, cyc)); end
-    end
-  endtask
+task smtdv_generic_fifo::push_front(bit [DATA_WIDTH-1:0] data, longint cyc);
+  if (!is_full()) begin
+    fifo.push_front(data);
+    ix++;
+    if (has_callback) begin void'(fifo_cb.push_cb(data, cyc)); end
+  end
+endtask : push_front
 
-endclass
+task smtdv_generic_fifo::pop_back(ref bit [DATA_WIDTH-1:0] data, longint cyc);
+  if (!is_empty()) begin
+    data = fifo.pop_back();
+    ix--;
+    if (has_callback) begin void'(fifo_cb.pop_cb(data, cyc)); end
+  end
+endtask : pop_back
+
+task smtdv_generic_fifo::pop_front(ref bit [DATA_WIDTH-1:0] data, longint cyc);
+  if (!is_empty()) begin
+    data = fifo.pop_front();
+    ix--;
+    if (has_callback) begin void'(fifo_cb.pop_cb(data, cyc)); end
+  end
+endtask : pop_front
 
 
 // ringbuff

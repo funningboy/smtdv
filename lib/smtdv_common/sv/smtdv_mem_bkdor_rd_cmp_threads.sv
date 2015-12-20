@@ -1,0 +1,89 @@
+
+`ifndef __SMTDV_MEM_BKDOR_RD_COMP_THREADS_SV__
+`define __SMTDV_MEM_BKDOR_RD_COMP_THREADS_SV__
+
+typedef class smtdv_sequence_item;
+typedef class smtdv_master_agent;
+typedef class smtdv_slave_agent;
+typedef class smtdv_cfg;
+typedef class smtdv_backdoor_base_thread;
+
+/**
+* smtdv_mem_backdoor_rd_thread
+* check read through from mem is ok
+*
+* @class smtdv_mem_bkdor_rd_comp#(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR,
+* NUM_OF_TARGETS, T1, T2, T3, CFG)
+*
+*/
+class smtdv_mem_bkdor_rd_comp #(
+  ADDR_WIDTH = 14,
+  DATA_WIDTH = 32,
+  NUM_OF_INITOR = 1,
+  NUM_OF_TARGETS = 4,
+  type T1 = smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH),
+  type T2 = smtdv_master_agent,
+  type T3 = smtdv_slave_agent,
+  type CFG = smtdv_cfg
+  ) extends
+  smtdv_backdoor_base_thread#(
+    ADDR_WIDTH,
+    DATA_WIDTH,
+    NUM_OF_INITOR,
+    NUM_OF_TARGETS,
+    T1,
+    T2,
+    T3,
+    CFG
+  );
+
+  typedef smtdv_scoreboard#(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS, T1, T2, T3, CFG) scb_t;
+  typedef smtdv_mem_bkdor_rd_comp#(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS, T1, T2, T3, CFG) bk_rd_t;
+  T1 item, ritem;
+
+  `uvm_object_param_utils_begin(bk_rd_t)
+  `uvm_object_utils_end
+
+  function new(string name = "mem_bkdor_rd_comp", scb_t parent=null);
+    super.new(name, parent);
+  endfunction : new
+
+  extern virtual task run();
+
+endclass : smtdv_mem_bkdor_rd_comp
+
+
+task smtdv_mem_bkdor_rd_comp::run();
+  int sid;
+  string table_nm;
+
+  forever begin
+    sid = -1;
+    wait(this.cmp.wbox.size()>0);
+    item = this.cmp.wbox.pop_front();
+    sid = this.cmp.initor_m[0].cfg.find_slave(item.addr);
+    if (sid<0) begin
+      `uvm_fatal("NOREGISTER",{"slave addr must be register to master cfg: ", this.cmp.initor_m[0].cfg.get_full_name()});
+    end
+    table_nm = $psprintf("\"%s\"", this.cmp.targets_s[sid].seqr.get_full_name());
+
+    while(this.cmp.bkdor_rd.timeout>0) begin
+      if (this.cmp.bkdor_rd.match == FALSE) begin
+        if (this.cmp.bkdor_rd.compare(table_nm, item, ritem)) begin
+          this.cmp.bkdor_rd.match = TRUE;
+          break;
+        end
+      end
+      @(posedge this.cmp.initor_m[0].vif.clk);
+      this.cmp.bkdor_rd.timeout--;
+    end
+
+    if (this.cmp.bkdor_rd.match == FALSE) begin
+      `uvm_error(this.cmp.get_full_name(), {$psprintf("BACKDOOR COMPARE RDONG DATA \n%s, %s", item.sprint(), ritem.sprint())})
+    end
+    this.cmp.bkdor_rd.match = FALSE;
+  end
+endtask : run
+
+
+`endif // end of __SMTDV_MEM_BKDOR_RD_COMP_THREADS_SV__

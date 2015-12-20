@@ -12,13 +12,14 @@
 `define __SMTDV_FRAME_SV__
 
 //// only for 2D arr,
-//class smtdv_frame #(ROW_WIDTH = 1, COL_WIDTH = 32)
+// frame0_apb.stl, frame1_ahb.stl
+//class smtdv_frame #(ROW_WIDTH = 1, COL_WIDTH = 32, PROT=`smtdv_(apb))
 //  extends
-//    uvm_object;
+//    uvm_sequence_item;
 //
 //    bit                 debug = TRUE;
 //    bit [COL_WIDTH-1:0] frame[ROW_WIDTH];
-
+//    hookup to protocol
 `endif // end of __SMTDV_FRAME_SV__
 
 //class smtdv_frame #()

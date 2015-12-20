@@ -2,45 +2,73 @@
 `ifndef __SMTDV_SEQUENCER_SV__
 `define __SMTDV_SEQUENCER_SV__
 
+typedef class smtdv_cfg;
+typedef class smtdv_sequence_item;
+typedef class smtdv_component;
+/**
+* smtdv_sequencer
+* a basic smtdv_sequencer
+*
+* @class smtdv_sequencer
+*
+*/
 class smtdv_sequencer #(
-  type REQ = uvm_sequence_item,
+  ADDR_WIDTH = 14,
+  DATA_WIDTH = 32,
+  type CFG = smtdv_cfg,
+  type REQ = smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH),
   type RSP = REQ
   ) extends
     smtdv_component#(uvm_sequencer#(REQ, RSP));
 
-  `uvm_sequencer_param_utils(smtdv_sequencer#(REQ, RSP))
+  CFG cfg;
+  // get transfer from slave monitor
+  uvm_blocking_get_port #(REQ) mon_get_port;
+
+  `uvm_sequencer_param_utils(smtdv_sequencer#(ADDR_WIDTH, DATA_WIDTH, CFG, REQ, RSP))
 
   function new(string name = "smtdv_sequencer", uvm_component parent);
     super.new(name, parent);
-  endfunction
+    mon_get_port =  new("mon_get_port", this);
+  endfunction : new
 
-  virtual function void build_phase(uvm_phase phase);
-  endfunction
-
-    virtual task run_phase(uvm_phase phase);
-      fork
-        super.run_phase(phase);
-        join_none
-
-      reset_restart_sqr(phase);
-    endtask
-
-    virtual task reset_restart_sqr(uvm_phase phase);
-      while(1) begin
-        @(negedge resetn);
-        m_req_fifo.flush();
-
-        stop_sequences();
-        wait(resetn == 1);
-        start_phase_sequence(phase);
-        end
-    endtask
-
-  extern virtual function void smtdv_sequencer_cleanup();
+  extern virtual task run_phase(uvm_phase phase);
+  extern virtual function void cleanup();
+  extern virtual function void reorder(ref REQ iitem, int indx);
+  extern virtual task reset_restart_sqr(uvm_phase phase);
 
 endclass : smtdv_sequencer
 
-function void smtdv_sequencer::smtdv_sequencer_cleanup();
+/**
+ * drive tlm item to driver
+ */
+task smtdv_sequencer::run_phase(uvm_phase phase);
+  fork
+    super.run_phase(phase);
+  join_none
+
+  reset_restart_sqr(phase);
+endtask : run_phase
+
+/**
+ * reset_restart_sequencer while resetn asserted
+ */
+task smtdv_sequencer::reset_restart_sqr(uvm_phase phase);
+  while(1) begin
+    @(negedge resetn);
+    m_req_fifo.flush();
+
+    stop_sequences();
+    wait(resetn == 1);
+    start_phase_sequence(phase);
+  end
+endtask : reset_restart_sqr
+
+/**
+ * clean up sequencer fifo
+ * @return void
+ */
+function void smtdv_sequencer::cleanup();
   foreach(reg_sequences[i]) begin
     // Only stop those sequences with get_sequencer() equal to this sequencer
     if(reg_sequences[i].get_sequencer() == this) begin
@@ -51,42 +79,16 @@ function void smtdv_sequencer::smtdv_sequencer_cleanup();
   get_next_item_called= 0;
   m_req_fifo.flush();
   `uvm_info(get_full_name(), "Clean up all running sequences & items", UVM_LOW)
-endfunction
+endfunction : cleanup
 
-
-class smtdv_master_sequencer #(
-  type REQ = uvm_sequence_item,
-  type RSP = REQ
-  )extends
-    smtdv_sequencer #(REQ, RSP);
-
-  `uvm_sequencer_param_utils(smtdv_master_sequencer#(REQ, RSP))
-
-  function new(string name = "smtdv_sequencer", uvm_component parent);
-    super.new(name, parent);
-  endfunction
-
-endclass
-
-
-class smtdv_slave_sequencer #(
-  type REQ = uvm_sequence_item,
-  type RSP = REQ
-  )extends
-    smtdv_sequencer #(REQ, RSP);
-
-  `uvm_sequencer_param_utils(smtdv_slave_sequencer#(REQ, RSP))
-
-    // get transfer from apb slave monitor
-    uvm_blocking_get_port #(REQ) mon_get_port;
-
-  function new(string name = "smtdv_sequencer", uvm_component parent);
-    super.new(name, parent);
-    mon_get_port= new("mon_get_port", this);
-  endfunction
-
-
-endclass
-
+/**
+ * reorder sequencer fifo while some urgent item put
+ * @return void
+ */
+function void smtdv_sequencer::reorder(ref REQ iitem, int indx);
+//  m_req_fifo.size();
+//  m_req_fifo.can_put()
+//  m_req_fifo.put()...
+endfunction : reorder
 
 `endif // end of __SMTDV_SEQUENCER_SV__

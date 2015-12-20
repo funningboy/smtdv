@@ -2,40 +2,62 @@
 `ifndef __SMTDV_MONITOR_SV__
 `define __SMTDV_MONITOR_SV__
 
-class smtdv_monitor #(type VIF = virtual interface smtdv_if,
-                     type CFG = smtdv_cfg)
-                extends smtdv_component#(uvm_monitor);
+/**
+* smtdv_monitor
+* a basic monitor
+*
+* @class smtdv_monitor
+*
+*/
+class smtdv_monitor #(
+  ADDR_WIDTH = 14,
+  DATA_WIDTH = 32,
+  type VIF = virtual interface smtdv_if,
+  type CFG = smtdv_cfg,
+  type SEQR = smtdv_sequencer#(ADDR_WIDTH, DATA_WIDTH),
+  type T1 = smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH)
+  ) extends
+    smtdv_component#(uvm_monitor);
+
+  typedef smtdv_monitor#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, SEQR, T1) mon_t;
 
   VIF vif;
   CFG cfg;
+  SEQR seqr;
 
-  smtdv_thread_handler#(CFG) th_handler;
+  uvm_analysis_port #(T1) item_collected_port; // collect to scoreboard
+  uvm_analysis_port #(T1) item_asserted_port;  // pre assert note to sequence item
 
-  `uvm_component_param_utils_begin(smtdv_monitor#(VIF, CFG))
-    // Cadence doesn't support this registration
-    //`uvm_field_queue_object(thread_q, UVM_ALL_ON)
+  // as backend threads/handler
+  smtdv_thread_handler#(mon_t) bk_handler;
+
+  `uvm_component_param_utils_begin(mon_t)
   `uvm_component_utils_end
 
   function new(string name = "smtdv_monitor", uvm_component parent=null);
     super.new(name, parent);
+    item_collected_port = new("item_collected_port", this);
+    item_asserted_port = new("item_asserted_port", this);
   endfunction
 
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    th_handler = smtdv_thread_handler#(CFG)::type_id::create("smtdv_monitor_threads", this);
+    bk_handler = smtdv_thread_handler#(mon_t)::type_id::create("smtdv_monitor_threads", this);
   endfunction
 
   virtual function void end_of_elaboration_phase(uvm_phase phase);
-    if(!th_handler)
-      `uvm_warning("NOTHREADHANDLER",{"thread handler create fail: ",get_full_name()});
   endfunction
 
   extern virtual task run_phase(uvm_phase phase);
   extern virtual task reset_monitor();
+  extern virtual task run_threads();
 
 endclass : smtdv_monitor
 
-
+/**
+ *  extend this when start of run,
+ *  start to spawn all threads and wait for join all by thread_handler
+ */
 task smtdv_monitor::run_phase(uvm_phase phase);
   begin
   fork
@@ -52,17 +74,21 @@ task smtdv_monitor::run_phase(uvm_phase phase);
         end
       join_any
 
-      if (th_handler)
-        th_handler.run();
+      run_threads();
     join
     disable fork;
     end
   end
-endtask
+endtask : run_phase
+
+
+task smtdv_monitor::run_threads();
+  //bk_handler.run();
+endtask : run_threads
 
 
 task smtdv_monitor::reset_monitor();
-endtask
+endtask : reset_monitor
 
 
 `endif // end of __SMTDV_MONITOR_SV__
