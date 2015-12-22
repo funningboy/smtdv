@@ -52,11 +52,11 @@ class smtdv_backdoor_base_thread #(
      super.new(name, parent);
    endfunction : new
 
-    virtual function void pre_do();
-      if (cmp==null) begin
-        `uvm_fatal("NOCMP",{"cmp must be set for: ",get_full_name(),".cmp"});
+   virtual function void pre_do();
+     if (cmp==null) begin
+       `uvm_fatal("NOCMP",{"cmp must be set for: ",get_full_name(),".cmp"});
      end
-    endfunction : pre_do
+ endfunction : pre_do
 
 endclass : smtdv_backdoor_base_thread
 

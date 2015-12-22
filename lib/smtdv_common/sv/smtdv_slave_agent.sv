@@ -1,13 +1,13 @@
 `ifndef __SMTDV_SLAVE_AGENT_SV__
 `define __SMTDV_SLAVE_AGENT_SV__
 
+typedef class smtdv_sequence_item;
 typedef class smtdv_slave_cfg;
 typedef class smtdv_sequencer;
 typedef class smtdv_driver;
 typedef class smtdv_monitor;
 typedef class smtdv_component;
-typedef class smtdv_slave_base_seq;
-typedef class smtdv_sequence_item;
+//typedef class smtdv_slave_base_seq;
 
 /**
 * smtdv_slave_agent
@@ -24,7 +24,7 @@ class smtdv_slave_agent #(
   type VIF = virtual interface smtdv_if,
   type CFG = smtdv_slave_cfg,
   type T1 = smtdv_sequence_item #(ADDR_WIDTH, DATA_WIDTH),
-  type SEQR = smtdv_sequencer#(ADDR_WIDTH, DATA_WIDTH, CFG, T1),
+  type SEQR = smtdv_sequencer#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, T1),
   type DRV = smtdv_driver#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, T1),
   type MON = smtdv_monitor#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, SEQR, T1)
   ) extends
@@ -39,7 +39,7 @@ class smtdv_slave_agent #(
       MON);
 
   typedef smtdv_slave_agent#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, T1, SEQR, DRV, MON) agent_t;
-  typedef smtdv_slave_base_seq#(ADDR_WIDTH, DATA_WIDTH) seq_t;
+  //typedef smtdv_slave_base_seq#(ADDR_WIDTH, DATA_WIDTH, T1, VIF, CFG, SEQR) seq_t;
 
    uvm_tlm_analysis_fifo #(T1) fifo_mon_sqr;
 
@@ -59,12 +59,13 @@ endclass : smtdv_slave_agent
 
 function void smtdv_slave_agent::build_phase(uvm_phase phase);
   super.build_phase(phase);
-  // put default base seq to sequencer, you can override
-  // base seq to your specific seq
-  uvm_config_db#(uvm_object_wrapper)::set(this,
-    "seqr.run_phase",
-    "default_sequence",
-    seq_t::type_id::get());
+  // IUS doesn't work for preload defualt seq to sequnecer,
+  // you need to set default seq to it's specific sequencer at top level test
+  // put default base seq to sequencer,
+  //uvm_config_db#(uvm_object_wrapper)::set(this,
+  //  "seqr.run_phase",
+  //  "default_sequence",
+  //  seq_t::type_id::get());
 
   if(this.get_is_active())
     mon.seqr = seqr;

@@ -3,38 +3,44 @@
 
 typedef class smtdv_sequence_item;
 typedef class smtdv_master_cfg;
+typedef class smtdv_sequencer;
+typedef class smtdv_sequence;
 
 /**
 * smtdv_master_base_seq
 * a basic master seq
 *
-* @class smtdv_master_base_seq #(ADDR_WIDTH, DATA_WIDTH, T1, CFG)
+* @class smtdv_master_base_seq #(ADDR_WIDTH, DATA_WIDTH, T1, VIF, CFG, SEQR)
 *
 */
 class smtdv_master_base_seq #(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32,
   type T1 = smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH),
+  type VIF = virtual interface smtdv_if,
   type CFG = smtdv_master_cfg,
-  type SEQR = smtdv_sequencer#(ADDR_WIDTH, DATA_WIDTH, CFG, T1)
+  type SEQR = smtdv_sequencer#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, T1)
   ) extends
     smtdv_sequence#(T1);
 
-    typedef smtdv_master_base_seq#(ADDR_WIDTH, DATA_WIDTH, T1, CFG, SEQR) seq_t;
+    typedef smtdv_master_base_seq#(ADDR_WIDTH, DATA_WIDTH, T1, VIF, CFG, SEQR) seq_t;
 
     T1 item;
     mailbox #(T1) mbox;
-    CFG cfg;
+    SEQR seqr;
 
     `uvm_object_param_utils_begin(seq_t)
     `uvm_object_utils_end
-
-    `uvm_declare_p_sequencer(SEQR)
 
     function new(string name = "smtdv_master_base_seq");
       super.new(name);
       mbox = new();
     endfunction
+
+    virtual task pre_body();
+      super.pre_body();
+      $cast(seqr, m_sequencer);
+    endtask : pre_body
 
     extern virtual task body();
     extern virtual task do_read_item(ref T1 item);
@@ -58,8 +64,7 @@ endtask : do_write_item
 
 task smtdv_master_base_seq::rcv_from_mon();
   forever begin
-    $cast(cfg, p_sequencer.cfg);
-    p_sequencer.mon_get_port.get(item);
+    seqr.mon_get_port.get(item);
     `uvm_info(get_type_name(), {$psprintf("get monitor collected item\n%s", item.sprint())}, UVM_LOW)
     case(item.trs_t)
       RD: begin
@@ -93,8 +98,8 @@ endtask : note_to_drv
 
 
 task smtdv_master_base_seq::finish_from_mon();
-  wait(p_sequencer.finish);
-  `uvm_info(p_sequencer.get_full_name(), {$psprintf("try collected finish signal\n")}, UVM_LOW)
+  wait(seqr.finish);
+  `uvm_info(seqr.get_full_name(), {$psprintf("try collected finish signal\n")}, UVM_LOW)
 endtask : finish_from_mon
 
 

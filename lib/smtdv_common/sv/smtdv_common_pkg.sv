@@ -26,7 +26,11 @@ package smtdv_common_pkg;
   `include "../seq/smtdv_slave_fifo_seq.sv"
   `include "../seq/smtdv_master_seqs.sv"
   `include "../seq/smtdv_master_retry_seq.sv"
+  `include "../seq/smtdv_master_test_seq.sv"
+  `include "../seq/smtdv_slave_test_seq.sv"
+
   // smtdv_lowpower_model.sv
+  // smtdv_jtag_model.sv
 endpackage
 
 `include "smtdv_vif.sv"

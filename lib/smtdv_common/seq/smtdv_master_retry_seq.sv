@@ -4,10 +4,11 @@
 typedef class smtdv_sequence_item;
 typedef class smtdv_master_base_seq;
 typedef class smtdv_master_cfg;
+typedef class smtdv_sequencer;
 
 /**
 * smtdv_master_retry_seq
-* a basic master retry seq while err/retry side effect assert
+* a basic master retry seq while err/retry assert
 *
 * @class smtdv_master_retry_seq #(ADDR_WIDTH, DATA_WIDTH, T1, CFG)
 *
@@ -16,18 +17,20 @@ class smtdv_master_retry_seq #(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32,
   type T1 = smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH),
+  type VIF = virtual interface smtdv_if,
   type CFG = smtdv_master_cfg,
-  type SEQR = smtdv_sequencer#(ADDR_WIDTH, DATA_WIDTH, CFG, T1)
+  type SEQR = smtdv_sequencer#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, T1)
   ) extends
   smtdv_master_base_seq #(
-    ADDR_WIDTH,
-    DATA_WIDTH,
-    T1,
-    CFG,
-    SEQR
+    .ADDR_WIDTH(ADDR_WIDTH),
+    .DATA_WIDTH(DATA_WIDTH),
+    .T1(T1),
+    .VIF(VIF),
+    .CFG(CFG),
+    .SEQR(SEQR)
   );
 
-  typedef smtdv_master_retry_seq#(ADDR_WIDTH, DATA_WIDTH, T1, CFG, SEQR) seq_t;
+  typedef smtdv_master_retry_seq#(ADDR_WIDTH, DATA_WIDTH, T1) seq_t;
 
   // retry search table,
   // retry = (err asserted times < max_err cnt)

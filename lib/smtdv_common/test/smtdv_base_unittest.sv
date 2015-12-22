@@ -2,12 +2,12 @@
 `ifndef __SMTDV_UNITTEST_SV__
 `define __SMTDV_UNITTEST_SV__
 
-typedef class smtdv_reset_model;
-typedef class smtdv_slave_agent;
-typedef class smtdv_master_agent;
-typedef class smtdv_slave_cfg;
-typedef class smtdv_master_cfg;
-typedef class smtdv_scoreboard;
+//typedef class smtdv_reset_model;
+//typedef class smtdv_slave_agent;
+//typedef class smtdv_master_agent;
+//typedef class smtdv_slave_cfg;
+//typedef class smtdv_master_cfg;
+//typedef class smtdv_scoreboard;
 
 // only check compile is ok for base models
 class smtdv_base_unittest

@@ -9,6 +9,7 @@ module top();
   `include "uvm_macros.svh"
 
   import test_smtdv_common_pkg::*;
+  `include "smtdv_macros.svh"
 
   typedef virtual interface smtdv_gen_rst_if#("smtdv_rst_if", 100, 0) rst_t;
 

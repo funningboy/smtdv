@@ -15,17 +15,22 @@ typedef class smtdv_component;
 class smtdv_sequencer #(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32,
+  type VIF = virtual interface smtdv_if,
   type CFG = smtdv_cfg,
   type REQ = smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH),
   type RSP = REQ
   ) extends
     smtdv_component#(uvm_sequencer#(REQ, RSP));
 
+  typedef smtdv_sequencer#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, REQ, RSP) seqr_t;
+
+  VIF vif;
   CFG cfg;
+
   // get transfer from slave monitor
   uvm_blocking_get_port #(REQ) mon_get_port;
 
-  `uvm_sequencer_param_utils(smtdv_sequencer#(ADDR_WIDTH, DATA_WIDTH, CFG, REQ, RSP))
+  `uvm_sequencer_param_utils(seqr_t)
 
   function new(string name = "smtdv_sequencer", uvm_component parent);
     super.new(name, parent);

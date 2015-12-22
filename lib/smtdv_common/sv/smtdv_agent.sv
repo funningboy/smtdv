@@ -3,6 +3,7 @@
 `define __SMTDV_AGENT_SV__
 
 typedef class smtdv_cfg;
+typedef class smtdv_sequence_item;
 typedef class smtdv_sequencer;
 typedef class smtdv_driver;
 typedef class smtdv_monitor;
@@ -16,12 +17,12 @@ typedef class smtdv_component;
 *
 */
 class smtdv_agent #(
-  ADDR_WIDTH = 14,
-  DATA_WIDTH = 32,
+  int ADDR_WIDTH = 14,
+  int DATA_WIDTH = 32,
   type VIF = virtual interface smtdv_if,
   type CFG = smtdv_cfg,
   type T1 = smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH),
-  type SEQR = smtdv_sequencer#(ADDR_WIDTH, DATA_WIDTH, CFG, T1),
+  type SEQR = smtdv_sequencer#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, T1),
   type DRV = smtdv_driver#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, T1),
   type MON = smtdv_monitor#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, SEQR, T1)
   ) extends
@@ -86,22 +87,24 @@ function void smtdv_agent::end_of_elaboration_phase(uvm_phase phase);
     `uvm_fatal("NOCFG",{"cfg must be set for: ",get_full_name(),".cfg"});
   end
   assign_cfg(cfg);
-endfunction
+endfunction : end_of_elaboration_phase
 
 function void smtdv_agent::assign_vi(VIF vif);
   mon.vif= vif;
   if(this.get_is_active()) begin
-    drv.vif= vif;
+    drv.vif = vif;
+    seqr.vif = vif;
   end
-endfunction
+endfunction : assign_vi
 
 function void smtdv_agent::assign_cfg(CFG cfg);
   mon.cfg = cfg;
   if(this.get_is_active()) begin
     drv.cfg = cfg;
     seqr.cfg = cfg;
+    seqr.cfg = cfg;
   end
-endfunction
+endfunction : assign_cfg
 
 
 `endif // end of __SMTDV_AGENT_SV__

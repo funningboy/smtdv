@@ -49,6 +49,8 @@ class smtdv_sequence_item #(
   ) extends
   smtdv_base_item;
 
+  typedef smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+
   bit                 debug = TRUE;
   rand bit [ADDR_WIDTH-1:0]     addr;
   rand bit [ADDR_WIDTH-1:0]     addrs[$];
@@ -88,7 +90,7 @@ class smtdv_sequence_item #(
     life_time inside {[10:20]};
   }
 
-  `uvm_object_param_utils_begin(smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH))
+  `uvm_object_param_utils_begin(item_t)
     `uvm_field_int(id, UVM_ALL_ON)
     // virtual field should be imp at top level
     `uvm_field_int(addr, UVM_ALL_ON)
@@ -125,7 +127,7 @@ class smtdv_sequence_item #(
 
   extern virtual function void pack_data(int idx=0, bit [DATA_WIDTH-1:0] idata=0);
   extern virtual function bit[DATA_WIDTH-1:0] unpack_data(int idx=0);
-  extern virtual function bit compare(smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH) cmp);
+  extern virtual function bit compare(item_t cmp);
 
 endclass : smtdv_sequence_item
 

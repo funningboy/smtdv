@@ -14,8 +14,6 @@ package test_smtdv_common_pkg;
   import smtdv_common_pkg::*;
   `include "smtdv_macros.svh"
 
-`include "../seq/smtdv_master_test_seq.sv"
-`include "../seq/smtdv_slave_test_seq.sv"
 `include "smtdv_base_unittest.sv"
 `include "smtdv_base_test.sv"
 

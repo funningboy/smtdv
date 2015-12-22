@@ -18,6 +18,7 @@ typedef class smtdv_component;
 *
 */
 class smtdv_scoreboard_base_thread #(
+  //
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32,
   NUM_OF_INITOR = 1,

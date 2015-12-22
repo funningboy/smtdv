@@ -11,8 +11,8 @@ typedef class smtdv_component;
 typedef class smtdv_thread_handler;
 typedef class smtdv_watch_wr_lifetime;
 typedef class smtdv_watch_rd_lifetime;
-typedef class smtdv_mem_bkdor_wr_comp;
-typedef class smtdv_mem_bkdor_rd_comp;
+//typedef class smtdv_mem_bkdor_wr_comp;
+//typedef class smtdv_mem_bkdor_rd_comp;
 
 /**
 * smtdv_scoreboard
@@ -45,11 +45,11 @@ class smtdv_scoreboard #(
   // declear typedef
   typedef bit [ADDR_WIDTH-1:0] addr_t;
   typedef smtdv_scoreboard        #(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS, T1, T2, T3, CFG) scb_t;
-  typedef smtdv_backdoor#(ADDR_WIDTH, DATA_WIDTH, scb_t, T1) bak_t;
+  //typedef smtdv_backdoor#(ADDR_WIDTH, DATA_WIDTH, scb_t, T1) bak_t;
   typedef smtdv_watch_wr_lifetime #(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS, T1, T2, T3, CFG) wr_lf_t;
   typedef smtdv_watch_rd_lifetime #(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS, T1, T2, T3, CFG) rd_lf_t;
-  typedef smtdv_mem_bkdor_wr_comp #(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS, T1, T2, T3, CFG) bk_wr_t;
-  typedef smtdv_mem_bkdor_rd_comp #(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS, T1, T2, T3, CFG) bk_rd_t;
+  //typedef smtdv_mem_bkdor_wr_comp #(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS, T1, T2, T3, CFG) bk_wr_t;
+  //typedef smtdv_mem_bkdor_rd_comp #(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS, T1, T2, T3, CFG) bk_rd_t;
 
   smtdv_thread_handler #(scb_t) th_handler; // scb thread handler
 
@@ -60,13 +60,13 @@ class smtdv_scoreboard #(
   T1 wr_pool[addr_t][$];
   T1 rd_pool[addr_t][$];
 
-  bak_t bkdor_wr;   // wr mem backdoor handler
-  bak_t bkdor_rd;   // rd mem backdoor handler
+  //bak_t bkdor_wr;   // wr mem backdoor handler
+  //bak_t bkdor_rd;   // rd mem backdoor handler
 
   wr_lf_t th0; // watch wr trx is completed thread
   rd_lf_t th1; // watch rd trx is completed thread
-  bk_wr_t th2; // backdoor wr trx at mem access thread
-  bk_rd_t th3; // backdoor rd trx at mem access thread
+  //bk_wr_t th2; // backdoor wr trx at mem access thread
+  //bk_rd_t th3; // backdoor rd trx at mem access thread
 
   T1 atmic_item;
   T2 initor_m[NUM_OF_INITOR];   // map to initiator as master
@@ -107,15 +107,15 @@ endclass : smtdv_scoreboard
  */
 function void smtdv_scoreboard::build_phase(uvm_phase phase);
   super.build_phase(phase);
-  bkdor_wr = bak_t::type_id::create("smtdv_mem_bkdor_wr", this);
-  bkdor_rd = bak_t::type_id::create("smtdv_mem_bkdor_rd", this);
+  //bkdor_wr = bak_t::type_id::create("smtdv_mem_bkdor_wr", this);
+  //bkdor_rd = bak_t::type_id::create("smtdv_mem_bkdor_rd", this);
 
   th_handler = smtdv_thread_handler#(scb_t)::type_id::create("smtdv_driver_threads", this);
 
   th0 = wr_lf_t::type_id::create("smtdv_watch_wr_lifetime", this);
   th1 = rd_lf_t::type_id::create("smtdv_watch_rd_lifetime", this);
-  th2 = bk_wr_t::type_id::create("smtdv_mem_bkdor_wr_comp", this);
-  th3 = bk_rd_t::type_id::create("smtdv_mem_bkdor_rd_comp", this);
+  //th2 = bk_wr_t::type_id::create("smtdv_mem_bkdor_wr_comp", this);
+  //th3 = bk_rd_t::type_id::create("smtdv_mem_bkdor_rd_comp", this);
 endfunction : build_phase
 
 /**
@@ -124,8 +124,8 @@ endfunction : build_phase
 function void smtdv_scoreboard::connect_phase(uvm_phase phase);
   th0.cmp = this; this.th_handler.add(th0);
   th1.cmp = this; this.th_handler.add(th1);
-  th2.cmp = this; this.th_handler.add(th2);
-  th3.cmp = this; this.th_handler.add(th3);
+  //th2.cmp = this; this.th_handler.add(th2);
+  //th3.cmp = this; this.th_handler.add(th3);
 endfunction : connect_phase
 
 /**

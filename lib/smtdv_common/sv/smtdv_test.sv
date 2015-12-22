@@ -33,12 +33,7 @@ class smtdv_test
 
 endclass : smtdv_test
 
-/**
- *  @param rpt_svr smtdv_report_server - define display/output customer uvm_report format by report_server
- *  @param glb_rpt_svr uvm_report_global_server - map uvm_report_global_server
- *  to our smtdv_report_server
- *  @return void
- */
+
 function void smtdv_test::build_phase(uvm_phase phase);
   smtdv_report_server          rpt_svr;
   uvm_report_global_server     glb_rpt_svr;
@@ -76,11 +71,6 @@ function void smtdv_test::build_phase(uvm_phase phase);
 endfunction : build_phase
 
 
-/**
- *  @param tbptr.knobs.depth - display hier registered object deep
- *  @param uvm_report_object::set_report_max_quit_count(2) - set max error quit counts
- *  @return void
- */
 task smtdv_test::run_phase(uvm_phase phase);
   fork
     super.run_phase(phase);

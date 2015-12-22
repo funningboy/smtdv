@@ -10,8 +10,6 @@ import uvm_pkg::*;
  * smtdv_if interface Block.
  * A dummy default interface for preconstruct
  *
- *  @param clk logic - clk
- *  @param resetn logic - resetn
  *
  */
 interface smtdv_if (
