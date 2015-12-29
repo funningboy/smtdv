@@ -79,13 +79,14 @@ function void smtdv_agent::end_of_elaboration_phase(uvm_phase phase);
   super.end_of_elaboration_phase(phase);
   if(vif == null) begin
     if(!uvm_config_db#(VIF)::get(this, "", "vif", vif))
-      `uvm_fatal("NOVIF",{"virtual interface must be set for: ",get_full_name(),".vif"});
+      `uvm_fatal("SMTDV_AGENT_NO_VIF",{"VIRTUAL INTERFACE MUST BE SET ",get_full_name(),".vif"});
   end
   assign_vi(vif);
   if(cfg == null) begin
     if(!uvm_config_db#(CFG)::get(this, "", "cfg", cfg))
-    `uvm_fatal("NOCFG",{"cfg must be set for: ",get_full_name(),".cfg"});
+    `uvm_fatal("SMTDV_AGENT_NO_CFG",{"CFG MUST BE SET ",get_full_name(),".cfg"});
   end
+  `uvm_info(get_full_name(), {$psprintf("CREATE DEFAULT CFG: %s\n", cfg.sprint())}, UVM_LOW)
   assign_cfg(cfg);
 endfunction : end_of_elaboration_phase
 

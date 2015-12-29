@@ -52,7 +52,7 @@ function void  smtdv_reset_monitor::end_of_elaboration_phase(uvm_phase phase);
   super.end_of_elaboration_phase(phase);
   if(rst_model == null) begin
     if(!uvm_config_db#(rst_model_t)::get(this, "", "rst_model", rst_model))
-      `uvm_fatal("NO_RST_MODEL", {"a reset model should be set for: ", get_full_name(), ".rst_model"});
+      `uvm_fatal("SMTDV_NO_RST_MODEL", {"A RESET MODEL SHOULD BE SET ", get_full_name(), ".rst_model"});
     end
 endfunction : end_of_elaboration_phase
 

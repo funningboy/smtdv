@@ -1,6 +1,6 @@
 
-`ifndef __SMTDV_PKG_SV__
-`define __SMTDV_PKG_SV__
+`ifndef __SMTDV_COMMON_PKG_SV__
+`define __SMTDV_COMMON_PKG_SV__
 
 `timescale 1ns/10ps
 
@@ -14,6 +14,7 @@ package smtdv_common_pkg;
 
   `include "smtdv_macros.svh"
   `include "smtdv_lib_typedefs.svh"
+  `include "smtdv_about.svh"
   `include "smtdv_lib.sv"
   `include "smtdv_generic_memory_cb.sv"
   `include "smtdv_generic_memory.sv"
@@ -21,20 +22,13 @@ package smtdv_common_pkg;
   `include "smtdv_generic_fifo.sv"
   `include "smtdv_reset_model.sv"
   `include "smtdv_reset_monitor.sv"
-  `include "../seq/smtdv_slave_seqs.sv"
-  `include "../seq/smtdv_slave_mem_seq.sv"
-  `include "../seq/smtdv_slave_fifo_seq.sv"
-  `include "../seq/smtdv_master_seqs.sv"
-  `include "../seq/smtdv_master_retry_seq.sv"
-  `include "../seq/smtdv_master_test_seq.sv"
-  `include "../seq/smtdv_slave_test_seq.sv"
 
   // smtdv_lowpower_model.sv
   // smtdv_jtag_model.sv
-endpackage
+endpackage : smtdv_common_pkg
 
 `include "smtdv_vif.sv"
 `include "smtdv_gen_rst_if.sv"
 
 
-`endif
+`endif // __SMTDV_COMMON_PKG_SV__

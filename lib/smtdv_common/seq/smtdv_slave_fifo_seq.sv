@@ -2,11 +2,11 @@
 `ifndef __SMTDV_SLAVE_FIFO_SV__
 `define __SMTDV_SLAVE_FIFO_SV__
 
-typedef class smtdv_sequence_item;
-typedef class smtdv_master_cfg;
-typedef class smtdv_sequencer;
-typedef class smtdv_slave_base_seq;
-typedef class smtdv_generic_fifo;
+//typedef class smtdv_sequence_item;
+//typedef class smtdv_master_cfg;
+//typedef class smtdv_sequencer;
+//typedef class smtdv_slave_base_seq;
+//typedef class smtdv_generic_fifo;
 
 /**
 * smtdv_slave_fifo_seq

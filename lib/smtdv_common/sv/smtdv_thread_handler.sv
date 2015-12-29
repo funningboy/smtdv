@@ -70,7 +70,7 @@ function void smtdv_thread_handler::del(th_t thread);
     UVM_FULL)
   end
   else begin
-    `uvm_error(get_full_name(),
+    `uvm_error("SMTDV_THHANDLER_ERR",
       $sformatf("find %0d run threads called \"%s\" in the monitor run thread queue",
       idx_q.size(), thread.get_name()))
   end

@@ -63,7 +63,7 @@ task smtdv_mem_bkdor_wr_comp::run();
     item = this.cmp.rbox.pop_front();
     sid = this.cmp.initor_m[0].cfg.find_slave(item.addr);
     if (sid<0) begin
-      `uvm_fatal("NOREGISTER",{"slave addr must be register to master cfg: ", this.cmp.initor_m[0].cfg.get_full_name()});
+      `uvm_fatal("SMTDV_BKDOR_NO_CFG",{"SLAVE ADDR MUST BE SET FOR MASTER CFG ", this.cmp.initor_m[0].cfg.get_full_name()});
     end
     table_nm = $psprintf("\"%s\"", this.cmp.targets_s[sid].seqr.get_full_name());
 
@@ -80,7 +80,7 @@ task smtdv_mem_bkdor_wr_comp::run();
     end
 
     if (this.cmp.bkdor_wr.match == FALSE) begin
-      `uvm_error(cmp.get_full_name(), {$psprintf("BACKDOOR COMPARE WRONG DATA \n%s, %s", item.sprint(), ritem.sprint())})
+      `uvm_error("SMTDV_BKDOR_CMP", {$psprintf("BACKDOOR COMPARE WRONG DATA \n%s, %s", item.sprint(), ritem.sprint())})
     end
     this.cmp.bkdor_wr.match = FALSE;
   end

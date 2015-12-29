@@ -81,7 +81,7 @@ class smtdv_base_unittest
     // resetn
     rst_model = rst_mod_t::type_id::create("rst_model");
     if(!uvm_config_db#(rst_t)::get(this, "", "rst_vif", rst_vif))
-      `uvm_fatal("NOVIF",{"virtual interface must be set for: ",get_full_name(),".rst_vif"});
+      `uvm_fatal("SMTDV_NO_VIF",{"VIRTUAL INTERFACE MUST BE SET FOR: ",get_full_name(),".rst_vif"});
     rst_model.create_rst_monitor(rst_vif);
 
   endfunction

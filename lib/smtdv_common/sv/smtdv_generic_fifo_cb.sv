@@ -34,7 +34,7 @@ endclass : smtdv_generic_fifo_cb
 
 function void smtdv_generic_fifo_cb::create_table();
   if (table_nm == "") begin
-    `uvm_fatal("NOTBNM", {$psprintf("set table name at generic_fifo cb")})
+    `uvm_fatal("SMTDV_FIFO_NO_TBNM", {"SET TABLE NAME AT generic_fifo_cb"})
   end
   table_nm = $psprintf("\"%s\"", table_nm);
   smtdv_sqlite3::create_tb(table_nm);

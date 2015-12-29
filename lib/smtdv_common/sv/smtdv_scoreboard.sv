@@ -11,8 +11,8 @@ typedef class smtdv_component;
 typedef class smtdv_thread_handler;
 typedef class smtdv_watch_wr_lifetime;
 typedef class smtdv_watch_rd_lifetime;
-//typedef class smtdv_mem_bkdor_wr_comp;
-//typedef class smtdv_mem_bkdor_rd_comp;
+typedef class smtdv_mem_bkdor_wr_comp;
+typedef class smtdv_mem_bkdor_rd_comp;
 
 /**
 * smtdv_scoreboard
@@ -30,26 +30,19 @@ class smtdv_scoreboard #(
   type T2 = smtdv_master_agent,
   type T3 = smtdv_slave_agent,
   type CFG = smtdv_cfg
-// next???
-//  type MSTT = smtdv_sequence_item #(ADDR_WIDTH, DATA_WIDTH),
-//  type SLVT = smtdv_sequence_item #(ADDR_WIDTH, DATA_WIDTH),
-//  type MSTA = smtdv_master_agent,
-//  type SLVA = smtdv_slave_agent,
-//  type CFG = smtdv_cfg
   ) extends
   smtdv_component#(uvm_scoreboard);
 
   `uvm_analysis_imp_decl(_initor) // uvm_analysis_port from initor
   `uvm_analysis_imp_decl(_target) // uvm_analysis_port from target
 
-  // declear typedef
   typedef bit [ADDR_WIDTH-1:0] addr_t;
   typedef smtdv_scoreboard        #(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS, T1, T2, T3, CFG) scb_t;
-  //typedef smtdv_backdoor#(ADDR_WIDTH, DATA_WIDTH, scb_t, T1) bak_t;
+  typedef smtdv_backdoor#(ADDR_WIDTH, DATA_WIDTH, scb_t, T1) bak_t;
   typedef smtdv_watch_wr_lifetime #(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS, T1, T2, T3, CFG) wr_lf_t;
   typedef smtdv_watch_rd_lifetime #(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS, T1, T2, T3, CFG) rd_lf_t;
-  //typedef smtdv_mem_bkdor_wr_comp #(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS, T1, T2, T3, CFG) bk_wr_t;
-  //typedef smtdv_mem_bkdor_rd_comp #(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS, T1, T2, T3, CFG) bk_rd_t;
+  typedef smtdv_mem_bkdor_wr_comp #(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS, T1, T2, T3, CFG) bk_wr_t;
+  typedef smtdv_mem_bkdor_rd_comp #(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS, T1, T2, T3, CFG) bk_rd_t;
 
   smtdv_thread_handler #(scb_t) th_handler; // scb thread handler
 
@@ -60,13 +53,13 @@ class smtdv_scoreboard #(
   T1 wr_pool[addr_t][$];
   T1 rd_pool[addr_t][$];
 
-  //bak_t bkdor_wr;   // wr mem backdoor handler
-  //bak_t bkdor_rd;   // rd mem backdoor handler
+  bak_t bkdor_wr;   // wr mem backdoor handler
+  bak_t bkdor_rd;   // rd mem backdoor handler
 
   wr_lf_t th0; // watch wr trx is completed thread
   rd_lf_t th1; // watch rd trx is completed thread
-  //bk_wr_t th2; // backdoor wr trx at mem access thread
-  //bk_rd_t th3; // backdoor rd trx at mem access thread
+  bk_wr_t th2; // backdoor wr trx at mem access thread
+  bk_rd_t th3; // backdoor rd trx at mem access thread
 
   T1 atmic_item;
   T2 initor_m[NUM_OF_INITOR];   // map to initiator as master
@@ -76,7 +69,6 @@ class smtdv_scoreboard #(
   uvm_analysis_imp_target #(T1, scb_t) targets[NUM_OF_TARGETS];
 
   `uvm_component_param_utils_begin(scb_t)
-//    `uvm_field_object(wr_lf_t, UVM_ALL_ON)
   `uvm_component_utils_end
 
   function new(string name = "smtdv_scoreboard", uvm_component parent);
@@ -107,44 +99,44 @@ endclass : smtdv_scoreboard
  */
 function void smtdv_scoreboard::build_phase(uvm_phase phase);
   super.build_phase(phase);
-  //bkdor_wr = bak_t::type_id::create("smtdv_mem_bkdor_wr", this);
-  //bkdor_rd = bak_t::type_id::create("smtdv_mem_bkdor_rd", this);
+  bkdor_wr = bak_t::type_id::create("smtdv_mem_bkdor_wr", this);
+  bkdor_rd = bak_t::type_id::create("smtdv_mem_bkdor_rd", this);
 
   th_handler = smtdv_thread_handler#(scb_t)::type_id::create("smtdv_driver_threads", this);
 
   th0 = wr_lf_t::type_id::create("smtdv_watch_wr_lifetime", this);
   th1 = rd_lf_t::type_id::create("smtdv_watch_rd_lifetime", this);
-  //th2 = bk_wr_t::type_id::create("smtdv_mem_bkdor_wr_comp", this);
-  //th3 = bk_rd_t::type_id::create("smtdv_mem_bkdor_rd_comp", this);
+  th2 = bk_wr_t::type_id::create("smtdv_mem_bkdor_wr_comp", this);
+  th3 = bk_rd_t::type_id::create("smtdv_mem_bkdor_rd_comp", this);
 endfunction : build_phase
 
 /**
- * connect(link) cmp to each thread
+ * connect(link) cmp to backend threads
  */
 function void smtdv_scoreboard::connect_phase(uvm_phase phase);
   th0.cmp = this; this.th_handler.add(th0);
   th1.cmp = this; this.th_handler.add(th1);
-  //th2.cmp = this; this.th_handler.add(th2);
-  //th3.cmp = this; this.th_handler.add(th3);
+  th2.cmp = this; this.th_handler.add(th2);
+  th3.cmp = this; this.th_handler.add(th3);
 endfunction : connect_phase
 
 /**
- * get initiator and targets
+ * check initiator and targets are constructed
  */
 function void smtdv_scoreboard::end_of_elaboration_phase(uvm_phase phase);
   super.end_of_elaboration_phase(phase);
   for(int i=0; i<NUM_OF_INITOR; i++) begin
     if(!uvm_config_db#(T2)::get(this, "", {$psprintf("initor_m[%0d]", i)}, initor_m[i]))
-      `uvm_fatal("NOINITOR",{"master agent must be set for: ",get_full_name(), {$psprintf(".initor_m[%0d]", i)}});
+      `uvm_fatal("SMTDV_SCB_NO_INITOR", {"MASTER AGENT MUST BE SET ", get_full_name(), {$psprintf(".initor_m[%0d]", i)}});
   end
   for(int i=0; i<NUM_OF_TARGETS; i++) begin
     if(!uvm_config_db#(T3)::get(this, "", {$psprintf("targets_s[%0d]", i)}, targets_s[i]))
-      `uvm_fatal("NOINITOR",{"slave agent must be set for: ",get_full_name(), {$psprintf(".targets_s[%0d]", i)}});
+      `uvm_fatal("SMTDV_SCB_NO_INITOR", {"SLAVE AGENT MUST BE SET ", get_full_name(), {$psprintf(".targets_s[%0d]", i)}});
   end
 endfunction : end_of_elaboration_phase
 
 /**
- *  reset_scoreboard
+ *  reset_scoreboard while resetn assert
  */
 function void smtdv_scoreboard::reset_scoreboard();
   bit [ADDR_WIDTH-1:0] addr;
@@ -229,26 +221,26 @@ function void smtdv_scoreboard::_write_initor(T1 item);
     // WR: put WR to wait pool when initor sent
     if (item.trs_t == WR) begin
       wr_pool[item.addrs[i]].push_back(atmic_item);
-      `uvm_info(get_full_name(), {$psprintf("put wr_pool write atmic item %h\n%s", item.addrs[i], atmic_item.sprint())}, UVM_LOW)
+      `uvm_info(get_full_name(), {$psprintf("PUT wr_pool WRITE ATMIC ITEM %h\n%s", item.addrs[i], atmic_item.sprint())}, UVM_LOW)
     end
     // RD: compare RD at wait pool when target sent
     else if (item.trs_t == RD)begin
       if (rd_pool[item.addrs[i]].size() > 0) begin
         it = rd_pool[item.addrs[i]].pop_front();
         if (!it.compare(atmic_item)) begin
-          `uvm_error(get_full_name(), {$psprintf("RECEIVED WRONG DATA %h\n%s", item.addrs[i], item.sprint())})
+          `uvm_error("SMTDV_SCB_RD_COMP", {$psprintf("RECEIVED WRONG DATA %h\n%s", item.addrs[i], item.sprint())})
         end
-        `uvm_info(get_full_name(), {$psprintf("pop rd_pool read atmic item %h\n%s", item.addrs[i], it.sprint())}, UVM_LOW)
+        `uvm_info(get_full_name(), {$psprintf("POP rd_pool READ ATMIC ITEM %h\n%s", item.addrs[i], it.sprint())}, UVM_LOW)
       end
       else begin
         while (rd_pool.next(addr)) begin
           foreach(rd_pool[addr][i]) begin
             it = rd_pool[addr][i];
-            `uvm_warning(get_full_name(), {$psprintf("at rd_pool: %h \n%s", addr, it.sprint())})
+            `uvm_warning(get_full_name(), {$psprintf("AT rd_pool: %h \n%s", addr, it.sprint())})
           end
         end
 
-        `uvm_error(get_full_name(), {$psprintf("RECEIVED NOTFOUND DATA %h\n%s", item.addrs[i], item.sprint())})
+        `uvm_error("SMTDV_SCB_RD_COMP", {$psprintf("RECEIVED NOTFOUND DATA %h\n%s", item.addrs[i], item.sprint())})
       end
     end
   end
@@ -277,26 +269,26 @@ function void smtdv_scoreboard::_write_target(T1 item);
     // RD: put RD to wait pool when target sent
     if (item.trs_t == RD) begin
       rd_pool[item.addrs[i]].push_back(atmic_item);
-      `uvm_info(get_full_name(), {$psprintf("put rd_pool read atmic item %h\n%s", item.addrs[i], atmic_item.sprint())}, UVM_LOW)
+      `uvm_info(get_full_name(), {$psprintf("PUT rd_pool READ ATMIC ITEM %h\n%s", item.addrs[i], atmic_item.sprint())}, UVM_LOW)
     end
     // WR: compare WR at wait pool when initor sent
     else if (item.trs_t == WR)begin
       if (wr_pool[item.addrs[i]].size() > 0) begin
         it = wr_pool[item.addrs[i]].pop_front();
         if (!it.compare(atmic_item)) begin
-          `uvm_error(get_full_name(), {$psprintf("RECEIVED WRONG DATA %h\n%s", item.addrs[i], item.sprint())})
+          `uvm_error("SMTDV_SCB_WR_COMP", {$psprintf("RECEIVED WRONG DATA %h\n%s", item.addrs[i], item.sprint())})
         end
-        `uvm_info(get_full_name(), {$psprintf("pop wr_pool write atmic item %h\n%s", item.addrs[i], it.sprint())}, UVM_LOW)
+        `uvm_info(get_full_name(), {$psprintf("POP wr_pool WRITE ATMIC ITEM %h\n%s", item.addrs[i], it.sprint())}, UVM_LOW)
       end
       else begin
         while (wr_pool.next(addr)) begin
           foreach(wr_pool[addr][i]) begin
             it = wr_pool[addr][i];
-            `uvm_warning(get_full_name(), {$psprintf("at wr_pool: %h \n%s", addr, it.sprint())})
+            `uvm_warning(get_full_name(), {$psprintf("AT wr_pool: %h \n%s", addr, it.sprint())})
           end
         end
 
-        `uvm_error(get_full_name(), {$psprintf("RECEIVED NOTFOUND DATA %h\n%s", item.addrs[i], item.sprint())})
+        `uvm_error("SMTDV_SCB_WR_COMP", {$psprintf("RECEIVED NOTFOUND DATA %h\n%s", item.addrs[i], item.sprint())})
       end
     end
   end

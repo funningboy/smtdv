@@ -2,11 +2,11 @@
 `ifndef __SMTDV_SLAVE_MEM_SEQ_SV__
 `define __SMTDV_SLAVE_MEM_SEQ_SV__
 
-typedef class smtdv_sequence_item;
-typedef class smtdv_slave_cfg;
-typedef class smtdv_sequencer;
-typedef class smtdv_slave_base_seq;
-typedef class smtdv_generic_memory;
+//typedef class smtdv_sequence_item;
+//typedef class smtdv_slave_cfg;
+//typedef class smtdv_sequencer;
+//typedef class smtdv_slave_base_seq;
+//typedef class smtdv_generic_memory;
 
 /**
 * smtdv_slave_mem_seq

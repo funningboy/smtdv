@@ -5,6 +5,7 @@
 typedef class smtdv_cfg;
 typedef class smtdv_sequence_item;
 typedef class smtdv_component;
+
 /**
 * smtdv_sequencer
 * a basic smtdv_sequencer
@@ -30,7 +31,14 @@ class smtdv_sequencer #(
   // get transfer from slave monitor
   uvm_blocking_get_port #(REQ) mon_get_port;
 
-  `uvm_sequencer_param_utils(seqr_t)
+  // register notify event here, that can be used for notify event to top
+  // virtual sequencer or top physical sequencer
+  // start/end polling event while reading expected value
+  bit start_polling_e = FALSE;
+  bit end_polling_e = FALSE;
+
+  `uvm_sequencer_param_utils_begin(seqr_t)
+  `uvm_sequencer_utils_end
 
   function new(string name = "smtdv_sequencer", uvm_component parent);
     super.new(name, parent);

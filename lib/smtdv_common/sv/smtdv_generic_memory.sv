@@ -124,9 +124,13 @@ task smtdv_generic_memory::mem_load_byte(gene_mem_addr_t addr, int bcnt, ref byt
   for(int i=0; i<bcnt; i++) begin
     if(!memory.exists(addr+i)) begin
       byte temp;
+      // return rand var
       `SMTDV_RAND_VAR(temp)
       // return 0 while data is not found
       temp = temp & ~temp;
+      // return 'hx
+      temp = `SMTDV_UNKNOWN
+
       memory[addr+i]= temp;
       end
     data[i]= memory[addr+i];

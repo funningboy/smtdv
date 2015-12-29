@@ -4,6 +4,12 @@
 `define TRUE 1
 `define FALSE 0
 
+`define SMTDV_UNKNOWN 'hx;
+
+`define SMTDV_SWAP(i) #(i);
+
+`define SMTDV_DELAY(i) #(i);
+
 `define SMTDV_RAND_VAR(RANDVAR) \
   begin \
     if (!std::randomize(RANDVAR)) begin \

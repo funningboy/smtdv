@@ -1,10 +1,10 @@
 `ifndef __SMTDV_SLAVE_TEST_SEQ_SV__
 `define __SMTDV_SLAVE_TEST_SEQ_SV__
 
-typedef class smtdv_sequence_item;
-typedef class smtdv_slave_base_seq;
-typedef class smtdv_slave_cfg;
-typedef class smtdv_sequencer;
+//typedef class smtdv_sequence_item;
+//typedef class smtdv_slave_base_seq;
+//typedef class smtdv_slave_cfg;
+//typedef class smtdv_sequencer;
 
 class smtdv_slave_test_seq #(
   ADDR_WIDTH = 14,

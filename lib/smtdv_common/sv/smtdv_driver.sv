@@ -55,10 +55,7 @@ class smtdv_driver #(
   extern virtual task run_phase(uvm_phase phase);
 
   extern virtual task reset_driver();
-
-  extern virtual task get_item(ref REQ item);
   extern virtual task drive_bus();
-  extern virtual task item_done(RSP item = null);
   extern virtual task run_threads();
 
 endclass : smtdv_driver
@@ -83,17 +80,12 @@ task smtdv_driver::run_phase(uvm_phase phase);
           forever begin: get_item_from_sqr
             // align to posege clk to drive
             @(posedge vif.clk iff (vif.clk));
-            get_item(req);
-            drive_bus();
-            item_done(rsp);
 
-            // respone queue will been blocked at rsp not has been deasserted
-            // UVM_ERROR: Response queue overflow, response was dropped
-            //seq_item_port.get_next_item(req);
-            //$cast(rsp, req.clone());
-            //rsp.set_id_info(req);
-            //drive_bus();
-            //seq_item_port.item_done(rsp);
+            seq_item_port.get_next_item(req);
+            $cast(rsp, req.clone());
+            rsp.set_id_info(req);
+            drive_bus();
+            seq_item_port.item_done();
           end
         end
       join_any
@@ -116,17 +108,7 @@ task smtdv_driver::reset_driver();
 endtask
 
 
-task smtdv_driver::get_item(ref REQ item);
-  seq_item_port.get_next_item(item);
-endtask
-
-
 task smtdv_driver::drive_bus();
-endtask
-
-
-task smtdv_driver::item_done(RSP item = null);
-  seq_item_port.item_done(item);
 endtask
 
 

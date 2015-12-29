@@ -48,7 +48,7 @@ endclass : smtdv_generic_memory_cb
 
 function void smtdv_generic_memory_cb::create_table();
   if (table_nm == "")begin
-    `uvm_fatal("NOTBNM", {$psprintf("set table name at generic_mem cb")})
+    `uvm_fatal("SMTDV_FIFO_NO_TBNM", {"SET TABLE NAME AT generic_mem_cb"})
   end
   `uvm_info(this.get_full_name(), {table_nm}, UVM_LOW)
   smtdv_sqlite3::create_tb(table_nm);

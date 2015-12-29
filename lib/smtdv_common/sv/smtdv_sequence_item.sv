@@ -131,6 +131,17 @@ class smtdv_sequence_item #(
 
 endclass : smtdv_sequence_item
 
+// data stream is [0] = da, [1]...
+// stand uvm pack/unpack func
+// function void do_pack(uvm_packer packer);
+//  super.do_pack(packer);
+//  packer.pack_field_int(da, $bits(da));
+// endfunction
+//
+// function void do_unpack(uvm_packer packer);
+//  super.do_un_pack(packer);
+//  packer.un_pack_field_int)($bits(da))
+//endfunction
 /**
  *  pack serial data to byte arr data_beat
  *  @return void

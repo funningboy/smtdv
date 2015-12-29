@@ -54,7 +54,7 @@ class smtdv_backdoor_base_thread #(
 
    virtual function void pre_do();
      if (cmp==null) begin
-       `uvm_fatal("NOCMP",{"cmp must be set for: ",get_full_name(),".cmp"});
+       `uvm_fatal("SMTDV_BKDOR_NO_CMP",{"CMP MUST BE SET FOR ",get_full_name(),".cmp"});
      end
  endfunction : pre_do
 

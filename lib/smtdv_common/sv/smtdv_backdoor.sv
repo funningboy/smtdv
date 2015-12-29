@@ -67,7 +67,7 @@ function string smtdv_backdoor::gen_query_cmd(string table_nm, string map, ref T
     cmd = {$psprintf("SELECT * FROM %s ORDER BY dec_ed_cyc ASC;", table_nm)};
   end
   endcase
-  `uvm_info(get_full_name(), {$psprintf("get query backdoor cmd\n%s", cmd)}, UVM_LOW)
+  `uvm_info(get_full_name(), {$psprintf("GET QUERY BACKDOOR CMD\n%s", cmd)}, UVM_LOW)
   return cmd;
 endfunction : gen_query_cmd
 
@@ -76,7 +76,7 @@ endfunction : gen_query_cmd
  */
 function void smtdv_backdoor::populate_item(string header, int r, int c, string data, ref T1 item);
   if (!cb_map.exists(header)) begin
-    `uvm_fatal("NOREGISTER",{"callback header must be register to cb_map: %s", header});
+    `uvm_fatal("SMTDV_BKDOR_NO_CBMAP", {"CALLBACK HEADER MUST BE SET FOR cb_map: %s", header});
   end
 
   case(cb_map[header])
@@ -94,7 +94,7 @@ endfunction
  */
 function void smtdv_backdoor::purge_item(T1 item);
   foreach(item.data_beat[i]) begin
-    item.data_beat[i] = 0;
+    item.data_beat[i] = `SMTDV_UNKNOWN
   end
 endfunction
 
@@ -110,7 +110,7 @@ function void smtdv_backdoor::post_item(string table_nm, T1 item);
       gen_query_cmd(table_nm, "LAST_WR_TRX", item),
       item);
   end
-  `uvm_info(get_full_name(), {$psprintf("get after backdoor item\n%s", item.sprint())}, UVM_LOW)
+  `uvm_info(get_full_name(), {$psprintf("GET AFTER BACKDOOR ITEM\n%s", item.sprint())}, UVM_LOW)
 endfunction
 
 /**
@@ -128,7 +128,7 @@ function void smtdv_backdoor::convert_2_item(string table_nm, string query, T1 i
   smtdv_sqlite3::create_pl(table_nm);
   m_pl = smtdv_sqlite3::exec_query(table_nm, query);
   if (!m_pl) begin
-    `uvm_warning("NOBACKDATA",{"backdoor %s not found at query: %s,", table_nm, query});
+    `uvm_warning("NOBACKDATA",{"%s BACKDOOR NOT FOUND AT QUERY: %s,", table_nm, query});
     return;
   end
 

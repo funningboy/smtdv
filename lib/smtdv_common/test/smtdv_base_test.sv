@@ -9,7 +9,10 @@ class smtdv_base_test
   extends
   smtdv_base_unittest;
 
-  typedef smtdv_master_test_seq#(ADDR_WIDTH, DATA_WIDTH) m_seq_t;
+  parameter ADDR_WIDTH = 32;
+  parameter DATA_WIDTH = 32;
+
+  typedef smtdv_master_test_vseq#(ADDR_WIDTH, DATA_WIDTH) m_vseq_t;
   typedef smtdv_slave_test_seq#(ADDR_WIDTH, DATA_WIDTH) s_seq_t;
 
   `uvm_component_utils(smtdv_base_test)
@@ -26,7 +29,7 @@ class smtdv_base_test
     uvm_config_db #(uvm_object_wrapper)::set(this,
       "*master_agent[*0]*.seqr.run_phase",
       "default_sequence",
-      m_seq_t::type_id::get());
+      m_vseq_t::type_id::get());
 
     uvm_config_db #(uvm_object_wrapper)::set(this,
       "*slave_agent[*0]*.seqr.run_phase",

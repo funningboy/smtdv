@@ -54,7 +54,7 @@ class smtdv_scoreboard_base_thread #(
 
   virtual function void pre_do();
     if (cmp==null) begin
-      `uvm_fatal("NOCMP",{"cmp must be set for: ",get_full_name(),".cmp"});
+      `uvm_fatal("SMTDV_SB_NO_CMP",{"CMP MUST BE SET ",get_full_name(),".cmp"});
     end
   endfunction : pre_do
 
@@ -114,7 +114,7 @@ task smtdv_watch_wr_lifetime::run();
       foreach(this.cmp.wr_pool[i][j]) begin
         item = this.cmp.wr_pool[i][j];
         if (item.life_time<0) begin
-          `uvm_error(get_type_name(), {$psprintf("RUN OUT OF LIFE TIMEOUT DATA \n%s", item.sprint())})
+          `uvm_error("SMTDV_SB_LIFE_TIMEOUT", {$psprintf("RUN OUT OF LIFE TIMEOUT DATA \n%s", item.sprint())})
         end
         item.life_time--;
       end
@@ -176,7 +176,7 @@ task smtdv_watch_rd_lifetime::run();
       foreach(this.cmp.rd_pool[i][j]) begin
         item = this.cmp.rd_pool[i][j];
         if (item.life_time<0) begin
-          `uvm_error(get_type_name(), {$psprintf("RUN OUT OF LIFE TIMEOUT DATA \n%s", item.sprint())})
+          `uvm_error("SMTDV_SB_LIFE_TIMEOUT", {$psprintf("RUN OUT OF LIFE TIMEOUT DATA \n%s", item.sprint())})
         end
         item.life_time--;
       end
