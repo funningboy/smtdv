@@ -26,6 +26,12 @@ class smtdv_slave_base_seq #(
 
     typedef smtdv_slave_base_seq#(ADDR_WIDTH, DATA_WIDTH, T1, VIF, CFG, SEQR) seq_t;
 
+    rand int trx_delay;
+    constraint c_trx_delay { trx_delay inside {[0:10]}; }
+
+    bit grabbing = FALSE;
+    bit locking = FALSE;
+
     T1 item;  // default item
     T1 mitem; // item from mon
     T1 bitem; // item from mbox
@@ -139,13 +145,17 @@ task smtdv_slave_base_seq::note_to_drv();
   forever begin
     mbox.get(bitem);
 
-    // more familiar with `uvm_do(seq_or_item), only diff part is remvoed randomize
-    seqr.lock(this);
+    if (grabbing) grab();
+    if (locking) lock();
+
+    repeat(trx_delay) @(posedge seqr.vif.clk);
     `uvm_create(req);
     req.copy(bitem);
     start_item(req);
     finish_item(req);
-    seqr.unlock(this);
+
+    if (grabbing) ungrab();
+    if (locking) unlock();
 
    `uvm_info(get_type_name(), {$psprintf("GET AFTER RETURN ITEM\n%s", bitem.sprint())}, UVM_LOW)
   end
@@ -157,7 +167,9 @@ task smtdv_slave_base_seq::finish_from_mon();
 endtask : finish_from_mon
 
 /*
-* slave is passive listener, seq body can't run as background
+* slave is a passive listener which means all trxs are driven start from master and
+* wait for slave rsp back. it needs used finish signal assert to drop object phase,
+* that can't run as background thread
 */
 task smtdv_slave_base_seq::body();
   fork

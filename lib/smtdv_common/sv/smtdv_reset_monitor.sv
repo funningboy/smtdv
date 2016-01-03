@@ -32,6 +32,7 @@ class smtdv_reset_monitor #(
   endfunction : new
 
   extern virtual function void set_rst_model(rst_model_t rst_model);
+  extern virtual function void build_phase(uvm_phase phase);
   extern virtual function void end_of_elaboration_phase(uvm_phase phase);
   extern virtual task run_phase(uvm_phase phase);
   extern virtual task reset_phase(uvm_phase phase);
@@ -44,6 +45,10 @@ endclass
 function void smtdv_reset_monitor::set_rst_model(rst_model_t rst_model);
   this.rst_model= rst_model;
 endfunction : set_rst_model
+
+function void smtdv_reset_monitor::build_phase(uvm_phase phase);
+  super.build_phase(phase);
+endfunction : build_phase
 
 /**
  * check rst_model is already set

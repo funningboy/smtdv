@@ -52,7 +52,6 @@ class smtdv_master_wait_seq #(
 
   virtual task body();
     repeat(50) @(posedge seqr.vif.clk);
-    `SMTDV_SWAP(0)
     `uvm_info(get_full_name(), {"do_seq_wait"}, UVM_LOW)
   endtask : body
 
@@ -115,7 +114,7 @@ class smtdv_master_do_b_seq #(
         seqr,
         -1,
         {
-          addr == 0;
+          item.addr == 0;
         })
       `uvm_info(get_type_name(), {"do_seq_b"}, UVM_LOW)
     end
@@ -146,6 +145,7 @@ class smtdv_master_do_grab_seq #(
     repeat(3) begin
       grab();
       repeat(2) begin
+        #30
         `uvm_create_on(item, seqr)
         start_item(item);
         finish_item(item);

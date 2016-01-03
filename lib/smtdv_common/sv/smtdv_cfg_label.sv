@@ -17,6 +17,8 @@ class smtdv_cfg_label #(
 ) extends
   smtdv_label#(CMP);
 
+  typedef smtdv_cfg_label#(ADDR_WIDTH, DATA_WIDTH, T1, CFG, CMP) label_t;
+
   typedef struct {
     bit [0:0] match;
     bit [ADDR_WIDTH-1:0] addr;
@@ -25,21 +27,20 @@ class smtdv_cfg_label #(
     bit require;
     string depent;
     bit visit;
-  } rule;
+  } label_t;
 
   T1 item;   // notify item get
   CFG cfg;   // notify cfg put
 
   string rulenm;
-  rule maps[string];
+  label_t label[string];
 
-  `uvm_object_param_utils_begin(smtdv_cfg_label#(ADDR_WIDTH, DATA_WIDTH, T1, CFG, CMP))
+  `uvm_object_param_utils_begin(albel_t)
   `uvm_object_utils_end
 
-  function new(string name = "smtdv_label", CFG cfg=null, CMP parent=null);
+  function new(string name = "smtdv_label", CMP parent=null);
     super.new(name, parent);
-    cfg = cfg;
-  endfunction
+  endfunction : new
 
   extern virtual function void run();
   extern virtual function bit ready_to_update();
@@ -50,42 +51,51 @@ class smtdv_cfg_label #(
 
 endclass : smtdv_cfg_label
 
+/*
+*  updte seq item from monitor thread
+*/
 function void smtdv_cfg_label::update_item(T1 iitem);
   item = iitem;
 endfunction : update_item
 
+
 function void smtdv_cfg_label::run();
-  while (maps.next(rulenm)) begin
+  while (label.next(rulenm)) begin
     foreach(item.addrs[i]) begin
-      if (item.addrs[i] == maps[rulenm].addr) begin
-        if (maps[rulenm].match) begin
-          if (item.unpack_data(i) & maps[rulenm].mask == maps[rulenm].data) begin
-            maps[rulenm].visit = TRUE;
+      if (item.addrs[i] == label[rulenm].addr) begin
+        // if match, compare data and expected value is eq
+        if (label[rulenm].match) begin
+          if (item.unpack_data(i) & label[rulenm].mask == label[rulenm].data) begin
+            label[rulenm].visit = TRUE;
           end
         end
+        //collect item data
         else begin
-          maps[rulenm].data = item.unpack_data(i) & maps[rulenm].mask;
-          maps[rulenm].visit = TRUE;
+          label[rulenm].data = item.unpack_data(i) & label[rulenm].mask;
+          label[rulenm].visit = TRUE;
         end
       end
     end
   end
 endfunction : run
 
+
 function bit smtdv_cfg_label::ready_to_update();
-  while (maps.next(rulenm)) begin
-    if (maps[rulenm].visit == FALSE && maps[rulenm].require == TRUE) begin
+  while (label.next(rulenm)) begin
+    if (label[rulenm].visit == FALSE && label[rulenm].require == TRUE) begin
       return FALSE;
     end
   end
   return TRUE;
 endfunction : ready_to_update
 
+
 function void smtdv_cfg_label::ready_to_clear();
-  while (maps.next(rulenm)) begin
-    maps[rulenm].visit = FALSE;
+  while (label.next(rulenm)) begin
+    label[rulenm].visit = FALSE;
   end
 endfunction : ready_to_clear
+
 
 function void smtdv_cfg_label::flush();
   ready_to_clear();
@@ -96,7 +106,6 @@ function smtdv_cfg_label::CFG smtdv_cfg_label::update_cfg();
 endfunction : update_cfg
 
 
-class
 
 
 

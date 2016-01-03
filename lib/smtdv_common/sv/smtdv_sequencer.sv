@@ -33,9 +33,6 @@ class smtdv_sequencer #(
 
   // register notify event here, that can be used for notify event to top
   // virtual sequencer or top physical sequencer
-  // start/end polling event while reading expected value
-  bit start_polling_e = FALSE;
-  bit end_polling_e = FALSE;
 
   `uvm_sequencer_param_utils_begin(seqr_t)
   `uvm_sequencer_utils_end
@@ -95,9 +92,22 @@ function void smtdv_sequencer::cleanup();
 endfunction : cleanup
 
 /**
- * reorder sequencer fifo while some urgent item put
- * @return void
- */
+* reorder sequencer fifo while some urgent item put
+*
+*  //
+*  // Specifies the arbitration mode for the sequencer. It is one of
+*  //
+*  // SEQ_ARB_FIFO          - Requests are granted in FIFO order (default)
+*  // SEQ_ARB_WEIGHTED      - Requests are granted randomly by weight
+*  // SEQ_ARB_RANDOM        - Requests are granted randomly
+*  // SEQ_ARB_STRICT_FIFO   - Requests at highest priority granted in fifo order
+*  // SEQ_ARB_STRICT_RANDOM - Requests at highest priority granted in randomly
+*  // SEQ_ARB_USER          - Arbitration is delegated to the user-defined
+*  //                         function, user_priority_arbitration. That function
+*  //                         will specify the next sequence to grant.
+*
+* @return void
+*/
 function void smtdv_sequencer::reorder(ref REQ iitem, int indx);
 //  m_req_fifo.size();
 //  m_req_fifo.can_put()

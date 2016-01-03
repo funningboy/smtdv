@@ -43,8 +43,9 @@ class smtdv_scoreboard #(
   typedef smtdv_watch_rd_lifetime #(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS, T1, T2, T3, CFG) rd_lf_t;
   typedef smtdv_mem_bkdor_wr_comp #(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS, T1, T2, T3, CFG) bk_wr_t;
   typedef smtdv_mem_bkdor_rd_comp #(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS, T1, T2, T3, CFG) bk_rd_t;
+  typedef smtdv_thread_handler #(scb_t) hdler_t;
 
-  smtdv_thread_handler #(scb_t) th_handler; // scb thread handler
+  hdler_t th_handler; // scb thread handler
 
   T1 rbox[$];  // rd mem channel backdoor
   T1 wbox[$];  // wr mem channel backdoor
@@ -99,10 +100,10 @@ endclass : smtdv_scoreboard
  */
 function void smtdv_scoreboard::build_phase(uvm_phase phase);
   super.build_phase(phase);
-  bkdor_wr = bak_t::type_id::create("smtdv_mem_bkdor_wr", this);
-  bkdor_rd = bak_t::type_id::create("smtdv_mem_bkdor_rd", this);
+  bkdor_wr = bak_t::type_id::create("smtdv_mem_bkdor_wr", this); assert(bkdor_wr);
+  bkdor_rd = bak_t::type_id::create("smtdv_mem_bkdor_rd", this); assert(bkdor_rd);
 
-  th_handler = smtdv_thread_handler#(scb_t)::type_id::create("smtdv_driver_threads", this);
+  th_handler = hdler_t::type_id::create("smtdv_backend_handler", this);
 
   th0 = wr_lf_t::type_id::create("smtdv_watch_wr_lifetime", this);
   th1 = rd_lf_t::type_id::create("smtdv_watch_rd_lifetime", this);
@@ -114,10 +115,11 @@ endfunction : build_phase
  * connect(link) cmp to backend threads
  */
 function void smtdv_scoreboard::connect_phase(uvm_phase phase);
-  th0.cmp = this; this.th_handler.add(th0);
-  th1.cmp = this; this.th_handler.add(th1);
-  th2.cmp = this; this.th_handler.add(th2);
-  th3.cmp = this; this.th_handler.add(th3);
+  super.connect_phase(phase);
+  th0.register(this); this.th_handler.add(th0);
+  th1.register(this); this.th_handler.add(th1);
+  th2.register(this); this.th_handler.add(th2);
+  th3.register(this); this.th_handler.add(th3);
 endfunction : connect_phase
 
 /**
@@ -133,6 +135,7 @@ function void smtdv_scoreboard::end_of_elaboration_phase(uvm_phase phase);
     if(!uvm_config_db#(T3)::get(this, "", {$psprintf("targets_s[%0d]", i)}, targets_s[i]))
       `uvm_fatal("SMTDV_SCB_NO_INITOR", {"SLAVE AGENT MUST BE SET ", get_full_name(), {$psprintf(".targets_s[%0d]", i)}});
   end
+  th_handler.finalize();
 endfunction : end_of_elaboration_phase
 
 /**

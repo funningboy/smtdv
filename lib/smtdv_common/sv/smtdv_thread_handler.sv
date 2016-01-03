@@ -19,37 +19,60 @@ class smtdv_thread_handler #(
   uvm_object;
 
   typedef smtdv_run_thread#(CMP) th_t;
-  typedef smtdv_thread_handler#(CMP) hdl_t;
+  typedef smtdv_thread_handler#(CMP) hdler_t;
 
   CMP cmp;
-  bit has_on = 1;
+  bit has_finalize = FALSE;
   longint uuid = -1;
 
   th_t thread_q[$];
 
-  `uvm_object_param_utils_begin(hdl_t)
+  `uvm_object_param_utils_begin(hdler_t)
     `uvm_field_queue_object(thread_q, UVM_ALL_ON)
   `uvm_object_utils_end
 
   function new(string name = "smtdv_thread_handler", CMP parent=null);
     super.new(name);
     cmp = parent;
-  endfunction
+  endfunction : new
 
+  extern virtual function void register(CMP cmp);
   extern virtual function void add(th_t thread);
   extern virtual function void del(th_t thread);
+  extern virtual function int successes();
+  extern virtual function int fails();
   extern virtual function void finalize();
   extern virtual task run();
 
 endclass : smtdv_thread_handler
 
+/*
+* get num of success threads
+*/
+function int smtdv_thread_handler::successes();
+endfunction : successes
+
+/*
+* get num of fail threads
+*/
+function int smtdv_thread_handler::fails();
+endfunction : fails
+
+/*
+* register handler to main component
+*/
+function void smtdv_thread_handler::register(CMP cmp);
+  assert(cmp);
+  this.cmp = cmp;
+endfunction : register
 
 /**
  *  add smtdv_run_thread to thread handler before finalize is done
  *  @return void
  */
 function void smtdv_thread_handler::add(th_t thread);
-  if (thread == null) return;
+  if (has_finalize) return;
+  assert(thread);
   thread_q.push_back(thread);
 endfunction : add
 
@@ -60,7 +83,8 @@ endfunction : add
 function void smtdv_thread_handler::del(th_t thread);
   int idx_q[$];
 
-  if(thread == null) return;
+  if (has_finalize) return;
+  assert(thread);
 
   idx_q= thread_q.find_index with (item == thread);
   if(idx_q.size() == 1) begin
@@ -71,7 +95,7 @@ function void smtdv_thread_handler::del(th_t thread);
   end
   else begin
     `uvm_error("SMTDV_THHANDLER_ERR",
-      $sformatf("find %0d run threads called \"%s\" in the monitor run thread queue",
+      $sformatf("find %0d run threads called \"%s\" in the run thread queue",
       idx_q.size(), thread.get_name()))
   end
 endfunction : del
@@ -82,6 +106,7 @@ endfunction : del
  *  @return void
  */
 function void smtdv_thread_handler::finalize();
+  has_finalize = TRUE;
 endfunction : finalize
 
 
@@ -92,7 +117,7 @@ endfunction : finalize
 task smtdv_thread_handler::run();
   begin: run_threads
   foreach (thread_q[i]) begin
-    if (~thread_q[i].has_finalize) begin
+    if (!thread_q[i].has_finalize) begin
       automatic int k;
       k = i;
       `uvm_info(get_full_name(),
@@ -101,7 +126,7 @@ task smtdv_thread_handler::run();
         fork
           thread_q[k].run();
         join_none
-        thread_q[i].has_finalize = 1'b1;
+        thread_q[i].has_finalize = TRUE;
       end
     end
   end

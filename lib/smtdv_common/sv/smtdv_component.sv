@@ -18,28 +18,30 @@ class smtdv_component #(
     extends
     COMP;
 
+  typedef smtdv_component#(COMP, VIF, CFG) cmp_t;
+
   VIF vif;
   CFG cfg;
   // An indicator showing if the Power-On Reset is completed
-  bit         pwrst_done    = 0;
+  bit         pwrst_done    = FALSE;
   // An indicator showing the type of the incoming reset {HW_RST, SW_RST, PWR_RST}
   rst_type_t  rst_typ       = NOT_VALID;
   // A Reset flag for component to deal with its internal reset scheme
-  bit         resetn        = 1;
-  bit         finish        = 0;
+  bit         resetn        = TRUE;
+  bit         finish        = FALSE;
 
   // used to record the time interval in reset phase
   time        reset_phase_start   = 0;
   time        reset_phase_end     = 0;
   time        reset_phase_period  = 0;
 
-  `uvm_component_param_utils_begin(smtdv_component#(COMP))
+  `uvm_component_param_utils_begin(cmp_t)
     `uvm_field_int(resetn, UVM_ALL_ON)
   `uvm_component_utils_end
 
   function new(string name = "smtdv_component", uvm_component parent);
     super.new(name, parent);
-  endfunction
+  endfunction : new
 
   extern virtual function void start_of_simulation_phase(uvm_phase phase);
 

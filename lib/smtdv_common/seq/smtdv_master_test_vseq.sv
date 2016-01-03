@@ -3,8 +3,8 @@
 `define __SMTDV_MASTER_TEST_VSEQ_SV__
 
 class smtdv_master_test_vseq #(
-    ADDR_WIDTH,
-    DATA_WIDTH
+    ADDR_WIDTH = 14,
+    DATA_WIDTH = 32
   ) extends
     smtdv_master_base_vseq;
 

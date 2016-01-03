@@ -59,7 +59,6 @@ endclass : smtdv_slave_agent
 
 function void smtdv_slave_agent::build_phase(uvm_phase phase);
   super.build_phase(phase);
-  // IUS doesn't work for preload defualt seq to sequnecer,
   // you need to set default seq to it's specific sequencer at top level test
   // put default base seq to sequencer,
   //uvm_config_db#(uvm_object_wrapper)::set(this,
@@ -69,7 +68,7 @@ function void smtdv_slave_agent::build_phase(uvm_phase phase);
 
   if(this.get_is_active())
     mon.seqr = seqr;
-endfunction
+endfunction : build_phase
 
 
 function void smtdv_slave_agent::connect_phase(uvm_phase phase);
@@ -80,7 +79,7 @@ function void smtdv_slave_agent::connect_phase(uvm_phase phase);
   if(get_is_active()) begin
     seqr.mon_get_port.connect(fifo_mon_sqr.get_export);
   end
-endfunction
+endfunction : connect_phase
 
 
 `endif // end of __SMTDV_SLAVE_AGENT_SV__

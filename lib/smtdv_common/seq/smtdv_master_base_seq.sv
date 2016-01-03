@@ -33,9 +33,7 @@ class smtdv_master_base_seq #(
 
     rand int retry_delay;
 
-    constraint c_retry_delay {
-      retry_delay inside {[2:10]};
-    }
+    constraint c_retry_delay { retry_delay inside {[2:10]}; }
 
     `uvm_object_param_utils_begin(seq_t)
     `uvm_object_utils_end
