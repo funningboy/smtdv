@@ -5,16 +5,19 @@ class apb_slave_cfg
   extends
     smtdv_slave_cfg;
 
-  bit block_pready = 0;
+  typedef apb_slave_cfg cfg_t;
 
-  `uvm_object_param_utils_begin(`APB_SLAVE_CFG)
+  rand bit block_pready = TRUE;
+  rand bit has_error = FALSE;
+
+  `uvm_object_param_utils_begin(cfg_t)
     `uvm_field_int(block_pready, UVM_DEFAULT)
   `uvm_object_utils_end
 
   function new(string name = "apb_slave_cfg",  smtdv_component cmp=null);
     super.new(name, cmp);
-  endfunction
+  endfunction : new
 
-endclass
+endclass : apb_slave_cfg
 
 `endif // __APB_SLAVE_CFG_SV__

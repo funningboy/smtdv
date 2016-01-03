@@ -1,25 +1,30 @@
 `ifndef __APB_MASTER_CFG_SV__
 `define __APB_MASTER_CFG_SV__
 
+/**
+ * apb_master_cfg
+ * template class with apb master cfg
+ *
+ * @class apb_master_cfg
+ */
 class apb_master_cfg
   extends
     smtdv_master_cfg;
 
-  rand bit block_psel = 0;
-  rand bit block_penable = 0;
+  typedef apb_master_cfg cfg_t;
 
-  constraint c_block_psel { block_psel == 0; }
-  constraint c_block_penable { block_penable == 0; }
+  rand bit block_psel = TRUE;
+  rand bit block_penable = TRUE;
 
-  `uvm_object_param_utils_begin(`APB_MASTER_CFG)
+  `uvm_object_param_utils_begin(cfg_t)
     `uvm_field_int(block_psel, UVM_DEFAULT)
     `uvm_field_int(block_penable, UVM_DEFAULT)
   `uvm_object_utils_end
 
   function new(string name = "apb_master_cfg",  smtdv_component cmp=null);
     super.new(name, cmp);
-  endfunction
+  endfunction : new
 
-endclass
+endclass : apb_master_cfg
 
 `endif // __APB_MASTER_CFG_SV__

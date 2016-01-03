@@ -1,48 +1,31 @@
 `ifndef __APB_SLAVE_SEQUENCER_SV__
 `define __APB_SLAVE_SEQUENCER_SV__
 
+typedef class apb_slave_cfg;
+typedef class apb_item;
+
 class apb_slave_sequencer #(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32
 ) extends
-    smtdv_sequencer #(`APB_ITEM);
+    smtdv_sequencer #(
+      .ADDR_WIDTH(ADDR_WIDTH),
+      .DATA_WIDTH(DATA_WIDTH),
+      .VIF(virtual interface apb_if#(ADDR_WIDTH, DATA_WIDTH)),
+      .CFG(apb_slave_cfg),
+      .REQ(apb_item#(ADDR_WIDTH, DATA_WIDTH))
+  );
 
-    // get transfer from apb slave monitor
-    uvm_blocking_get_port #(`APB_ITEM) mon_get_port;
+  typedef apb_slave_sequencer #(ADDR_WIDTH, DATA_WIDTH) seqr_t;
 
-  `uvm_component_param_utils_begin(`APB_SLAVE_SEQUENCER)
+  `uvm_component_param_utils_begin(seqr_t)
   `uvm_component_utils_end
 
-    function new(string name = "apb_slave_sequencer", uvm_component parent);
-      super.new(name, parent);
-      mon_get_port= new("mon_get_port", this);
-    endfunction
+  function new(string name = "apb_slave_sequencer", uvm_component parent=null);
+    super.new(name, parent);
+  endfunction : new
 
-    virtual function void build_phase(uvm_phase phase);
-      super.build_phase(phase);
-    endfunction
-
-    virtual task run_phase(uvm_phase phase);
-      fork
-        super.run_phase(phase);
-        join_none
-
-      reset_restart_sqr(phase);
-    endtask
-
-
-    virtual task reset_restart_sqr(uvm_phase phase);
-      while(1) begin
-        @(negedge resetn);
-        m_req_fifo.flush();
-
-        stop_sequences();
-        wait(resetn == 1);
-        start_phase_sequence(phase);
-        end
-    endtask
-
-endclass
+endclass : apb_slave_sequencer
 
 `endif //__APB_SLAVE_SEQUENCER_SV__
 

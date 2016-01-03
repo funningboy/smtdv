@@ -18,10 +18,12 @@ class smtdv_test
   extends
   smtdv_component#(uvm_test);
 
+  typedef smtdv_test test_t;
+
   smtdv_timeout_cb tout_cb;
   uvm_table_printer tbprt;
 
-  `uvm_component_utils(smtdv_test)
+  `uvm_component_utils(test_t)
 
   function new(string name = "smtdv_test", uvm_component parent=null);
     super.new(name, parent);

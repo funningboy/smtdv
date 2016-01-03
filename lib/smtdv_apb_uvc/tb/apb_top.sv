@@ -9,24 +9,31 @@ module top();
   import uvm_pkg::*;
   `include "uvm_macros.svh"
 
-  import smtdv_common_pkg::*;
-  `include "smtdv_macros.svh"
-
-  import apb_pkg::*;
-  `include "apb_typedefs.svh"
-
-  `include "./test/apb_test_list.sv"
+  import test_apb_pkg::*;
 
   parameter ADDR_WIDTH = `APB_ADDR_WIDTH;
   parameter DATA_WIDTH = `APB_DATA_WIDTH;
 
   reg clk;
-  reg resetn;
+  wire resetn;
+  wire fresetn;
 
   initial begin
     clk= 0;
      forever clk= #5 ~clk;
   end
+
+  //-------------------------------------------//
+  // due to MTI is got compiler error at costructing the init virtual vif of each template component.
+  // we use fake vif to skip it
+  // for reset vif, apb vif
+  smtdv_if    fk_smtdv_if(.clk(clk), .resetn(fresetn));
+  smtdv_gen_rst_if rst_if(fresetn);
+  defparam rst_if.if_name       = "smtdv_rst_if";
+  defparam rst_if.PWRST_PERIOD  = 100;
+  defparam rst_if.POLARITY      = 0;
+  //-------------------------------------------//
+
 
   smtdv_gen_rst_if apb_rst_if(resetn);
   defparam apb_rst_if.if_name       = "apb_rst_if";
@@ -106,7 +113,7 @@ module top();
     uvm_config_db#(`APB_VIF)::set(uvm_root::get(), "*.slave_agent[*0]*", "vif", `APBSLAVEVIF(0));
     uvm_config_db#(`APB_VIF)::set(uvm_root::get(), "*.slave_agent[*1]*", "vif", `APBSLAVEVIF(1));
     uvm_config_db#(`APB_VIF)::set(uvm_root::get(), "*.master_agent[*0]*", "vif",`APBMASTERIVF(0));
-    uvm_config_db#(`APB_RST_VIF)::set(uvm_root::get(), "*", "apb_rst_vif", apb_rst_if);
+    uvm_config_db#(`APB_RST_VIF)::set(uvm_root::get(), "*", "rst_vif", apb_rst_if);
     run_test();
   end
 

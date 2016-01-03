@@ -1,4 +1,6 @@
 ref: https://web.eecs.umich.edu/~prabal/teaching/eecs373-f11/readings/ARM_AMBA3_APB.pdf
+DVcon:
+https://s3.amazonaws.com/verificationacademy-news/DVCon2013/Papers/MGC_DVCon_13_Sequence_Sequence_on_the_Wall_Who's_the_Fairest_of_Them_All.pdf
 
 block cfg set via async channel
 
@@ -10,7 +12,8 @@ block cfg set via async channel
     stl:
     err_inject:
     sysc co-sim
-    tlm1 <-> tlm2
+    tlm1 (blocking/nonblocking)<-> tlm2 (socket)
     sqlite3
     memory backdoor
     fast sim
+3. note: IUS stl_test fail at > 3 times seq item

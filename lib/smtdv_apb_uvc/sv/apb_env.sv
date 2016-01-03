@@ -1,32 +1,34 @@
 `ifndef __APB_ENV_SV__
 `define __APB_ENV_SV__
 
-class apb_env
+typedef class apb_master_cfg;
+typedef class apb_master_agent;
+typedef class apb_slave_cfg;
+typedef class apb_slave_agent;
+
+class apb_env#(
+  type MCFG = apb_master_cfg,
+  type MAGT = apb_master_agent,
+  type SCFG = apb_slave_cfg,
+  type SAGT = apb_slave_agent
+  )
   extends
-    smtdv_env;
+    smtdv_env#(
+      .MCFG(MCFG),
+      .MAGT(MAGT),
+      .SCFG(SCFG),
+      .SAGT(SAGT)
+  );
 
-    parameter ADDR_WIDTH = `APB_ADDR_WIDTH;
-    parameter DATA_WIDTH = `APB_DATA_WIDTH;
+  typedef apb_env#(MCFG, MAGT, SCFG, SAGT) env_t;
 
-    `APB_MASTER_CFG     master_cfg[$];
-    `APB_MASTER_AGENT   master_agent[$];
-    `APB_SLAVE_CFG      slave_cfg[$];
-    `APB_SLAVE_AGENT    slave_agent[$];
-    // override cover_group to top/system level defne
-    `APB_COLLECT_COVER_GROUP master_covgroup[$];
-    `APB_COLLECT_COVER_GROUP slave_covgroup[$];
-
-  `uvm_component_param_utils_begin(`APB_ENV)
-    `uvm_field_queue_object(master_cfg, UVM_ALL_ON)
-    `uvm_field_queue_object(master_agent, UVM_ALL_ON)
-    `uvm_field_queue_object(slave_cfg, UVM_ALL_ON)
-    `uvm_field_queue_object(slave_agent, UVM_ALL_ON)
+  `uvm_component_param_utils_begin(env_t)
   `uvm_component_utils_end
 
   function new(string name = "apb_env", uvm_component parent=null);
     super.new(name, parent);
-  endfunction
+  endfunction : new
 
-endclass
+endclass : apb_env
 
 `endif // __APB_ENV_SV__

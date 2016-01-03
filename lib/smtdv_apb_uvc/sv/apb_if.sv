@@ -5,6 +5,7 @@
 `timescale 1ns/10ps
 import uvm_pkg::*;
 `include "uvm_macros.svh"
+`include "smtdv_macros.svh"
 
 //define apb virtual interface
 // TODO bind force interface ...
@@ -27,10 +28,10 @@ interface apb_if #(
     logic [0:0]             pready
   );
 
-  bit has_force = 1;
-  bit has_checks = 1;
-  bit has_coverage = 1;
-  bit has_performance = 1;
+  bit has_force = `TRUE;
+  bit has_checks = `TRUE;
+  bit has_coverage = `TRUE;
+  bit has_performance = `TRUE;
 
   longint cyc = 0;
 

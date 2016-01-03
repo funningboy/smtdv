@@ -6,15 +6,21 @@ debug = FALSE
 spawn = TRUE
 unittest = TRUE
 simulator = mti
-test = apb_hijack_test
+test = apb_polling_test
+
 # add your test below
 tests =
-  apb_base_test
+  apb_setup_test
+  apb_rand_test
   apb_stl_test
-  apb_1w1r_test
+  apb_retry_test
   apb_err_inject_test
   apb_hijack_test
-  #apb_csim_test
+  apb_polling_test
+  apb_interrupt_test
+  apb_cfg_callback_test
+  apb_uvm_reg_test
+  apb_fw_ctl_test #debug
 
 [cores]
 import_files =
@@ -30,6 +36,8 @@ src_files =
 include_files =
   ${smtdv_common.systemverilog:include_files}
   ${main:apb}/sv/apb_pkg.sv
+  ${main:apb}/seq/apb_seq_pkg.sv
+  ${main:apb}/test/test_apb_pkg.sv
 
 include_dirs =
   ${smtdv_common.systemverilog:include_dirs}
@@ -95,9 +103,9 @@ irun =
   proc_incdir(\"ius\", \"${systemverilog:include_dirs}\")
   proc_incfile(\"ius\", \"${systemverilog:include_files}\")
   proc_srcfile(\"ius\", \"${systemverilog:src_files}\")
-  proc_incdir(\"mti\", \"${verilog:include_dirs}\")
-  proc_incdir(\"mti\", \"${verilog:include_files}\")
-  proc_srcfile(\"mti\", \"${verilog:src_files}\")
+  proc_incdir(\"ius\", \"${verilog:include_dirs}\")
+  proc_incdir(\"ius\", \"${verilog:include_files}\")
+  proc_srcfile(\"ius\", \"${verilog:src_files}\")
   proc_incdir(\"ius\", \"${sharedlib:include_dirs}\")
   proc_sharedlib(\"ius\", \"${sharedlib:include_files}\")
   -uvm

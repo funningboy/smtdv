@@ -1,0 +1,8 @@
+
+`ifndef __APB_MASTER_INTERRUPT_VSEQ_SV__
+`define __APB_MASTER_INTERRUPT_VSEQ_SV__
+
+//class apb
+
+
+`endif // __APB_MASTER_INTERRUPT_VSEQ_SV__
