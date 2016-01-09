@@ -1,65 +1,95 @@
 `ifndef __AHB_MONITOR_SV__
 `define __AHB_MONITOR_SV__
 
+typedef class ahb_item;
 typedef class ahb_slave_sequencer;
+typedef class ahb_master_sequencer;
+typedef class ahb_slave_cfg;
+typedef class ahb_master_cfg;
 
 class ahb_monitor #(
   ADDR_WIDTH  = 14,
-  DATA_WIDTH = 32
+  DATA_WIDTH = 32,
+  type CFG = ahb_slave_cfg,
+  type SEQR = ahb_slave_sequencer#(ADDR_WIDTH, DATA_WIDTH)
   ) extends
     smtdv_monitor#(
-      `AHB_VIF,
-      smtdv_cfg
+      .ADDR_WIDTH(ADDR_WIDTH),
+      .DATA_WIDTH(DATA_WIDTH),
+      .VIF(virtual interface ahb_if#(ADDR_WIDTH, DATA_WIDTH)),
+      .CFG(CFG),
+      .SEQR(SEQR),
+      .T1(ahb_item#(ADDR_WIDTH, DATA_WIDTH))
       );
 
-  `AHB_SLAVE_SEQUENCER seqr;
+  typedef ahb_monitor#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) mon_t;
+  typedef ahb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef ahb_collect_addr_items#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) coll_addr_item_t;
+  typedef ahb_collect_data_items#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) coll_data_item_t;
+  typedef ahb_collect_stop_signal#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) coll_stop_sin_t;
+  typedef ahb_collect_cover_group#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) coll_cov_grp_t;
+  typedef ahb_export_collected_items#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) exp_coll_items_t;
+  typedef smtdv_thread_handler#(mon_t) hdler_t;
 
-  // tlm analysis port to dumper/scoreboard or third part golden model(c/systemc)
-  uvm_analysis_port #(`AHB_ITEM) item_collected_port;
-  uvm_analysis_port #(`AHB_ITEM) item_asserted_port;
-  mailbox #(`AHB_ITEM) cbox;
-  mailbox #(`AHB_ITEM) ebox;
-  mailbox #(`AHB_ITEM) pbox;
+  // as frontend threads/handler
+  hdler_t th_handler;
 
-  `AHB_COLLECT_ADDR_ITEMS th0;
-  `AHB_COLLECT_DATA_ITEMS th1;
-  `AHB_COLLECT_STOP_SIGNAL th2;
-  `AHB_COLLECT_COVER_GROUP th3;
-  `AHB_EXPORT_COLLECTED_ITEMS th4;
+  mailbox #(item_t) cbox; // collect coverage channel
+  mailbox #(item_t) ebox; // export to db channel
+  mailbox #(item_t) pbox; // port to data channel
+  mailbox #(item_t) bbox; // update cfg channel
 
-  `uvm_component_param_utils_begin(`AHB_MONITOR)
+  coll_addr_item_t th0;
+  coll_data_item_t th1;
+  coll_stop_sin_t th2;
+  coll_cov_grp_t th3;
+  exp_coll_items_t th4;
+
+  `uvm_component_param_utils_begin(mon_t)
   `uvm_component_utils_end
 
   function new (string name = "ahb_monitor", uvm_component parent);
     super.new(name, parent);
-    item_collected_port = new("item_collected_port", this);
-    item_asserted_port = new("item_asserted_port", this);
     cbox = new();
     ebox = new();
     pbox = new();
-  endfunction
+    bbox = new();
+  endfunction : new
 
   // register thread to thread handler
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    th0 = `AHB_COLLECT_ADDR_ITEMS::type_id::create("ahb_collect_addr_items"); th0.cmp = this; this.th_handler.add(th0);
-    th1 = `AHB_COLLECT_DATA_ITEMS::type_id::create("ahb_collect_data_items");   th1.cmp = this; this.th_handler.add(th1);
-    th2 = `AHB_COLLECT_STOP_SIGNAL::type_id::create("ahb_collect_stop_signal"); th2.cmp = this; this.th_handler.add(th2);
-    th3 = `AHB_COLLECT_COVER_GROUP::type_id::create("ahb_collect_cover_group"); th3.cmp = this; this.th_handler.add(th3);
-    th4 = `AHB_EXPORT_COLLECTED_ITEMS::type_id::create("ahb_export_collected_items"); th4.cmp = this; this.th_handler.add(th4);
-  endfunction
+    th_handler = hdler_t::type_id::create("ahb_monitor_handler", this);
+
+    th0 = coll_addr_item_t::type_id::create("ahb_collect_addr_items", this);
+    th1 = coll_data_item_t::type_id::create("ahb_collect_data_items", this);
+    th2 = coll_stop_sin_t::type_id::create("ahb_collect_stop_signal", this);
+
+    th3 = coll_cov_grp_t::type_id::create("ahb_collect_cover_group", this);
+    th4 = exp_coll_items_t::type_id::create("ahb_export_collected_items", this);
+  endfunction : build_phase
+
+
+  virtual function void connect_phase(uvm_phase phase);
+    super.connect_phase(phase);
+    th0.register(this); th_handler.add(th0);
+    th1.register(this); th_handler.add(th1);
+    th2.register(this); th_handler.add(th2);
+    th3.register(this); th_handler.add(th3);
+    th4.register(this); th_handler.add(th4);
+  endfunction : connect_phase
 
   virtual function void end_of_elaboration_phase(uvm_phase phase);
     super.end_of_elaboration_phase(phase);
-    // populate vif to child
-    if(seqr == null) begin
-      if(!uvm_config_db#(`AHB_SLAVE_SEQUENCER)::get(this, "", "seqr", seqr))
-      `uvm_warning("NOSEQR",{"slave sequencer must be set for: ",get_full_name(),".seqr"});
-    end
-  endfunction
+    th_handler.finalize();
+  endfunction : end_of_elaboration_phase
 
-endclass
+  virtual task run_threads();
+    super.run_threads();
+    th_handler.run();
+  endtask : run_threads
 
+endclass : ahb_monitor
 
 `endif // end of __AHB_MONITOR_SV__
 

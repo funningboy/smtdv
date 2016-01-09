@@ -9,16 +9,13 @@ module top();
   import uvm_pkg::*;
   `include "uvm_macros.svh"
 
-  import smtdv_common_pkg::*;
-  `include "smtdv_macros.svh"
-
-  import ahb_pkg::*;
-  `include "ahb_typedefs.svh"
-
-  `include "./test/ahb_test_list.sv"
+  import test_ahb_pkg::*;
 
   parameter ADDR_WIDTH = `AHB_ADDR_WIDTH;
   parameter DATA_WIDTH = `AHB_DATA_WIDTH;
+
+  typedef virtual interface ahb_if#(ADDR_WIDTH, DATA_WIDTH) ahb_if_t;
+  typedef virtual interface smtdv_gen_rst_if#("ahb_rst_if", 100, 0) rst_if_t;
 
   reg clk;
   reg resetn;
@@ -28,10 +25,23 @@ module top();
      forever clk= #5 ~clk;
   end
 
+  //-------------------------------------------//
+  // due to MTI is got compiler error at costructing the init virtual vif of each template component.
+  // we use fake vif to skip it
+  // for reset vif, apb vif
+  smtdv_if    fk_smtdv_if(.clk(clk), .resetn(fresetn));
+  smtdv_gen_rst_if rst_if(fresetn);
+  defparam rst_if.if_name       = "smtdv_rst_if";
+  defparam rst_if.PWRST_PERIOD  = 100;
+  defparam rst_if.POLARITY      = 0;
+  //-------------------------------------------//
+
+
   smtdv_gen_rst_if ahb_rst_if(resetn);
   defparam ahb_rst_if.if_name       = "ahb_rst_if";
   defparam ahb_rst_if.PWRST_PERIOD  = 100;
   defparam ahb_rst_if.POLARITY      = 0;
+
 
 /*-------------------------------------------
 *  used as Master UVC/slave is real design
@@ -93,9 +103,9 @@ module top();
     );
 
   initial begin
-    uvm_config_db#(`AHB_VIF)::set(uvm_root::get(), "*.slave_agent[*0]*", "vif", `AHBSLAVEVIF(0));
-    uvm_config_db#(`AHB_VIF)::set(uvm_root::get(), "*.master_agent[*0]*", "vif", `AHBMASTERVIF(0));
-    uvm_config_db#(`AHB_RST_VIF)::set(uvm_root::get(), "*", "ahb_rst_vif", ahb_rst_if);
+    uvm_config_db#(ahb_if_t)::set(uvm_root::get(), "*.slave_agent[*0]*", "vif", `AHBSLAVEVIF(0));
+    uvm_config_db#(ahb_if_t)::set(uvm_root::get(), "*.master_agent[*0]*", "vif", `AHBMASTERVIF(0));
+    uvm_config_db#(rst_if_t)::set(uvm_root::get(), "*", "rst_vif", ahb_rst_if);
     run_test();
   end
 

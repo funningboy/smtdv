@@ -1,29 +1,35 @@
 `ifndef __AHB_ITEM_SV__
 `define __AHB_ITEM_SV__
 
+/**
+* ahb item
+* a basic ahb item
+*
+* @class ahb_item
+*
+*/
 class ahb_item #(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32
 ) extends
-    smtdv_sequence_item;
+  smtdv_sequence_item #(
+    ADDR_WIDTH,
+    DATA_WIDTH
+  );
 
-  rand bit [ADDR_WIDTH-1:0]     addr;
-  rand bit [ADDR_WIDTH-1:0]     addrs[$];
-  rand bit [(DATA_WIDTH>>3)-1:0][7:0] data_beat[$];
+  typedef ahb_item #(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   rand bst_type_t               bst_type;
   rand trx_size_t               trx_size;
   rand trx_rsp_t                rsp;
-  rand int                      bst_len;
   rand bit [3:0]                trx_prt;
   rand bit [0:0]                hmastlock;
-  rand int                      offset;
 
-  bit                           reqbus = 0;
-  bit                           retry = 0;
-  bit                           split = 0;
-  bit                           error = 0;
-  bit                           lock = 0;
+  bit                           reqbus = FALSE;
+  bit                           retry = FALSE;
+  bit                           split = FALSE;
+  bit                           error = FALSE;
+  bit                           lock = FALSE;
 
   int                           busy_cnt = 0;
 
@@ -45,6 +51,7 @@ class ahb_item #(
   }
 
   constraint c_bst_len  {
+    solve bst_type before bst_len;
     (bst_type == SINGLE) -> bst_len == 0;
     (bst_type == INCR)   -> bst_len inside {1,2,4,5,6,8,9,10,11,12,13,14};
     (bst_type inside {WRAP4, INCR4}) -> bst_len == 3;
@@ -112,13 +119,9 @@ class ahb_item #(
     hready_L2H inside {[0:16]};
   }
 
-  `uvm_object_param_utils_begin(`AHB_ITEM)
-    `uvm_field_int(addr, UVM_DEFAULT)
-    `uvm_field_queue_int(addrs, UVM_DEFAULT)
-    `uvm_field_queue_int(data_beat, UVM_DEFAULT)
+  `uvm_object_param_utils_begin(item_t)
     `uvm_field_enum(bst_type_t, bst_type, UVM_DEFAULT)
     `uvm_field_enum(trx_size_t, trx_size, UVM_DEFAULT)
-    `uvm_field_int(bst_len, UVM_DEFAULT)
     `ifdef AHB_DEBUG
       `uvm_field_int(hbusreq_L2H, UVM_DEFAULT)
       `uvm_field_int(hready_L2H, UVM_DEFAULT)
@@ -131,11 +134,11 @@ class ahb_item #(
 
   function new (string name = "ahb_item");
     super.new(name);
-  endfunction
+  endfunction : new
 
   function void pre_randomize();
     super.pre_randomize();
-  endfunction
+  endfunction : pre_randomize
 
   function void post_data(
                           int bst_len,
@@ -146,7 +149,7 @@ class ahb_item #(
      `SMTDV_RAND_VAR(rdata);
       data_beat.push_back(rdata);
     end
-  endfunction
+  endfunction : post_data
 
   function void post_addr(
                           bit [ADDR_WIDTH-1:0] addr,
@@ -195,7 +198,7 @@ class ahb_item #(
         addr = addr + (upper_byte_lane - lower_byte_lane + 1);
       end
     end
- endfunction
+ endfunction : post_addr
 
   function void post_randomize();
     bit [ADDR_WIDTH-1:0] addrs[$];
@@ -213,23 +216,7 @@ class ahb_item #(
     for(int i=0; i<=this.bst_len; i++) begin
       this.data_beat.push_back(data_beat[i]);
     end
-  endfunction
-
-  function void pack_data(int idx=0, bit [DATA_WIDTH-1:0] idata=0);
-    int n = (DATA_WIDTH>>3);
-    for (int i=0; i<n; i+=1) begin
-      this.data_beat[idx][i] = idata[i*8+:8];
-    end
-  endfunction
-
-  function bit[DATA_WIDTH-1:0] unpack_data(int idx=0);
-    bit [DATA_WIDTH-1:0] odata;
-    int n = (DATA_WIDTH>>3);
-    for (int i=0; i<n; i+=1) begin
-      odata[i*8+:8] = this.data_beat[idx][i];
-    end
-    return odata;
-  endfunction
+  endfunction : post_randomize
 
   function int get_bst_len(int bst_type);
     int bst_len;
@@ -239,9 +226,9 @@ class ahb_item #(
               (bst_type inside {WRAP8, INCR8})? 7:
               (bst_type inside {WRAP16, INCR16})? 15: 0;
     return bst_len;
-  endfunction
+  endfunction : get_bst_len
 
-endclass
+endclass : ahb_item
 
 `endif // end of __AHB_ITEM_SV__
 

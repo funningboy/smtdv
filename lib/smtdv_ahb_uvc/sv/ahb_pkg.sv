@@ -23,20 +23,17 @@ package ahb_pkg;
   `include "ahb_master_driver_threads.sv"
   `include "ahb_master_driver.sv"
   `include "ahb_master_sequencer.sv"
-  `include "../seq/ahb_master_seqs_lib.sv"
   `include "ahb_master_agent.sv"
 
   `include "ahb_slave_cfg.sv"
   `include "ahb_slave_driver_threads.sv"
   `include "ahb_slave_driver.sv"
   `include "ahb_slave_sequencer.sv"
-  `include "../seq/ahb_slave_seqs_lib.sv"
   `include "ahb_slave_agent.sv"
 
-  `include "ahb_backdoor.sv"
-  `include "ahb_scoreboard_threads.sv"
   `include "ahb_scoreboard.sv"
   `include "ahb_env.sv"
+  `include "ahb_reg_adapter.sv"
 endpackage
 
 `include "ahb_if.sv"

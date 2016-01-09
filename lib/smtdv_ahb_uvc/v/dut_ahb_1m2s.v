@@ -2,11 +2,11 @@
 
 `timescale 1ns/10ps
 
+`include "ahb_typedefs.svh"
 `include "ahb_master.v"
 `include "ahb_slave.v"
 `include "ahb_arbiter.v"
 `include "ahb_decoder.v"
-`include "ahb_typedefs.svh"
 
 module dut_1m2s #(
   parameter integer ADDR_WIDTH  = 14,
@@ -42,8 +42,8 @@ module dut_1m2s #(
   for (i=0; i < 1; i++) begin: M
     // instances: top.u_dut_1m2s.M[0].u_anb_master,
     ahb_master #(
-      .ADDR_WIDTH   (`AHB_ADDR_WIDTH),
-      .DATA_WIDTH   (`AHB_DATA_WIDTH)
+      .ADDR_WIDTH   (ADDR_WIDTH),
+      .DATA_WIDTH   (DATA_WIDTH)
     ) u_ahb_master (
       .clk(clk),
       .resetn(resetn),
@@ -73,8 +73,8 @@ module dut_1m2s #(
   for (i=0; i < 2; i++)  begin: S
     // instances: top.u_dut_1m2s.S[0].u_ahb_slave,..
     ahb_slave #(
-      .ADDR_WIDTH   (`AHB_ADDR_WIDTH),
-      .DATA_WIDTH   (`AHB_DATA_WIDTH)
+      .ADDR_WIDTH   (ADDR_WIDTH),
+      .DATA_WIDTH   (DATA_WIDTH)
     ) u_ahb_slave (
       .clk(clk),
       .resetn(resetn),

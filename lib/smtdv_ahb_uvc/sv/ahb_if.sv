@@ -6,7 +6,6 @@ import uvm_pkg::*;
 `include "uvm_macros.svh"
 
 //define ahb virtual interface
-// TODO bind force interface ...
 // coverage group
 interface ahb_if #(
   parameter integer ADDR_WIDTH  = 14,

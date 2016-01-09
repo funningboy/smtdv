@@ -1,18 +1,23 @@
 `ifndef __AHB_MASTER_CFG_SV__
 `define __AHB_MASTER_CFG_SV__
 
+/*
+* ahb_master_cfg
+* template class with ahb master cfg
+*
+* @class ahb_master_cfg
+*/
 class ahb_master_cfg
   extends
     smtdv_master_cfg;
 
-  rand bit   block_hbusreq;
-  rand bit   block_hnonseq;
-  rand bit   has_busy = 0;
+  typedef ahb_master_cfg cfg_t;
 
-  constraint c_block_hbusreq { block_hbusreq ==0; }
-  constraint c_block_hnonseq { block_hnonseq ==0; }
+  rand bit   block_hbusreq = TRUE;
+  rand bit   block_hnonseq = TRUE;
+  rand bit   has_busy = TRUE;
 
-  `uvm_object_param_utils_begin(`AHB_MASTER_CFG)
+  `uvm_object_param_utils_begin(cfg_t)
     `uvm_field_int(block_hbusreq, UVM_DEFAULT)
     `uvm_field_int(block_hnonseq, UVM_DEFAULT)
     `uvm_field_int(has_busy, UVM_DEFAULT)
@@ -20,8 +25,8 @@ class ahb_master_cfg
 
   function new(string name = "ahb_master_cfg",  smtdv_component cmp=null);
     super.new(name, cmp);
-  endfunction
+  endfunction : new
 
-endclass
+endclass : ahb_master_cfg
 
 `endif // __AHB_MASTER_CFG_SV__
