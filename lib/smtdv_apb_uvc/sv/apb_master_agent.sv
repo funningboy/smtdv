@@ -34,7 +34,7 @@ class apb_master_agent #(
 
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-  endfunction
+  endfunction : build_phase
 
 endclass : apb_master_agent
 

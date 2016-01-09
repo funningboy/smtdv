@@ -14,6 +14,9 @@ module top();
   parameter ADDR_WIDTH = `APB_ADDR_WIDTH;
   parameter DATA_WIDTH = `APB_DATA_WIDTH;
 
+  typedef virtual interface apb_if#(ADDR_WIDTH, DATA_WIDTH) apb_if_t;
+  typedef virtual interface smtdv_gen_rst_if#("apb_rst_if", 100, 0) rst_if_t;
+
   reg clk;
   wire resetn;
   wire fresetn;
@@ -110,10 +113,10 @@ module top();
 
 
   initial begin
-    uvm_config_db#(`APB_VIF)::set(uvm_root::get(), "*.slave_agent[*0]*", "vif", `APBSLAVEVIF(0));
-    uvm_config_db#(`APB_VIF)::set(uvm_root::get(), "*.slave_agent[*1]*", "vif", `APBSLAVEVIF(1));
-    uvm_config_db#(`APB_VIF)::set(uvm_root::get(), "*.master_agent[*0]*", "vif",`APBMASTERIVF(0));
-    uvm_config_db#(`APB_RST_VIF)::set(uvm_root::get(), "*", "rst_vif", apb_rst_if);
+    uvm_config_db#(apb_if_t)::set(uvm_root::get(), "*.slave_agent[*0]*", "vif", `APBSLAVEVIF(0));
+    uvm_config_db#(apb_if_t)::set(uvm_root::get(), "*.slave_agent[*1]*", "vif", `APBSLAVEVIF(1));
+    uvm_config_db#(apb_if_t)::set(uvm_root::get(), "*.master_agent[*0]*", "vif",`APBMASTERIVF(0));
+    uvm_config_db#(rst_if_t)::set(uvm_root::get(), "*", "rst_vif", apb_rst_if);
     run_test();
   end
 

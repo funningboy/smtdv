@@ -139,7 +139,6 @@ class apb_base_test
     rst_model.show_components(0);
   endfunction : end_of_elaboration_phase
 
-
 endclass : apb_base_test
 
 `endif // __APB_BASE_TEST_SV__

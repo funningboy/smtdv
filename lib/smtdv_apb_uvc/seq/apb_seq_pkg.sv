@@ -6,8 +6,6 @@
 
 package apb_seq_pkg;
 
-  `include "apb_defines.svh"
-
   import uvm_pkg::*;
   `include "uvm_macros.svh"
 
@@ -18,6 +16,7 @@ package apb_seq_pkg;
   import smtdv_common_seq_pkg::*;
   `include "smtdv_macros.svh"
 
+  `include "apb_defines.svh"
   import apb_pkg::*;
 
   `include "apb_master_seqs_lib.sv"

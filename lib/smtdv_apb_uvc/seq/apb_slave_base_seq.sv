@@ -6,6 +6,9 @@
 //typedef class apb_slave_cfg;
 //typedef class apb_slave_sequencer;
 
+/*
+* normal mem no bank, set, channel...
+*/
 class apb_slave_base_seq #(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32
@@ -35,24 +38,32 @@ class apb_slave_base_seq #(
     byte data[];
     super.mid_do_read_item(item);
     data= new[DATA_WIDTH>>3];
-    gene_mem.mem_load_byte(item.addr, DATA_WIDTH>>3, data, item.bg_cyc);
+
+    wait(!gene_mem.is_lock());
+    gene_mem.lock();
+    gene_mem.mem_load_byte(item.addrs[0], DATA_WIDTH>>3, data, item.bg_cyc);
     foreach(data[i]) begin
       item.data_beat[0][i] = data[i];
     end
     item.mem_complete = TRUE;
+    gene_mem.unlock();
   endtask : mid_do_read_item
 
   virtual task mid_do_write_item(item_t item);
     byte data[];
     super.mid_do_write_item(item);
     data= new[DATA_WIDTH>>3];
+
+    wait(!gene_mem.is_lock());
+    gene_mem.lock();
     if (item.success) begin
       foreach(item.data_beat[0][i]) begin
         data[i] = item.data_beat[0][i];
       end
-      gene_mem.mem_store_byte(item.addr, data, item.bg_cyc);
+      gene_mem.mem_store_byte(item.addrs[0], data, item.bg_cyc);
       item.mem_complete = TRUE;
     end
+    gene_mem.unlock();
   endtask : mid_do_write_item
 
 endclass : apb_slave_base_seq

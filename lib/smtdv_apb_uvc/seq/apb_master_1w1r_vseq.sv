@@ -24,7 +24,7 @@ class apb_master_1w1r_vseq #(
 
   rand int cnt;
 
-  constraint c_cnt { 10 <= cnt && cnt <=20; }
+  constraint c_cnt { cnt inside {[10:20]}; }
 
   `uvm_object_param_utils_begin(vseq_t)
   `uvm_object_utils_end

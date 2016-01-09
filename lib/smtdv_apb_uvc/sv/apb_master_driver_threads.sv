@@ -17,7 +17,6 @@ class apb_master_base_thread #(
   typedef apb_master_driver#(ADDR_WIDTH, DATA_WIDTH) cmp_t;
 
   item_t item;
-  cmp_t cmp;
 
   `uvm_object_param_utils_begin(th_t)
   `uvm_object_utils_end
@@ -27,7 +26,7 @@ class apb_master_base_thread #(
   endfunction : new
 
   virtual function void pre_do();
-    if ($cast(cmp, this.cmp)) begin
+    if (!this.cmp) begin
       `uvm_fatal("APB_NO_CMP",{"CMP MUST BE SET ",get_full_name(),".cmp"});
     end
   endfunction : pre_do

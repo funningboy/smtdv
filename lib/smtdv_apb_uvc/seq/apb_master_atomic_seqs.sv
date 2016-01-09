@@ -18,7 +18,6 @@ class apb_master_1w_seq #(
   typedef apb_item #(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   rand bit [ADDR_WIDTH-1:0] start_addr;
-  rand bit [DATA_WIDTH-1:0] write_data;
   bit blocking = TRUE;
 
   `uvm_object_param_utils_begin(seq_t)
@@ -38,7 +37,6 @@ class apb_master_1w_seq #(
       item.run_t == FORCE;
       item.addr == start_addr;
       })
-    item.pack_data(0, write_data);
 
     `uvm_create(req)
     req.copy(item);

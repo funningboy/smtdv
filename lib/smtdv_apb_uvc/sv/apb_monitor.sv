@@ -30,10 +30,10 @@ class apb_monitor #(
   typedef apb_collect_cover_group#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) coll_cov_grp_t;
   typedef apb_export_collected_items#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) exp_coll_items_t;
   //typedef apb_update_notify_cfg#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) updt_note_cfg_t;
-  typedef smtdv_thread_handler#(mon_t) th_t;
+  typedef smtdv_thread_handler#(mon_t) hdler_t;
 
   // as frontend threads/handler
-  th_t th_handler;
+  hdler_t th_handler;
 
   mailbox #(item_t) cbox; // collect coverage channel
   mailbox #(item_t) ebox; // export to db channel
@@ -62,7 +62,7 @@ class apb_monitor #(
   // register thread to thread handler
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    th_handler = th_t::type_id::create("apb_monitor_handler", this);
+    th_handler = hdler_t::type_id::create("apb_monitor_handler", this);
 
     th0 = coll_wr_item_t::type_id::create("apb_collect_write_items", this);
     th1 = coll_rd_item_t::type_id::create("apb_collect_read_items", this);

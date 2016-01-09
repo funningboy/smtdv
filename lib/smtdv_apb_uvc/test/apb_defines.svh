@@ -1,4 +1,7 @@
 
+`ifndef __APB_DEFINES_SVH__
+`define __APB_DEFINES_SVH__
+
 // for DEBUG only, add addr map should be registered to map table
 `define APB_DEBUG true
 `define APB_ADDR_WIDTH 32
@@ -25,11 +28,9 @@ bit [`APB_ADDR_WIDTH-1:0] apb_end_addr_t[] = {
 `define APB_END_ADDR(i) \
   apb_end_addr_t[i];
 
-`define APB_VIF virtual interface apb_if#(ADDR_WIDTH, DATA_WIDTH)
-`define APB_RST_VIF virtual interface smtdv_gen_rst_if#("apb_rst_if", 100, 0)
 `define APBMASTERATTR(i) u_dut_1m2s.M[i].u_apb_master
 `define APBSLAVEATTR(i)  u_dut_1m2s.S[i].u_apb_slave
 `define APBMASTERIVF(i)  `APBMASTERATTR(i).apb_master_if_harness.vif
 `define APBSLAVEVIF(i)   `APBSLAVEATTR(i).apb_slave_if_harness.vif
 
-
+`endif // __APB_DEFINES_SVH__

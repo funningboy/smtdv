@@ -20,10 +20,10 @@ class apb_master_driver #(
   typedef apb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
   typedef apb_master_driver#(ADDR_WIDTH, DATA_WIDTH) drv_t;
   typedef apb_master_drive_items#(ADDR_WIDTH, DATA_WIDTH) drv_items_t;
-  typedef smtdv_thread_handler#(drv_t) th_t;
+  typedef smtdv_thread_handler#(drv_t) hdler_t;
 
   // as frontend threads/handler
-  th_t th_handler;
+  hdler_t th_handler;
 
   mailbox #(item_t) mbox;
   drv_items_t th0;
@@ -38,13 +38,18 @@ class apb_master_driver #(
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
     th0 = drv_items_t::type_id::create("apb_master_drive_items", this);
-    th_handler = th_t::type_id::create("apb_master_handler", this);
+    th_handler = hdler_t::type_id::create("apb_master_handler", this);
   endfunction
 
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
-    th0.cmp = this; th_handler.add(th0);
+    th0.register(this); th_handler.add(th0);
   endfunction : connect_phase
+
+  virtual function void end_of_elaboration_phase(uvm_phase phase);
+    super.end_of_elaboration_phase(phase);
+    th_handler.finalize();
+  endfunction : end_of_elaboration_phase
 
   extern virtual task reset_driver();
   extern virtual task reset_inf();

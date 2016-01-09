@@ -5,11 +5,12 @@ apb = ${main:root}/lib/smtdv_apb_uvc
 debug = FALSE
 spawn = TRUE
 unittest = TRUE
-simulator = mti
-test = apb_polling_test
+simulator = ius
+test = apb_rand_test
 
 # add your test below
 tests =
+  apb_base_test
   apb_setup_test
   apb_rand_test
   apb_stl_test

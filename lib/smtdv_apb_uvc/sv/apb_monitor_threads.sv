@@ -40,7 +40,7 @@ class apb_monitor_base_thread #(
   endfunction : new
 
   virtual function void pre_do();
-    if ($cast(cmp, this.cmp)) begin
+    if (!this.cmp) begin
       `uvm_fatal("APB_NO_CMP",{"CMP MUST BE SET ",get_full_name(),".cmp"});
     end
   endfunction : pre_do

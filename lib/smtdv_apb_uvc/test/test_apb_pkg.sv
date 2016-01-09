@@ -15,9 +15,9 @@ package test_apb_pkg;
   import smtdv_common_pkg::*;
   `include "smtdv_macros.svh"
 
+  `include "apb_defines.svh"
   import apb_pkg::*;
   import apb_seq_pkg::*;
-  `include "apb_defines.svh"
 
 `include "apb_base_test.sv"
 `include "apb_setup_test.sv"

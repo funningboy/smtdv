@@ -13,8 +13,6 @@ package apb_pkg;
   `include "smtdv_macros.svh"
 
   // top level override
-  `include "apb_defines.svh"
-
   `include "apb_typedefs.svh"
   `include "apb_item.sv"
 
