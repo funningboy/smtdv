@@ -103,8 +103,8 @@ extern "C" {
   char* dpi_smtdv_get_smtdv_transfer_resp(void* ip) {
     SMTDV_Transfer* tt = reinterpret_cast<SMTDV_Transfer*>(ip);
     assert(tt!=NULL && "UVM_ERROR DPI_SMTDV, get_SMTDV_Transfer resp fail");
-    char *cstr = new char[tt->rw.length() + 1];
-    strcpy(cstr, tt->rw.c_str());
+    char *cstr = new char[tt->resp.length() + 1];
+    strcpy(cstr, tt->resp.c_str());
     return cstr;
   }
   /* set rw */

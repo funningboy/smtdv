@@ -69,9 +69,9 @@ endtask
 
 
 initial begin
-  test_xbus_stl();
-  test_apb_stl();
-  test_ahb_stl();
+  test_xbus_stl();    $display("test xbus pass");
+  test_apb_stl();     $display("test apb pass");
+  test_ahb_stl();     $display("test ahb pass");
 end
 
 endmodule
