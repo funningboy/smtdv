@@ -22,6 +22,7 @@ class smtdv_generic_memory #(
   typedef bit [(DATA_WIDTH>>3)-1:0][7:0] byte16_t;
 
   bit has_callback = TRUE;
+  bit has_lock = FALSE;
   smtdv_generic_memory_cb#(ADDR_WIDTH, DATA_WIDTH) mem_cb;
 
 //byte memory[gene_mem_addr_t];
@@ -31,6 +32,9 @@ class smtdv_generic_memory #(
   `uvm_object_utils_end
 
   extern function new(string name = "smtdv_generic_memory");
+  extern function bit is_lock();
+  extern function void lock();
+  extern function void unlock();
   extern virtual task mem_store_byte(gene_mem_addr_t addr, byte data[], longint cyc);
   extern virtual task mem_load_byte(gene_mem_addr_t addr, int bcnt, ref byte data[], longint cyc);
   extern virtual task mem_store(gene_mem_addr_t addr, byte16_t data[], longint cyc);
@@ -38,6 +42,19 @@ class smtdv_generic_memory #(
 
 endclass : smtdv_generic_memory
 
+function void smtdv_generic_memory::lock();
+  assert(is_lock()==FALSE);
+  has_lock = TRUE;
+endfunction : lock
+
+function void smtdv_generic_memory::unlock();
+  assert(is_lock()==TRUE);
+  has_lock = FALSE;
+endfunction : unlock
+
+function bit smtdv_generic_memory::is_lock();
+  return has_lock == TRUE;
+endfunction : is_lock
 
 /*****
   Task/Function Declaration

@@ -57,6 +57,8 @@ class smtdv_sequence_item #(
   rand bit [(DATA_WIDTH>>3)-1:0][7:0] data_beat[$];
   rand bit [(DATA_WIDTH>>3)-1:0][0:0] byten_beat[$];
   rand int            offset = DATA_WIDTH>>3;
+  rand int 	              rsp = 0;
+  rand int                 bst_len = 0;
 
   bit                 success = FALSE;
   bit                 retry = FALSE;
@@ -65,9 +67,6 @@ class smtdv_sequence_item #(
   bit                 addr_complete = FALSE;
   bit                 data_complete = FALSE;
   int                 id = 0;
-  int 	              rsp = 0;
-  int                 bst_len = 0;
-
   int                 addr_idx = 0;
   int                 data_idx = 0;
 
@@ -128,7 +127,8 @@ class smtdv_sequence_item #(
   extern virtual function void pack_data(int idx=0, bit [DATA_WIDTH-1:0] idata=0);
   extern virtual function bit[DATA_WIDTH-1:0] unpack_data(int idx=0);
   extern virtual function bit compare(item_t cmp);
-
+  extern virtual function void reset_index();
+  extern virtual function void reset_status();
 endclass : smtdv_sequence_item
 
 // data stream is [0] = da, [1]...
@@ -201,5 +201,16 @@ function bit smtdv_sequence_item::compare(smtdv_sequence_item#(ADDR_WIDTH, DATA_
   return TRUE;
 endfunction : compare
 
+function void smtdv_sequence_item::reset_index();
+  addr_idx = 0;
+  data_idx = 0;
+endfunction : reset_index
+
+function void smtdv_sequence_item::reset_status();
+  mem_complete = FALSE;
+  fifo_complete = FALSE;
+  addr_complete = FALSE;
+  data_complete = FALSE;
+endfunction : reset_status
 
 `endif // end of __SMTDV_SEQUENCE_ITEM_SV__

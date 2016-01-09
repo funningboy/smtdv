@@ -116,10 +116,10 @@ endfunction : build_phase
  */
 function void smtdv_scoreboard::connect_phase(uvm_phase phase);
   super.connect_phase(phase);
-  th0.register(this); this.th_handler.add(th0);
-  th1.register(this); this.th_handler.add(th1);
-  th2.register(this); this.th_handler.add(th2);
-  th3.register(this); this.th_handler.add(th3);
+  th0.register(this); th_handler.add(th0);
+  th1.register(this); th_handler.add(th1);
+  th2.register(this); th_handler.add(th2);
+  th3.register(this); th_handler.add(th3);
 endfunction : connect_phase
 
 /**
@@ -212,7 +212,7 @@ function void smtdv_scoreboard::_write_initor(T1 item);
 
   // slice to atomic seq
   foreach(item.addrs[i]) begin
-    atmic_item = T1::type_id::create("smtdv_item");
+    atmic_item = T1::type_id::create("atomic_item");
     atmic_item.addrs[0] = item.addrs[i];
     atmic_item.data_beat[0] = item.data_beat[i];
     atmic_item.trs_t = item.trs_t;
@@ -260,7 +260,7 @@ function void smtdv_scoreboard::_write_target(T1 item);
 
   // slice to atomic seq
   foreach(item.addrs[i]) begin
-    atmic_item = T1::type_id::create("smtdv_item");
+    atmic_item = T1::type_id::create("atomic_item");
     atmic_item.addrs[0] = item.addrs[i];
     atmic_item.data_beat[0] = item.data_beat[i];
     atmic_item.trs_t = item.trs_t;

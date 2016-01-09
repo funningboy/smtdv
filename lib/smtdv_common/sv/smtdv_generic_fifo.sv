@@ -38,6 +38,9 @@ class smtdv_generic_fifo #(
 
   extern virtual function bit is_full();
   extern virtual function bit is_empty();
+  //extern virtual function bit is_lock();
+  //extern virtual function void lock();
+  //extern virtual function void unlock();
   extern virtual task push_back(bit [DATA_WIDTH-1:0] data, longint cyc);
   extern virtual task push_front(bit [DATA_WIDTH-1:0] data, longint cyc);
   extern virtual task pop_back(ref bit [DATA_WIDTH-1:0] data, longint cyc);

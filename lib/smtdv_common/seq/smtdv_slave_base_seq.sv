@@ -127,7 +127,7 @@ task smtdv_slave_base_seq::rcv_from_mon();
     seqr.mon_get_port.get(mitem);
     `uvm_info(get_type_name(), {$psprintf("GET MONITOR COLLECTED ITEM\n%s", mitem.sprint())}, UVM_LOW)
     case(mitem.trs_t)
-      RD: begin do_read_item(mitem);  end
+      RD: begin  do_read_item(mitem);  end
       WR: begin
             fork
               do_write_item(mitem);
@@ -149,8 +149,12 @@ task smtdv_slave_base_seq::note_to_drv();
     if (locking) lock();
 
     repeat(trx_delay) @(posedge seqr.vif.clk);
+
     `uvm_create(req);
     req.copy(bitem);
+    // do some override or purge
+    req.reset_index();
+    req.reset_status();
     start_item(req);
     finish_item(req);
 
