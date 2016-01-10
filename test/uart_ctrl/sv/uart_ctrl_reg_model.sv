@@ -1,7 +1,7 @@
 // This file is generated using Cadence iregGen version 1.05
 
-`ifndef UART_CTRL_REGS_SV
-`define UART_CTRL_REGS_SV
+`ifndef __UART_CTRL_REGS_SV__
+`define __UART_CTRL_REGS_SV__
 
 // Input File: uart_ctrl_regs.xml
 
@@ -44,7 +44,7 @@ class ua_div_latch0_c extends uvm_reg;
     if(is_read) rd_cg.sample();
   endfunction
 
-  `uvm_register_cb(ua_div_latch0_c, uvm_reg_cbs) 
+  `uvm_register_cb(ua_div_latch0_c, uvm_reg_cbs)
   `uvm_set_super_type(ua_div_latch0_c, uvm_reg)
   `uvm_object_utils(ua_div_latch0_c)
   function new(input string name="unnamed-ua_div_latch0_c");
@@ -87,7 +87,7 @@ class ua_div_latch1_c extends uvm_reg;
     if(is_read) rd_cg.sample();
   endfunction
 
-  `uvm_register_cb(ua_div_latch1_c, uvm_reg_cbs) 
+  `uvm_register_cb(ua_div_latch1_c, uvm_reg_cbs)
   `uvm_set_super_type(ua_div_latch1_c, uvm_reg)
   `uvm_object_utils(ua_div_latch1_c)
   function new(input string name="unnamed-ua_div_latch1_c");
@@ -135,7 +135,7 @@ class ua_int_id_c extends uvm_reg;
     if(is_read) rd_cg.sample();
   endfunction
 
-  `uvm_register_cb(ua_int_id_c, uvm_reg_cbs) 
+  `uvm_register_cb(ua_int_id_c, uvm_reg_cbs)
   `uvm_set_super_type(ua_int_id_c, uvm_reg)
   `uvm_object_utils(ua_int_id_c)
   function new(input string name="unnamed-ua_int_id_c");
@@ -178,7 +178,7 @@ class ua_fifo_ctrl_c extends uvm_reg;
     if(!is_read) wr_cg.sample();
   endfunction
 
-  `uvm_register_cb(ua_fifo_ctrl_c, uvm_reg_cbs) 
+  `uvm_register_cb(ua_fifo_ctrl_c, uvm_reg_cbs)
   `uvm_set_super_type(ua_fifo_ctrl_c, uvm_reg)
   `uvm_object_utils(ua_fifo_ctrl_c)
   function new(input string name="unnamed-ua_fifo_ctrl_c");
@@ -251,7 +251,7 @@ class ua_lcr_c extends uvm_reg;
     if(is_read) rd_cg.sample();
   endfunction
 
-  `uvm_register_cb(ua_lcr_c, uvm_reg_cbs) 
+  `uvm_register_cb(ua_lcr_c, uvm_reg_cbs)
   `uvm_set_super_type(ua_lcr_c, uvm_reg)
   `uvm_object_utils(ua_lcr_c)
   function new(input string name="unnamed-ua_lcr_c");
@@ -308,7 +308,7 @@ class ua_ier_c extends uvm_reg;
     if(is_read) rd_cg.sample();
   endfunction
 
-  `uvm_register_cb(ua_ier_c, uvm_reg_cbs) 
+  `uvm_register_cb(ua_ier_c, uvm_reg_cbs)
   `uvm_set_super_type(ua_ier_c, uvm_reg)
   `uvm_object_utils(ua_ier_c)
   function new(input string name="unnamed-ua_ier_c");
@@ -394,4 +394,4 @@ class uart_ctrl_reg_model_c extends uvm_reg_block;
   endfunction
 endclass : uart_ctrl_reg_model_c
 
-`endif // UART_CTRL_REGS_SV
+`endif // __UART_CTRL_REGS_SV__

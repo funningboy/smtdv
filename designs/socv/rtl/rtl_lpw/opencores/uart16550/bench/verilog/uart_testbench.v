@@ -148,7 +148,7 @@ parameter max_wait_cnt = 20000;
     reg   [7:0]  tx_shift_reg;
     reg          tx_shift_reg_empty;
     reg          tx_start_bit_edge;
-    reg   [7:0]  tx_fifo [0:31]; 
+    reg   [7:0]  tx_fifo [0:31];
     reg   [4:0]  tx_fifo_wr_pointer;
     reg   [4:0]  tx_fifo_rd_pointer;
     reg   [4:0]  tx_fifo_status;
@@ -164,10 +164,10 @@ parameter max_wait_cnt = 20000;
     reg          rx_framing_glitch;
     reg          rx_break_int;
     reg          rx_overrun_err_occured;
-    reg   [7:0]  rx_fifo_data [0:31]; 
-    reg  [31:0]  rx_fifo_par; 
-    reg  [31:0]  rx_fifo_frm; 
-    reg  [31:0]  rx_fifo_brk; 
+    reg   [7:0]  rx_fifo_data [0:31];
+    reg  [31:0]  rx_fifo_par;
+    reg  [31:0]  rx_fifo_frm;
+    reg  [31:0]  rx_fifo_brk;
     reg   [4:0]  rx_fifo_wr_pointer;
     reg   [4:0]  rx_fifo_rd_pointer;
     reg   [4:0]  rx_fifo_status;
@@ -235,14 +235,14 @@ uart_top                #(`UART_DATA_WIDTH, `UART_ADDR_WIDTH) i_uart_top
     ,
     .baud_o             (baud_o)
 `endif
-); 
+);
 
 uart_device             i_uart_device
 (
 // UART signals
     .stx_i              (stx_pad_o),
     .srx_o              (srx_pad_i),
-// Modem signals    
+// Modem signals
     .rts_i              (rts_pad_o),
     .cts_o              (cts_pad_i),
     .dtr_i              (dtr_pad_o),
@@ -281,7 +281,7 @@ end
 // WB clock generation (DEVICE clock is generated in uart_device.v)
 //#################################################################
 
-  // DEVICE's clock generation: 
+  // DEVICE's clock generation:
   //    ----------------
   //    // rx_clk rising edge
   //    always@(posedge rx_clk)
@@ -292,7 +292,7 @@ end
   //      if (rx_clk_en)
   //        #(T_clk_period / 2) rx_clk = 1'b1;
   //    ----------------
-  // DEVICE's transmit clocks generation: 
+  // DEVICE's transmit clocks generation:
   //    ----------------
   //    // tx_clk rising edge
   //    always@(posedge tx_clk)
@@ -340,7 +340,7 @@ end
   //    THR             ( /W | ADR 0 | DLAB 0)
   //      [7:0] ----TX- "txdata" Transmitter Holding Register
   //    ----------------
-  //    IER             (R/W | ADR 1 | DLAB 0) 
+  //    IER             (R/W | ADR 1 | DLAB 0)
   //      [0]   -RX---- "1" Received Data Available & Receive Fifo Timeout
   //      [1]   ----TX- "1" Transmitter Holding Register Empty
   //      [2]   -RX---- "1" Receiver Line Status
@@ -461,7 +461,7 @@ end
   end
 
   // Tracking read/write access to registers
-  always@(wbs_cyc_i or wbs_stb_i or wbs_we_i or wbs_sel_i or wbs_adr_i or 
+  always@(wbs_cyc_i or wbs_stb_i or wbs_we_i or wbs_sel_i or wbs_adr_i or
           wbs_dat_i /*or wbs_ack_o*/ /*or posedge wb_clk*/)
   begin
     if (wbs_cyc_i && wbs_stb_i)
@@ -480,8 +480,8 @@ end
         //                  else
         //                    -> ier_reg_written;
         //    `UART_REG_FC: -> fcr_reg_written;
-        //    `UART_REG_LC: -> lcr_reg_written; 
-        //    `UART_REG_MC: -> mcr_reg_written; 
+        //    `UART_REG_LC: -> lcr_reg_written;
+        //    `UART_REG_MC: -> mcr_reg_written;
         //    default:      -> erroneous_write_location;
         //    endcase
         //    ----------------
@@ -495,7 +495,7 @@ end
       end
     end
   end
-  always@(wbs_cyc_i or wbs_stb_i or wbs_we_i or wbs_sel_i or wbs_adr_i or 
+  always@(wbs_cyc_i or wbs_stb_i or wbs_we_i or wbs_sel_i or wbs_adr_i or
           wbs_dat_o or wbs_ack_o /*or posedge wb_clk*/)
   begin
     if (wbs_cyc_i && wbs_stb_i)
@@ -518,7 +518,7 @@ end
         //    `UART_REG_LS: -> lsr_reg_read;
         //    `UART_REG_MS: -> msr_reg_read;
         //    default:      -> erroneous_read_location;
-        //    endcase 
+        //    endcase
         //    ----------------
 
         reg_adr = wbs_adr_i;
@@ -1232,8 +1232,8 @@ end
         @(testbench.i_uart_device.device_sent_packet);
         repeat (1) @(posedge wb_clk);
         rx_shift_reg   = testbench.i_uart_device.sent_data;
-        rx_parity_err  = testbench.i_uart_device.tx_parity_enabled && 
-                         (testbench.i_uart_device.tx_parity_wrong || 
+        rx_parity_err  = testbench.i_uart_device.tx_parity_enabled &&
+                         (testbench.i_uart_device.tx_parity_wrong ||
                           (  // sample point is BIT_NUM * 2 - 1 => 3, 5, 7...
                            ((testbench.i_uart_device.tx_glitch_num == (3 * 8 * testbench.i_uart_device.T_divisor)) ||
                             (testbench.i_uart_device.tx_glitch_num == (5 * 8 * testbench.i_uart_device.T_divisor)) ||
@@ -1251,11 +1251,11 @@ end
                          ));
         rx_framing_err = testbench.i_uart_device.tx_framing_wrong;
         rx_framing_glitch = (testbench.i_uart_device.tx_glitch_num == ((((testbench.i_uart_device.tx_length + 2'h2 +
-                               testbench.i_uart_device.tx_parity_enabled) * 
+                               testbench.i_uart_device.tx_parity_enabled) *
                                 2) - 1'b1) * 8 * testbench.i_uart_device.T_divisor));
-        rx_break_int   = testbench.i_uart_device.tx_break_enable && 
+        rx_break_int   = testbench.i_uart_device.tx_break_enable &&
                          (testbench.i_uart_device.tx_break_num[15:0] >= ((testbench.i_uart_device.tx_length + 2'h2 +
-                            testbench.i_uart_device.tx_parity_enabled) * 
+                            testbench.i_uart_device.tx_parity_enabled) *
                            16 * testbench.i_uart_device.T_divisor));
         -> testbench.i_uart_device.sent_packet_received;
         if (rx_fifo_status > 5'h0F)
@@ -1270,9 +1270,9 @@ end
         if (rx_fifo_status <= 5'h0F)
         begin
           rx_fifo_data[rx_fifo_wr_pointer] = testbench.i_uart_device.sent_data;
-          rx_fifo_par[rx_fifo_wr_pointer]  = rx_parity_err; 
-          rx_fifo_frm[rx_fifo_wr_pointer]  = rx_framing_err || rx_framing_glitch; 
-          rx_fifo_brk[rx_fifo_wr_pointer]  = rx_break_int; 
+          rx_fifo_par[rx_fifo_wr_pointer]  = rx_parity_err;
+          rx_fifo_frm[rx_fifo_wr_pointer]  = rx_framing_err || rx_framing_glitch;
+          rx_fifo_brk[rx_fifo_wr_pointer]  = rx_break_int;
           rx_fifo_wr_pointer = rx_fifo_wr_pointer + 1'b1;
         end
         else // FIFO overflow
@@ -1341,9 +1341,9 @@ end
         rx_fifo_read = 0;
         if (rx_fifo_status > 0)
         begin
-//          rx_fifo_par[rx_fifo_rd_pointer] = 1'b0; 
-//          rx_fifo_frm[rx_fifo_rd_pointer] = 1'b0; 
-//          rx_fifo_brk[rx_fifo_rd_pointer] = 1'b0; 
+//          rx_fifo_par[rx_fifo_rd_pointer] = 1'b0;
+//          rx_fifo_frm[rx_fifo_rd_pointer] = 1'b0;
+//          rx_fifo_brk[rx_fifo_rd_pointer] = 1'b0;
           rx_fifo_rd_pointer = rx_fifo_rd_pointer + 1'b1;
         end
       end
@@ -1354,6 +1354,7 @@ end
 
 // UART interrupt monitor
 //#######################
+
 
 
 

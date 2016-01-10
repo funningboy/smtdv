@@ -23,7 +23,6 @@ class cdn_cpu_s0_2_dma_m0_test
       "default_sequence",
       `CDN_CPU_S0_STL_SEQ::type_id::get());
 
-    `CDN_SRAM
   endfunction
 
 endclass

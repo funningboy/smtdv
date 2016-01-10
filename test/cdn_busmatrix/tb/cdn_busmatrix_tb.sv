@@ -1,8 +1,8 @@
 `timescale 1ns/10ps
 
 `include "bm_defs.v"
-`include "test/cdn_busmatrix_defines.svh"
-`include "test/cdn_busmatrix_if_harness.sv"
+`include "cdn_busmatrix_defines.svh"
+`include "cdn_busmatrix_if_harness.sv"
 
 module top();
 

@@ -7,7 +7,7 @@
 // cluster0 for all master UVC
 class cdn_cluster0
   extends
-    `AHB_ENV;
+    `SMTDV_ENV(ahb);
 
   `include "bm_params.v"
 
@@ -70,7 +70,7 @@ endclass
 // cluster1 for all slave uvc
 class cdn_cluster1
   extends
-    `AHB_ENV;
+    `SMTDV_ENV(ahb);
 
   `include "bm_params.v"
 

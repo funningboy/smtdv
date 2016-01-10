@@ -2,12 +2,14 @@
 `ifndef __CDN_CPU_S0_SV__
 `define __CDN_CPU_S0_SV__
 
+`define CDN_CPU_S0_INTF AHB
+
 // use Master UVC to drive cdn bus slave port
 class cdn_cpu_s0_agent #(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32
   ) extends
-  `AHB_MASTER_AGENT;
+  `SMTDV_MASTER_AGENT(ahb, ADDR_WIDTH, DATA_WIDTH);
 
   `uvm_component_param_utils_begin(`CDN_CPU_S0_AGENT)
   `uvm_component_utils_end
@@ -21,7 +23,7 @@ endclass
 
 class cdn_cpu_s0_cfg
  extends
-  `AHB_MASTER_CFG;
+  `SMTDV_MASTER_CFG(ahb);
 
   `uvm_object_param_utils_begin(`CDN_CPU_S0_CFG)
   `uvm_object_utils_end
@@ -37,7 +39,7 @@ class cdn_cpu_s0_cover_group #(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32
 ) extends
-  `AHB_COLLECT_COVER_GROUP;
+  `SMTDV_COLLECT_COVER_GROUP(ahb, ADDR_WIDTH, DATA_WIDTH);
 
    `uvm_object_param_utils_begin(`CDN_CPU_S0_COVER_GROUP)
    `uvm_object_utils_end
@@ -89,7 +91,7 @@ class cdn_cpu_s0_stl_seq #(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32
   ) extends
-    `AHB_MASTER_STL_SEQ;
+    `SMTDV_MASTER_STL_SEQ(ahb, ADDR_WIDTH, DATA_WIDTH);
 
    `uvm_object_param_utils_begin(`CDN_CPU_S0_STL_SEQ)
    `uvm_object_utils_end

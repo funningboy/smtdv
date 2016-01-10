@@ -1,9 +1,11 @@
+// basic uart test
 +libext+.v
 +access+wr
-+mess 
-+incdir+../../../rtl/verilog+../../../bench/verilog
++mess
++incdir+../../../rtl+../../../bench/verilog
 +tcl+../bin/sim.tcl
--y ../../../rtl/verilog
+-y ../../../rtl
 -y ../../../bench/verilog
 ../../../bench/verilog/uart_test.v
 //+gui
+

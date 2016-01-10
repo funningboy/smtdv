@@ -91,8 +91,8 @@ reg       pad_srx_ir;
 integer e;
 
 uart_top  uart_snd(
-  clk, 
-  
+  clk,
+
   // Wishbone signals
             wb_rst_i, wb_adr_i, wb_dat_i, wb_dat_o, wb_we_i, wb_stb_i, wb_cyc_i, wb_ack_o,  wb_sel_i,
   int_o, // interrupt request
@@ -123,10 +123,10 @@ wire        stx1_o;
 reg       srx1_ir;
 
 uart_top  uart_rcv(
-  clk, 
-  
+  clk,
+
   // Wishbone signals
-  wb_rst_i, wb1_adr_i, wb1_dat_i, wb1_dat_o, wb1_we_i, wb1_stb_i, wb1_cyc_i, wb1_ack_o, wb1_sel_i,  
+  wb_rst_i, wb1_adr_i, wb1_dat_i, wb1_dat_o, wb1_we_i, wb1_stb_i, wb1_cyc_i, wb1_ack_o, wb1_sel_i,
   int1_o, // interrupt request
 
   // UART signals
@@ -159,7 +159,7 @@ reg [31:0] dat_o;
 /////////// CONNECT THE UARTS
 always @(pad_stx_o)
 begin
-  srx1_ir = pad_stx_o;  
+  srx1_ir = pad_stx_o;
 end
 
 initial
@@ -203,7 +203,7 @@ initial
 begin
   #1 wb_rst_ir = 1;
   #10 wb_rst_ir = 0;
-    
+
   //write to lcr. set bit 7
   //wb_cyc_ir = 1;
   wbm.wb_wr1(`UART_REG_LC, 4'b1000, {8'b10011011, 24'b0});
@@ -212,7 +212,7 @@ begin
   @(posedge clk);
   @(posedge clk);
   // restore normal registers
-  wbm.wb_wr1(`UART_REG_LC, 4'b1000, {8'b00011011, 24'b0}); //00011011 
+  wbm.wb_wr1(`UART_REG_LC, 4'b1000, {8'b00011011, 24'b0}); //00011011
 
   fork
   begin
@@ -259,7 +259,7 @@ always @(int1_o)
     $display("INT_O high (%g)", $time);
   else
     $display("INT_O low (%g)", $time);
-    
+
 always @(int1_o)
 begin
   if (int1_o) begin
@@ -335,5 +335,10 @@ always
 begin
   #5 clkr = ~clk;
 end
+
+  initial begin
+    $dumpfile("test_uart_ctrl.vcd");
+    $dumpvars(0, uart_test);
+  end
 
 endmodule

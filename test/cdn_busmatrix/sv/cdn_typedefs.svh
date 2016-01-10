@@ -3,75 +3,7 @@
 `define __CDN_TYPEDEFS_SV__
 
 `include "bm_params.v"
-
-// extend/override local AHB to ahb_pkg
-`ifdef AHB_PARAMETER
-  `undef AHB_PARAMETER
-`endif
-`define AHB_PARAMETER #(ADDR_WIDTH, DATA_WIDTH)
-
-`ifdef AHB_SLAVE_AGENT
-  `undef AHB_SLAVE_AGENT
-`endif
-`define AHB_SLAVE_AGENT ahb_pkg::ahb_slave_agent `AHB_PARAMETER
-
-`ifdef AHB_SLAVE_CFG
-  `undef AHB_SLAVE_CFG
-`endif
-`define AHB_SLAVE_CFG   ahb_pkg::ahb_slave_cfg
-
-`ifdef AHB_SLAVE_SEQUENCER
-  `undef AHB_SLAVE_SEQUENCER
-`endif
-`define AHB_SLAVE_SEQUENCER ahb_pkg::ahb_slave_sequencer `AHB_PARAMETER
-
-`ifdef AHB_SLAVE_BASE_SEQ
-  `undef AHB_SLAVE_BASE_SEQ
-`endif
-`define AHB_SLAVE_BASE_SEQ ahb_pkg::ahb_slave_base_seq `AHB_PARAMETER
-
-`ifdef AHB_MASTER_AGENT
-  `undef AHB_MASTER_AGENT
-`endif
-`define AHB_MASTER_AGENT ahb_pkg::ahb_master_agent `AHB_PARAMETER
-
-`ifdef AHB_MASTER_CFG
-  `undef AHB_MASTER_CFG
-`endif
-`define AHB_MASTER_CFG ahb_pkg::ahb_master_cfg
-
-`ifdef AHB_MASTER_SEQUENCER
-  `undef AHB_MASTER_SEQUENCER
-`endif
-`define AHB_MASTER_SEQUENCER ahb_pkg::ahb_master_sequencer `AHB_PARAMETER
-
-`ifdef AHB_MASTER_STL_SEQ
-  `undef AHB_MASTER_STL_SEQ
-`endif
-`define AHB_MASTER_STL_SEQ ahb_pkg::ahb_master_stl_seq `AHB_PARAMETER
-
-`ifdef AHB_COLLECT_COVER_GROUP
-  `undef AHB_COLLECT_COVER_GROUP
-`endif
-`define AHB_COLLECT_COVER_GROUP ahb_pkg::ahb_collect_cover_group `AHB_PARAMETER
-
-`ifdef AHB_ENV
-  `undef AHB_ENV
-`endif
-`define AHB_ENV ahb_pkg::ahb_env
-
-// override ahb_pkg::start_addr and end_addr
-`ifdef AHB_ADDR_WIDTH
-  `undef AHB_ADDR_WIDTH
-`endif
-`define AHB_ADDR_WIDTH 32
-
-`ifndef AHB_DATA_WIDTH
-  `undef AHB_DATA_WIDTH
-`endif
-`define AHB_DATA_WIDTH 32
-
-`define APB_ENB apb_pkg::apb_env
+`include "override_typedefs.svh"
 
 `define CDN_AHB_ENV cdn_ahb_env
 `define CDN_APB_ENV cdn_apb_env
@@ -80,7 +12,7 @@
 
 `define CDN_PARAMETER #(ADDR_WIDTH, DATA_WIDTH)
 
-`define CDN_RST_VIF virtual smtdv_gen_rst_if #("cdn_rst_if", 100, 0)
+`define CDN_RST_VIF virtual interface smtdv_gen_rst_if #("cdn_rst_if", 100, 0)
 
 `define CDN_DMA_M0_CFG cdn_dma_m0_cfg
 `define CDN_CPU_M1_CFG cdn_cpu_m1_cfg

@@ -1,9 +1,0 @@
-./u2a_incr_payload.sv
-/stec/tw/users/schen/prj/smartdv/kernel/sveditor-ref-designs/uvm_ref_flow_2013.05/soc_verification_lib/sv_cb_ex_lib/interface_uvc_lib/apb/sv/u2a_incr_payload.sv
-/stec/tw/users/schen/prj/smartdv/kernel/sveditor-ref-designs/uvm_ref_flow_2013.05/soc_verification_lib/sv_cb_ex_lib/interface_uvc_lib/uart/sv/u2a_incr_payload.sv
-/stec/tw/users/schen/prj/smartdv/kernel/sveditor-ref-designs/uvm_ref_flow_2013.05/soc_verification_lib/sv_cb_ex_lib/uart_ctrl/sv/u2a_incr_payload.sv
-/stec/tw/users/schen/prj/smartdv/kernel/sveditor-ref-designs/uvm_ref_flow_2013.05/soc_verification_lib/sv_cb_ex_lib/uart_ctrl/sv/sequence_lib/u2a_incr_payload.sv
-/stec/tw/users/schen/prj/smartdv/kernel/sveditor-ref-designs/uvm_ref_flow_2013.05/soc_verification_lib/sv_cb_ex_lib/uart_ctrl/tb/sv/u2a_incr_payload.sv
-/stec/tw/users/schen/prj/smartdv/kernel/sveditor-ref-designs/uvm_ref_flow_2013.05/soc_verification_lib/sv_cb_ex_lib/uart_ctrl/tb/tests//stec/tw/users/schen/prj/smartdv/kernel/sveditor-ref-designs/uvm_ref_flow_2013.05/designs/socv/rtl/rtl_lpw/opencores/uart16550/assertions/rx_fifo_vunit.psl
-/stec/tw/users/schen/prj/smartdv/kernel/sveditor-ref-designs/uvm_ref_flow_2013.05/designs/socv/rtl/rtl_lpw/opencores/uart16550/rtl//stec/tw/users/schen/prj/smartdv/kernel/sveditor-ref-designs/uvm_ref_flow_2013.05/designs/socv/rtl/rtl_lpw/opencores/uart16550/assertions/rx_fifo_vunit.psl
-/stec/apps/mentor/questa_sim_10.3c/questasim/verilog_src/uvm-1.1d/src//stec/tw/users/schen/prj/smartdv/kernel/sveditor-ref-designs/uvm_ref_flow_2013.05/designs/socv/rtl/rtl_lpw/opencores/uart16550/assertions/rx_fifo_vunit.psl

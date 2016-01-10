@@ -48,7 +48,29 @@ HTML_FOOTER            = <PATH_DOXYSCR>/html/idv_dox_footer.html
 #INCLUDE_PATH           = <PATH_PRJ>/src
 #INPUT                  = <PATH_PRJ>/src
 #EXAMPLE_PATH           = <PATH_PRJ>/src
-INCLUDE_PATH           = <PATH_PRJ>/lib/smtdv_common/sv <PATH_PRJ>/lib/smtdv_common/seq <PATH_PRJ>/lib/smtdv_apb_uvc/sv <PATH_PRJ>/lib/smtdv_apb_uvc/seq
-INPUT                  = <PATH_PRJ>/lib/smtdv_common/sv <PATH_PRJ>/lib/smtdv_apb_uvc/sv
-EXAMPLE_PATH           = <PATH_PRJ>/lib/smtdv_common/sv <PATH_PRJ>/lib/smtdv_apb_uvc/sv
+INCLUDE_PATH           = <PATH_PRJ>/lib/smtdv_common/sv \
+                         <PATH_PRJ>/lib/smtdv_common/seq \
+                         <PATH_PRJ>/lib/smtdv_apb_uvc/sv \
+                         <PATH_PRJ>/lib/smtdv_apb_uvc/seq \
+                         <PATH_PRJ>/lib/smtdv_ahb_uvc/sv \
+                         <PATH_PRJ>/lib/smtdv_ahb_uvc/seq \
+                         <PATH_PRJ>/lib/smtdv_xbus_uvc/sv \
+                         <PATH_PRJ>/lib/smtdv_xbus_uvc/seq \
+                         <PATH_PRJ>/lib/smtdv_uart_uvc/sv \
+                         <PATH_PRJ>/lib/smtdv_uart_uvc/seq \
+                         <PATH_PRJ>/lib/smtdv_spi_uvc/sv \
+                         <PATH_PRJ>/lib/smtdv_spi_uvc/seq
 
+INPUT                  = <PATH_PRJ>/lib/smtdv_common/sv \
+                         <PATH_PRJ>/lib/smtdv_apb_uvc/sv \
+                         <PATH_PRJ>/lib/smtdv_apb_uvc/seq \
+                         <PATH_PRJ>/lib/smtdv_ahb_uvc/sv \
+                         <PATH_PRJ>/lib/smtdv_ahb_uvc/seq \
+                         <PATH_PRJ>/lib/smtdv_xbus_uvc/sv \
+                         <PATH_PRJ>/lib/smtdv_xbus_uvc/seq \
+                         <PATH_PRJ>/lib/smtdv_uart_uvc/sv \
+                         <PATH_PRJ>/lib/smtdv_uart_uvc/seq \
+                         <PATH_PRJ>/lib/smtdv_spi_uvc/sv \
+                         <PATH_PRJ>/lib/smtdv_spi_uvc/seq
+
+EXAMPLE_PATH           =
