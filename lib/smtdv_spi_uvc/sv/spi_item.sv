@@ -6,7 +6,6 @@ class spi_item #(
 ) extends
   smtdv_sequence_item
 
-  rand bit [(DATA_WIDTH>>3)-1:0][7:0] data_beat[$];
   rand int htx_L2H;
   rand int hrx_L2H;
 
