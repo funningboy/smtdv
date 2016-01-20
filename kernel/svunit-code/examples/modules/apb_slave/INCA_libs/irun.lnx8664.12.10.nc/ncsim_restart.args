@@ -1,0 +1,32 @@
+//
+// File created by:  irun
+// Do not modify this file
+//
++nccoverage+functional
++notchkmsg
++notimingchecks
++no_notifier
++define+SVA
++incdir+../
++incdir+/stec/tw/users/schen/prj/svunit-code/svunit_base
+-STATUS
+-COVOVERWRITE
+-MESSAGES
++EMGRLOG
+irun.log
+-XLSTIME
+1393917488
+-XLKEEP
+-XLMODE
+./INCA_libs/irun.lnx8664.12.10.nc
+-RUNMODE
+-CDSLIB
+./INCA_libs/irun.lnx8664.12.10.nc/cds.lib
+-HDLVAR
+./INCA_libs/irun.lnx8664.12.10.nc/hdl.var
+-XLNAME
+irun
+-XLVERSION
+"TOOL:	irun(64)	12.10-s005"
+-XLNAME
+./INCA_libs/irun.lnx8664.12.10.nc/twlogin04_11432

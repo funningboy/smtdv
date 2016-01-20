@@ -1,0 +1,31 @@
+## 
+## -------------------------------------------------------------
+##    Copyright 2012 Cadence.
+##    All Rights Reserved Worldwide
+## 
+##    Licensed under the Apache License, Version 2.0 (the
+##    "License"); you may not use this file except in
+##    compliance with the License.  You may obtain a copy of
+##    the License at
+## 
+##        http://www.apache.org/licenses/LICENSE-2.0
+## 
+##    Unless required by applicable law or agreed to in
+##    writing, software distributed under the License is
+##    distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+##    CONDITIONS OF ANY KIND, either express or implied.  See
+##    the License for the specific language governing
+##    permissions and limitations under the License.
+## -------------------------------------------------------------
+## 
+ 
+SRC_FILES = ${UVM_ML_TEST_SRC_DIR}/sv/svtop.sv ${UVM_ML_HOME}/ml/examples/ex_single_lang_uvcs_lib/xbus_simple/v/tb2_xbus.v ${UVM_ML_HOME}/ml/examples/ex_single_lang_uvcs_lib/xbus_simple/v/arbiter_dut.v
+HAS_E = 1
+E_FILES=${UVM_ML_TEST_SRC_DIR}/e/uvc_top.e
+MULTISTEP_STUB_E_FILES=${UVM_ML_TEST_SRC_DIR}/e/uvc_top.e 
+override EXTRA_IRUN_COMPILE_ARGS=+incdir+${UVM_ML_TEST_SRC_DIR}/sv +incdir+$${UVM_ML_HOME}/ml/primitives/sequence_layering/sv -access +rw
+override TEST_SPECIFIC_IRUN_ARGS=+incdir+${UVM_ML_TEST_SRC_DIR}/sv +incdir+$${UVM_ML_HOME}/ml/primitives/sequence_layering/sv -access +rw -sncompargs -enable_DAC
+SPECMAN_PATH=${UVM_ML_HOME}/ml/examples/ex_single_lang_uvcs_lib:${UVM_ML_HOME}/ml/primitives
+UVM_TEST_TOPS=-uvmtest SV:svtop
+
+include ${UVM_ML_HOME}/ml/example_utils/Makefile.ies

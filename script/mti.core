@@ -19,7 +19,7 @@ vlog =
 	-l compile.log
 
 vsim =
-	\"-c -do 'run -all; quit -f'\"
+	\"-c -do 'run -all; quit '\"
 	+notimingchecks
 	-suppress 3829
 	-64

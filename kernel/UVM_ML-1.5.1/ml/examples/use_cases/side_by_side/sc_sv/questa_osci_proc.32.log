@@ -1,0 +1,6 @@
+# ** Error: (vsim-3763) SystemVerilog DPI cannot access file '/stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/libs/uvm_sv/4.4/libuvm_sv_ml.so'
+# No such file or directory. (errno = ENOENT)
+# Use the -help option for complete vsim usage.
+# vsim -c -do "run -all; exit -f" -dpioutoftheblue 1 -sv_lib /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/examples/use_cases/side_by_side/sc_sv/libuvm_dpi -sv_lib /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/libs/uvm_sv/4.4/libuvm_sv_ml -sv_lib /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/libs/osci/2.3/4.4/libuvm_sc_fw_osci -sv_lib /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/libs/osci/2.3/4.4/libuvm_sc_ml_osci -gblso /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/libs/backplane/4.4/libuvm_ml_bp.so -gblso /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/libs/uvm_sv/4.4/libuvm_sv_ml.so -gblso /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/examples/use_cases/side_by_side/sc_sv/liball_osci_questa.so -l questa_osci_proc.32.log topmodule 
+# Error loading design
+# Errors: 1, Warnings: 0

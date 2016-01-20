@@ -1,0 +1,255 @@
+## 
+## -------------------------------------------------------------
+##    Copyright 2012 Cadence.
+##    All Rights Reserved Worldwide
+## 
+##    Licensed under the Apache License, Version 2.0 (the
+##    "License"); you may not use this file except in
+##    compliance with the License.  You may obtain a copy of
+##    the License at
+## 
+##        http://www.apache.org/licenses/LICENSE-2.0
+## 
+##    Unless required by applicable law or agreed to in
+##    writing, software distributed under the License is
+##    distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+##    CONDITIONS OF ANY KIND, either express or implied.  See
+##    the License for the specific language governing
+##    permissions and limitations under the License.
+## -------------------------------------------------------------
+## 
+UVM_ML_BITS ?= 32
+UVM_SV_VERSION ?= 1.1
+ifeq (${UVM_SV_VERSION},1.1)
+UVM_ML_SV_VERSION = 1.1d
+else
+UVM_ML_SV_VERSION = ${UVM_SV_VERSION}
+endif
+
+#UVM_ML_SETUP ?= ${UVM_ML_HOME}/ml/setup_latest_${UVM_ML_BITS}.mk
+
+#-include ${UVM_ML_SETUP}
+
+ifeq ($(DEBUG),yes) # If invoked in debug mode
+UVM_ML_CC_DEBUG_FLAGS=-g -O0
+VCS_DEBUG_ARGS=-debug_all 
+endif
+
+ifndef UVM_ML_LD
+UVM_ML_LD:=$(UVM_ML_CC)
+endif
+
+ifndef OSCI_INSTALL
+-include ${UVM_ML_HOME}/ml/example_utils/osci_version.mk
+endif
+
+ifndef UVM_ML_COMPILER_VERSION
+UVM_ML_COMPILER_VERSION := $(shell $(UVM_ML_HOME)/ml/tools/get_gcc_version.sh ${UVM_ML_CC})
+endif
+
+
+ifndef IES_VERSION
+IES_VERSION := $(shell $(UVM_ML_HOME)/ml/tools/get_ies_version.sh)
+endif
+export IES_VERSION
+
+
+TEST ?= /usr/bin/test
+VCS_LOG_FILE ?= ${UVM_ML_TEST_RUN_DIR}/vcs_osci_proc.$(UVM_ML_BITS).log
+VCS_COMP_LOG_FILE ?= ${UVM_ML_TEST_RUN_DIR}vcs_comp.$(UVM_ML_BITS).log
+
+VCS_UVM_HOME := ${UVM_ML_HOME}/ml/frameworks/uvm/sv/${UVM_ML_SV_VERSION}-ml/src
+VCS_UVM_HOME_INFO := $${UVM_ML_HOME}/ml/frameworks/uvm/sv/${UVM_ML_SV_VERSION}-ml/src
+#               the prev. option for UVM_HOME was .../uvm-1.1c/src
+UVM_HOME := ${VCS_UVM_HOME}
+UVM_HOME_INFO := ${VCS_UVM_HOME_INFO}
+export VCS_UVM_HOME UVM_HOME
+
+UVM_ML_LD ?= ${UVM_ML_CC}
+
+
+VCS_UI_MODE ?= -ucli
+
+ifeq ($(UVM_ML_BITS),64)
+EXEC_NAME:=${UVM_ML_TEST_RUN_DIR}/simv64
+SUBDIR:=/64bit
+BIT_OPTION:=-full64
+SN_BIT_FLAG:=-64
+BIT_CFLAGS:=
+else
+SUBDIR:=
+BIT_OPTION:=
+SN_BIT_FLAG:=
+BIT_CFLAGS:=-m32
+EXEC_NAME:=${UVM_ML_TEST_RUN_DIR}/simv32
+endif
+
+VCS_TIME_SCALE ?= -timescale=1ns/1ns
+VCS_OPTS ?= ${VCS_DEBUG_ARGS} -sverilog +acc +vpi $(VCS_TIME_SCALE)  -ntb_opts uvm-${UVM_SV_VERSION} -l ${UVM_ML_TEST_RUN_DIR}/vcs_comp.log \
+$(BIT_OPTION) \
++define+CDNS_EXCLUDE_UVM_EXTENSIONS +define+CDNS_RECORDING_SVH \
++define+USE_UVM_ML_RUN_TEST \
++incdir+${VCS_UVM_HOME_INFO}/seq  \
++incdir+${VCS_UVM_HOME_INFO}/ \
++incdir+${VCS_UVM_HOME_INFO}/tlm2 \
++incdir+$(VCS_UVM_HOME_INFO)/base  \
++incdir+${UVM_ML_TEST_SRC_DIR} \
++incdir+$${UVM_ML_HOME}/ml/adapters/uvm_sv  \
++incdir+${VCS_UVM_HOME_INFO}/dpi \
++incdir+$(VCS_UVM_HOME_INFO)
+UVM_ML_MODULES ?=  $${UVM_ML_HOME}/ml/adapters/uvm_sv/uvm_ml_adapter.sv
+
+# Two pairs of duplicate variables: expanded for dependencies, not-expanded ($$) for commands
+BACKPLANE_LIB     =  ${UVM_ML_HOME}/ml/libs/backplane/${UVM_ML_COMPILER_VERSION}$(SUBDIR)/libuvm_ml_bp.so 
+BACKPLANE_LIB_CMD = $${UVM_ML_HOME}/ml/libs/backplane/${UVM_ML_COMPILER_VERSION}$(SUBDIR)/libuvm_ml_bp.so 
+SV_ADAPTER_LIB      =  ${UVM_ML_HOME}/ml/libs/uvm_sv/${UVM_ML_COMPILER_VERSION}$(SUBDIR)/libuvm_sv_ml.so 
+SV_ADAPTER_LIB_CMD  = $${UVM_ML_HOME}/ml/libs/uvm_sv/${UVM_ML_COMPILER_VERSION}$(SUBDIR)/libuvm_sv_ml.so 
+
+ifneq ($(SYSC_FILES),)
+
+ifeq ($(UVM_ML_BITS),64)
+ALL_OSCI_LIB ?= liball_osci_vcs.64.so 
+else
+ALL_OSCI_LIB ?= liball_osci_vcs.so
+endif
+
+else
+ALL_OSCI_LIB=
+endif
+
+ifndef UVM_ML_E_ADAPTER_LOCATION
+# The duplication of two UVM_ML_E_ADAPTER_LOCATION* variables: expanded for dependencies, not-expanded ($$) for commands
+UVM_ML_E_ADAPTER_LOCATION     :=  ${UVM_ML_HOME}/ml/libs/uvm_e
+UVM_ML_E_ADAPTER_LOCATION_CMD := $${UVM_ML_HOME}/ml/libs/uvm_e
+else
+UVM_ML_E_ADAPTER_LOCATION_CMD := ${UVM_ML_E_ADAPTER_LOCATION}
+endif
+
+ifneq ($(HAS_E),)
+SPECMAN_STUB_FILE ?= ${UVM_ML_TEST_RUN_DIR}/specman.sv
+SPECMAN_HOME = $(shell sn_root -home)
+SPECMAN_DIR = $(shell sn_root $(SN_BIT_FLAG) -dir)
+SPECMAN_FLAGS ?= -P ${SPECMAN_HOME}/src/pli.tab ${SPECMAN_DIR}/libvcssv_sn_boot.so -debug
+ifneq ($(E_FILES),)
+# The duplication of two SPECMAN_DLIB* variables: expanded for dependencies, not-expanded ($$) for commands
+SPECMAN_DLIB := ${UVM_ML_TEST_RUN_DIR}/libsn_top.so
+SPECMAN_DLIB_NAME:=libsn_top.so
+SPECMAN_DLIB_CMD := ${UVM_ML_TEST_RUN_DIR}/libsn_top.so
+SPECMAN_PATH_INFO := ${UVM_ML_E_ADAPTER_LOCATION_CMD}/$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)$(SUBDIR):${UVM_ML_TEST_SRC_DIR}:$(SPECMAN_PATH)
+SPECMAN_PATH := ${UVM_ML_E_ADAPTER_LOCATION}/$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)$(SUBDIR):${UVM_ML_TEST_SRC_DIR}:$(SPECMAN_PATH)
+else
+SPECMAN_DLIB := ${UVM_ML_E_ADAPTER_LOCATION}/$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)$(SUBDIR)/libsn_sn_uvm_ml.so
+SPECMAN_DLIB_CMD := ${UVM_ML_E_ADAPTER_LOCATION_CMD}/$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)$(SUBDIR)/libsn_sn_uvm_ml.so
+SPECMAN_PATH_INFO := ${UVM_ML_E_ADAPTER_LOCATION_CMD}/$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)$(SUBDIR):${UVM_ML_TEST_SRC_DIR}:$(SPECMAN_PATH)
+SPECMAN_PATH := ${UVM_ML_E_ADAPTER_LOCATION}/$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)$(SUBDIR):${UVM_ML_TEST_SRC_DIR}:$(SPECMAN_PATH)
+endif
+export SPECMAN_DLIB SPECMAN_PATH
+else
+SPECMAN_STUB_FILE=
+SPECMAN_HOME=
+SPECMAN_DIR=
+SPECMAN_FLAGS=
+SPECMAN_DLIB=
+SPECMAN_DLIB_CMD=
+endif
+
+
+VCS_INPUT_FILE=${UVM_ML_TEST_RUN_DIR}/vcs_input.do
+
+ifneq ($(STUB_E_FILES),)
+SPECMAN_STUB_CMD = "load ${STUB_E_FILES}; write stub -vcssv";
+LOAD_E_FILES_CMD = "sn load ${STUB_E_FILES}"
+else
+SPECMAN_STUB_CMD = "write stub -vcssv";
+endif
+
+VCS_CFLAGS ?= -CFLAGS '$(BIT_CFLAGS) -O0 -g -I${VCS_HOME}/etc/uvm-${UVM_SV_VERSION}/src/dpi'
+VCS_LDFLAGS ?= -LDFLAGS '$(BIT_CFLAGS) -O0 -g -Wl,-E'
+VCS_LDFLAGS ?= -LDFLAGS '-O0 -g -Wl,-E -Wl,-rpath,$${UVM_ML_HOME}/libs/osci/${OSCI_VERSION}/$(UVM_ML_COMPILER_VERSION)${SUBDIR} '
+
+
+
+ERROR_FLAG=0
+
+ifneq ($(MAKECMDGOALS),clean)
+ifneq ($(MAKECMDGOALS),distclean)
+
+ifeq ($(UVM_ML_HOME),)
+ERROR_FLAG=1
+$(warning ** UVM_ML_HOME variable is not defined **)
+endif
+
+endif
+endif
+
+
+# Summarize all exports - for the benefit of "make -n" (the demo "--dry-run" option)
+# ----------------------------------------------------------------------------------
+# other variables that don't need to be exported, as they appear in ml/setup<bits>.* are:
+#	IES_VERSION
+# 
+ifeq ($(findstring n,$(MAKEFLAGS)),n)	# only if this is context of a dry-run
+ $(info echo "set_variables_command - start:") # --- for dry-run filtering
+ $(info VCS_UVM_HOME=${VCS_UVM_HOME_INFO}; export VCS_UVM_HOME)
+ $(info UVM_HOME=${UVM_HOME_INFO}; export UVM_HOME)
+ ifneq ($(HAS_E),)	# HAS_E
+   ifdef SPECMAN_DLIB
+     $(info SPECMAN_DLIB=${SPECMAN_DLIB_CMD}; export SPECMAN_DLIB)
+   endif
+   $(info SPECMAN_PATH=${SPECMAN_PATH_INFO}; export SPECMAN_PATH)
+ endif			# HAS_E
+ $(info echo "set_variables_command - end:")   # --- for dry-run flitering
+endif	# only for dry-run
+
+.PHONY: default clean run distclean
+ifneq (${E_FILES},)	# HAS_E 
+${SPECMAN_STUB_FILE} : ${SPECMAN_DLIB}
+${SPECMAN_DLIB}: ${E_FILES}
+	@echo "specman_compile_command - start:" # for dry-run 
+	sn_compile.sh $(EXTRA_SN_COMPILE_ARGS) $(SN_BIT_FLAG) -s ${UVM_ML_E_ADAPTER_LOCATION_CMD}/$(IES_VERSION)/${UVM_ML_COMPILER_VERSION}$(SUBDIR)/sn_uvm_ml ${E_FILES} -o ${SPECMAN_DLIB_NAME} -e ${UVM_ML_TEST_RUN_DIR}  -shlib  
+	@echo "specman_compile_command - end:"   # for dry-run
+endif			# HAS_E
+${SPECMAN_STUB_FILE}: 
+	@echo "specman_write_stub_command - start:"   # for dry-run
+	cd ${UVM_ML_TEST_RUN_DIR};specrun -dlib $(SN_BIT_FLAG) -c $(SPECMAN_STUB_CMD)
+	@echo "specman_write_stub_command - end:"   # for dry-run
+$(VCS_INPUT_FILE): 
+	@echo "prepare_vcs_input_file_command - start:"   # for dry-run
+ifdef LOAD_E_FILES_CMD
+	echo ${LOAD_E_FILES_CMD} >> $@
+endif
+	echo "run" >> $@
+	echo "exit" >> $@
+	@echo "prepare_vcs_input_file_command - end:"   # for dry-run
+default: run
+run: ${EXEC_NAME} ${VCS_INPUT_FILE}
+	@echo "vcs_run_command - start:" # for dry-run
+	cd ${UVM_ML_TEST_RUN_DIR};${EXEC_NAME} ${VCS_DEBUG_ARGS} ${VCS_UI_MODE} -i ${VCS_INPUT_FILE} 2>&1 | tee $(VCS_LOG_FILE)
+	@echo "vcs_run_command - end:"   # for dry-run
+	grep -q -i -E '\[TEST_DONE\]|\*\* UVM TEST PASSED \*\*|^TEST PASSED' $(VCS_LOG_FILE)
+	@$(TEST) $$(cat $(VCS_LOG_FILE) $(VCS_COMP_LOG_FILE) | grep -i -c -E 'TEST FAILED|\*ERROR|\*FATAL' ) -eq 0 
+
+clean: 
+	-cd ${UVM_ML_TEST_RUN_DIR};rm -rf simv* csrc  vc_hdrs.h ucli.key ${ALL_OSCI_LIB} specman.sv  libsn_top.so ${VCS_INPUT_FILE}
+distclean: clean
+	-rm -rf *.log *.elog
+
+${EXEC_NAME}:  ${BACKPLANE_LIB} ${SV_ADAPTER_LIB} ${ALL_OSCI_LIB} ${SPECMAN_STUB_FILE} ${SPECMAN_DLIB}
+	@echo "vcs_compile_command - start:" # for dry-run
+	vcs  -cpp $${UVM_ML_CC} -ld $${UVM_ML_LD} -o $@ ${TOP_ARGS} ${VCS_CFLAGS} ${VCS_LDFLAGS} \
+	${VCS_OPTS} ${UVM_ML_MODULES} ${SRC_FILES} ${BACKPLANE_LIB_CMD} ${SV_ADAPTER_LIB_CMD} ${ALL_OSCI_LIB} \
+	${SPECMAN_FLAGS} ${SPECMAN_STUB_FILE} ${EXTRA_VCS_ARGS} 2>&1 | tee $(VCS_COMP_LOG_FILE)	
+	@echo "vcs_compile_command - end:"   # for dry-run
+
+ifneq ($(MAKECMDGOALS),clean)
+ifneq ($(MAKECMDGOALS),distclean)
+ifneq ($(SYSC_FILES),)
+LIBALL_OSCI_BACKPLANE_STUFF=""
+include $(UVM_ML_HOME)/ml/example_utils/Makefile.liball_osci
+endif
+endif
+endif
+
+ifeq ($(ERROR_FLAG),1)
+$(error ** One or more of vital environment variables are not defined **)
+endif

@@ -1,0 +1,358 @@
+Adapter Developer News and Updates             File: adapter-updates.txt
+==================================
+
+Below is a list of updates on the UVM-ML adapters. These include changes in 
+APIs that impact Adapter Developers, and will require an update in the 
+adapter code when moving from an older to newer versions of the UVM-ML 
+library. The changes are arranged by version numbers.
+
+Changes from UVM-ML-1.2.2 to UVM-ML-1.2.3
+-----------------------------------------
+
+1. backplane/bp_provided.h (Provided API functions)
+
+- The return value type of function bp_run_test_type has changed from void 
+  to int (0 – error, 1 – success). The calling adapter should check the 
+  result. 
+  New:  typedef int (*bp_run_test_type)...
+- The signature of function bp_register_srv_providers_type has changed. 
+  It now receives an additional argument framework_id for compliance with 
+  the rest of the API functions.
+  New:  typedef void (*bp_register_srv_providers_type)
+          (
+            unsigned                  framework_id, 
+            bp_srv_provider_struct *  srv_providers
+          );
+- Function bp_notify_tree_phase() was renamed to bp_transmit_phase(). 
+  It accepts also an extra argument phase_action. 
+  New: typedef int (*bp_transmit_phase_type)
+         (
+            unsigned int              framework_id,
+            const char *              target_frmw_ind,
+            int                       target_id,
+            const char *              phase_group,
+            const char *              phase_name,
+            uvm_ml_phase_action       phase_action
+         );
+
+2. backplane/bp_required.h (Required API functions)
+
+- The return value type of function frmw_startup_type has changed: 
+  it now returns a value (0 – error, 1 – success). The caller should 
+  check the result. 
+  New: typedef int (* frmw_startup_type)();
+- Function frmw_notify_tree_phase_type () was renamed to
+  frmw_transmit_phase_type(), and it accepts an additional argument 
+  phase_action. 
+  New: typedef int (*frmw_transmit_phase_type)
+      (
+         int                 target_id,
+         const char *        phase_group,
+         const char *        phase_name,
+         uvm_ml_phase_action phase_action
+      );
+
+3. adapters/uvm_sv/uvm_ml_sv.cpp
+
+- The return value type of function uvm_ml_sv_register_framework() 
+  changed from unsigned to int (>= 0  – framework id, < 0  – error). 
+  New: int uvm_ml_sv_register_framework() ...
+- Function uvm_ml_sv_notify_tree_phase() was renamed to 
+  uvm_ml_sv_transmit_phase(). An extra argument phase_action was added. 
+  New: int uvm_ml_sv_transmit_phase(const char * target_frmw_ind,
+                            int          target_id,
+                            const char * phase_group,
+                            const char * phase_name,
+                            unsigned int phase_action);
+- The signature of function uvm_ml_sv_notify_phase_done() has changed: 
+  an unneeded argument framework_id was removed for compliance with the 
+  rest of the API functions. 
+  New: int uvm_ml_sv_notify_phase_done
+               (
+                  char * phase_group,
+                  char * phase_name
+               );
+- Added a new function uvm_ml_sv_register_srv_providers() corresponding to 
+  the new SystemVerilog DPI import function uvm_ml_register_srv_providers(). 
+  New: void uvm_ml_sv_register_srv_providers
+               (
+                  bp_srv_provider_struct * provider
+               );
+- The signature of function uvm_ml_sv_run_test() has changed: a new output 
+  argument "result" was added. The return value of a C function associated 
+  with a SV DPI import task is used to signify whether the foreign task 
+  returned or was disabled (0 = test failed). 
+         New: int uvm_ml_sv_run_test
+                (
+                  int     framework_id, const svOpenArrayHandle svTops, 
+                  char *  svTest,       int *  result
+                );
+
+4. adapters/uvm_sv/uvm_ml_import.svh
+
+- The return value type of function uvm_ml_register_framework() has changed 
+  from int unsigned to int. A negative value can be returned upon a failure 
+  to register the framework at the backplane. 
+  New: import "DPI-C" context uvm_ml_sv_register_framework = 
+     function int uvm_ml_register_framework();
+- Function uvm_ml_notify_tree_phase() was renamed to 
+  uvm_ml_transmit_phase(). An additional argument phase_action was added. 
+  New: import "DPI-C" context uvm_ml_sv_transmit_phase = 
+          function int uvm_ml_transmit_phase(
+           string target_frmw_ind, int target_id, string phase_group, 
+           string phase_name, uvm_ml_phase_action_e phase_action);
+- Task uvm_ml_notify_runtime_phase() was replaced with a function of the 
+  same name. The type of argument participate has changed from output int 
+  to output int unsigned. 
+  New: import "DPI-C" context uvm_ml_sv_notify_runtime_phase = 
+                  function uvm_ml_notify_runtime_phase(
+                      string phase_group,     string phase_name, 
+                      uvm_ml_phase_action_e   phase_action, 
+                      output int unsigned     participate);
+- The signature of task uvm_ml_run_test() has changed: a new output 
+  argument "result" was added. The return value is used to signify if the 
+  foreign task returned or was disabled (0 – test failed). 
+         New: import "DPI-C" context uvm_ml_sv_run_test = 
+              task uvm_ml_run_test(int unsigned adapter_id, 
+                  string tops[], string test, output int result);
+- The type of the argument transaction_id of function 
+  uvm_ml_tlm2_nb_transport_fw() was changed from inout to input (a bug fix). 
+  New: import "DPI-C" context uvm_ml_sv_tlm2_nb_transport_fw = 
+                  function uvm_tlm_sync_e uvm_ml_tlm2_nb_transport_fw(
+                      int unsigned conn_id, inout int unsigned stream_size, 
+                      inout `STREAM_T stream, inout uvm_tlm_phase_e p,
+                      input int unsigned transaction_id, 
+                      inout uvm_ml_time_unit_e delay_unit, 
+                      inout real delay_val);
+- The signature of function uvm_ml_ notify_phase_done() has changed: 
+  an unneeded argument framework_id was removed for compliance with the 
+  rest of the API functions. 
+  New: import "DPI-C" context uvm_ml_sv_notify_phase_done = 
+              task uvm_ml_notify_phase_done(
+                   string phase_group, string phase_name);
+
+Changes between UVM-ML 1.2.3 and UVM-ML 1.5
+-------------------------------------------
+
+1. Below is the list of the new functions thate were added 
+   in the Backplane Provided API (bp_api_struct). 
+   The adapters can use the corresponding new facilities provided 
+   via these API functions.
+
+- Configuration and resources API functions:
+
+    BP_PROVIDED_API_FUNCTION(notify_resource);
+    BP_PROVIDED_API_FUNCTION(notify_config);
+
+- Wakeup request API functions:
+
+    BP_PROVIDED_API_FUNCTION(register_time_cb);
+    BP_PROVIDED_API_FUNCTION(remove_time_cb);
+    BP_PROVIDED_API_FUNCTION(notify_time_cb);
+
+- Message printing request API function:
+
+    BP_PROVIDED_API_FUNCTION(print_request);
+
+- Interactive debug commands API functions:
+
+    BP_PROVIDED_API_FUNCTION(dbg_request_stop_phase);
+    BP_PROVIDED_API_FUNCTION(dbg_cancel_stop_phase);
+    BP_PROVIDED_API_FUNCTION(dbg_show_stop_requests);
+    BP_PROVIDED_API_FUNCTION(dbg_delete_stop_request);
+    BP_PROVIDED_API_FUNCTION(dbg_request_get_phase);
+    BP_PROVIDED_API_FUNCTION(dbg_cancel_all);
+    BP_PROVIDED_API_FUNCTION(dbg_print_tree);
+    BP_PROVIDED_API_FUNCTION(dbg_print_connections);
+    BP_PROVIDED_API_FUNCTION(execute_command);
+
+- Synchronization API functions:
+
+    BP_PROVIDED_API_FUNCTION(notify_event);
+    BP_PROVIDED_API_FUNCTION(notify_barrier);
+
+2. Below is the list of the function pointers added in the Backplane Required API.
+   The adapters or specialized service provider ML facilities 
+   must fill those pointer values in bp_frmw_c_api_struct.
+   If the framework, as a client, does not support corresponding functionality -
+   the pointers must be set to NULL.
+   
+2.1. The phase service provider should implement two new functions, 
+    necessary for implementation of the phase debugging interactive command:
+
+    BP_REQUIRED_API_FUNCTION(phase_srv_check_phase) 
+      - checks legality of the phase name (for setting a breakpoint)
+  
+    BP_REQUIRED_API_FUNCTION(phase_srv_check_future_phase)
+      - checks whether the specified phase breakpoint can be is reachable (the phase
+        was not completed yet)
+
+2.2. The stopper service provider (the one that enables ML breakpoints) should
+     implement the following function:
+
+    BP_REQUIRED_API_FUNCTION(stopper_srv_stop_request) - stops the simulation when called
+
+2.3. The time-based wakeup service provider should implement the following functions:
+
+    BP_REQUIRED_API_FUNCTION(wakeup_srv_register_time_cb) - registers a wakeup call 
+                                                        for specified simulation time
+    BP_REQUIRED_API_FUNCTION(wakeup_srv_remove_time_cb) - cancels the request 
+                                                        for the wakeup call
+
+2.4. The printing service provider should implement the following function:
+
+    BP_REQUIRED_API_FUNCTION(print_srv_print_request) - prints the message argument
+
+2.5. An adapter that supports ML configuration and/or resource sharing
+     should implement the following functions:
+
+    BP_REQUIRED_API_FUNCTION(notify_resource);
+    BP_REQUIRED_API_FUNCTION(notify_config);
+
+2.6. An adapter that supports ML synchronization via uvm_events and/or uvm_barriers
+     should implement the following functions:
+
+    BP_REQUIRED_API_FUNCTION(notify_event);
+    BP_REQUIRED_API_FUNCTION(notify_barrier);
+
+2.7. An adapter that supports viewing of the unified ML hiwrarchy should
+     implement the following functions:
+
+    BP_REQUIRED_API_FUNCTION(get_num_children);
+    BP_REQUIRED_API_FUNCTION(get_child_name);
+    BP_REQUIRED_API_FUNCTION(get_component_type_name);
+    BP_REQUIRED_API_FUNCTION(is_port);
+
+2.8. An adapter that supports implementation of the interactive commands, broadcasted
+     by the backplane, should implement the following function:
+
+    BP_REQUIRED_API_FUNCTION(notify_command) - this function may handle the predefined
+    command uvm_ml_trace_register or any adapter-defined command
+
+3. The predefined enumeration type uvm_ml_time_unit was extended to icnorporate two new values:
+   TIME_UNIT_MIN and TIME_UNIT_HR
+
+4. Service registration strcuture was extended to support new kinds of services:
+
+   typedef struct bp_srv_provider_struct
+   {
+       const char * phase_srv_provider;
+       const char * wakeup_srv_provider;  // NEW
+       const char * stopper_srv_provider; // NEW
+       const char * print_srv_provider;   // NEW
+   } bp_srv_provider_struct;
+
+5. Backplane provides a new C utility functions that can be used by the adapters
+   for printing a formatted message with a fixed UVM-ML header and variable number of 
+   arguments on stderr:
+
+   void bp_utils_uvm_ml_printf(int level, const char * caller_name, const char *string,... );
+
+6. UVM-ML OA 1.5 supports IES reset. In order to support it, a user-defined adapter should 
+   satisfy the following requirements:
+
+6.1. An adapter must implement a reset callback and register it in NCSim using vpi_register_cb().
+     The example of such implementation and registration can be found in 
+     $UVM_ML_HOME/ml/adapters/uvm_sv/uvm_ml_sv.cpp
+
+6.2. The reset callback must nullify all function pointers it keeps, for example pointers 
+     to the DPI export functions, because those will be invalidated across the reset.
+
+6.3. The reset callback must nullify the Backplane Provided API function tray pointer - so that the
+     adapter will need to re-register itself at the backplane after the reset.
+
+6.4. The pending time callbacks, if any, must be cleaned.
+
+6.5. If the adapter is implemented in C++, its shared library must be dlclose'd upon reset and 
+     re-opened after it. You can find an example implementation of function 
+     __attribute__((destructor)) that is called when the shared library is being closed 
+     in $UVM_ML_HOME/ml/adapters/uvm_sv/uvm_ml_sv.cpp. NCSim takes care of closing and re-opening
+     the shared libraries specified as -sv_lib command line arguments.
+
+6.6. An adapter shall avoid using direct references to the backplane or other C++ shared library 
+     symbols because such references do not allow IES to unload the libraries upon reset. All
+     the calls between the adapter and the backplane should be implemented via function pointers 
+     obtained with help of the dlsym() system call.
+
+6.7. In contrast to accessing the symbols of other C++ libraries, it is simpler to acccess 
+     the standard simulator C functions (such as VPI) directly rather than by pointer because,
+     otherwise, all such pointers need to be also re-evaluated after reset.
+
+7. The UVM SV adapter was changed as follows:
+
+7.1. It identifies itself as associated specifically with UVM SV (and not just "SV"), 
+     thus reducing potential of a clash between DPI symbols and message headers 
+     of another SV framework (non-UVM) adapter.
+
+     Examples of the changes in uvm_ml_sv.cpp and uvm_ml_export_dpi.svh:
+
+     Old:
+     
+     unsigned uvm_ml_sv_connect_ports(...)
+     ...
+     $swrite(msg, "UVM-ML SV>> ...");
+
+     New:
+
+     unsigned uvm_ml_uvmsv_connect_ports(...)
+     ...
+     $swrite(msg, "UVM-ML UVM SV>> ... ");
+
+7.2. Function register_time_cb() was modified as follows, compared to UVM-ML OA 
+     version 1.4.4.
+
+7.2.1. In old version, if time scale unit was explicitly specified rather than set to
+       TIME_UNIT_UNDEFINED, time was scaled according to the scale of the current 
+       context SV UVM-ML adapter package. In the new version, time is normalized 
+       according to the global time precision of the current simulation session.
+
+       Concequently, in the old version, the callback time type was vpiScaledRealTime, while
+       in the new one - vpiSimTime is always used.
+
+7.2.2. All pending time callbacks are regsitered in the global STL set so that the adapter
+       can handle the IES reset.
+
+7.3. The UVM SV adapter now registers itself as a service provider for 3 additional services:
+     time wakeup service, simulation stopper service (for implementation of debug breakpoints), 
+     and printing service (allowing, in particular, the messages from the backplane to appear in
+     the common simulation log file and in the GUI).
+
+7.4. The UVM SV adapter supports broadcasting of the UVM configuration setings. 
+     For that purpose, it factory overrides config_db implementation for all predefined 
+     integral types, uvm_object and string (look for 
+     `UVM_ML_SUBSTITUTE_SINGULAR_CONFIG_DB_IMP).
+
+7.5. The UVM SV adapter supports sharing of uvm_events and uvm_barriers with other frameworks.
+     For this purpose, it factory overrides implementation of the standard UVM types 
+     uvm_event_pool and uvm_barrier_pool.
+
+7.6. The tlm_connector_base class method get_type() was renamed to get_actual_port_type() to 
+     eliminate conflict with the standard UVM function name.
+
+8. The value returned by the backplane Provided API function get_version was updated to "1.5". This
+   value allows the adapter implementation to check that it is connected to the compatible
+   backplane version.
+
+
+Changes between UVM-ML 1.5 and UVM-ML 1.5.1
+-------------------------------------------
+
+Support for debug commands in the backplane provided API was made more generic. It supports the adapter-specific commands, along with the predefined ones. 
+
+The provided debug API relies on the new functionality in the backplane: it parses a command passed via the API function BP_PROVIDED_API_FUNCTION(execute_command). If the function argument is a predefined (documented) command string - the backplane executes it. If the command is not recognized - the backplane forwards it to all the frameworks. In this way, a framework adapter developer can implement an adapter-specific command.
+
+Consequently, the folowing set of the provided API specialized debug functions was removed (leaving only the above generic functionBP_PROVIDED_API_FUNCTION(execute_command) ):
+
+    BP_PROVIDED_API_FUNCTION(dbg_request_stop_phase);
+    BP_PROVIDED_API_FUNCTION(dbg_cancel_stop_phase);
+    BP_PROVIDED_API_FUNCTION(dbg_show_stop_requests);
+    BP_PROVIDED_API_FUNCTION(dbg_delete_stop_request);
+    BP_PROVIDED_API_FUNCTION(dbg_request_get_phase);
+    BP_PROVIDED_API_FUNCTION(dbg_cancel_all);
+    BP_PROVIDED_API_FUNCTION(dbg_print_tree);
+    BP_PROVIDED_API_FUNCTION(dbg_print_connections);
+
+To reflect the above change, the backplane API version number (defined in bp_common_c.h) was changed to:
+
+#define UVM_ML_VERSION "1.5.1"
+

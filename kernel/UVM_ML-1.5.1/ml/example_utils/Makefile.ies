@@ -1,0 +1,417 @@
+##
+## File: ${UVM_NL_HOME}/ml/example_utils/Makefile.ies 
+##   The Central Makefile for runnning UVM-ML examples with the IES simulators 
+## 
+## -------------------------------------------------------------
+##
+##    Copyright 2010 Cadence.
+##    All Rights Reserved Worldwide
+## 
+##    Licensed under the Apache License, Version 2.0 (the
+##    "License"); you may not use this file except in
+##    compliance with the License.  You may obtain a copy of
+##    the License at
+## 
+##        http://www.apache.org/licenses/LICENSE-2.0
+## 
+##    Unless required by applicable law or agreed to in
+##    writing, software distributed under the License is
+##    distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+##    CONDITIONS OF ANY KIND, either express or implied.  See
+##    the License for the specific language governing
+##    permissions and limitations under the License.
+## -------------------------------------------------------------
+## 
+
+
+
+
+.PHONY: default ies ies_ncsc_cl ies_osci_cl ies_ncsc_proc  ies_osci_proc
+.PHONY: ies_proper ies_proc_proper ies_osci_proper ies_osci_proc_proper
+.PHONY: check check_ies check_ies_proc check_ies_osci check_ies_osci_proc
+.PHONY: ies_osci_proc_multistep ies_osci_cl_multistep
+.PHONY: ies_ncsc_cl_multistep ies_ncsc_proc_multistep
+.PHONY: clean distclean
+default ies: ies_ncsc_proc
+check: check_ies
+
+ERROR_FLAG=0
+
+ifneq ($(MAKECMDGOALS),clean)
+ifneq ($(MAKECMDGOALS),distclean)
+
+ifeq ($(UVM_ML_HOME),)
+
+# Enhance this when the layout is clear 
+
+ifeq ($(wildcard $(shell ncroot)/tools/methodology/uvm_ml_oa/ml/libs/backplane/),)
+ERROR_FLAG=1
+$(warning ** UVM_ML_HOME variable is not defined **)
+else
+UVM_ML_HOME:= $(shell ncroot)/tools/methodology/uvm_ml_oa
+export UVM_ML_HOME
+endif
+
+endif # empty UVM_ML_HOME
+
+
+endif
+endif
+
+
+
+
+UVM_SV_VERSION ?= 1.1
+
+UVM_ML_BITS ?= 32
+
+ifeq (${UVM_SV_VERSION},1.1)
+UVM_ML_SV_VERSION = 1.1d
+EXTRA_VLOG_OPTS = 
+UVM_SV_ARGS =
+else
+UVM_ML_SV_VERSION = ${UVM_SV_VERSION}
+# UVM_SV_ARGS = -define UVM_NO_DEPRECATED
+UVM_SV_ARGS = -nowarn SLFINV
+endif
+
+ifndef UVM_ML_CDS_INST_DIR
+UVM_ML_CDS_INST_DIR := $(shell ncroot)
+export UVM_ML_CDS_INST_DIR
+endif
+
+UVM_ML_LD ?= ${UVM_ML_CC}
+
+UVM_ML_COMPILER_VERSION := $(shell $(UVM_ML_HOME)/ml/tools/get_gcc_version.sh $(UVM_ML_CC))
+export UVM_ML_COMPILER_VERSION
+
+ifndef IES_VERSION
+IES_VERSION := $(shell $(UVM_ML_HOME)/ml/tools/get_ies_version.sh)
+endif
+export IES_VERSION
+
+ifeq ($(UVM_ML_BITS),64)	# bits...
+# setting for 64 bits
+
+ifndef UNILANG_OVERRIDE
+ifneq ($(wildcard $(UVM_ML_HOME)/ml/libs/backplane/ies_${IES_VERSION}/$(UVM_ML_COMPILER_VERSION)/64bit/libml_uvm.so),)
+UNILANG_OVERRIDE:=$(UVM_ML_HOME)/ml/libs/backplane/ies_${IES_VERSION}/$(UVM_ML_COMPILER_VERSION)/64bit/
+else
+UNILANG_OVERRIDE:=$(UVM_ML_HOME)/ml/libs/backplane/$(UVM_ML_COMPILER_VERSION)/64bit/
+endif 
+endif
+
+MODE_FLAG:=-64bit
+SUBDIR:=/64bit
+UVM_ML_IRUN_ARGS:= -f $${UVM_ML_HOME}/ml/run_utils/ml_options.64.f
+BIT_CFLAGS:=
+ALL_OSCI_LIB:=${UVM_ML_TEST_RUN_DIR}/liball_osci_ies.64.so
+ifeq ($(UVM_ML_COMPILER_VERSION),4.4)
+UVM_ML_SPECFILE_SUFFIX := .64bit
+else
+UVM_ML_SPECFILE_SUFFIX := .4.1.64bit
+endif
+
+else 	# bits...
+# setting for 32 bits
+ifndef UNILANG_OVERRIDE
+
+ifneq ($(wildcard $(UVM_ML_HOME)/ml/libs/backplane/ies_${IES_VERSION}/$(UVM_ML_COMPILER_VERSION)/libml_uvm.so),)
+UNILANG_OVERRIDE:=$(UVM_ML_HOME)/ml/libs/backplane/ies_${IES_VERSION}/$(UVM_ML_COMPILER_VERSION)/
+else
+UNILANG_OVERRIDE:=$(UVM_ML_HOME)/ml/libs/backplane/$(UVM_ML_COMPILER_VERSION)/
+endif
+
+endif
+
+UVM_ML_IRUN_ARGS:= -f $${UVM_ML_HOME}/ml/run_utils/ml_options.32.f
+MODE_FLAG:=
+SUBDIR:=
+BIT_CFLAGS:=-m32
+ALL_OSCI_LIB:=${UVM_ML_TEST_RUN_DIR}/liball_osci_ies.so 
+endif 	# bits...
+
+$(info UNILANG_OVERRIDE ${UNILANG_OVERRIDE} UVM_ML_BITS ${UVM_ML_BITS})
+export UNILANG_OVERRIDE
+export UVM_ML_OVERRIDE := $(UNILANG_OVERRIDE)
+
+
+# The duplication of the _INFO variables: the _INFO is not-expanded ($$) so printouts of pathes are clearer
+ifndef UVM_ML_E_ADAPTER_LOCATION
+UVM_ML_E_ADAPTER_LOCATION:=${UVM_ML_HOME}/ml/libs/uvm_e
+UVM_ML_E_ADAPTER_LOCATION_INFO:=$${UVM_ML_HOME}/ml/libs/uvm_e
+endif
+
+
+
+ifneq ($(SPECMAN_PATH),)
+
+ifndef SPECMAN_PATH_INFO
+SPECMAN_PATH_INFO:= ${SPECMAN_PATH}
+endif
+
+SPECMAN_PATH_INFO := ${UVM_ML_E_ADAPTER_LOCATION_INFO}/$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)$(SUBDIR):${UVM_ML_TEST_SRC_DIR}:${SPECMAN_PATH_INFO}
+SPECMAN_PATH := ${UVM_ML_E_ADAPTER_LOCATION}/$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)$(SUBDIR):${UVM_ML_TEST_SRC_DIR}:${SPECMAN_PATH}
+else
+SPECMAN_PATH_INFO := ${UVM_ML_E_ADAPTER_LOCATION_INFO}/$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)$(SUBDIR):${UVM_ML_TEST_SRC_DIR}
+SPECMAN_PATH := ${UVM_ML_E_ADAPTER_LOCATION}/$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)$(SUBDIR):${UVM_ML_TEST_SRC_DIR}
+endif 
+export SPECMAN_PATH
+
+# The duplication of two SPECMAN_DLIB* variables: expanded for dependencies, not-expanded ($$) so printouts of pathes are clearer
+export SPECMAN_DLIB ?= ${UVM_ML_E_ADAPTER_LOCATION}/$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)$(SUBDIR)/libsn_sn_uvm_ml.so
+SPECMAN_DLIB_CMD ?= ${UVM_ML_E_ADAPTER_LOCATION_INFO}/$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)$(SUBDIR)/libsn_sn_uvm_ml.so
+
+TEST ?= /usr/bin/test
+
+# UVM_HOME is set in the ml_options.<bits>.f arg files (rather than here. history of options: uvm-1.1c, 1.1d-ml, 1.2-ml
+#		as in:           UVM_HOME := $(UVM_ML_HOME)/ml/frameworks/uvm/sv/1.1d-ml	
+
+ifneq ($(SC_TOP),)
+SC_TOP_ARG= -sctop $(SC_TOP)
+OSCI_SC_TOP=
+else
+SC_TOP_ARG=
+OSCI_SC_TOP=
+endif
+
+
+ifneq ($(HAS_E),)	# HAS_E
+
+ifndef RUN_SN_STAGE
+UVM_E_SHLIB_ARGS ?= -f $${UVM_ML_HOME}/ml/run_utils/e_options.$(UVM_ML_BITS).f
+else   	# not RUN_SN_STAGE
+UVM_E_SHLIB_ARGS = -snstage st1 -snheader sn_uvm_ml_h.h \
+-sncompargs "-cflags \"-I${UVM_ML_HOME}/ml/backplane/\" ${UVM_ML_HOME}/ml/adapters/uvm_e/${IES_VERSION}/sn_uvm_ml_adapter.c" \
+${UVM_ML_HOME}/ml/adapters/uvm_e/${IES_VERSION}/sn_uvm_ml.e   -endsnstage 
+endif 	# RUN_SN_STAGE
+else  			# not HAS_E
+UVM_E_SHLIB_ARGS = 
+endif 			# HAS_E
+
+ifeq ($(GUI_OPT),)
+EXIT_OPT ?= -exit
+ACCESS_FOR_GUI=
+else
+EXIT_OPT=
+ACCESS_FOR_GUI = -access +rw
+endif
+
+#
+# Summarize all exports - for the benefit of "make -n" (the demo "--dry-run" option)
+# ----------------------------------------------------------------------------------
+# other variables that don't need to be exported, as they appear in ml/setup<bits>.* are:
+# 	UVM_ML_COMPILER_VERSION, IES_VERSION, UNILANG_OVERRIDE, UVM_ML_OVERRIDE
+#
+ifeq ($(findstring n,$(MAKEFLAGS)),n)	# only if this is context of a dry-run
+ ifneq ($(HAS_E),)	# HAS_E
+   $(info echo "set_variables_command - start:") # --- for dry-run filtering
+   ifdef SPECMAN_DLIB
+     $(info SPECMAN_DLIB=${SPECMAN_DLIB_CMD}; export SPECMAN_DLIB)
+   endif
+   $(info SPECMAN_PATH=${SPECMAN_PATH_INFO}; export SPECMAN_PATH)
+   $(info echo "set_variables_command - end:")   # --- for dry-run filtering
+ endif			# HAS_E
+endif	# only for dry-run
+
+PROC_DEFINE = -define USE_UVM_ML_RUN_TEST
+
+ifeq (${DEBUG},yes) # If invoked in debug mode
+
+UVM_ML_CC_DEBUG_FLAGS=-g -O0
+DEBUG_IRUN_ARGS=-debug -linedebug -uvmlinedebug -g
+endif
+
+# --- The Common ways to invoke irun ---
+SV_ARGS:= -f $${UVM_ML_HOME}/ml/run_utils/sv_${UVM_SV_VERSION}_options.$(UVM_ML_BITS).f
+COMMON_IRUN_ARGS:= ${SRC_FILES} -incdir ${UVM_ML_TEST_SRC_DIR} $(UVM_ML_IRUN_ARGS) $(IES_TIME_SCALE) $(SV_ARGS) $(UVM_E_SHLIB_ARGS) $(DEBUG_IRUN_ARGS) ${UVM_SV_ARGS}
+
+
+# --- few flags for flexible addition of irun args ----
+# TEST_SPECIFIC_IRUN_ARGS - test/example specific IRUN arguments; to be defined in the appropriate test makefile
+# USER_IRUN_ARGS - IRUN arguments added by the user for each specific (manual) invocation. For example, 'make ies_ncsc_cl USER_IRUN_ARGS="-g -gdb" '.
+# EXTRA_IRUN_ARGS - no longer in active use (same as USER_IRUN_ARGS, kept here just for backward compatibility).
+
+
+COMMON_RUN_CMD ?= irun $(COMMON_IRUN_ARGS) $(E_FILES) $(TEST_SPECIFIC_IRUN_ARGS) $(USER_IRUN_ARGS) $(EXTRA_IRUN_ARGS)
+COMMON_RUN_CMD_MORE ?= $(LOG_FILE_ARG) $(GUI_OPT) $(EXIT_OPT) 
+COMMON_IRUN_COMPILE_CMD ?= irun $(COMMON_IRUN_ARGS) $(MULTISTEP_STUB_E_FILES) $(EXTRA_IRUN_COMPILE_ARGS) -compile
+
+IRUN_COMPILE_NCSC_ARGS ?=$(SYSC_FILES) $(SC_ARGS) 
+
+IRUN_COMPILE_NCSC_CMD ?= $(COMMON_IRUN_COMPILE_CMD) $(IRUN_COMPILE_NCSC_ARGS) 
+
+IRUN_COMPILE_NCSC_CL_CMD ?= $(IRUN_COMPILE_NCSC_CMD)
+
+IRUN_COMPILE_NCSC_PROC_CMD ?= $(IRUN_COMPILE_NCSC_CMD) $(PROC_DEFINE)
+
+IRUN_COMPILE_OSCI_CMD ?= $(COMMON_IRUN_COMPILE_CMD) -L`pwd` $(ALL_OSCI_LIB) $(EXTRA_OSCI_ARGS)
+
+IRUN_COMPILE_OSCI_CL_CMD ?= $(IRUN_COMPILE_OSCI_CMD) 
+
+IRUN_COMPILE_OSCI_PROC_CMD ?= $(IRUN_COMPILE_OSCI_CMD) $(PROC_DEFINE)
+
+
+# if SystemC is used (HAS_SC...) 
+ifneq ($(SYSC_FILES),)
+ NCELAB_NCSC_SYSC_ARGS= -SCRUN -HASCC -HASSYSC
+ SC_ARGS = -f $${UVM_ML_HOME}/ml/run_utils/sc_options.$(UVM_ML_BITS).f -I${UVM_ML_TEST_SRC_DIR}
+else
+ NCELAB_NCSC_SYSC_ARGS=
+ SC_ARGS=
+endif
+
+ifneq ($(SC_TOP),)
+ NCELAB_SC_TOP=-sctop $(SC_TOP)
+endif
+
+
+COMMON_NCELAB_CMD ?= ncelab $(MODE_FLAG)  -MESSAGES -loadpli `ncroot`/tools/methodology/UVM/CDNS-${UVM_ML_SV_VERSION}/additions/sv/lib$(SUBDIR)/libuvmpli.so:uvm_pli_boot  -loadrun ./INCA_libs/irun.nc/librun -XLMODE ./INCA_libs/irun.nc -RUNMODE -CDSLIB ./INCA_libs/irun.nc/cds.lib -HDLVAR ./INCA_libs/irun.nc/hdl.var -WORK worklib  -HASXLMODE 
+# $(NCELAB_NCSC_SYSC_ARGS)
+NCELAB_NCSC_CL_CMD = $(COMMON_NCELAB_CMD) $(NCELAB_NCSC_SYSC_ARGS) $(NCELAB_SC_TOP)
+NCELAB_NCSC_PROC_CMD = $(COMMON_NCELAB_CMD) $(NCELAB_NCSC_SYSC_ARGS) $(NCELAB_SC_TOP)
+
+NCELAB_OSCI_CL_CMD = $(COMMON_NCELAB_CMD) -access +rw
+NCELAB_OSCI_PROC_CMD = $(COMMON_NCELAB_CMD) -access +rw
+
+MULTISTEP_TOP_MODULE ?= worklib.topmodule:sv
+SC_TOP ?= sctop
+
+COMMON_NCSIM_CMD=  ncsim -messages $(MODE_FLAG) -sv_lib `ncroot`/tools/methodology/UVM/CDNS-${UVM_ML_SV_VERSION}/additions/sv/lib$(SUBDIR)/libuvmpli.so  -sv_lib `ncroot`/tools/methodology/UVM/CDNS-${UVM_ML_SV_VERSION}/additions/sv/lib$(SUBDIR)/libuvmdpi.so -sv_lib $${UVM_ML_HOME}/ml/libs/uvm_sv/${UVM_ML_COMPILER_VERSION}${SUBDIR}/libuvm_sv_ml.so  $(MULTISTEP_TOP_MODULE) -run $(GUI_OPT) $(EXIT_OPT) ${UVM_SV_ARGS}
+
+NCSIM_NCSC_CL_CMD ?= $(COMMON_NCSIM_CMD) $(UVM_TEST_TOPS)
+NCSIM_NCSC_PROC_CMD ?= $(COMMON_NCSIM_CMD) -ml_uvm
+NCSIM_OSCI_CL_CMD ?= $(COMMON_NCSIM_CMD) $(UVM_TEST_TOPS) -sv_lib $(ALL_OSCI_LIB) $(OSCI_SC_TOP) 
+NCSIM_OSCI_PROC_CMD ?= $(COMMON_NCSIM_CMD) -ml_uvm -sv_lib $(ALL_OSCI_LIB)
+
+COMMON_RUN_NCSC_CMD ?= $(COMMON_RUN_CMD) $(SYSC_FILES) $(SC_ARGS) $(COMMON_RUN_CMD_MORE) $(ACCESS_FOR_GUI) 
+
+RUN_NCSC_CMD = $(COMMON_RUN_NCSC_CMD) $(UVM_TEST_TOPS) $(SC_TOP_ARG)
+
+RUN_NCSC_PROC_CMD = $(COMMON_RUN_NCSC_CMD) $(SV_TOP) $(PROC_DEFINE) $(SC_TOP_ARG)
+
+COMMON_RUN_OSCI_CMD = $(COMMON_RUN_CMD)  -sv_lib $(ALL_OSCI_LIB) $(COMMON_RUN_CMD_MORE) $(ACCESS_FOR_GUI) -access +rw
+
+RUN_OSCI_CMD=$(COMMON_RUN_OSCI_CMD) $(UVM_TEST_TOPS) $(OSCI_SC_TOP)  -L$(CURDIR) $(ALL_OSCI_LIB) $(EXTRA_OSCI_ARGS)
+RUN_OSCI_PROC_CMD=$(COMMON_RUN_OSCI_CMD) $(SV_TOP) -L$(CURDIR) $(ALL_OSCI_LIB) $(EXTRA_OSCI_ARGS) $(PROC_DEFINE)
+
+
+
+
+ies_ncsc_cl: | ies_proper check_ies 
+ies_proper check_ies: LOG_FILE ?= ${UVM_ML_TEST_RUN_DIR}/irun_ncsc_cl.$(UVM_ML_BITS).log
+ies_proper check_ies: LOG_FILE_ARG = -l $(LOG_FILE)
+ies_proper:
+	@echo "ies_run_command - start:" # for dry-run
+	$(RUN_NCSC_CMD)	
+	@echo "ies_run_command - end:"   # for dry-run
+
+ifneq ($(SYSC_FILES),)
+ies_osci_cl: $(ALL_OSCI_LIB) | ies_osci_proper check_ies_osci
+ies_osci_proper check_ies_osci: LOG_FILE ?= ${UVM_ML_TEST_RUN_DIR}/irun_osci_cl.$(UVM_ML_BITS).log
+ies_osci_proper check_ies_osci: LOG_FILE_ARG = -nolog 
+ies_osci_proper: 
+	@echo "ies_osci_run_command - start:" # for dry-run
+	$(RUN_OSCI_CMD) 2>&1 | tee $(LOG_FILE)
+	@echo "ies_osci_run_command - end:"   # for dry-run
+else
+ies_osci: 
+	@/bin/true
+endif
+
+ies_ncsc_proc: | ies_proc_proper check_ies_proc
+ies_proc_proper check_ies_proc: LOG_FILE ?= ${UVM_ML_TEST_RUN_DIR}/irun_ncsc_proc.$(UVM_ML_BITS).log
+ies_proc_proper check_ies_proc: LOG_FILE_ARG = -l $(LOG_FILE)
+ies_proc_proper: 
+	@echo "ies_run_command - start:" # for dry-run
+	$(RUN_NCSC_PROC_CMD)
+	@echo "ies_run_command - end:"   # for dry-run
+
+ifneq ($(SYSC_FILES),)
+ies_osci_proc: $(ALL_OSCI_LIB) | ies_osci_proc_proper check_ies_osci_proc
+
+ies_osci_proc_proper check_ies_osci_proc : LOG_FILE ?= ${UVM_ML_TEST_RUN_DIR}/irun_osci_proc.$(UVM_ML_BITS).log
+ies_osci_proc_proper check_ies_osci_proc : LOG_FILE_ARG = -nolog 
+ies_osci_proc_proper:
+	@echo "ies_osci_run_command - start:" # for dry-run
+	$(RUN_OSCI_PROC_CMD) 2>&1 | tee $(LOG_FILE) 
+	@echo "ies_osci_run_command - end:"   # for dry-run
+else
+ies_osci_proc:
+	@/bin/true
+endif
+
+# FIXME - temporary, ies_ncsc_cl only: 
+.PHONY: ies_ncsc_cl_multistep
+
+ies_ncsc_cl_multistep: 
+	@echo "ies_compile_command - start:" # for dry-run
+	$(IRUN_COMPILE_NCSC_CL_CMD)
+	@echo "ies_compile_command - end:"   # for dry-run
+	@echo "ies_elaborate_command - start:" # for dry-run
+	$(NCELAB_NCSC_CL_CMD)
+	@echo "ies_elaborate_command - end:"   # for dry-run
+	@echo "ies_run_command - start:" # for dry-run
+	$(NCSIM_NCSC_CL_CMD)
+	@echo "ies_run_command - end:"   # for dry-run
+ies_ncsc_proc_multistep:
+	@echo "ies_compile_command - start:" # for dry-run
+	$(IRUN_COMPILE_NCSC_PROC_CMD)
+	@echo "ies_compile_command - end:"   # for dry-run
+	@echo "ies_elaborate_command - start:" # for dry-run
+	$(NCELAB_NCSC_PROC_CMD)
+	@echo "ies_elaborate_command - end:"   # for dry-run
+	@echo "ies_run_command - start:" # for dry-run
+	$(NCSIM_NCSC_PROC_CMD) && echo Passed
+	@echo "ies_run_command - end:"   # for dry-run
+
+ifneq ($(SYSC_FILES),)
+ies_osci_cl_multistep: $(ALL_OSCI_LIB)
+	@echo "ies_compile_command - start:" # for dry-run
+	$(IRUN_COMPILE_OSCI_CL_CMD)
+	@echo "ies_compile_command - end:"   # for dry-run
+	@echo "ies_elaborate_command - start:" # for dry-run
+	$(NCELAB_OSCI_CL_CMD)
+	@echo "ies_elaborate_command - end:"   # for dry-run
+	@echo "ies_run_command - start:" # for dry-run
+	$(NCSIM_OSCI_CL_CMD)
+	@echo "ies_run_command - end:"   # for dry-run
+ies_osci_proc_multistep: $(ALL_OSCI_LIB)
+	@echo "ies_compile_command - start:" # for dry-run
+	$(IRUN_COMPILE_OSCI_PROC_CMD)
+	@echo "ies_compile_command - end:"   # for dry-run
+	@echo "ies_elaborate_command - start:" # for dry-run
+	$(NCELAB_OSCI_PROC_CMD)
+	@echo "ies_elaborate_command - end:"   # for dry-run
+	@echo "ies_run_command - start:" # for dry-run
+	$(NCSIM_OSCI_PROC_CMD)
+	@echo "ies_run_command - end:"   # for dry-run
+else
+ies_osci_cl_multistep ies_osci_proc_multistep:
+	@/bin/true
+endif
+
+check_ies check_ies_proc check_ies_osci check_ies_osci_proc:
+	@echo "Checking the results in $(LOG_FILE)..."
+	grep -q -i -E '\[TEST_DONE\]|\*\* UVM TEST PASSED|^TEST PASSED' $(LOG_FILE)
+	$(TEST)  $$(grep -c -i -E 'TEST FAILED|\*ERROR|\*FATAL' $(LOG_FILE)) -eq 0 
+
+clean:
+	-cd ${UVM_ML_TEST_RUN_DIR};rm -rf INCA_libs *~ core $(ALL_OSCI_LIB) irun*.err ncelab*.err ncsim*.err
+distclean: clean
+	-cd ${UVM_ML_TEST_RUN_DIR};rm -rf irun*.log *.elog
+
+ifneq ($(MAKECMDGOALS),clean)
+ifneq ($(MAKECMDGOALS),distclean)
+ifneq ($(SYSC_FILES),)
+ifneq ($(findstring osci,$(MAKECMDGOALS)),)
+include $(UVM_ML_HOME)/ml/example_utils/Makefile.liball_osci
+endif
+endif
+endif
+endif
+
+ifeq ($(ERROR_FLAG),1)
+$(error ** One or more of vital environment variables are not defined **)
+endif
+

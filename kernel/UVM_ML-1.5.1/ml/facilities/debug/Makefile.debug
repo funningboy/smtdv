@@ -1,0 +1,72 @@
+# ----------------------------------------------------------------------
+#    Copyright 2012 Cadence Design Systems, Inc.
+#    All Rights Reserved Worldwide
+# 
+#    Licensed under the Apache License, Version 2.0 (the
+#    "License"); you may not use this file except in
+#    compliance with the License.  You may obtain a copy of
+#    the License at
+# 
+#        http://www.apache.org/licenses/LICENSE-2.0
+# 
+#    Unless required by applicable law or agreed to in
+#    writing, software distributed under the License is
+#    distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+#    CONDITIONS OF ANY KIND, either express or implied.  See
+#    the License for the specific language governing
+#    permissions and limitations under the License.
+# ----------------------------------------------------------------------
+
+ifndef UVM_ML_COMPILER_VERSION
+UVM_ML_COMPILER_VERSION := $(shell $(UVM_ML_HOME)/ml/tools/get_gcc_version.sh ${UVM_ML_CC} )
+endif
+
+ifeq ($(BITS),64)
+BEXT=.${UVM_ML_COMPILER_VERSION}.64
+BIT_FLAGS = -fPIC
+64BIT_DIR=/64bit/
+else
+BEXT=.${UVM_ML_COMPILER_VERSION}
+BIT_FLAGS=-m32
+64BIT_DIR=/
+endif
+
+LD = $(UVM_ML_LD)
+
+LDOPTS = $(BIT_FLAGS)  -shared
+CFLAGS = $(BIT_FLAGS) -I$(UVM_ML_SVDPI_DIR) -I$(shell ncroot 2>/dev/null)/tools/include/nctcl
+
+DYNAMIC_LIB_NAME = libuvm_ml_debug.so
+
+TCL_OBJS = uvm_ml_debug_if$(BEXT).o
+
+DEPFILES = $(subst .o,.d,$(TCL_OBJS))
+
+.PHONY: default
+
+DEBUG_BUILD_DIR ?= $(UVM_ML_HOME)/ml/libs/debug/${UVM_ML_COMPILER_VERSION}$(64BIT_DIR)
+
+TCL_LIB=$(DEBUG_BUILD_DIR)$(DYNAMIC_LIB_NAME)
+
+default : $(DEBUG_BUILD_DIR) $(TCL_LIB)
+	@echo Debug shared library $(TCL_LIB) has been built
+
+$(DEBUG_BUILD_DIR):
+	mkdir -p $@
+
+$(TCL_LIB) : $(TCL_OBJS)
+	$(UVM_ML_LD) $(TCL_OBJS) $(LDOPTS) -o $@
+
+%$(BEXT).o: %.cpp
+	$(UVM_ML_CC) $(CFLAGS) $(UVM_ML_DEBUG_FLAGS) ${UVM_ML_ERROR_FLAGS} -c $< -o $@
+
+%$(BEXT).d: %.cpp
+	$(UVM_ML_CC) $(CFLAGS) $(UVM_ML_DEBUG_FLAGS) -MM -MT "$@ $(subst .d,.o,$@)" -o $@ $<
+
+.PHONY: clean
+clean: 
+	-rm -f $(TCL_OBJS) $(TCL_LIB)
+
+ifneq ($(MAKECMDGOALS),clean) 
+include $(DEPFILES)
+endif

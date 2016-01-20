@@ -1,0 +1,226 @@
+ncsim(64) 13.10-s011
+Linux 2.6.18-406.el5 #1 SMP Tue Jun 2 17:25:57 EDT 2015 x86_64
+CPU cores: 8
+Limit information:
+======================================
+cputime			unlimited
+filesize		unlimited
+datasize		unlimited
+stacksize		10240 kbytes
+coredumpsize	0 kbytes
+memoryuse		unlimited
+vmemoryuse		unlimited
+descriptors		1024
+memorylocked	32 kbytes
+maxproc			515656
+======================================
+(Special)Runtime environment variables:
+
+Runtime environment variables:
+MODULE_VERSION_STACK=3.2.9
+REMOTEHOST=10.92.225.123
+VNCDESKTOP=x11
+MANPATH=/stec/apps/utilities/git_1.9.0/share/man:/stec/apps/utilities/perl_5.14.2/man:/stec/apps/utilities/perl_5.14.2/site/man:/stec/apps/utilities/make_3.81/man:/stec/apps/utilities/jdk1.6.0_24/man:/stec/apps/utilities/vnc_4.6.1/man:/stec/apps/utilities/gvim_7.3/share/man:/stec/apps/utilities/xemacs_21.4.22/man:/stec/apps/utilities/emacs_24.2/share/man:/stec/apps/sge/sge6_2u5/man:/usr/share/man
+DISPLAYNUM=5
+HOSTNAME=twlogin04
+HOST=twlogin04
+TERM=xterm
+SHELL=/bin/tcsh
+ATRENTA_LICENSE_FILE=1700@twlic
+SSH_CLIENT=10.92.225.123 59396 22
+SGE_CELL=default
+QTDIR=/usr/lib64/qt-3.3
+QTINC=/usr/lib64/qt-3.3/include
+SSH_TTY=/dev/pts/12
+DW_WAIT_LICENSE=1
+GROUP=asic
+USER=schen
+LS_COLORS=no=00:fi=00:di=00;34:ln=00;36:pi=40;33:so=00;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:ex=00;32:*.cmd=00;32:*.exe=00;32:*.com=00;32:*.btm=00;32:*.bat=00;32:*.sh=00;32:*.csh=00;32:*.tar=00;31:*.tgz=00;31:*.arj=00;31:*.taz=00;31:*.lzh=00;31:*.zip=00;31:*.z=00;31:*.Z=00;31:*.gz=00;31:*.bz2=00;31:*.bz=00;31:*.tz=00;31:*.rpm=00;31:*.cpio=00;31:*.jpg=00;35:*.gif=00;35:*.bmp=00;35:*.xbm=00;35:*.xpm=00;35:*.png=00;35:*.tif=00;35:
+LD_LIBRARY_PATH=/stec/apps/utilities/curl_7.35.0/lib:/stec/apps/utilities/python_2.7.3/lib:/stec/apps/utilities/svn_1.7.10/lib:/stec/apps/utilities/SmartSVN_6.6.13/lib:/stec/apps/utilities/jdk1.6.0_24/lib:/usr/X11R6/lib:/stec/apps/utilities/xemacs_21.4.22/lib:/stec/apps/utilities/emacs_24.2/libexec:/stec/apps/local/lib:/stec/apps/novas/verdi_2013.09/share/PLI/MODELSIM/LINUX64/:/stec/apps/novas/verdi_2013.09/share/PLI/IUS/LINUX64:/stec/tw/users/schen/tool/gcc-arm-none-eabi-4_9-2015q2/arm-none-eabi/lib:/stec/tw/users/schen/local/lib:/stec/tw/users/schen/local/bin/python:/usr/local/lib
+HOSTTYPE=x86_64-linux
+KDEDIR=/usr
+XILINXD_LICENSE_FILE=2100@samatrix02
+CADENCE_VIP_LIC_Q_TIMEOUT=50
+SNPSLMD_LICENSE_FILE=27000@salic01:27000@samatrix02
+PAGER=less
+SITE=tw
+ANLS_LICENSE_FILE=2828@salic01
+MODULE_VERSION=3.2.9
+MAIL=/var/spool/mail/schen
+PATH=/stec/apps/cadence/INCISIV13.10.011/tools/bin/64bit:/stec/apps/cadence/INCISIV13.10.011/tools/bin/64bit:/stec/apps/cadence/INCISIV13.10.011/tools/bin/64bit:/stec/apps/utilities/curl_7.35.0/bin:/stec/apps/utilities/git_1.9.0/bin:.:/bin:/hgst/proj/asic/columbus/releases/1.7.0/bin:/hgst/proj/asic/columbus/releases/1.7.0/bin/UTILS/SIM_SYN:/stec/apps/avery/apbxactor-1.0.1022/scripts:/stec/apps/avery/axixactor-1.5.1016/scripts:/stec/apps/avery/insight_2012_0410/tools/bin:/stec/apps/avery/insight_2012_0410/tools/tb_release/bin:/stec/apps/avery/nvmxactor-1.8c/scripts:/stec/apps/avery/pcixactor-2.3.1011.r1/scripts:/stec/apps/avery/pcixactor-2.3/scripts:/stec/apps/avery/sopxactor-1.6/scripts:/stec/apps/cadence/INCISIV13.10.011/bin:/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/bin:/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/soc_verification_lib/abv_formal/abv_vm_util_v2.5_beta3/bin:/stec/apps/cadence/INCISIV13.10.011/tools/bin:/stec/apps/cadence/INCISIV13.10.011/tools/systemc/gcc/bin:/stec/apps/ghs/comp_201416/:/stec/apps/mentor/questa_cdc_10.3e/linux_x86_64/bin:/stec/apps/mentor/questa_sim_10.3c/questasim/bin:/stec/apps/novas/verdi_2013.09/bin:/stec/apps/sge/sge6_2u5/bin/lx24-amd64:/stec/apps/utilities/acroread_9.5.1/Adobe/Reader9/bin:/stec/apps/utilities/dae/bin/:/stec/apps/utilities/emacs_24.2/bin:/stec/apps/utilities/gvim_7.3/bin:/stec/apps/utilities/jdk1.6.0_24/bin:/stec/apps/utilities/make_3.81/bin:/stec/apps/utilities/mis/global:/stec/apps/utilities/nedit_5.5:/stec/apps/utilities/perl_5.14.2/bin:/stec/apps/utilities/perl_5.14.2/site/bin:/stec/apps/utilities/python_2.7.3/bin:/stec/apps/utilities/SmartSVN_6.6.13/bin:/stec/apps/utilities/svn_1.7.10/bin:/stec/apps/utilities/tkdiff_4.1.4:/stec/apps/utilities/vnc_4.6.1/bin:/stec/apps/utilities/xemacs_21.4.22/bin:/stec/proj/asic/columbus/users/ashah/ws_axi_uvc/vip/avery_pcixactor-2.3:/stec/tw/users/schen/local/bin:/stec/tw/users/schen/tool/gcc-arm-none-eabi-4_8-2014q3/bin:/stec/tw/users/schen/tool/gcc-arm-none-eabi-4_9-2015q2/arm-none-eabi/bin:/stec/tw/users/schen/tool/gcc-arm-none-eabi-4_9-2015q2/bin:/usr/bin:/usr/kerberos/bin:/usr/lib64/qt-3.3/bin:/usr/local/bin:/usr/X11R6/bin:
+SNPSLMD_QUEUE=1
+GHS_LMHOST=twlic01
+INPUTRC=/etc/inputrc
+PWD=/stec/tw/users/schen/prj/smartdv/lib/smtdv_common/test/sysc
+_LMFILES_=/stec/apps/modules-3.2.9c/Modules/linux/silent:/stec/apps/modules-3.2.9c/Modules/linux/tw/license:/stec/apps/modules-3.2.9c/Modules/linux/tw/sge/6.2u5:/stec/apps/modules-3.2.9c/Modules/linux/avery/insight.2012.0410:/stec/apps/modules-3.2.9c/Modules/linux/avery/nvmxactor.1.8c:/stec/apps/modules-3.2.9c/Modules/linux/avery/pcixactor.2.3:/stec/apps/modules-3.2.9c/Modules/linux/avery/pli.2013.0704:/stec/apps/modules-3.2.9c/Modules/linux/questa_cdc/10.3e:/stec/apps/modules-3.2.9c/Modules/linux/questa_sim/10.3c:/stec/apps/modules-3.2.9c/Modules/linux/incisiv/13.10.011:/stec/apps/modules-3.2.9c/Modules/linux/verdi/2013.09:/stec/apps/modules-3.2.9c/Modules/linux/acroread/9.5.1:/stec/apps/modules-3.2.9c/Modules/linux/emacs/24.2:/stec/apps/modules-3.2.9c/Modules/linux/xemacs/21.4.22:/stec/apps/modules-3.2.9c/Modules/linux/nedit/5.5:/stec/apps/modules-3.2.9c/Modules/linux/vim/7.3:/stec/apps/modules-3.2.9c/Modules/linux/tkdiff/4.1.4:/stec/apps/modules-3.2.9c/Modules/linux/vnc/4.6.1:/stec/apps/modules-3.2.9c/Modules/linux/jdk/1.6:/stec/apps/modules-3.2.9c/Modules/linux/smartsvn/6.6.13:/stec/apps/modules-3.2.9c/Modules/linux/svn/1.7.10:/stec/apps/modules-3.2.9c/Modules/linux/make/3.81:/stec/apps/modules-3.2.9c/Modules/linux/perl/5.14.2:/stec/apps/modules-3.2.9c/Modules/linux/python/2.7.3:/stec/apps/modules-3.2.9c/Modules/linux/git/1.9.0
+SGE_EXECD_PORT=9999
+EDITOR=vi
+LANG=en_US.UTF-8
+KDE_IS_PRELINKED=1
+SGE_QMASTER_PORT=5555
+MODULEPATH=/stec/apps/modules-3.2.9c/Modules/linux
+SGE_ROOT=/stec/apps/sge/sge6_2u5
+LOADEDMODULES=silent:tw/license:tw/sge/6.2u5:avery/insight.2012.0410:avery/nvmxactor.1.8c:avery/pcixactor.2.3:avery/pli.2013.0704:questa_cdc/10.3e:questa_sim/10.3c:incisiv/13.10.011:verdi/2013.09:acroread/9.5.1:emacs/24.2:xemacs/21.4.22:nedit/5.5:vim/7.3:tkdiff/4.1.4:vnc/4.6.1:jdk/1.6:smartsvn/6.6.13:svn/1.7.10:make/3.81:perl/5.14.2:python/2.7.3:git/1.9.0
+ARCD_LICENSE_FILE=7434@twlic
+LM_LICENSE_FILE=4071@samatrix02:1717@twlic:1717@samatrix02:7777@twlic:4071@twlic:1700@twlic:9999@twlic:5219@twlic:8888@samatrix02:1111@twlic:5678@twlic:4071@10.82.93.24:2100@samatrix02:3333@twlic:9898@twlic:6534@twlic:6534@samatrix02:1661@samatrix02:5280@samatrix02:1234@twlic
+SSH_ASKPASS=/usr/libexec/openssh/gnome-ssh-askpass
+SHLVL=3
+HOME=/stec/tw/users/schen
+OSTYPE=linux
+SGE=/stec/apps/sge/sge6_2u5/default/spool
+ANLS_LICENSE_WAIT=60_86400
+VENDOR=unknown
+MACHTYPE=x86_64
+LOGNAME=schen
+QTLIB=/usr/lib64/qt-3.3/lib
+CVS_RSH=ssh
+STEC_ENV=OK
+PALLADIUM=twlogin04
+SSH_CONNECTION=10.92.225.123 59396 192.168.196.56 22
+CDS_LIC_FILE=5280@samatrix02:5280@twlic
+MODULESHOME=/stec/apps/modules-3.2.9c/Modules/3.2.9
+DISPLAY=:5.0
+SGE_CLUSTER_NAME=twcluster
+G_BROKEN_FILENAMES=1
+NOVAS_LICENSE_FILE=27000@salic01
+XAUTHORITY=/stec/tw/users/schen/.Xauthority
+_=/usr/bin/gnome-session
+GTK_RC_FILES=/etc/gtk/gtkrc:/stec/tw/users/schen/.gtkrc-1.2-gnome2
+SESSION_MANAGER=local/twlogin04:/tmp/.ICE-unix/29254
+GNOME_KEYRING_SOCKET=/tmp/keyring-DS3EH7/socket
+GNOME_DESKTOP_SESSION_ID=Default
+DESKTOP_STARTUP_ID=
+WINDOWID=5938099
+COLORTERM=gnome-terminal
+CALYPTOD_LICENSE_FILE=33104@samatrix02.stec-inc.ad
+LD_INCLUDE_PATH=/stec/tw/users/schen/tool/gcc-arm-none-eabi-4_9-2015q2/arm-none-eabi/include:/stec/tw/users/schen/local/include
+AVERY_HOME=/stec/apps/avery/insight_2012_0410
+AVERY_PCI=/stec/apps/avery/pcixactor-2.3
+AVERY_PIC=/stec/apps/avery/pcixactor.2.3.1011.r1
+AVERY_PLI=/stec/apps/avery/avery_pli-2013_0704
+AVERY_AHB=/stec/apps/avery/ahbxactor-1.5.0814/scripts
+AVERY_APB=/stec/apps/avery/apbxactor-1.0.1022/scripts
+AVERY_AXI=/stec/apps/avery/axixactor-1.5.1016/scripts
+AVERY_NVME=/stec/apps/avery/nvmxactor-1.8c
+AVERY_SOP=/stec/apps/avery/sopxactor-1.6
+QUESTA_HOME=/stec/apps/mentor/questa_sim_10.3c/questasim
+MODEL_TECH=/stec/apps/mentor/questa_sim_10.3c/questasim/bin
+MTI_HOME=/stec/apps/mentor/questa_sim_10.3c/questasim
+UVM_HOME=/stec/apps/mentor/questa_sim_10.3c/questasim/verilog_src/uvm-1.1d
+ABV_VM_UTIL=/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/soc_verification_lib/abv_formal/abv_vm_util_v2.5_beta3
+EANALYZER_ARCH=linux
+EANALYZER_HOME=/stec/apps/cadence/INCISIV13.10.011/components/ea
+FV_KIT_LIB=/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/soc_verification_lib
+INCISIVE_HOME=/stec/apps/cadence/INCISIV13.10.011
+IPCM_HOME=/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit
+IPCM_PATH=/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit:/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/util_lib:/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/ovm_ex_lib:/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/ovm_ex_lib/erm_ex_lib:/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/ovm_ex_lib/e_ex_lib:/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/ovm_ex_lib/mixed_ex_lib:/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/svm_lib/sc_tlm_verification_lib:/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/svm_lib/sc_tlm_design_lib:/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/ovm_ex_lib/sv_mb_ex_lib:/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/ovm_ex_lib/sv_cb_ex_lib:/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/designs:/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/soc_verification_lib:/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/abv_formal:/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/misc:/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/misc/links
+KIT_SETUP_DONE=1
+NCPROTECT_KEYDB=/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/misc/ip_keys
+OVM_EX_LIB=/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/ovm_ex_lib
+SBUILDER_HOME=/stec/apps/cadence/INCISIV13.10.011/components/sb
+SOCV_KIT_HOME=/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit
+SPECMAN_ARCH=linux64
+SPECMAN_DIR=/stec/apps/cadence/INCISIV13.10.011/components/sn/linux64
+SPECMAN_HOME=/stec/apps/cadence/INCISIV13.10.011/components/sn
+SPECMAN_PATH=/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/soc_verification_lib/abv_formal/abv_vm_util_v2.5_beta3:/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/soc_verification_lib/abv_formal:/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/soc_verification_lib/e_ex_lib:/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/util_lib:/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/misc/links:/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/ovm_ex_lib:/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/ovm_ex_lib/erm_ex_lib:/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/ovm_ex_lib/e_ex_lib:/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/soc_verification_lib:/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/misc
+VMANAGER_HOME=/stec/apps/cadence/INCISIV13.10.011/components/vm
+VMANAGER_PATH=/stec/apps/cadence/INCISIV13.10.011/kits/VerificationKit/soc_verification_lib/e_ex_lib/cdn_vm_ext/e
+VRST_PATH=/stec/apps/cadence/INCISIV13.10.011/components/vm/bin:/stec/apps/cadence/INCISIV13.10.011/components/vm/linux:/stec/apps/cadence/INCISIV13.10.011/components/ea/bin:/stec/apps/cadence/INCISIV13.10.011/components/ea/linux:/stec/apps/cadence/INCISIV13.10.011/components/sn/bin:/stec/apps/cadence/INCISIV13.10.011/components/sn/linux:/stec/apps/cadence/INCISIV13.10.011/components/sb/bin:/stec/apps/cadence/INCISIV13.10.011/components/sb/linux
+VR_SB_ENABLE_RUNNER=yes
+DEBUSSY_HOME=/stec/apps/novas/verdi_2013.09
+NOVAS_IDLE_LICENSE_CHECKBACK=60
+NOVAS_IDLE_LICENSE_CHECKBACK_SILENCE=60
+VERDI_HOME=/stec/apps/novas/verdi_2013.09
+SYNOPSYS=/stec/apps/synopsys/
+GHS_LMPORT=2009
+ecs_trace_on_0=ARM_R5
+tarmac_trace_on_0=ARM_R5
+ecs_trace_on_1=ARM_R5
+tarmac_trace_on_1=ARM_R5
+ecs_trace_on_2=ARM_R5
+tarmac_trace_on_2=ARM_R5
+ecs_trace_on_3=ARM_R5
+tarmac_trace_on_3=ARM_R5
+ecs_trace_on_4=ARM_R5
+tarmac_trace_on_4=ARM_R5
+ecs_trace_on_5=ARM_R5
+tarmac_trace_on_5=ARM_R5
+ecs_trace_on_6=ARM_R5
+tarmac_trace_on_6=ARM_R5
+ecs_trace_on_7=ARM_R5
+tarmac_trace_on_7=ARM_R5
+ecs_trace_on_8=ARM_R5
+tarmac_trace_on_8=ARM_R5
+ecs_trace_on_9=ARM_R5
+tarmac_trace_on_9=ARM_R5
+SVN_INST_PATH=/stec/apps/utilities/svn_1.7.10
+PERL_LIB=/stec/apps/utilities/perl_5.14.2/site/lib:/stec/apps/utilities/perl_5.14.2/lib
+PYTHONPATH=/stec/apps/utilities/python_2.7.3/lib/python2.7/site-packages:/stec/apps/utilities/python_2.7.3/lib/python2.7
+ASIC_AREA=/hgst/proj/asic
+RTL_ROOT=
+TB_ROOT=
+ASIC_NAME=columbus
+WORK_AREA=/hgst/proj/asic/columbus/users/schen/coresight_1.7.0.n
+ALWAYS_PROMPT=y
+ASIC_VER=1.7.0
+ASIC_UNIT=columbus_top
+ASIC_REL=/hgst/proj/asic/columbus/releases/1.7.0
+ASIC_BIN=/hgst/proj/asic/columbus/releases/1.7.0/bin
+ASIC_SVN=http://twsvn01/svn/asic/columbus/trunk
+WORK_SIM=/hgst/proj/asic/columbus/users/schen/coresight_1.7.0.n/units/columbus_top/verif/sim
+ASIC_SVN_ROOT=http://twsvn01/svn/asic/columbus
+CORTEXR5_HOME=/hgst/proj/asic/columbus/releases/1.7.0/ip/arm_database/LATEST/Cortex_R5/CORTEXR5_0404_28nmHPM_600MHz/DSM/CORTEXR5_dsm_VsystemV_Linux-64_r1p3-00rel0
+CORTEXM3_HOME=/hgst/proj/asic/columbus/releases/1.7.0/ip/arm_database/LATEST/Cortex_M3/CortexM3_28nmHPM_500MHz/armusers/at008af0/RUN/CortexM3/deliver/dsm/v1.0/CORTEXM3_dsm_VsystemV_Linux-64_r2p1-00rel0
+LMC_HOME=/hgst/proj/asic/columbus/users/schen/coresight_1.7.0.n/units/columbus_top/verif/sim/DSM/LMC_HOME
+ETMR5_HOME=/hgst/proj/asic/columbus/releases/1.7.0/ip/arm_database/LATEST/Cortex_R5/ETMR5/DSM/ETMR5_dsm_VsystemV_Linux-64_t11_v1.0
+DIR_ETMR5=/hgst/proj/asic/columbus/releases/1.7.0/ip/arm_database/LATEST/Cortex_R5/ETMR5/DSM/ETMR5_dsm_VsystemV_Linux-64_t11_v1.0/ETMR5
+MG_LIB=/hgst/proj/asic/columbus/releases/1.7.0/ip/arm_database/LATEST/Cortex_R5/CORTEXR5_0404_28nmHPM_600MHz/DSM/CORTEXR5_dsm_VsystemV_Linux-64_r1p3-00rel0/ModelManager/MMAPI_5.1.0/Linux-64/MM:/hgst/proj/asic/columbus/releases/1.7.0/ip/arm_database/LATEST/Cortex_R5/ETMR5/DSM/ETMR5_dsm_VsystemV_Linux-64_t11_v1.0/ModelManager/MMAPI_5.1.0/Linux-64/MM/:/hgst/proj/asic/columbus/releases/1.7.0/ip/arm_database/LATEST/Cortex_M3/ETMM3_28nmHPM_500MHz/armusers/at009af0/RUN/ETMM3/deliver/dsm/v1.0/CM3ETM_dsm_VsystemV_Linux-64_r2p1-00rel0/ModelManager/MMAPI_5.1.0/Linux-64/MM
+DIR_CORTEXR5=/hgst/proj/asic/columbus/releases/1.7.0/ip/arm_database/LATEST/Cortex_R5/CORTEXR5_0404_28nmHPM_600MHz/DSM/CORTEXR5_dsm_VsystemV_Linux-64_r1p3-00rel0/CORTEXR5
+DIR_CORTEXR5CRFTESTER=/hgst/proj/asic/columbus/releases/1.7.0/ip/arm_database/LATEST/Cortex_R5/CORTEXR5_0404_28nmHPM_600MHz/DSM/CORTEXR5_dsm_VsystemV_Linux-64_r1p3-00rel0/testing
+MTI_VCO_MODE=64
+CM3ETM_HOME=/hgst/proj/asic/columbus/releases/1.7.0/ip/arm_database/LATEST/Cortex_M3/ETMM3_28nmHPM_500MHz/armusers/at009af0/RUN/ETMM3/deliver/dsm/v1.0/CM3ETM_dsm_VsystemV_Linux-64_r2p1-00rel0
+DIR_CORTEXM3=/hgst/proj/asic/columbus/releases/1.7.0/ip/arm_database/LATEST/Cortex_M3/CortexM3_28nmHPM_500MHz/armusers/at008af0/RUN/CortexM3/deliver/dsm/v1.0/CORTEXM3_dsm_VsystemV_Linux-64_r2p1-00rel0/CORTEXM3
+DIR_CM3ETM=/hgst/proj/asic/columbus/releases/1.7.0/ip/arm_database/LATEST/Cortex_M3/ETMM3_28nmHPM_500MHz/armusers/at009af0/RUN/ETMM3/deliver/dsm/v1.0/CM3ETM_dsm_VsystemV_Linux-64_r2p1-00rel0/CM3ETM
+PERL5LIB=/hgst/proj/asic/columbus/users/schen/coresight_1.7.0.n/bin/coresight_tool:/hgst/proj/asic/columbus/users/schen/coresight_1.7.0.n/bin/coresight_tool/input_format
+/stec/tw/users/schen/prj/smartdv/lib/smtdv_common/test/sysc/INCA_libs/irun.lnx8664.13.10.nc/svpp.ts
+CDS_ARCH=lnx86
+NCRUNMODE=irun:./INCA_libs/irun.lnx8664.13.10.nc
+IRUNBATCH=FALSE
+IMPERAS_PORT_FILE=.vsp_ovp_gdb_port
+TCL_LIBRARY=/stec/apps/cadence/INCISIV13.10.011/tools/inca/files/tcl/library
+Runtime command line arguments:
+argv[0]=irun
+argv[1]=-f
+argv[2]=run.f
+argv[3]=-64bit
+argv[4]=-access
+argv[5]=rwc
+argv[6]=-status
+argv[7]=-top
+argv[8]=test
+argv[9]=-covoverwrite
+argv[10]=-coverage
+argv[11]=b:u
+argv[12]=+nccoverage+functional
+argv[13]=+notchkmsg
+argv[14]=+notimingchecks
+argv[15]=+no_notifier
+argv[16]=+define+SVA
+argv[17]=+incdir+./
+argv[18]=-sysc
+argv[19]=xbus_event.cpp
+argv[20]=xbus_slave_listener.cpp
+argv[21]=./test_dpi_xbus_import.sv
+argv[22]=-input
+argv[23]=simvision.tcl
+argv[24]=-batch
+216 profile - 100
+          CPU/Mem usage: 0.110 sys,  0.220 user,  216.74M sys,  0.00M vm
+217 VC callback profile - scalar:0 vector:0
+218 Thu Aug 13 15:58:23 2015
+219 pliAppInit
+220 *Verdi3* : Loading SystemC dumping library libsscore_ius131_sc_gcc44.so.
+221 *Verdi3* : Enable Parallel Dumping.
+222 pliAppMiscSet: New Sim Round
+223 LIBSSCORE=found /stec/apps/novas/verdi_2013.09/share/PLI/IUS/LINUX64/libsscore_ius131.so through $LD_LIBRARY_PATH setting.
+224 Sim process exit

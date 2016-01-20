@@ -1,0 +1,37 @@
+irun(64): 12.10-s005: (c) Copyright 1995-2012 Cadence Design Systems, Inc.
+TOOL:	irun(64)	12.10-s005: Started on Mar 04, 2014 at 15:18:08 CST
+irun
+	-f run.f
+		-64bit
+		-access rwc
+		-status
+		apb_slave_unit_test.sv
+		-top apb_slave_unit_test
+		-covoverwrite
+		-coverage b:u
+		+nccoverage+functional
+		+notchkmsg
+		+notimingchecks
+		+no_notifier
+		+define+SVA
+		+incdir+../
+		+incdir+/stec/tw/users/schen/prj/svunit-code/svunit_base
+Loading snapshot worklib.apb_slave_unit_test:sv .................... Done
+ncsim> source /stec/apps/cadence/INCISIV12.10.005/tools/inca/files/ncsimrc
+ncsim> run
+Simulation interrupted at 225765175 NS + 0
+ncsim> exit
+
+coverage setup:
+  workdir  :  ./cov_work
+  dutinst  :  apb_slave_unit_test(apb_slave_unit_test)
+  scope    :  scope
+  testname :  test
+
+coverage files:
+  model(design data) :  ./cov_work/scope/icc_48ea4957_00000000.ucm (reused)
+  data               :  ./cov_work/scope/test/icc_48ea4957_00000000.ucd
+  cpu                :  0.0s system + 0.0s user = 0.0s total
+ncsim: Memory Usage - 24.6M program + 90.3M data = 114.9M total
+ncsim: CPU Usage - 0.1s system + 4.5s user = 4.5s total (13.5s, 33.3% cpu)
+TOOL:	irun(64)	12.10-s005: Exiting on Mar 04, 2014 at 15:18:21 CST  (total: 00:00:13)

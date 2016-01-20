@@ -124,9 +124,9 @@ class uart_base_test
     uart_rst_model.add_component(this);
     uart_rst_model.set_rst_type(ALL_RST);
     uart_rst_model.show_components(0);
-  endfunction
+  endfunction : end_of_elaboration_phase
 
 
-endclass
+endclass : uart_base_test
 
 `endif // __UART_TEST_SV__

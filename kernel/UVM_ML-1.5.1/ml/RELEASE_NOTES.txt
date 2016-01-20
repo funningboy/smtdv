@@ -1,0 +1,457 @@
+UVM_ML 1.5.1 Release Notes
+==========================
+
+August , 2015
+
+
+General Overview
+----------------
+
+Universal Verification Methodology Multi-Language (UVM-ML) provides a modular 
+solution for integrating verification components written in different 
+languages into a unified and coordinated verification environment. It consists 
+of an open source library that enables such integrations, and can be extended 
+to support additional languages and methodologies.
+
+This release of the UVM-ML implementation is the result of collaboration work 
+between Advance Micro Devices, Inc., and Cadence Design Systems, Inc. It 
+expands on the mature technology provided by Cadence in Incisive and in 
+previous UVM-ML postings on UVMWorld. It is provided as open source under the 
+Apache 2.0 license, and is referred to as UVM-ML Open Architecture (UVM-ML-
+OA).
+
+This package is simulator independent, runs on multiple simulators, and is 
+intended to serve as a basis for the verification community to collaboratively 
+expand and evolve the multi-language verification methodology. It is currently 
+available for early access and should not be considered complete. 
+
+This distribution includes the following main elements
+- Backplane implementation
+- Frameworks and adapters (3 FWs supported now: UVM-SV, UVM-e, and UVM-SC)
+- A few demos (showing all FWs interacting) and numerous examples 
+- Docs directory with a Reference manual, User Guides and other documents
+
+
+Where to Find Information
+-------------------------
+
+Point your HTML browser to the landing page ml/README.html. It gives a 
+hyperlinked list of all relevant material and suggests where to start reading 
+from.
+
+To install the package, open ml/README_INSTALLATION.txt and follow directions
+there. The required tools and supported version numbers are listed there too.
+
+For feedback or questions: send email to support_uvm_ml@cadence.com
+
+Platforms and Simulators
+------------------------
+- This release was tested only on the Linux operating system
+- This release of UVM-ML should run with simulators compliant with 
+  IEEE 1800 (SystemVerilog), IEEE 1647 (e), and IEEE 1666 (SystemC).
+- This release works with the following simulators:
+     Cadence Incisive, Accellera SystemC, Synopsys VCS, Mentor Questa
+  Combinations of these simulators are supported to enable running 
+  multiple frameworks in various simulator configurations.
+
+New in version 1.5.1
+----------------------
+-	Early adopters version for UVM_SV1.2 with Incisive. Note:
+    -       The demo script of each example has an extra parameter for defining the version (1.1d is the default).
+    -       For irun users: if you want to select UVM-SV 1.2, you should use the following f file: sv_1.2_options.[32|64].f. Note that for working with UVM-SV 1.1d, you should use sv_1.1_options.[32|64].f, however the old name of the f file (sv_options.[32|64].f) is supported for backwards compatibility and uses 1.1.d. 
+    -       mltypemap does not support UVM-SV 1.2 yet.
+    -       For using the tcl debug commands with UVM-SV 1.2, you must currently source this tcl file explicitly by specifying -input
+${UVM_ML_HOME}/ml/facilities/debug/uvm_ml_debug.tcl on the command line.
+
+
+-	UVM-ML tcl debug commands are now available from Specman with all supported simulators.
+-	All tcl debug commands are renamed: they all start with uvm_ml  common prefix,  followed after space by the command name itself, for example: uvm_ml_phase is renamed
+  to 'uvm_ml phase'. However, the old names are kept for backwards compatibility. The command ?uvm_ml trace_register? may be called by alias ?uvm_ml trace_register_tlm?.
+
+-	Binary-only pre-compiled UVM-SC parts for Cadence Incisive were eliminated from the package 
+
+-	A new use-case is added to the examples demonstrating the layering uvm_reg on top of a SystemC Transactor using UVM_ML OA. It resides under:
+$UVM_ML_HOME/ml/examples/use_cases/side_by_side/sc_reusable_transactor_with_uvm_reg.
+-	The example use case under: $UVM_ML_HOME/ml/examples/use_cases/sv_over_e is extended and now uses two Sequences instead of one. One in SV and one in e, driven by a virtual sequencer.
+
+New in version 1.5
+------------------
+- The following debug TCL commands are implemented for IES:
+  - uvm_ml_print_connections enables printing all the ML connections
+  - uvm_ml_print_tree enables printing UVM-ML-OA hierarchies, including cross-framework ones
+
+  - uvm_ml_trace_register enables tracing of TLM ports and sockets submitted 
+    for UVM-ML registration
+- The Tcl based debug commands are now sourced automatically by irun
+- The Tcl version is now limited to 8.4. Using another versions will result in compilation error.
+
+- The following new features were added:
+  - The test can now be selected from the command line using 
+    +UVM_TESTNAME=[framework-identifier:]<test_class>
+    If provided on the command line this will override the test name 
+    provided in uvm_ml_run_test().
+  - Added support for passing tlm_generic_payload transactions via 
+    analysis ports
+  - Cadence Incisive simulator reset is now supported.
+  - Added automated synchronization of the OSCI SystemC framework with a master framework
+  - Added support for sharing uvm_events and uvm_barriers between UVM-SV and UVM-SC
+  - Allowed ML-registering SC TLM2 sockets in sc_main()
+
+- The following enhancements were made to documentation and examples:
+  - New User Guide and Reference Manual. Numerous other documentation enhancements
+  - The HTML documentation has new reference documentation for the sequence 
+    layering primitives. It can be accessed from the landing page in 
+    ml/docs/UVM_ML_DOCS.html.
+  - The examples were reorganized to make them more accessible. All examples are 
+    under $UVM_ML_HOME/ml/examples. Subdirectory "features" includes small 
+    feature oriented examples while "use_cases" contains more complex integrated examples.
+  - Dry run option was added for running the 3-step flow (without irun) for the sv<-->e examples
+  - The examples can now be activated from any directory
+  - -gui option is now supported for all IES targets in demo.sh
+
+- The following modifications were made in installation and setup of UVM-ML OA:
+  - The setup scripts created during UVM-ML-OA installation, override existing environment 
+    variables
+  - install_ies.csh builds the UVM-SC OSCI libraries if OSCI_SRC and OSCI_INSTALL are set
+  - run_ies_tests.sh runs OSCI UVM-SC tests if OSCI_INSTALL is set and the OSCI UVM-SC libraries were previously built
+  - The debug TCL extension library is now built by default for Incisive only. 
+    --build-tcl-debug/--no-tcl-debug parameters were introduced into install.csh
+  - --build-backplane-bundle/--no-backplane-bundle install.csh parameters were renamed into 
+     --build-cdns-backplane-loader/--no-cdns-backplane-loader. 
+
+
+New in version 1.4.4
+--------------------
+
+*** Note that the first three changes might impact backward compatibility ***
+
+- Introduced a change in IES -sv_lib option usage, to enable some enhancements.
+  The UVM SV users should specify on the command line the UVM SV adapter library 
+  (libuvm_sv_ml.so) instead of the bundled library (libml_uvm.so). Also, the  
+  backplane shared library libuvm_ml_bp.so should not be explicitly specified on 
+  the command line:
+    Old usage:  '-sv_lib .../libml_uvm.so  -sv_lib .../libuvm_ml_bp.so'
+    New usage:  '-sv_lib ${UVM_ML_HOME}/ml/libs/uvm_sv/libuvm_sv_ml.so'
+  The files ml_options.*.f (used by IES irun) were updated accordingly.
+
+- The e macro uvm_ml_stub_unit was changed: it now directly sets unit attributes 
+  hdl_path() and agent(), thus saving the user a need to add auxiliary string 
+  fields. If you use this macro, you need to modify the 
+  configuration code of both the instantiated e unit and the foreign 
+  component instantiating it. Also added an example to demonstrate usage of 
+  uvm_ml_stub_unit, located in ml/examples/features/stub_unit/sv_e
+  For more information see uvm_ml_stub_unit in the Integrator User Guide.
+
+- irun option-file names were changed, and their content modified: 
+  ml/run_utils/irun_uvm_ml.*.f changed to ml/run_utils/ml_options.*.f (*=32 | 64)
+  This would only impact users who made use of these files in their own IES 
+  irun invocation scripts. See the next bullet for more details.
+
+- irun_uvm_ml.*.f option files were reorganized (including a name change):
+  IES irun invocation options were grouped into several option files, 
+  reflecting the usage context, and adding comments to clarify their meaning 
+  and impact. The new option files are: 
+      ml_options.*.f, sv_options.f, sc_options.*.f, e_options.*.f   
+  (* stands for either 32 or 64). As part of this change, the older irun 
+  option files irun_uvm_ml.*.f have been removed. Also removed the option 
+  "-access +rw" from the ml_options.*.f file to improve run time performance. 
+  If you have used the older versions of these files, please review the 
+  content of the new ones and refine your irun invocation process to use them. 
+  See the Integrator User Guide for more details.
+
+- Added the "Phase Debug" feature, for setting breakpoints at the beginning 
+  or end of UVM-ML phases (see the Integrator User Guide for details). 
+  Currently this works only for IES.
+
+- Added support for the generic UVM SV syntax, uvm_config_db#(T), so that 
+  it now works also for ML configuration. The predefined integral and 
+  string SV types, uvm_bitstream_t and uvm_object are supported automatically.
+  There is also a new macro that allows the user to share the 
+  user-defined types (e.g. uvm_config_db#(packet)). See the Integrator 
+  User Guide for details.
+
+- Improved the way to run the demo examples and to learn how to run UVM-ML:
+  The main teaching examples, located under ml/examples, all have a demo.sh 
+  script in them. This script was expanded to provide more options, including 
+  a dry-run option to list the commands and flags used to run.
+  Use "% demo.sh -help" or see the Integrator User Guide for details.
+
+- Renamed the 'prod_cons' examples to 'basic', to highlight these as the 
+  most basic examples to start learning from. The 3 basic examples are: 
+  sc_sv, sc_sv_e, sv_e. All are located in $UVM_ML_HOME/ml/examples/basic/
+
+- Enhanced sequence layering capabilities: fields of a calling SV sequence 
+  are updated when the called e sequence is done. Also fixed some issues with
+  the primitives templates for sequence_layering.
+
+- Reduced the amount of ML enabling modifications introduced into the local 
+  version of UVM-SV (1.1d), by enhancing the UVM-SV adapter implementation.
+
+- Improved the handling of UVM-ML bitness: once users select 32 or 64 bit
+  mode, the library and all examples will run in that mode. Selection can be
+  done by running install* scripts at install time, or later by running the 
+  resulting setup* scripts. All these scripts reside in $UVM_ML_HOME/ml/. 
+  (Note: Advanced users can see how env. variables are used in those scripts).
+
+- Enhanced the test_env.csh script to provide more validity testing of the 
+  user's environment, and to provide better suggestions how to fix issues.
+
+- The troubleshooting section moved from the Quick Start to the 
+  Integrator User Guide, and some new troubleshooting items were added.
+
+(Note: news for version 1.4.3 was merged with the news for version 1.4.4) 
+
+New in version 1.4.2
+--------------------
+- This version is fully qualified with IES version 14.1
+- Enabled usage of Cadence UVM extensions on top of UVM-ML OA (see the new 
+  examples under $UVM_ML_HOME/ml/examples/features/cdns_addons)
+- Added support for UVM ML configuration tracing on the SV side, activated 
+  by the +UVM_CONFIG_DB_TRACE command-line option
+- UVM-SC has been updated with a standalone phase controller that can run 
+  through the common and UVM phases. In addition user defined schedules, which 
+  can be synchronized with the standard UVM phases, are supported as well.
+- Enhanced UVM-SC to support run_test() in the SC-standalone mode (not 
+  collaborating with other frameworks)
+- Added new backplane API functions enabling the time notification (wakeup)
+  service and updated the backplane API version number  
+- Updated the sequence layering examples. The code is simplified and type
+  conversion using mltypemap is demonstrated
+- Eliminated the UVM SV warnings of the kind
+    ncvlog: *W,UDBGVM (...): Prototype of function 'get_state' did not match 
+            with the supported UVM version. 
+    function uvm_phase uvm_phase::get_parent();
+  and 
+    ncsim: *W,COMCFA: Method cdns_uvmapi::getScratchLength did not pass 
+           compliance check.
+
+- This release introduces a mechanism to recognize whether OSCI was compiled 
+  with pthreads and compile the custom sc_simcontext.cpp accordingly
+- The default installation is now 32bit. If 64bit installation is used, one
+  should specify "env BITS=64" in the demo or make command line e.g.
+  % env BITS=64 make ies
+  % env BITS=64 demo.sh VCS
+
+New in version 1.4.1
+--------------------
+- New examples showing basic TLM communication, see
+  $UVM_ML_HOME/ml/examples/features/tlm1/prod_cons/*
+  $UVM_ML_HOME/ml/examples/features/tlm2/prod_cons/*
+
+- Default installation is 32bit instead of 64bit
+  To install on 64bit machine use the following:
+  % source $UVM_ML_HOME/ml/install_ies.csh --64bit
+
+- Setup and install scripts renamed
+  All setup*.sh scripts were renamed install_*.csh
+  The installation environment is captured in setup_32.csh or setup_64.csh 
+  (previously setup_capture.sh) and setup_32.mk or setup_64.mk (previously 
+  setup.captured.mk)
+  The test_install.sh script was renamed test_env.csh
+
+
+New in version 1.4
+------------------
+- UVM-SV library upgrade: This release includes UVM-1.1d, enabled for work 
+  in context of UVM-ML. It replaces the previous version of UVM-SV 
+  (UVM-1.1c) which was provided in previous UVM-ML Open Source releases.
+- A portable UVM-SC adapter was added, enabling usage of UVM-ML with the 
+  vendor-specific implementations of SystemC (currently verified only with 
+  Mentor Questa). The feature set supported by this adapter is a subset of 
+  the features provided by the Cadence Incisive (ncsc) and Accellera 
+  SystemC (osci) adapters.
+- Sequence layering methodology and examples were added, demonstrating 
+  best known practices for instantiating a verification component in one 
+  framework into another framework, and driving sequences and sequence 
+  items from one framework into another. 
+  Documentation can be found in the examples directories:
+    ml/examples/sequence_layering/e_over_sv/ml_sequence_layering_e_sv.pdf
+    ml/examples/sequence_layering/e_over_sv/ml_sequence_layering_sv_e.pdf
+- Enabled user-defined child proxy components in unified ML hierarchy. 
+  This feature enables, in particular, ML sequence layering.
+- Made some performance improvements in the backplane and the SystemC 
+  adapters.
+- OSCI SystemC processes are launched now at the beginning of the run phase 
+  (in previous versions of UVM-ML OA, the processes were launched at the end 
+  of the start_of_simulation phase).  
+- The examples directory structure was simplified by removing the demos 
+  directory. All the examples are now directly under the "examples" 
+  directory, grouped by topics. In addition a soft link was added to the 
+  tests directory (called "features"). All tests can be used as 
+  feature-oriented small examples.
+- The UVM-e framework adapter was repartitioned to open to users a public 
+  part of the implementation
+- A simple analysis port example was added to the tests directory:
+  tlm1/sc_sv/sv_with_sc_ref_model. The example demonstrates how two SV 
+  monitor classes are passing packets through analysis ports to an SC
+  reference model.
+
+- Note: libml_uvm.so is now being built per IES version and is located at
+  $UVM_ML_HOME/ml/libs/backplane/ies_<version>/
+  Users may need to adjust their integration scripts to point to the new 
+  location
+
+
+New in version 1.3
+------------------
+- UVM-ML configuration: 
+  Support for multi language configuration was added. 
+  + Information can be found in the "Configuring a Multi-Framework
+    Testbench" section in the IntegratorUserGuide.pdf
+  + For code examples demonstrating configuration, refer to 
+    demos 4, 5 and 6 in the QuickStart.pdf.
+- Scripts and tools: 
+  + The library layout supports in-place compilation with two g++ 
+    versions: g++ 4.4 and g++ 4.1
+  + setup.sh captures environment variable settings for future use.
+    All relevant environment variables, those set by users and those set
+    by setup.sh itself, are captured into two files: 
+        setup_32.csh or setup_64.csh 
+    and setup_32.mk or setup_64.mk (Makefile format)
+    Users can later rerun these files to get the desired setup, either 
+    manually or by integrating them into existing user setup scripts. 
+  + Initial support for IES 13.2 was added into scripts 
+    (and in the library layout)
+  + the switch -scAllowSCFromPLI is now mandatory for IES users.
+  + spinlock_pt.hpp and spinlock_nt.hpp were added to UVM-ML-OA's copy 
+    of boost. 
+- Documentation changes
+  + A new document README.html was added as a landing page. It has links 
+    to all other documents and suggests where to start reading.
+  + Installation and setup directions are now in README_INSTALLATION.txt 
+    (in place of being in the QuickStart)
+  + Added a section on configuration in the Integrator User Guide
+- Demos and examples:
+  + Added new demo to the unified hierarchy demos showing e IP 
+    under SV environment (demo 6 in QuickStart.pdf)
+  + Added configuration examples in the unified hierarchy demos (demos 5 
+    and 6 in QuickStart.pdf)
+- The Make files invoking the tests and demos have a new "help" option 
+  (e.g. "make help"), that prints the various targets and invocation 
+  modes they support.
+
+Notice: Two environment variables have changed the location they should
+  point to. If you have integrated these variables into shell scripts 
+  in previous UVM-ML 1.2.* releases, you should change their definitions 
+  when using UVM-ML 1.3 as follows:
+  1. OSCI_SRC should point to the root of the ASI SystemC package. E.g., 
+          % setenv  OSCI_SRC  .../systemc/systemc-2.2.0
+     (the previous definition had the "/src" sub directory appended)
+  2. TLM2_INSTALL should point to the root of the TLM2 package. E.g., 
+          % setenv  TLM2_INSTALL  .../TLM-2009-07-15    ## for SC 2.2
+          % setenv  TLM2_INSTALL  $OSCI_SRC             ## for SC 2.3
+     (the previous definition had "/include/tlm" sub directory appended)
+
+Known Limitations and Bugs
+- Support for g++ 4.1 is still partial; some tests still fail with it 
+- There are several limitations around unified hierarchy. 
+  + e sub-trees instantiated under another language component have 
+    limitations (in the areas of messages, agent property 
+    propagation, and method ports). 
+  + SystemC "sandwich" hierarchies are not supported:
+    "sandwich" hierarchies with multiple layers of SystemC (e.g. SC-SV-SC 
+     or SC-e-SC) would result in error messages (the pre-run phases of 
+     the top hierarchical SC component will be executed multiple times)
+  + Parent components (in SystemVerilog or e) cannot instantiate multiple 
+    instances of a SystemC child components
+- Note: The demo examples show working usage of unified hierarchy.
+    Follow the examples shown to avoid these limitations.
+
+
+New in version 1.2.3
+--------------------
+- Supports two versions of the Accellera SystemC simulator (OSCI 2.3 was 
+  added, in addition to OSCI 2.2). See the QuickStart for details on how 
+  to choose between them.
+- Runs with Incisive 12.2 and 13.1 (version IES 12.20-s012 and up, 
+  IES 13.1-s001 and up). 
+- The UVM-e adapter is now placed according to IES_VERSION 
+  (.../libs/uvm_e/12.2 or .../libs/uvm_e/13.1). Formerly, there was no 
+  version-specific separation.
+- Error handling in backplane and adapters was improved: Clear error 
+  messages were added, errors are propagated back to the initiator and 
+  assert statements were removed to allow graceful exit.
+- A few unified hierarchy issues were fixed, including better handling of 
+  the instantiation of a SystemVerilog component in a foreign language 
+  hierarchy.
+- Duplicate specification of components as "top" is now caught and reported 
+  as an error (previously specifying a top component on both the IES
+  command line and procedurally in the SystemVerilog task uvm_ml_run_test()
+  caused a warning but execution continued).
+- A few changes were made in phasing:
+  o A common_services framework was added to the backplane containing 
+    phasing services.  The common phasing service is set as the default 
+    phasing service (currently UVM-SV adapter overrides this).
+  o The default backplane phasing (now in common_services) was enhanced 
+    to support post-run phases. Removed phase_ready_to_end broadcasting 
+    for non-runtime phases. 
+  o The UVM-SV adapter slave phasing has been modified to support 
+    phase_start/phase_end/phase_ready_to_end/phase_ended actions and 
+    post-run phasing.
+  o Removed the capability to select between sequential pre-run and 
+    non-sequential pre-run. Pre-run now always executes sequentially.
+- A few changes were made in the Framework Adapters and their API. These 
+  changes should not impact end users, but adapter developers moving from 
+  previous versions to this version will have to adjust their code. 
+  The changes are listed in the file ml/adapter-updates.txt
+
+New in version 1.2.2
+--------------------
+- A few new documents were added in the ml/docs/ directory:
+       IntegratorUserGuide.pdf, AdapterDeveloperGuide.pdf
+- Added support for unified hierarchy, enabling component hierarchies 
+  where parent and child are from different frameworks. Added tests and 
+  new demos demonstrating this. Information on this can be found in the
+  Integrator's Guide (the chapter on "Constructing an ML Testbench") and 
+  in the white paper.
+- Some clarifications and simplifications were added to the QuickStart and 
+  the install & run demos process (e.g., it is now easier to build only for 
+  a selected simulator).
+- The default behavior for non-blocking TLM2 sockets is modified such that
+  transaction mapping is on (i.e. the original data structure is updated by 
+  the data returned on the backward path).
+- The backplane now checks the consistency of ports and sockets and 
+  produces error messages if an invalid binding is attempted.
+- The UVM-e adapter is part of the UVM-ML package and should be built by 
+  the integrator (see more details in the "UVM-ML Integrators User Guide")
+- The signature of uvm_ml.connect_names() in UVM-e was changed to return a
+  success/failure status. 
+
+New in version 1.2
+------------------
+This release has significant enhancements over the earlier 1.1 version.
+The main enhancements and new features are:
+- Simulator independent and tested to run on several simulators
+- A new architecture, highly modular and extensible, providing a Backplane 
+  that connects Frameworks (where Frameworks can be of different languages 
+  or methodologies)
+- Three examples of language frameworks are provided: UVM-SV, UVM-e, UVM-SC
+- Enables creating a unified hierarchy of components, where parent and 
+  child can reside in different frameworks
+- Supports TLM1 and TLM2 communication between all the provided frameworks
+- Enhanced synchronization of test phases and delegation of phasing control 
+  to a designated framework
+- Provided complete with code openly available under the Apache 2.0 license
+- and more... 
+
+
+//----------------------------------------------------------------------
+//   Copyright 2013-2014 Cadence Design Systems, Inc.
+//   Copyright 2013-2014 Advance Micro Devices, Inc
+//   All Rights Reserved Worldwide
+//
+//   Licensed under the Apache License, Version 2.0 (the
+//   "License"); you may not use this file except in
+//   compliance with the License.  You may obtain a copy of
+//   the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in
+//   writing, software distributed under the License is
+//   distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+//   CONDITIONS OF ANY KIND, either express or implied.  See
+//   the License for the specific language governing
+//   permissions and limitations under the License.
+//----------------------------------------------------------------------
+

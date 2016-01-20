@@ -45,7 +45,7 @@ class uart_rx_agent#(
       txmon= ::type_id::create("txmon", this);
       txmon.seqr = seqr;
     end
-  endfunction
+  endfunction : build_phase
 
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
@@ -55,7 +55,7 @@ class uart_rx_agent#(
     if(get_is_active()) begin
       seqr.mon_get_port.connect(fifo_mon_sqr.get_export);
     end
-  endfunction
+  endfunction : connect_phase
 
   virtual function void end_of_elaboration_phase(uvm_phase phase);
     super.end_of_elaboration_phase(phase);
@@ -63,10 +63,8 @@ class uart_rx_agent#(
     txmon.cfg = cfg;
     txmon.has_tx = 1;
     mon.has_rx = 1;
-  endfunction
+  endfunction : end_of_elaboration_phase
 
-
-
-endclass
+endclass : uart_rx_agent
 
 `endif  // __UART_RX_AGENT_SV__

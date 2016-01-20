@@ -1,0 +1,439 @@
+##
+## -------------------------------------------------------------
+##    Copyright 2013 Cadence.
+##    All Rights Reserved Worldwide
+##
+##    Licensed under the Apache License, Version 2.0 (the
+##    "License"); you may not use this file except in
+##    compliance with the License.  You may obtain a copy of
+##    the License at
+##
+##        http://www.apache.org/licenses/LICENSE-2.0
+##
+##    Unless required by applicable law or agreed to in
+##    writing, software distributed under the License is
+##    distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+##    CONDITIONS OF ANY KIND, either express or implied.  See
+##    the License for the specific language governing
+##    permissions and limitations under the License.
+## -------------------------------------------------------------
+##
+UVM_ML_BITS = 64
+# sean
+UVM_SV_VERSION ?= 1.1
+ifeq (${UVM_SV_VERSION},1.1)
+UVM_ML_SV_VERSION = 1.1d
+else
+UVM_ML_SV_VERSION = ${UVM_SV_VERSION}
+override EXTRA_VLOG_OPTS += +define+UVM_VERSION_1_2
+endif
+
+ifeq ($(DEBUG),yes) # If invoked in debug mode
+UVM_ML_CC_DEBUG_FLAGS=-g -O0
+QUESTA_DEBUG_ARGS=-classdebug -stackcheck
+SCCOM_DEBUG_OPTIONS=${UVM_ML_CC_DEBUG_FLAGS}
+endif
+
+#UVM_ML_SETUP ?= ${UVM_ML_HOME}/ml/setup_latest_${UVM_ML_BITS}.mk
+
+#-include ${UVM_ML_SETUP}
+
+ifndef UVM_ML_LD
+UVM_ML_LD:=$(UVM_ML_CC)
+endif
+
+ifndef OSCI_INSTALL
+-include ${UVM_ML_HOME}/ml/example_utils/osci_version.mk
+endif
+
+ifndef IES_VERSION
+IES_VERSION := $(shell $(UVM_ML_HOME)/ml/tools/get_ies_version.sh)
+endif
+export IES_VERSION
+
+ifndef UVM_ML_COMPILER_VERSION
+UVM_ML_COMPILER_VERSION := $(shell $(UVM_ML_HOME)/ml/tools/get_gcc_version.sh $(UVM_ML_CC))
+endif
+
+
+
+TEST ?= /usr/bin/test
+run: QUESTA_LOG_FILE ?= questa_osci_proc.$(UVM_ML_BITS).log
+run_questa_sc: QUESTA_LOG_FILE ?= questa_sc_proc.$(UVM_ML_BITS).log
+QUESTA_COMP_LOG_FILE ?= questa_comp.$(UVM_ML_BITS).log
+UVM_HOME := ${UVM_ML_HOME}/ml/frameworks/uvm/sv/${UVM_ML_SV_VERSION}-ml
+UVM_HOME_INFO := $${UVM_ML_HOME}/ml/frameworks/uvm/sv/${UVM_ML_SV_VERSION}-ml
+#               the prev. option for UVM_HOME was .../uvm-1.1c/src
+export UVM_HOME
+
+
+ifeq ($(UVM_ML_BITS),64)
+SUBDIR=/64bit
+BIT_OPTION=-64
+SN_BIT_FLAG=-64
+BIT_CFLAGS=-m64 -fPIC
+BEXT=.64
+ALL_OSCI_LIB=${UVM_ML_TEST_RUN_DIR}/liball_osci_questa.64.so
+else
+SUBDIR=
+BIT_OPTION=
+SN_BIT_FLAG=
+BIT_CFLAGS=-m32
+BEXT=
+ALL_OSCI_LIB=${UVM_ML_TEST_RUN_DIR}/liball_osci_questa.so
+endif
+
+
+UVM_ML_OVERRIDE=${UVM_ML_HOME}/ml/libs/backplane/${UVM_ML_COMPILER_VERSION}${SUBDIR}
+export UVM_ML_OVERRIDE
+
+QUESTA_TIME_SCALE= -timescale 1ns/1ns
+
+QUESTA_VLOG_OPTS=$(BIT_OPTION) -suppress 2218,2181 \
+$(EXTRA_VLOG_OPTS) \
++define+USE_UVM_ML_RUN_TEST \
++incdir+${UVM_HOME_INFO}/src \
++incdir+${UVM_HOME_INFO} \
++incdir+${UVM_HOME_INFO}/tlm2 \
++incdir+${UVM_HOME_INFO}/base \
++incdir+${UVM_ML_TEST_SRC_DIR} \
++incdir+${UVM_HOME_INFO}/macros \
++incdir+$${UVM_ML_HOME}/ml/adapters/uvm_sv \
+-sv +acc -l ${QUESTA_COMP_LOG_FILE} ${QUESTA_TIME_SCALE}
+
+
+
+QUESTA_VSIM_OPTS= ${INPUT_CMD} $(BIT_OPTION) -dpioutoftheblue 1 -sv_lib ${UVM_ML_TEST_RUN_DIR}/libuvm_dpi${BEXT} -gblso $${UVM_ML_HOME}/ml/libs/backplane/${UVM_ML_COMPILER_VERSION}${SUBDIR}/libuvm_ml_bp.so -sv_lib $${UVM_ML_HOME}/ml/libs/uvm_sv/${UVM_ML_COMPILER_VERSION}${SUBDIR}/libuvm_sv_ml -gblso $${UVM_ML_HOME}/ml/libs/uvm_sv/${UVM_ML_COMPILER_VERSION}${SUBDIR}/libuvm_sv_ml.so $(SPECMAN_BOOT_LIB) ${QUESTA_DEBUG_ARGS} ${EXTRA_VSIM_ARGS}
+# -l ${QUESTA_LOG_FILE}
+run: QUESTA_VSIM_OPTS += $(SYSTEMC_LIB_OPTS) -l ${QUESTA_LOG_FILE}
+run_questa_sc: TOP_ARGS += sc_main
+run_questa_sc: QUESTA_VSIM_OPTS += -novopt -l ${QUESTA_LOG_FILE}
+
+
+
+UVM_ML_MODULES ?=  $${UVM_ML_HOME}/ml/adapters/uvm_sv/uvm_ml_adapter.sv
+BACKPLANE_LIB ?= ${UVM_ML_HOME}/ml/libs/backplane/${UVM_ML_COMPILER_VERSION}$(SUBDIR)/libuvm_ml_bp.so
+
+ifneq ($(SYSC_FILES),)
+
+SYSTEMC_LIB_OPTS= -gblso ${ALL_OSCI_LIB}  -sv_lib $${UVM_ML_HOME}/ml/libs/osci/${OSCI_VERSION}/$(UVM_ML_COMPILER_VERSION)${SUBDIR}/libuvm_sc_fw_osci -sv_lib $${UVM_ML_HOME}/ml/libs/osci/${OSCI_VERSION}/$(UVM_ML_COMPILER_VERSION)${SUBDIR}/libuvm_sc_ml_osci
+endif
+
+UVM_DPI_LIB=${UVM_ML_TEST_RUN_DIR}/libuvm_dpi$(BEXT).so
+
+
+
+ifneq ($(HAS_E),)
+SPECMAN_STUB_FILE ?= ${UVM_ML_TEST_RUN_DIR}/specman.sv
+SPECMAN_HOME = $(shell sn_root -home)
+SPECMAN_DIR = $(shell sn_root $(SN_BIT_FLAG) -dir)
+SPECMAN_INPUT_FILE = ${UVM_ML_TEST_RUN_DIR}/questa_input.do
+INPUT_CMD = -c
+INPUT_SUFFIX= < $(SPECMAN_INPUT_FILE)
+SPECMAN_TOP_ARGS = specman
+SPECMAN_BOOT_LIB=-pli ${SPECMAN_DIR}/libmti_sv_sn_boot.so -sv_lib ${SPECMAN_DIR}/libmti_sv_sn_boot
+
+ifndef UVM_ML_E_ADAPTER_LOCATION
+# The duplication of two UVM_ML_E_ADAPTER_LOCATION* variables: expanded for dependencies, not-expanded ($$) for commands
+UVM_ML_E_ADAPTER_LOCATION     :=  ${UVM_ML_HOME}/ml/libs/uvm_e
+UVM_ML_E_ADAPTER_LOCATION_CMD := $${UVM_ML_HOME}/ml/libs/uvm_e
+else
+UVM_ML_E_ADAPTER_LOCATION_CMD := ${UVM_ML_E_ADAPTER_LOCATION}
+endif
+
+ifneq ($(E_FILES),)
+# The duplication of two SPECMAN_DLIB* variables: expanded for dependencies, not-expanded ($$) for commands
+SPECMAN_DLIB := ${UVM_ML_TEST_RUN_DIR}/libsn_top.so
+SPECMAN_DLIB_NAME := libsn_top.so
+SPECMAN_DLIB_CMD := ${UVM_ML_TEST_RUN_DIR}/libsn_top.so
+SPECMAN_PATH := ${UVM_ML_E_ADAPTER_LOCATION}/$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)$(SUBDIR):${UVM_ML_TEST_SRC_DIR}:$(SPECMAN_PATH)
+SPECMAN_PATH_INFO :=  ${UVM_ML_E_ADAPTER_LOCATION_CMD}/$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)$(SUBDIR):${UVM_ML_TEST_SRC_DIR}:$(SPECMAN_PATH)
+else
+SPECMAN_DLIB := ${UVM_ML_E_ADAPTER_LOCATION}/$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)$(SUBDIR)/libsn_sn_uvm_ml.so
+SPECMAN_DLIB_CMD := ${UVM_ML_E_ADAPTER_LOCATION_CMD}/$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)$(SUBDIR)/libsn_sn_uvm_ml.so
+SPECMAN_PATH := ${UVM_ML_E_ADAPTER_LOCATION}/$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)$(SUBDIR):${UVM_ML_TEST_SRC_DIR}:$(SPECMAN_PATH)
+SPECMAN_PATH_INFO:=  ${UVM_ML_E_ADAPTER_LOCATION_CMD}/$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)$(SUBDIR):${UVM_ML_TEST_SRC_DIR}:$(SPECMAN_PATH)
+endif
+export SPECMAN_DLIB SPECMAN_PATH
+$(info SPECMAN_DLIB is ${SPECMAN_DLIB})
+
+
+else
+SPECMAN_STUB_FILE=
+SPECMAN_HOME=
+SPECMAN_DIR=
+SPECMAN_INPUT_FILE=
+INPUT_CMD=-c -do 'run -all; exit -f'
+INPUT_SUFFIX=
+SPECMAN_TOP_ARGS=
+SPECMAN_BOOT_LIB=
+SPECMAN_DLIB=
+SPECMAN_DLIB_CMD=
+
+endif
+ifneq ($(STUB_E_FILES),)
+SPECMAN_STUB_CMD = "load ${STUB_E_FILES}; write stub -mti_sv";
+LOAD_E_FILES_CMD = "sn load ${STUB_E_FILES}"
+else
+SPECMAN_STUB_CMD = "write stub -mti_sv";
+endif
+
+
+MTI_HOME ?= $(MODEL_TECH)
+
+# Two pairs of duplicate variables: expanded for dependencies, not-expanded ($$) for commands
+PORTABLE_ADAPTER_LOCATION     =  ${UVM_ML_HOME}/ml/portable_adapter_for_questa
+PORTABLE_ADAPTER_LOCATION_CMD = $${UVM_ML_HOME}/ml/portable_adapter_for_questa
+BOOST_LIBRARY_LOCATION     =  ${UVM_ML_HOME}/ml/boost_library_for_questa
+BOOST_LIBRARY_LOCATION_CMD = $${UVM_ML_HOME}/ml/boost_library_for_questa
+
+
+# Summarize all exports - for the benefit of "make -n" (the demo "--dry-run" option)
+# ----------------------------------------------------------------------------------
+# other variables that don't need to be exported, as they appear in ml/setup<bits>.* are:
+#	IES_VERSION, UVM_ML_OVERRIDE
+#
+ifeq ($(findstring n,$(MAKEFLAGS)),n)	# only if this is context of a dry-run
+ $(info echo "set_variables_command - start:") # --- for dry-run filtering
+ $(info UVM_HOME=${UVM_HOME_INFO}; export UVM_HOME)
+ ifneq ($(HAS_E),)	# HAS_E
+   ifdef SPECMAN_DLIB
+     $(info SPECMAN_DLIB=${SPECMAN_DLIB_CMD}; export SPECMAN_DLIB)
+   endif
+   $(info SPECMAN_PATH=${SPECMAN_PATH_INFO}; export SPECMAN_PATH)
+ endif			# HAS_E
+ $(info echo "set_variables_command - end:")   # --- for dry-run flitering
+endif	# only for dry-run
+
+
+.PHONY: default run run_questa_sc prepare clean distclean
+
+ERROR_FLAG=0
+
+ifneq ($(MAKECMDGOALS),clean)
+ifneq ($(MAKECMDGOALS),distclean)
+
+ifeq ($(UVM_ML_HOME),)
+ERROR_FLAG=1
+$(warning ** UVM_ML_HOME variable is not defined **)
+endif
+
+ifneq ($(findstring n,$(MAKEFLAGS)),n)	# if this is not a --dry-run
+ifeq ($(MTI_HOME),)
+ERROR_FLAG=1
+$(warning ** MTI_HOME variable is not defined **)
+endif
+endif
+
+
+endif
+endif
+
+default: run
+
+run: $(UVM_DPI_LIB) ${UVM_ML_TEST_RUN_DIR}/work prepare ${SPECMAN_INPUT_FILE} ${SPECMAN_DLIB}
+	@echo "questa_run_command - start:" # for dry-run
+	vsim  $(QUESTA_VSIM_OPTS) $(TOP_ARGS) $(SPECMAN_TOP_ARGS) $(INPUT_SUFFIX)
+	@echo "questa_run_command - end:" # for dry-run
+	grep -q -i -E '\[TEST_DONE\]|\*\* UVM TEST PASSED \*\*|^TEST PASSED|^# +TEST PASSED' $(QUESTA_LOG_FILE)
+	@$(TEST) $$(cat $(QUESTA_LOG_FILE) $(QUESTA_COMP_LOG_FILE) | grep -i -c -E 'TEST FAILED|\*ERROR|\*FATAL' ) -eq 0
+
+
+.PHONY: systemc_compile
+
+
+BOOST_LIBRARY_CREATION_MARK=${BOOST_LIBRARY_LOCATION}/boost_library_created${BIT_OPTION}.info
+
+PORTABLE_ADAPTER_CREATION_MARK=${PORTABLE_ADAPTER_LOCATION}/adapter_created${BIT_OPTION}.info
+
+ifneq (${SYSC_FILES},)
+
+run_questa_sc:
+	@echo "questa_sc_run_command - start:" # for dry-run
+	vsim  $(QUESTA_VSIM_OPTS) $(TOP_ARGS) $(SPECMAN_TOP_ARGS) $(INPUT_SUFFIX)
+	@echo "questa_sc_run_command - end:" # for dry-run
+	grep -q -i -E '\[TEST_DONE\]|\*\* UVM TEST PASSED \*\*|^TEST PASSED|^# +TEST PASSED' $(QUESTA_LOG_FILE)
+	@$(TEST) $$(cat $(QUESTA_LOG_FILE) $(QUESTA_COMP_LOG_FILE) | grep -i -c -E 'TEST FAILED|\*ERROR|\*FATAL' ) -eq 0
+
+PORTABLE_ADAPTER_FILES=${UVM_ML_HOME}/ml/frameworks/uvm/sc/base/uvm_component.cpp \
+ ${UVM_ML_HOME}/ml/frameworks/uvm/sc/base/uvm_factory.cpp ${UVM_ML_HOME}/ml/frameworks/uvm/sc/base/uvm_globals.cpp \
+${UVM_ML_HOME}/ml/frameworks/uvm/sc/base/uvm_ids.cpp ${UVM_ML_HOME}/ml/frameworks/uvm/sc/base/uvm_manager.cpp \
+${UVM_ML_HOME}/ml/frameworks/uvm/sc/base/uvm_object.cpp ${UVM_ML_HOME}/ml/frameworks/uvm/sc/base/uvm_packer.cpp \
+${UVM_ML_HOME}/ml/frameworks/uvm/sc/base/uvm_typed.cpp ${UVM_ML_HOME}/ml/frameworks/uvm/sc/base/uvm_barrier.cpp \
+${UVM_ML_HOME}/ml/frameworks/uvm/sc/base/uvm_phase.cpp  ${UVM_ML_HOME}/ml/frameworks/uvm/sc/base/uvm_phase_controller.cpp  ${UVM_ML_HOME}/ml/frameworks/uvm/sc/base/uvm_common_phase.cpp \
+${UVM_ML_HOME}/ml/frameworks/uvm/sc/base/uvm_schedule.cpp  ${UVM_ML_HOME}/ml/frameworks/uvm/sc/base/uvm_common_schedule.cpp \
+${UVM_ML_HOME}/ml/frameworks/uvm/sc/base/uvm_resource_base.cpp ${UVM_ML_HOME}/ml/frameworks/uvm/sc/base/uvm_resource_pool.cpp \
+${UVM_ML_HOME}/ml/frameworks/uvm/sc/base/uvm_event.cpp ${UVM_ML_HOME}/ml/frameworks/uvm/sc/base/uvm_barrier.cpp \
+${UVM_ML_HOME}/ml/adapters/uvm_sc/common/ml_tlm2/ml_tlm2.cpp ${UVM_ML_HOME}/ml/adapters/uvm_sc/common/uvm_ml_adapter.cpp \
+${UVM_ML_HOME}/ml/adapters/uvm_sc/common/uvm_ml_config_rsrc.cpp ${UVM_ML_HOME}/ml/adapters/uvm_sc/common/uvm_ml_hierarchy.cpp \
+${UVM_ML_HOME}/ml/adapters/uvm_sc/common/uvm_ml_packer.cpp ${UVM_ML_HOME}/ml/adapters/uvm_sc/common/uvm_ml_phase.cpp \
+${UVM_ML_HOME}/ml/adapters/uvm_sc/common/uvm_ml_event.cpp ${UVM_ML_HOME}/ml/adapters/uvm_sc/common/uvm_ml_barrier.cpp \
+${UVM_ML_HOME}/ml/adapters/uvm_sc/common/uvm_ml_sync.cpp
+
+
+BOOST_LIBRARY_FILES=${UVM_ML_HOME}/ml/frameworks/uvm/sc/packages/boost/libs/regex/src/c_regex_traits.cpp \
+${UVM_ML_HOME}/ml/frameworks/uvm/sc/packages/boost/libs/regex/src/cpp_regex_traits.cpp \
+${UVM_ML_HOME}/ml/frameworks/uvm/sc/packages/boost/libs/regex/src/cregex.cpp \
+${UVM_ML_HOME}/ml/frameworks/uvm/sc/packages/boost/libs/regex/src/fileiter.cpp \
+${UVM_ML_HOME}/ml/frameworks/uvm/sc/packages/boost/libs/regex/src/icu.cpp \
+${UVM_ML_HOME}/ml/frameworks/uvm/sc/packages/boost/libs/regex/src/instances.cpp \
+${UVM_ML_HOME}/ml/frameworks/uvm/sc/packages/boost/libs/regex/src/posix_api.cpp \
+${UVM_ML_HOME}/ml/frameworks/uvm/sc/packages/boost/libs/regex/src/regex.cpp \
+${UVM_ML_HOME}/ml/frameworks/uvm/sc/packages/boost/libs/regex/src/regex_debug.cpp \
+${UVM_ML_HOME}/ml/frameworks/uvm/sc/packages/boost/libs/regex/src/regex_raw_buffer.cpp \
+${UVM_ML_HOME}/ml/frameworks/uvm/sc/packages/boost/libs/regex/src/regex_traits_defaults.cpp \
+${UVM_ML_HOME}/ml/frameworks/uvm/sc/packages/boost/libs/regex/src/static_mutex.cpp \
+${UVM_ML_HOME}/ml/frameworks/uvm/sc/packages/boost/libs/regex/src/usinstances.cpp \
+${UVM_ML_HOME}/ml/frameworks/uvm/sc/packages/boost/libs/regex/src/w32_regex_traits.cpp \
+${UVM_ML_HOME}/ml/frameworks/uvm/sc/packages/boost/libs/regex/src/wc_regex_traits.cpp \
+${UVM_ML_HOME}/ml/frameworks/uvm/sc/packages/boost/libs/regex/src/wide_posix_api.cpp \
+${UVM_ML_HOME}/ml/frameworks/uvm/sc/packages/boost/libs/regex/src/winstances.cpp \
+
+run_questa_sc : $(UVM_DPI_LIB)  ${UVM_ML_TEST_RUN_DIR}/systemc_compiled${BIT_OPTION}.log prepare_questa_sc  ${SPECMAN_INPUT_FILE} ${SPECMAN_DLIB}
+
+
+
+SYSTEMC_COMPILATION_OPTS=-DUVM_ML_PORTABLE -DUVM_ML_PORTABLE_QUESTA -I$${UVM_ML_HOME}/ml/frameworks/uvm/sc/portable -I$${UVM_ML_HOME}/ml/frameworks/uvm/sc \
+	-I$${UVM_ML_HOME}/ml/adapters/uvm_sc/common -I$${UVM_ML_HOME}/ml/adapters/uvm_sc -I$${UVM_ML_HOME}/ml/adapters/uvm_sc/portable  \
+	 -DMTI_BIND_SC_MEMBER_FUNCTION
+
+${UVM_ML_TEST_RUN_DIR}/systemc_compiled${BIT_OPTION}.log:  ${UVM_ML_TEST_RUN_DIR}/work ${SYSC_FILES} ${PORTABLE_ADAPTER_CREATION_MARK} ${BOOST_LIBRARY_CREATION_MARK}
+	@echo "systemc_compile_command - start:" # for dry-run
+	sccom  ${SCCOM_DEBUG_OPTIONS} ${BIT_OPTION} ${SYSTEMC_COMPILATION_OPTS} ${BIT_OPTION} ${SYSC_FILES}
+	sccom  ${SCCOM_DEBUG_OPTIONS} ${BIT_OPTION} -link -lib ${PORTABLE_ADAPTER_LOCATION_CMD} -lib ${BOOST_LIBRARY_LOCATION_CMD} -Wl,-rpath,${MTI_HOME}/gcc-4.5.0-linux_x86_64/lib64
+	touch $@
+	@echo "systemc_compile_command - end:"   # for dry-run
+
+
+${PORTABLE_ADAPTER_LOCATION} ${BOOST_LIBRARY_LOCATION}:
+	@echo "questa_library_preparation_command - start:" # for dry-run
+	vlib $@
+	@echo "questa_library_preparation_command - end:" # for dry-run
+
+PORTABLE_ADAPTER_COMPILATION_OPTS= -DUVM_ML_PORTABLE -DUVM_ML_PORTABLE_QUESTA   -iquote$${UVM_ML_HOME}/ml/frameworks/uvm/sc/ -iquote$${UVM_ML_HOME}/ml/frameworks/uvm/sc/packages/boost/include -iquote$${UVM_ML_HOME}/ml/frameworks/uvm/sc/packages \
+ -I$${UVM_ML_HOME}/ml/frameworks/uvm/sc/base -I$${UVM_ML_HOME}/ml/frameworks/uvm/sc -I$${UVM_ML_HOME}/ml/frameworks/uvm/sc/base/portable \
+-I$${UVM_ML_HOME}/ml/backplane  -I$${UVM_ML_HOME}/ml/frameworks/uvm/sc/portable -I$${UVM_ML_HOME}/ml/frameworks/uvm/sc/base \
+-I$${UVM_ML_HOME}/ml/frameworks/uvm/sc/base/portable -I$${UVM_ML_HOME}/ml/frameworks/uvm/sc -I$${UVM_ML_HOME}/ml/adapters/uvm_sc/ \
+-I$${UVM_ML_HOME}/ml/adapters/uvm_sc/portable -I$${UVM_ML_HOME}/ml/backplane
+
+
+
+
+${PORTABLE_ADAPTER_CREATION_MARK}:  ${PORTABLE_ADAPTER_LOCATION} ${PORTABLE_ADAPTER_FILES}
+	@echo "adaptor_compile_command - start:" # for dry-run
+	sccom ${SCCOM_DEBUG_OPTIONS} ${BIT_OPTION} -work ${PORTABLE_ADAPTER_LOCATION_CMD} ${PORTABLE_ADAPTER_COMPILATION_OPTS}  ${PORTABLE_ADAPTER_FILES}
+	touch $@
+	@echo "adaptor_compile_command - end:"   # for dry-run
+
+BOOST_LIBRARY_COMPILATION_OPTS=-I$${UVM_ML_HOME}/ml/frameworks/uvm/sc/packages/boost/  -I$${UVM_ML_HOME}/ml/frameworks/uvm/sc
+
+${BOOST_LIBRARY_CREATION_MARK}: ${BOOST_LIBRARY_LOCATION} ${BOOST_LIBRARY_FILES}
+	@echo "boost_compile_command - start:" # for dry-run
+	sccom ${SCCOM_DEBUG_OPTIONS} ${BIT_OPTION} -work ${BOOST_LIBRARY_LOCATION_CMD} ${BOOST_LIBRARY_COMPILATION_OPTS}  ${BOOST_LIBRARY_FILES}
+	touch $@
+	@echo "boost_compile_command - end:"   # for dry-run
+
+prepare_questa_sc: ${SPECMAN_STUB_FILE}
+	@echo "questa_compile_command - start:" # for dry-run
+	vlog -dpicppinstall $${UVM_ML_CC} $(QUESTA_VLOG_OPTS) $(EXTRA_VLOG_OPTS) +define+UVM_ML_PORTABLE +define+UVM_ML_PORTABLE_QUESTA ${UVM_HOME_INFO}/src/uvm.sv $(UVM_ML_MODULES) ${SRC_FILES} ${SPECMAN_STUB_FILE}
+	@echo "questa_compile_command - end:"   # for dry-run
+
+else # systemc_compile framework_adapter_compile run_questa_sc
+run_questa_sc:
+	@echo "unsupported_target_command - start:" # for dry-run
+	@echo "Note: option '$@' is stubbed out (i.e., this simulator option is not supported for this code example)"
+	@echo "unsupported_target_command - end:"   # for dry-run
+	@/bin/true
+endif
+
+${UVM_ML_TEST_RUN_DIR}/work:
+	@echo "questa_library_preparation_command - start:" # for dry-run
+	vlib $@
+	@echo "questa_library_preparation_command - end:" # for dry-run
+prepare: ${SPECMAN_STUB_FILE}
+	@echo "questa_compile_command - start:" # for dry-run
+	vlog -dpicppinstall ${UVM_ML_CC} $(QUESTA_VLOG_OPTS) $(EXTRA_VLOG_OPTS) ${UVM_HOME_INFO}/src/uvm.sv $(UVM_ML_MODULES) ${SRC_FILES} ${SPECMAN_STUB_FILE}
+	@echo "questa_compile_command - end:"   # for dry-run
+
+${UVM_DPI_LIB}:
+	@echo "dpi_compile_command - start:" # for dry-run
+	$${UVM_ML_LD} ${BIT_CFLAGS} -g -fPIC -I${MTI_HOME}/include -shared -DQUESTA -o $@ ${UVM_HOME_INFO}/src/dpi/uvm_dpi.cc
+	@echo "dpi_compile_command - end:"   # for dry-run
+ifneq (${E_FILES},)	# HAS_E
+${SPECMAN_STUB_FILE} : ${SPECMAN_DLIB}
+${SPECMAN_DLIB}: ${E_FILES}
+	@echo "specman_compile_command - start:" # for dry-run
+	sn_compile.sh ${EXTRA_SN_COMPILE_ARGS} $(SN_BIT_FLAG) -s ${UVM_ML_E_ADAPTER_LOCATION_CMD}/$(IES_VERSION)/$(UVM_ML_COMPILER_VERSION)$(SUBDIR)/sn_uvm_ml ${E_FILES} -o ${SPECMAN_DLIB_NAME} -e ${UVM_ML_TEST_RUN_DIR} -shlib
+	@echo "specman_compile_command - end:"   # for dry-run
+endif			# HAS_E
+${UVM_ML_TEST_RUN_DIR}/specman.sv: ${E_FILES}
+	@echo "specman_stub_preparation_command - start:"   # for dry-run
+	specrun -dlib ${SN_BIT_FLAG} -c $(SPECMAN_STUB_CMD)
+	@echo "specman_stub_preparation_command - end:"   # for dry-run
+
+ifneq (${HAS_E},)
+${SPECMAN_INPUT_FILE}: ${E_FILES}
+	@echo "questa_input_file_preparation_command - start:"   # for dry-run
+	echo "sn set uvm_ml" > $@
+ifdef LOAD_E_FILES_CMD
+	echo ${LOAD_E_FILES_CMD} >> $@
+endif
+	echo "run -all" >> $@
+	echo "exit -f" >> $@
+	@echo "questa_input_file_preparation_command - end:"   # for dry-run
+endif
+
+clean:
+	-rm -rf ${UVM_ML_TEST_RUN_DIR}/work  ${TEST_SPECIFIC_LIBS} ${SPECMAN_STUB_FILE} ${SPECMAN_INPUT_FILE} ${ALL_OSCI_LIB} ${UVM_DPI_LIB} ${UVM_ML_TEST_RUN_DIR}/specman.sv
+distclean: clean
+	-rm -f *.log *.elog
+questa_sc_clean:
+	-rm -rf ${PORTABLE_ADAPTER_LOCATION} ${BOOST_LIBRARY_LOCATION} ${PORTABLE_ADAPTER_CREATION_MARK} ${BOOST_LIBRARY_CREATION_MARK}
+ifneq ($(MAKECMDGOALS),run_questa_sc)
+
+
+ifneq ($(MAKECMDGOALS),clean)
+ifneq ($(MAKECMDGOALS),distclean)
+ifneq ($(MAKECMDGOALS),questa_sc_clean)
+ifneq ($(SYSC_FILES),)
+run: $(ALL_OSCI_LIB)
+LIBALL_OSCI_BACKPLANE_STUFF=""
+include $(UVM_ML_HOME)/ml/example_utils/Makefile.liball_osci
+endif
+endif
+endif
+endif
+
+else
+
+ifneq ($(MAKECMDGOALS),clean)
+ifneq ($(MAKECMDGOALS),distclean)
+ifneq ($(MAKECMDGOALS),questa_sc_clean)
+ifneq ($(SYSC_FILES),)
+ifneq ($(findstring n,$(MAKEFLAGS)),n)	# if this is not a --dry-run
+include ${UVM_ML_TEST_RUN_DIR}/sysc_files.d
+include ${PORTABLE_ADAPTER_LOCATION}/adapter_files.d
+include ${BOOST_LIBRARY_LOCATION}/boost_library_files.d
+endif
+${UVM_ML_TEST_RUN_DIR}/sysc_files.d : ${SYSC_FILES}
+	@echo "systemc_compile_command - start:"   # for dry-run
+	${UVM_ML_CC} -MM -MT "$@ systemc_compiled${BIT_OPTION}.log" -o $@ -I${MTI_HOME}/include/systemc -I${MTI_HOME}/include ${SYSTEMC_COMPILATION_OPTS} ${BIT_CFLAGS} ${SYSC_FILES}
+	@echo "systemc_compile_command - end:"   # for dry-run
+${PORTABLE_ADAPTER_LOCATION}/adapter_files.d : ${PORTABLE_ADAPTER_LOCATION} ${PORTABLE_ADAPTER_FILES}
+	@echo "systemc_adapter_compile_command - start:"   # for dry-run
+	${UVM_ML_CC} -MM -MT  "$@ ${PORTABLE_ADAPTER_CREATION_MARK}" -o $@ -I${MTI_HOME}/include/systemc -I${MTI_HOME}/include ${PORTABLE_ADAPTER_COMPILATION_OPTS} ${BIT_CFLAGS} ${PORTABLE_ADAPTER_FILES}
+	@echo "systemc_adapter_compile_command - end:"   # for dry-run
+${BOOST_LIBRARY_LOCATION}/boost_library_files.d: ${BOOST_LIBRARY_LOCATION} ${BOOST_LIBRARY_FILES}
+	@echo "boost_compile_command - start:"   # for dry-run
+	${UVM_ML_CC} -MM -MT "$@ ${BOOST_LIBRARY_CREATION_MARK}" -o $@ ${BOOST_LIBRARY_COMPILATION_OPTS} ${BOOST_LIBRARY_FILES}
+	@echo "boost_compile_command - end:"   # for dry-run
+endif
+endif
+endif
+endif
+
+endif
+
+ifeq ($(ERROR_FLAG),1)
+$(error ** One or more of vital environment variables are not defined **)
+endif

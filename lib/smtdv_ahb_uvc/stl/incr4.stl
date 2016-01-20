@@ -1,0 +1,5 @@
+# ahb_monitor
+# begin_cycle,        end_cycle,       begin_time,         end_time,    id, r/w, bst_type, trx_size,   trx_prt,      lock,  resp,  addr,     data,
+0000000000000002, 0000000000000004, 0000000000000019, 000000000000002d,  0, w,    INCR4,       B32,     USER_ACCESS,  1,    OKAY,  10000000, 11111111, 22222222, 33333333, 44444444,
+0000000000000002, 0000000000000004, 0000000000000019, 000000000000002d,  0, r,    INCR4,       B32,     USER_ACCESS,  1,    OKAY,  10000000, 11111111, 22222222, 33333333, 44444444,
+
