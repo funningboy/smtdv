@@ -1,0 +1,37 @@
+[main]
+description = "SMTDV Sqlite3 lib"
+root = os.getenv("SMTDV_HOME")
+debug = FALSE
+
+[systemverilog]
+src_files =
+
+include_files =
+  ${main:root}/dpi/sqlite3/smtdv_sqlite3_pkg.sv
+
+include_dirs =
+  ${main:root}/dpi/sqlite3
+
+[sharedlib]
+src_files =
+
+include_files =
+  ${main:root}/dpi/sqlite3/dpi_smtdv_lib.so
+
+include_dirs =
+  ${main:root}/dpi/sqlite3
+
+[Makefile]
+exec =
+  ./run.sh
+  ./a.out
+
+clean =
+  rm -rf a.out
+  rm -rf test_db.db
+
+[provider]
+name = funningboy@gmail.com
+repo_name = smtdv sqlite3 lib
+repo_root = ${main:root}/dpi/sqlite3
+revision = 1.0

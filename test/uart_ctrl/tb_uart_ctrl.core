@@ -1,0 +1,123 @@
+[main]
+description = "test subsystem uart ctrl"
+ref = https://github.com/mballance/sveditor-ref-designs/tree/master/uvm_ref_flow_2013.05/soc_verification_lib/sv_cb_ex_lib/uart_ctrl
+root = os.getenv("SMTDV_HOME")
+rtl = ${main:root}/designs/socv/rtl/rtl_lpw/opencores/uart16550/
+tb = ${main:root}/test/uart_ctrl
+apb = ${main:root}/lib/smtdv_apb_uvc
+uart = ${main:root}/lib/smtdv_apb_uvc
+debug = FALSE
+spawn = TRUE
+timeout =
+simulator = ius
+test = uart_ctrl_base_test
+
+# add your test below
+tests =
+  uart_ctrl_base_test
+
+[cores]
+import_files =
+  ${main:root}/script/mti.core
+  ${main:root}/script/ius.core
+  ${main:root}/lib/smtdv_common/smtdv_common.core
+  ${main:root}/lib/smtdv_apb_uvc/smtdv_apb.core
+  ${main:root}/lib/smtdv_uart_uvc/smtdv_uart.core
+  ${main:rtl}/rtl_uart16550.core
+
+[systemverilog]
+src_files =
+  ${smtdv_common.systemverilog:src_files}
+  ${main:tb}/tb/uart_ctrl_tb.sv
+
+include_files =
+  ${smtdv_common.systemverilog:include_files}
+  ${smtdv_apb.systemverilog:include_files}
+  ${smtdv_uart.systemverilog:include_files}
+  ${main:tb}/sv/uart_ctrl_pkg.sv
+
+include_dirs =
+  ${smtdv_common.systemverilog:include_dirs}
+  ${smtdv_apb.systemverilog:include_dirs}
+  ${smtdv_uart.systemverilog:include_dirs}
+  ${main:tb}/../
+  ${main:tb}
+  ${main:tb}/stl
+  ${main:tb}/seq
+  ${main:tb}/sv
+  ${main:tb}/tb
+  ${main:tb}/test
+
+[verilog]
+src_files =
+  ${rtl_uart16550.verilog:src_files}
+
+include_files =
+  ${rtl_uart16550.verilog:include_files}
+
+include_dirs =
+  ${rtl_uart16550.verilog:include_dirs}
+
+[systemc]
+src_files =
+include_files =
+include_dir =
+
+[sharedlib]
+include_files =
+  ${smtdv_common.sharedlib:include_files}
+
+include_dirs =
+  ${smtdv_common.sharedlib:include_dirs}
+
+[mti]
+vlib =
+  vlib ${mti.mti:vlib}
+
+vlog =
+  vlog ${mti.mti:vlog}
+  proc_incdir(\"mti\", \"${systemverilog:include_dirs}\")
+  proc_incfile(\"mti\", \"${systemverilog:include_files}\")
+  proc_srcfile(\"mti\", \"${systemverilog:src_files}\")
+  proc_incdir(\"mti\", \"${verilog:include_dirs}\")
+  proc_incdir(\"mti\", \"${verilog:include_files}\")
+  proc_srcfile(\"mti\", \"${verilog:src_files}\")
+
+vsim =
+  vsim ${mti.mti:vsim}
+  proc_incdir(\"mti\", \"${sharedlib:include_dirs}\")
+  proc_sharedlib(\"mti\", \"${sharedlib:include_files}\")
+  proc_incdir(\"mti\", \"${systemverilog:include_dirs}\")
+  proc_incdir(\"mti\", \"${verilog:include_dirs}\")
+  +UVM_TESTNAME=${main:test}
+  +UVM_VERBOSITY=UVM_DEBUG
+  top
+
+clean =
+  ${mti.mti:clean}
+
+[ius]
+irun =
+  irun ${ius.ius:irun}
+  proc_incdir(\"ius\", \"${systemverilog:include_dirs}\")
+  proc_incfile(\"ius\", \"${systemverilog:include_files}\")
+  proc_srcfile(\"ius\", \"${systemverilog:src_files}\")
+  proc_incdir(\"mti\", \"${verilog:include_dirs}\")
+  proc_incdir(\"mti\", \"${verilog:include_files}\")
+  proc_srcfile(\"mti\", \"${verilog:src_files}\")
+  proc_incdir(\"ius\", \"${sharedlib:include_dirs}\")
+  proc_sharedlib(\"ius\", \"${sharedlib:include_files}\")
+  -uvm
+  -input simvision.tcl
+  +UVM_TESTNAME=${main:test}
+  +UVM_VERBOSITY=UVM_DEBUG
+
+clean =
+#  ${ius.ius:clean}
+
+
+[provider]
+name = funningboy@gmail.com
+repo_name = tb uart ctrl
+repo_root = tb uart ctrl
+revision = 1

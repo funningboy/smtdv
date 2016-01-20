@@ -1,0 +1,13 @@
+ref:
+    http://files.cnblogs.com/files/arci/Introduction_to_AMBA_Bus_System.pdf
+    http://mapl.nctu.edu.tw/course/ESL_2008/files/Lecture10.pdf
+1. not support
+Undefined Length Burst Operation
+
+For a SPLIT transfer the arbiter will adjust the priority scheme so that any other
+master requesting the bus will get access, even if it is a lower priority. In order
+for a SPLIT transfer to complete the arbiter must be informed when the slave has
+the data available.
+
+For RETRY the arbiter will continue to use the normal priority scheme and
+therefore only masters having a higher priority will gain access to the bus.

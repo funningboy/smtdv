@@ -1,0 +1,12 @@
+-MESSAGES
+-INCDIR ../../../bench/verilog
+-INCDIR ../../../rtl/verilog
+-NOCOPYRIGHT
+-UPDATE
+-LOGFILE ncvlog.log
+../../../rtl/verilog/spi_top.v
+../../../rtl/verilog/spi_clgen.v
+../../../rtl/verilog/spi_shift.v
+../../../bench/verilog/tb_spi_top.v
+../../../bench/verilog/wb_master_model.v
+../../../bench/verilog/spi_slave_model.v

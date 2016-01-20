@@ -1,0 +1,5 @@
+`ifndef __UART_SCOREBOARD_THREADS_SV__
+`define __UART_SCOREBOARD_THREADS_SV__
+
+`endif // end of __UART_SCOREBOARD_THREADS_SV__
+

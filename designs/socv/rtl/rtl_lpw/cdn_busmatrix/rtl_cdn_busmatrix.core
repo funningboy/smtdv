@@ -1,0 +1,37 @@
+[main]
+description = "rtl cdn bus matrix"
+root = os.getenv("SMTDV_HOME")
+rtl = ${main:root}/designs/socv/rtl/rtl_lpw/cdn_busmatrix
+debug = FALSE
+
+[cores]
+import_files =
+
+[systemverilog]
+src_files =
+include_files =
+include_dirs =
+
+[verilog]
+src_files =
+  ${main:rtl}/arbiter.v
+  ${main:rtl}/master_if.v
+  ${main:rtl}/multiplexer.v
+  ${main:rtl}/req_register.v
+  ${main:rtl}/slave_if.v
+  ${main:rtl}/busmatrix.v
+
+include_files =
+
+include_dirs =
+  ${main:rtl}
+
+[sharedlib]
+include_dirs =
+include_files =
+
+[provider]
+name = funningboy@gmail.com
+repo_name = rtl cdn_busmatrix
+repo_root = rtl cdn_busmatrix
+revision = 1

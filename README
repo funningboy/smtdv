@@ -1,0 +1,15 @@
+
+ref uvm-1.1d dox:
+http://www.studio-muzzi.com/project/docs/UVMdocs_smu/uvm-1.1d/annotated.html
+
+ref: dvcon
+http://events.dvcon.org/events/proceedings.aspx?id=180-13
+
+
+1.
+set root ${SMTDV_HOME} as $PWD
+set $PATH = ${SMTDV_HOME}/script
+
+2. run example
+cd ${SMTDV_HOME}/lib/smtdv_apb_uvc/sim
+../../../script/run.py --file smtdv_apb.core

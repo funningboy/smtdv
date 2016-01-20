@@ -1,0 +1,18 @@
+QuestaSim-64 vlog 10.4c Compiler 2015.07 Jul 19 2015
+Start time: 14:17:02 on Sep 04,2015
+vlog -dpicppinstall /stec/tw/users/schen/local/bin/g++ -64 -suppress 2218,2181 "+define+USE_UVM_ML_RUN_TEST" "+incdir+/stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/frameworks/uvm/sv/1.1d-ml/src" "+incdir+/stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/frameworks/uvm/sv/1.1d-ml" "+incdir+/stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/frameworks/uvm/sv/1.1d-ml/tlm2" "+incdir+/stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/frameworks/uvm/sv/1.1d-ml/base" "+incdir+." "+incdir+/stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/frameworks/uvm/sv/1.1d-ml/macros" "+incdir+/stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/adapters/uvm_sv" -sv "+acc" -l questa_comp.64.log -timescale 1ns/1ns /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/frameworks/uvm/sv/1.1d-ml/src/uvm.sv /stec/tw/users/schen/prj/smartdv/kernel/UVM_ML-1.5.1/ml/adapters/uvm_sv/uvm_ml_adapter.sv ./test.sv 
+-- Compiling package uvm_pkg
+-- Compiling package uvm_ml_adapter_imp
+-- Importing package uvm_pkg
+-- Compiling package uvm_ml
+-- Importing package uvm_ml_adapter_imp
+-- Compiling package test_sv_unit
+-- Importing package uvm_pkg
+-- Importing package uvm_ml
+-- Importing package uvm_ml_adapter_imp
+-- Compiling module topmodule
+
+Top level modules:
+	topmodule
+End time: 14:17:06 on Sep 04,2015, Elapsed time: 0:00:04
+Errors: 0, Warnings: 0

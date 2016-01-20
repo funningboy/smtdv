@@ -1,0 +1,31 @@
+
+---------------------------------------------------------------------------
+- Initialization of UART.
+---------------------------------------------------------------------------
+
+Time:                  200    (testbench_utilities.do_reset)
+*N, RESET signal asynchronously set.
+Time:                  200    (testbench_utilities.disable_clk_generators)
+*N, Following clocks are DISABLED:
+Time:                  200    (testbench_utilities.disable_clk_generators)
+*N, - WB_clk
+Time:                  200    (testbench_utilities.disable_clk_generators)
+*N, - RX_clk
+Time:                  200    (testbench_utilities.disable_clk_generators)
+*N, - TX_clk
+Time:                  200    (testbench_utilities.disable_clk_generators)
+*N, - TX_clk_divided
+Time:                  200    (testbench_utilities.set_device_tx_rx_clk_divisor)
+*N, UART DEVICE TX/RX clock divisor: 1000.
+Time:                  200    (testbench_utilities.set_wb_clock_period)
+*N, WB & UART DEVICE TX/RX clock period: 64.
+Time:                  200    (testbench_utilities.enable_clk_generators)
+*N, Following clocks are ENABLED:
+Time:                  200    (testbench_utilities.enable_clk_generators)
+*N, - WB_clk
+Time:                  200    (testbench_utilities.enable_clk_generators)
+*N, - RX_clk
+Time:                  200    (testbench_utilities.enable_clk_generators)
+*N, - TX_clk
+Time:                  200    (testbench_utilities.enable_clk_generators)
+*N, - TX_clk_divided

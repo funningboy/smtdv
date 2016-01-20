@@ -1,0 +1,8 @@
+-incdir ${UVM_REF_HOME}/designs/socv/rtl/rtl_lpw/socv/rtl
+
+${UVM_REF_HOME}/designs/socv/rtl/rtl_lpw/cdn_busmatrix/arbiter.v
+${UVM_REF_HOME}/designs/socv/rtl/rtl_lpw/cdn_busmatrix/busmatrix.v
+${UVM_REF_HOME}/designs/socv/rtl/rtl_lpw/cdn_busmatrix/master_if.v
+${UVM_REF_HOME}/designs/socv/rtl/rtl_lpw/cdn_busmatrix/multiplexer.v
+${UVM_REF_HOME}/designs/socv/rtl/rtl_lpw/cdn_busmatrix/req_register.v
+${UVM_REF_HOME}/designs/socv/rtl/rtl_lpw/cdn_busmatrix/slave_if.v

@@ -1,0 +1,50 @@
+[main]
+description = "rtl uart16550 ctrl"
+ref = https://github.com/mballance/sveditor-ref-designs/tree/master/uvm_ref_flow_2013.05/soc_verification_lib/sv_cb_ex_lib/uart_ctrl
+root = os.getenv("SMTDV_HOME")
+rtl = ${main:root}/designs/socv/rtl/rtl_lpw/opencores/uart16550/rtl
+debug = FALSE
+
+[cores]
+import_files =
+
+[systemverilog]
+src_files =
+include_files =
+include_dirs =
+
+[verilog]
+src_files =
+  ${main:rtl}/timescale.v
+  ${main:rtl}/uart_defines.v
+  ${main:rtl}/uart_debug_if.v
+  ${main:rtl}/uart_regs.v
+  ${main:rtl}/raminfr.v
+  ${main:rtl}/uart_sync_flops.v
+  ${main:rtl}/uart_rfifo.v
+  ${main:rtl}/uart_tfifo.v
+  ${main:rtl}/uart_receiver.v
+  ${main:rtl}/uart_transmitter.v
+  ${main:rtl}/uart_wb.v
+  ${main:rtl}/uart_top.v
+
+include_files =
+
+include_dirs =
+  ${main:rtl}
+
+[systemc]
+src_files =
+include_files =
+include_dir =
+
+[sharedlib]
+include_files =
+include_dirs =
+
+
+[provider]
+name = funningboy@gmail.com
+repo_name = rtl uart16550
+repo_root = rtl uart16550
+revision = 1
