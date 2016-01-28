@@ -91,6 +91,7 @@ class apb_monitor#(
   virtual task run_threads();
     super.run_threads();
     th_handler.run();
+    th_handler.watch();
   endtask : run_threads
 
 endclass : apb_monitor

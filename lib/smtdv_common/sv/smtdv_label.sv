@@ -29,7 +29,7 @@ class smtdv_run_label#(
   function new(string name = "smtdv_run_label", CMP parent=null);
     super.new(name);
     cmp = parent;
-  endfunction
+  endfunction : new
 
   extern virtual function void register(CMP icmp);
   extern virtual function void pre_do();
@@ -38,6 +38,9 @@ class smtdv_run_label#(
 
 endclass : smtdv_run_label
 
+/*
+* register cmp to label
+*/
 function void smtdv_run_label::register(CMP icmp);
   assert(icmp);
   cmp = icmp;

@@ -3,11 +3,20 @@ description = "SMTDV common lib"
 root = os.getenv("SMTDV_HOME")
 common = ${main:root}/lib/smtdv_common
 debug = FALSE
-Spawn = TRUE
-Unittest = TRUE
-simulator = ius
-test = smtdv_base_test
-tests = smtdv_base_test
+spawn = TRUE
+unittest = TRUE
+clean = FALSE
+simulator = mti
+test = smtdv_directed_graph_test
+
+# for unittest
+tests =
+smtdv_base_test
+smtdv_directed_graph_test
+smtdv_circular_graph_test
+smtdv_cmp_graph_test
+smtdv_seq_graph_test
+smtdv_top_graph_test
 
 [cores]
 import_files =
@@ -95,7 +104,7 @@ irun =
   +UVM_VERBOSITY=UVM_DEBUG
 
 clean =
-#  ${ius.ius:clean}
+  ${ius.ius:clean}
 
 [provider]
 name = funningboy@gmail.com

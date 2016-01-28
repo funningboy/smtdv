@@ -6,7 +6,8 @@ debug = TRUE
 spawn = TRUE
 stdout = FALSE
 unittest = TRUE
-simulator = ius
+clean = FALSE
+simulator = mti
 test = apb_stl_test
 
 # add your test below

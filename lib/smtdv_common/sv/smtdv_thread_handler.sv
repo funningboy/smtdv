@@ -22,13 +22,27 @@ class smtdv_thread_handler#(
   typedef smtdv_thread_handler#(CMP) hdler_t;
 
   CMP cmp;
+  bit debug = FALSE; // turn on watchdog
   bit has_finalize = FALSE;
   longint uuid = -1;
+  time prestamp; // pre timestamp
+  time curstamp; // cur timestamp
+  longint timewin;
+  longint sampwin;
 
-  th_t thread_q[$];
+  th_t thread_q[$]; // thread queue
+
+  constraint c_timewin { timewin inside {[1000:5000]}; } // watch time window is in range [1000:5000]ns
+  constraint c_sampwin { sampwin inside {[100:300]};   } // sample watch time window
 
   `uvm_object_param_utils_begin(hdler_t)
     `uvm_field_queue_object(thread_q, UVM_ALL_ON)
+    if (debug) begin
+        `uvm_field_int(prestamp, UVM_ALL_ON)
+        `uvm_field_int(curstamp, UVM_ALL_ON)
+        `uvm_field_int(timewin, UVM_ALL_ON)
+        `uvm_field_int(sampwin, UVM_ALL_ON)
+    end
   `uvm_object_utils_end
 
   function new(string name = "smtdv_thread_handler", CMP parent=null);
@@ -43,6 +57,8 @@ class smtdv_thread_handler#(
   extern virtual function int fails();
   extern virtual function void finalize();
   extern virtual task run();
+  extern virtual task watch();
+  extern virtual task timer();
 
 endclass : smtdv_thread_handler
 
@@ -116,21 +132,52 @@ endfunction : finalize
  */
 task smtdv_thread_handler::run();
   begin: run_threads
-  foreach (thread_q[i]) begin
-    if (!thread_q[i].has_finalize) begin
-      automatic int k;
-      k = i;
-      `uvm_info(get_full_name(),
-        $sformatf("start to run thread \"%s\" in run thread queue", thread_q[k].get_name()),
-        UVM_FULL)
-        fork
-          thread_q[k].run();
-        join_none
-        thread_q[i].has_finalize = TRUE;
+    foreach (thread_q[i]) begin
+      if (!thread_q[i].has_finalize) begin
+        automatic int k;
+        k = i;
+        `uvm_info(get_full_name(),
+          $sformatf("start to run thread \"%s\" in run thread queue", thread_q[k].get_name()),
+          UVM_FULL)
+          fork
+            thread_q[k].run();
+          join_none
+          thread_q[i].has_finalize = TRUE;
       end
     end
   end
 endtask : run
 
+
+/*
+*  start to watch threads are health or not
+*/
+task smtdv_thread_handler::watch();
+  if (debug) begin: watch_threads
+    prestamp = $time;
+    fork
+      timer();
+    join_none
+  end
+endtask : watch
+
+
+task smtdv_thread_handler::timer();
+  `SMTDV_SWAP(sampwin)
+  curstamp = $time;
+  if ((curstamp-prestamp)>=timewin) begin
+    foreach (thread_q[i]) begin
+      if (curstamp - thread_q[i].timestamp > timewin) begin
+        thread_q[i].has_fail = TRUE;
+        thread_q[i].err_msg =
+            {$psprintf("RUN OUT OF THREAD LIFETIME, PLEASE ADD .update_timestamp() AT %s", get_full_name())};
+        `uvm_error("SMTDV_WATCHDOG",
+          thread_q[i].err_msg);
+      end
+    end
+  end else begin
+    prestamp = curstamp;
+  end
+endtask : timer
 
 `endif // end of __SMTDV_THREAD_HANDLER_SV__

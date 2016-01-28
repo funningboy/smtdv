@@ -46,10 +46,14 @@ class smtdv_monitor#(
     bk_handler = hdler_t::type_id::create("smtdv_monitor_handler", this);
   endfunction : build_phase
 
+  virtual function void connect_phase(uvm_phase phase);
+    super.connect_phase(phase);
+    //b0.register(this); bk_handler.add(b0);
+  endfunction : connect_phase
+
   virtual function void end_of_elaboration_phase(uvm_phase phase);
     super.end_of_elaboration_phase(phase);
-    // debug ptr null
-    //bk_handler.finalize();
+    bk_handler.finalize();
   endfunction : end_of_elaboration_phase
 
   extern virtual task run_phase(uvm_phase phase);
@@ -87,7 +91,8 @@ endtask : run_phase
 
 
 task smtdv_monitor::run_threads();
-  //bk_handler.run();
+  bk_handler.run();
+  bk_handler.watch();
 endtask : run_threads
 
 

@@ -20,7 +20,7 @@ class apb_master_driver#(
   typedef apb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
   typedef apb_master_driver#(ADDR_WIDTH, DATA_WIDTH) drv_t;
   typedef apb_master_drive_items#(ADDR_WIDTH, DATA_WIDTH) drv_items_t;
-  typedef smtdv_queue#(ADDR_WIDTH, DATA_WIDTH, item_t) queue_t;
+  typedef smtdv_queue#(item_t) queue_t;
   typedef smtdv_thread_handler#(drv_t) hdler_t;
 
   // as frontend threads/handler
@@ -64,6 +64,7 @@ endclass : apb_master_driver
 task apb_master_driver::run_threads();
   super.run_threads();
   th_handler.run();
+  th_handler.watch();
 endtask : run_threads
 
 task apb_master_driver::reset_driver();

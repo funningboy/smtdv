@@ -21,7 +21,7 @@ class smtdv_sequence#(
   function new(string name = "smtdv_sequence");
     super.new(name);
     seq_name = name;
-  endfunction
+  endfunction : new
 
   extern virtual task pre_body();
   extern virtual task body();

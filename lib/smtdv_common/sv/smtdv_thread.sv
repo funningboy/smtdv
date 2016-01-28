@@ -22,6 +22,8 @@ class smtdv_run_thread#(
   bit has_finalize = FALSE;
   bit has_fail = FALSE;
   bit has_success = FALSE;
+  string err_msg;
+  time timestamp = $time;
 
   // status run, idle, dead...
 
@@ -29,6 +31,7 @@ class smtdv_run_thread#(
     `uvm_field_int(has_finalize, UVM_DEFAULT)
     `uvm_field_int(has_fail, UVM_DEFAULT)
     `uvm_field_int(has_success, UVM_DEFAULT)
+    `uvm_field_int(timestamp, UVM_DEFAULT)
   `uvm_object_utils_end
 
   function new(string name = "smtdv_run_thread", CMP parent=null);
@@ -36,6 +39,7 @@ class smtdv_run_thread#(
     cmp = parent;
   endfunction : new
 
+  extern virtual function void update_timestamp();
   extern virtual function void register(CMP icmp);
   extern virtual function void pre_do();
   extern virtual function void post_do();
@@ -77,5 +81,12 @@ task smtdv_run_thread::run();
   post_do();
 endtask : run
 
+/**
+* need be called at top thread when smtdv_thread_handler is run into debug mode
+* @retrun void
+*/
+function void smtdv_run_thread::update_timestamp();
+  timestamp = $time;
+endfunction : update_timestamp
 
 `endif // end of __SMTDV_THREAD_SV__

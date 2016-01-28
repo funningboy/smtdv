@@ -111,6 +111,7 @@ endtask : run_phase
 
 task smtdv_driver::run_threads();
   bk_handler.run();
+  bk_handler.watch();
 endtask : run_threads
 
 /*

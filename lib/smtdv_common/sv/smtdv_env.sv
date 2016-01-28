@@ -18,7 +18,7 @@ class smtdv_env#(
   ) extends
     smtdv_component#(uvm_env);
 
-  typedef smtdv_env#(MCFG, MAGT, SCFG, SAGT) env_t;
+  typedef smtdv_env#(MCFG, MAGT, SCFG, SAGT, MSCB) env_t;
 
   MCFG master_cfg[$];
   MAGT master_agent[$];

@@ -30,9 +30,9 @@ class smtdv_base_item
 
   function new(string name = "smtdv_base_item");
     super.new(name);
-  endfunction
+  endfunction : new
 
-endclass
+endclass : smtdv_base_item
 
 /**
 * smtdv_sequence_item
@@ -122,7 +122,7 @@ class smtdv_sequence_item#(
 
   function new(string name = "smtdv_sequence_item");
     super.new(name);
-  endfunction
+  endfunction : new
 
   extern virtual function void pack_data(int idx=0, bit [DATA_WIDTH-1:0] idata=0);
   extern virtual function bit[DATA_WIDTH-1:0] unpack_data(int idx=0);

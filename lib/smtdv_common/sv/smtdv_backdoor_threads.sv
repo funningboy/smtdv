@@ -30,14 +30,14 @@ class smtdv_backdoor_base_thread#(
   ) extends
   smtdv_run_thread#(
     smtdv_scoreboard#(
-      ADDR_WIDTH,
-      DATA_WIDTH,
-      NUM_OF_INITOR,
-      NUM_OF_TARGETS,
-      T1,
-      T2,
-      T3,
-      CFG
+      .ADDR_WIDTH(ADDR_WIDTH),
+      .DATA_WIDTH(DATA_WIDTH),
+      .NUM_OF_INITOR(NUM_OF_INITOR),
+      .NUM_OF_TARGETS(NUM_OF_TARGETS),
+      .T1(T1),
+      .T2(T2),
+      .T3(T3),
+      .CFG(CFG)
     ));
 
   typedef smtdv_scoreboard#(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS, T1, T2, T3, CFG) scb_t;

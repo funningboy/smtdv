@@ -21,7 +21,7 @@ class apb_slave_driver#(
   typedef apb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
   typedef apb_slave_driver#(ADDR_WIDTH, DATA_WIDTH) drv_t;
   typedef apb_slave_drive_items#(ADDR_WIDTH, DATA_WIDTH) drv_items_t;
-  typedef smtdv_queue#(ADDR_WIDTH, DATA_WIDTH, item_t) queue_t;
+  typedef smtdv_queue#(item_t) queue_t;
   typedef smtdv_thread_handler#(drv_t) hdler_t;
 
   // as frontend threads/handler
@@ -65,6 +65,7 @@ endclass
 task apb_slave_driver::run_threads();
   super.run_threads();
   th_handler.run();
+  th_handler.watch();
 endtask : run_threads
 
 

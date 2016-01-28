@@ -148,9 +148,7 @@ function void smtdv_reset_comp_group::create_rst_domain(smtdv_reset_comp_group r
   set_rst_domain(rst_grp, domain);
 endfunction : create_rst_domain
 
-/**
- *
- */
+
 function void smtdv_reset_comp_group::set_reset_type(string rst_grp_name,
                                                rst_type_t rst_typ);
   smtdv_reset_comp_group rst_grp;

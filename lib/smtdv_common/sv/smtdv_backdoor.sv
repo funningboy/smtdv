@@ -20,13 +20,13 @@ class smtdv_backdoor#(
 ) extends
   uvm_object;
 
-  CMP cmp;
   typedef smtdv_backdoor#(ADDR_WIDTH, DATA_WIDTH, CMP, T1) bak_t;
 
   smtdv_backdoor_event_t cb_map[string] = `SMTDV_CB_EVENT;
 
-  // define lifetime
-  int timeout = 2;
+  CMP cmp;
+
+  int timeout = 2;   // define remain lifetime to check
   bit debug = TRUE;
   bit match = FALSE;
 
@@ -51,7 +51,7 @@ endclass : smtdv_backdoor
 /**
  *  generate query cmd for backdoor access
  */
-function string smtdv_backdoor::gen_query_cmd(string table_nm, string map, ref T1 item);
+function string smtdv_backdoor::gen_query_cmd(string table_nm, string map, ref smtdv_backdoor::T1 item);
   string cmd;
   case(map)
     "LAST_WR_TRX": begin
@@ -74,7 +74,7 @@ endfunction : gen_query_cmd
 /**
  * populate org item to backdoor access item if needed
  */
-function void smtdv_backdoor::populate_item(string header, int r, int c, string data, ref T1 item);
+function void smtdv_backdoor::populate_item(string header, int r, int c, string data, ref smtdv_backdoor::T1 item);
   if (!cb_map.exists(header)) begin
     `uvm_fatal("SMTDV_BKDOR_NO_CBMAP", {"CALLBACK HEADER MUST BE SET FOR cb_map: %s", header});
   end
@@ -150,7 +150,7 @@ function void smtdv_backdoor::convert_2_item(string table_nm, string query, T1 i
 endfunction
 
 /**
- * compare backdoor item and trx item
+ * compare backdoor item with cur sample trx item
  */
 function bit smtdv_backdoor::compare(string table_nm, T1 item, ref T1 ritem);
   $cast(ritem, item.clone());

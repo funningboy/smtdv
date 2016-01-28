@@ -9,18 +9,19 @@
 * @class smtdv_reset_monitor#(ADDR_WIDTH, DATA_WIDTH, VIF)
 *
 */
-class smtdv_reset_monitor #(
+class smtdv_reset_monitor#(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32,
   type VIF = virtual interface smtdv_gen_rst_if)
   extends
-    smtdv_monitor#(
-      ADDR_WIDTH,
-      DATA_WIDTH,
-      VIF);
+    smtdv_component#(
+        uvm_monitor,
+        VIF,
+        smtdv_cfg
+    );
 
   typedef smtdv_reset_monitor#(ADDR_WIDTH, DATA_WIDTH, VIF) rst_mon_t;
-  typedef smtdv_reset_model #(ADDR_WIDTH, DATA_WIDTH, VIF) rst_model_t;
+  typedef smtdv_reset_model#(ADDR_WIDTH, DATA_WIDTH, VIF) rst_model_t;
 
   rst_model_t rst_model;
 

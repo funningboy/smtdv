@@ -6,4 +6,4 @@
 //    1    |        |        |   x |    x  |  0   |  1  | => mv Data from RAM to DDR
 //    2    |        |        |   1 |    0  |  x   |  x  | => interrupt CPU while all trxs are
 //    completed
-//static lookup
+//static lookup table

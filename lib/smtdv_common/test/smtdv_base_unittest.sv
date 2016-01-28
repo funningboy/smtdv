@@ -52,7 +52,7 @@ class smtdv_base_unittest
 
   function new(string name = "smtdv_base_unittest", uvm_component parent=null);
     super.new(name, parent);
-  endfunction
+  endfunction : new
 
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
@@ -84,20 +84,20 @@ class smtdv_base_unittest
       `uvm_fatal("SMTDV_NO_VIF",{"VIRTUAL INTERFACE MUST BE SET FOR: ",get_full_name(),".rst_vif"});
     rst_model.create_rst_monitor(rst_vif);
 
-  endfunction
+  endfunction : build_phase
 
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
-  endfunction
+  endfunction : connect_phase
 
   virtual function void end_of_elaboration_phase(uvm_phase phase);
     super.end_of_elaboration_phase(phase);
     rst_model.add_component(this);
     rst_model.set_rst_type(ALL_RST);
     rst_model.show_components(0);
-  endfunction
+endfunction : end_of_elaboration_phase
 
 
-endclass
+endclass : smtdv_base_unittest
 
 `endif // end of __SMTDV_UNITTEST_SV__

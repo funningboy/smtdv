@@ -40,5 +40,19 @@ typedef enum bit [3:0] {
   SMTDV_CB_ED_TIME
 } smtdv_backdoor_event_t;
 
+/* FW CTL preloading seq steps */
+typedef enum bit[3:0] {
+  FW_STOP_ALL,
+  FW_RESET_ALL,
+  FW_TRY_LOCK,
+  FW_FORCE_VIF,
+  FW_SET_STL_ID,
+  FW_START_LOAD,
+  FW_START_REPLAY,
+  FW_WAIT_COMPLETE,
+  FW_FREE_VIF,
+  FW_BACK_NORMAL,
+  FW_TRY_UNLOCK
+} smtdv_fw_ctl_event_t;
 
 `endif // end of __SMTDV_LIB_TYPEDEFS_SVH__

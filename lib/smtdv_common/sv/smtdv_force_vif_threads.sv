@@ -21,9 +21,9 @@ class smtdv_force_vif#(
   `uvm_object_param_utils_begin(force_vif_t)
   `uvm_object_utils_end
 
-  function new(string name = "auto_update_if", CMP parent=null);
+  function new(string name = "smtdv_force_if", CMP parent=null);
     super.new(name, parent);
-  endfunction
+  endfunction : new
 
   extern virtual task run();
 
@@ -36,6 +36,6 @@ task smtdv_force_vif::run();
       this.cmp.vif.has_force = this.cmp.cfg.has_force;
     end
   join_none
-endtask
+endtask : run
 
 `endif // end of __SMTDV_FORCE_VIF_THREADS_SV__

@@ -29,14 +29,15 @@ class smtdv_slave_agent#(
   type MON = smtdv_monitor#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, SEQR, T1)
   ) extends
     smtdv_agent#(
-      ADDR_WIDTH,
-      DATA_WIDTH,
-      VIF,
-      CFG,
-      T1,
-      SEQR,
-      DRV,
-      MON);
+      .ADDR_WIDTH(ADDR_WIDTH),
+      .DATA_WIDTH(DATA_WIDTH),
+      .VIF(VIF),
+      .CFG(CFG),
+      .T1(T1),
+      .SEQR(SEQR),
+      .DRV(DRV),
+      .MON(MON)
+  );
 
   typedef smtdv_slave_agent#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, T1, SEQR, DRV, MON) agent_t;
   //typedef smtdv_slave_base_seq#(ADDR_WIDTH, DATA_WIDTH, T1, VIF, CFG, SEQR) seq_t;

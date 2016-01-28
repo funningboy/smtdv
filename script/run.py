@@ -122,7 +122,8 @@ def run_mti(pool, cp, section='mti'):
             interpolate_cp(cp, section)
             for cmd in ['vlib', 'vlog', 'vsim']:
                 pool.apply_async(call_syscall, (cp, section, cmd, True)).get()
-                pool.apply_async(call_syscall, (cp, section, 'clean', False)).get()
+                if cp.getboolean('main', 'clean'):
+                    pool.apply_async(call_syscall, (cp, section, 'clean', False)).get()
     except:
         pass
 
@@ -132,7 +133,8 @@ def run_ius(pool, cp, section='ius'):
             eval_cp(cp, section)
             interpolate_cp(cp, section)
             pool.apply_async(call_syscall, (cp, section, 'irun', True)).get()
-            pool.apply_async(call_syscall, (cp, section, 'clean', False)).get()
+            if cp.getboolean('main', 'clean'):
+                pool.apply_async(call_syscall, (cp, section, 'clean', False)).get()
     except:
         pass
 
@@ -219,6 +221,7 @@ def run_core(args):
     config.read(args.file)
     print "running {0}".format(args.file)
 
+    # use num of core to run, default 1 core
     pool = Pool(processes=1)
 
     for section in config.sections():

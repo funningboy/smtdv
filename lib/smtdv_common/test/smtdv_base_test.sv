@@ -12,12 +12,13 @@ class smtdv_base_test
   parameter ADDR_WIDTH = 32;
   parameter DATA_WIDTH = 32;
 
+  typedef smtdv_base_test test_t;
   typedef smtdv_master_test_vseq#(ADDR_WIDTH, DATA_WIDTH) m_vseq_t;
   typedef smtdv_slave_test_seq#(ADDR_WIDTH, DATA_WIDTH) s_seq_t;
 
   `uvm_component_utils(smtdv_base_test)
 
-  function new(string name = "apb_1w1r_test", uvm_component parent=null);
+  function new(string name = "smtdv_base_test", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 

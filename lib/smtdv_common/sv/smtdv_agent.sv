@@ -90,6 +90,9 @@ function void smtdv_agent::end_of_elaboration_phase(uvm_phase phase);
   assign_cfg(cfg);
 endfunction : end_of_elaboration_phase
 
+/*
+* assign virtual interface to each sub component
+*/
 function void smtdv_agent::assign_vi(VIF vif);
   mon.vif= vif;
   if(this.get_is_active()) begin
@@ -98,6 +101,9 @@ function void smtdv_agent::assign_vi(VIF vif);
   end
 endfunction : assign_vi
 
+/*
+* assign cfg to each sub components
+*/
 function void smtdv_agent::assign_cfg(CFG cfg);
   mon.cfg = cfg;
   if(this.get_is_active()) begin

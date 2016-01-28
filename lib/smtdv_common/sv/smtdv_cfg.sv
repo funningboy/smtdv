@@ -1,6 +1,11 @@
 `ifndef __SMTDV_CFG_SV__
 `define __SMTDV_CFG_SV__
 
+/*
+* smtdv_cfg
+*
+    * @class smtdv_cfg
+*/
 class smtdv_cfg
   extends
   uvm_object;
@@ -9,11 +14,11 @@ class smtdv_cfg
 
   uvm_component cmp;
 
-  rand bit has_force = TRUE;
-  rand bit has_coverage = TRUE;
-  rand bit has_export = TRUE;
-  rand bit has_notify = TRUE;
-  rand bit has_error = TRUE;
+  rand bit has_force = TRUE;    // force virtual vif to drive DUT without normal DUT behavior, ex: preloading img or debug
+  rand bit has_coverage = TRUE; // coverage report
+  rand bit has_export = TRUE;   // export to smtdv sqlite3 database
+  rand bit has_notify = TRUE;   // callback to event listener when notify event is triggered
+  rand bit has_error = TRUE;    // support err response
 
   rand bit clock_req = 0; // Master Cfg =1, Slave Cfg =0
 
@@ -35,7 +40,7 @@ class smtdv_cfg
   function new(string name = "smtdv_cfg", uvm_component parent=null);
     super.new(name);
     cmp = parent;
-  endfunction
+  endfunction : new
 
 endclass : smtdv_cfg
 

@@ -17,6 +17,11 @@ package test_smtdv_common_pkg;
 
 `include "smtdv_base_unittest.sv"
 `include "smtdv_base_test.sv"
+`include "smtdv_directed_graph_test.sv"
+`include "smtdv_circular_graph_test.sv"
+`include "smtdv_cmp_graph_test.sv"
+`include "smtdv_seq_graph_test.sv"
+`include "smtdv_top_graph_test.sv"
 
 endpackage
 

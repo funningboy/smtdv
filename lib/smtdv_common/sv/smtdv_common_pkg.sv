@@ -20,8 +20,12 @@ package smtdv_common_pkg;
   `include "smtdv_generic_memory.sv"
   `include "smtdv_generic_fifo_cb.sv"
   `include "smtdv_generic_fifo.sv"
-  `include "smtdv_queue.sv"
   `include "smtdv_ring_queue.sv"
+//  `include "smtdv_cfg_label.sv"
+//  `include "smtdv_force_vif_label.sv"
+//  `include "smtdv_force_replay_label.sv"
+//  `include "smtdv_multi2one_channels.sv"
+//  `include "smtdv_one2multi_channels.sv"
   `include "smtdv_reset_model.sv"
   `include "smtdv_reset_monitor.sv"
 
