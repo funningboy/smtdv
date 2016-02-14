@@ -34,9 +34,9 @@ class smtdv_run_thread#(
     `uvm_field_int(timestamp, UVM_DEFAULT)
   `uvm_object_utils_end
 
-  function new(string name = "smtdv_run_thread", CMP parent=null);
+  function new(string name = "smtdv_run_thread", uvm_component parent=null);
     super.new(name);
-    cmp = parent;
+    $cast(cmp, parent);
   endfunction : new
 
   extern virtual function void update_timestamp();
@@ -50,7 +50,7 @@ endclass : smtdv_run_thread
 /*
 * register thread to main component
 */
-function void smtdv_run_thread::register(CMP icmp);
+function void smtdv_run_thread::register(smtdv_run_thread::CMP icmp);
   assert(icmp);
   cmp = icmp;
 endfunction : register

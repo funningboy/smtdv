@@ -8,6 +8,7 @@ debug = False
 import_files =
   ${main:root}/dpi/sqlite3/smtdv_sqlite3.core
   ${main:root}/dpi/stl/smtdv_stl.core
+  ${main:root}/dpi/util/smtdv_util.core
 
 [systemverilog]
 src_files =
@@ -15,17 +16,21 @@ src_files =
 include_files =
   ${smtdv_sqlite3.systemverilog:include_files}
   ${smtdv_stl.systemverilog:include_files}
+  ${smtdv_util.systemverilog:include_files}
   ${main:common}/sv/smtdv_common_pkg.sv
   ${main:common}/seq/smtdv_common_seq_pkg.sv
 
 include_dirs =
   ${smtdv_sqlite3.systemverilog:include_dirs}
   ${smtdv_stl.systemverilog:include_dirs}
+  ${smtdv_util.systemverilog:include_dirs}
   ${main:common}
   ${main:common}/seq
   ${main:common}/sv
-  ${main:common}/tb
-  ${main:common}/test
+  ${main:common}/sv/vif
+  ${main:common}/sv/model
+  ${main:common}/sv/graph
+  ${main:common}/sv/graph/algorithm
 
 [verilog]
 src_files =
@@ -48,4 +53,4 @@ include_files =
 name = funningboy@gmail.com
 repo_name = smtdv
 repo_root = $PWD/lib/smtdv_common
-revision = 1
+revision = 1.0

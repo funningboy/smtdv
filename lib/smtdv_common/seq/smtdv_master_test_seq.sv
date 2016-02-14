@@ -4,7 +4,7 @@
 //typedef class smtdv_sequence_item;
 //typedef class smtdv_master_base_seq;
 //typedef class smtdv_master_cfg;
-//typedef class smtdv_sequencer;
+//typedef class smtdv_master_sequencer;
 //typedef class smtdv_master_base_vseq;
 
 class smtdv_master_test_seq#(
@@ -17,7 +17,7 @@ class smtdv_master_test_seq#(
       .T1(smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH)),
       .VIF(virtual interface smtdv_if),
       .CFG(smtdv_master_cfg),
-      .SEQR(smtdv_sequencer#(ADDR_WIDTH, DATA_WIDTH, virtual interface smtdv_if, smtdv_master_cfg, smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH)))
+      .SEQR(smtdv_master_sequencer#(ADDR_WIDTH, DATA_WIDTH, virtual interface smtdv_if, smtdv_master_cfg, smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH)))
   );
 
   typedef smtdv_master_test_seq#(ADDR_WIDTH, DATA_WIDTH) seq_t;
@@ -76,7 +76,13 @@ class smtdv_master_do_a_seq#(
     super.new(name);
   endfunction : new
 
+  virtual task pre_body();
+    super.pre_body();
+    `uvm_info(get_type_name(), {"pre_seq_a"}, UVM_LOW)
+  endtask : pre_body
+
   virtual task body();
+    super.body();
     repeat(4) begin
       // as eq item = type_id::create("item");
       `uvm_create_on(item, seqr)
@@ -85,6 +91,11 @@ class smtdv_master_do_a_seq#(
       `uvm_info(get_type_name(), {"do_seq_a"}, UVM_LOW)
     end
   endtask : body
+
+  virtual task post_body();
+    super.post_body();
+    `uvm_info(get_type_name(), {"post_seq_a"}, UVM_LOW)
+  endtask : post_body
 
 endclass : smtdv_master_do_a_seq
 
@@ -107,7 +118,13 @@ class smtdv_master_do_b_seq#(
     super.new(name);
   endfunction : new
 
+  virtual task pre_body();
+    super.pre_body();
+    `uvm_info(get_type_name(), {"pre_seq_b"}, UVM_LOW)
+  endtask : pre_body
+
   virtual task body();
+    super.body();
     repeat(4) begin
       // as eq item = type_id::create("item");
       `uvm_do_on_pri_with(item,
@@ -119,6 +136,12 @@ class smtdv_master_do_b_seq#(
       `uvm_info(get_type_name(), {"do_seq_b"}, UVM_LOW)
     end
   endtask : body
+
+  virtual task post_body();
+    super.post_body();
+    `uvm_info(get_type_name(), {"post_seq_b"}, UVM_LOW)
+  endtask : post_body
+
 
 endclass : smtdv_master_do_b_seq
 

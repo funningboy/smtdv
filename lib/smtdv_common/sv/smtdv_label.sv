@@ -26,9 +26,9 @@ class smtdv_run_label#(
   `uvm_object_param_utils_begin(label_t)
   `uvm_object_utils_end
 
-  function new(string name = "smtdv_run_label", CMP parent=null);
+  function new(string name = "smtdv_run_label", uvm_component parent=null);
     super.new(name);
-    cmp = parent;
+    $cast(cmp, parent);
   endfunction : new
 
   extern virtual function void register(CMP icmp);
@@ -41,7 +41,7 @@ endclass : smtdv_run_label
 /*
 * register cmp to label
 */
-function void smtdv_run_label::register(CMP icmp);
+function void smtdv_run_label::register(smtdv_run_label::CMP icmp);
   assert(icmp);
   cmp = icmp;
 endfunction : register

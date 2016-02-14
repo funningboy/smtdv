@@ -24,7 +24,7 @@ class smtdv_slave_agent#(
   type VIF = virtual interface smtdv_if,
   type CFG = smtdv_slave_cfg,
   type T1 = smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH),
-  type SEQR = smtdv_sequencer#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, T1),
+  type SEQR = smtdv_slave_sequencer#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, T1),
   type DRV = smtdv_driver#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, T1),
   type MON = smtdv_monitor#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, SEQR, T1)
   ) extends
@@ -60,6 +60,7 @@ endclass : smtdv_slave_agent
 
 function void smtdv_slave_agent::build_phase(uvm_phase phase);
   super.build_phase(phase);
+  mod = SLAVE;
   // you need to set default seq to it's specific sequencer at top level test
   // put default base seq to sequencer,
   //uvm_config_db#(uvm_object_wrapper)::set(this,

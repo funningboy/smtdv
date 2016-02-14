@@ -42,13 +42,12 @@ class smtdv_backdoor_base_thread#(
 
   typedef smtdv_scoreboard#(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS, T1, T2, T3, CFG) scb_t;
   typedef smtdv_backdoor_base_thread#(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS, T1, T2, T3, CFG) bk_th_t;
-  T1 item;
-  T1 ritem;
+  T1 item, ritem;
 
   `uvm_object_param_utils_begin(bk_th_t)
   `uvm_object_utils_end
 
-   function new(string name = "smtdv_backdoor_base_thread", scb_t parent=null);
+   function new(string name = "smtdv_backdoor_base_thread", uvm_component parent=null);
      super.new(name, parent);
    endfunction : new
 

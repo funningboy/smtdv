@@ -28,7 +28,7 @@ class apb_base_scoreboard#(
   `uvm_component_param_utils_begin(scb_t)
   `uvm_component_utils_end
 
-  function new (string name = "apb_base_scoreboard", uvm_component parent);
+  function new (string name = "apb_base_scoreboard", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 

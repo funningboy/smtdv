@@ -18,8 +18,11 @@ package test_apb_pkg;
   `include "apb_defines.svh"
   import apb_pkg::*;
   import apb_seq_pkg::*;
+  import apb_vseq_pkg::*;
 
+`include "apb_base_env.sv"
 `include "apb_base_test.sv"
+
 `include "apb_setup_test.sv"
 `include "apb_rand_test.sv"
 `include "apb_stl_test.sv"

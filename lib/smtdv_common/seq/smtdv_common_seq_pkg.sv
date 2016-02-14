@@ -14,8 +14,6 @@ package smtdv_common_seq_pkg;
 
   `include "smtdv_master_seqs_lib.sv"
   `include "smtdv_slave_seqs_lib.sv"
-  `include "smtdv_master_vseqs_lib.sv"
-  `include "smtdv_slave_vseqs_lib.sv"
 
 endpackage : smtdv_common_seq_pkg
 

@@ -23,7 +23,8 @@ class smtdv_test
   smtdv_timeout_cb tout_cb;
   uvm_table_printer tbprt;
 
-  `uvm_component_utils(test_t)
+  `uvm_component_param_utils_begin(test_t)
+  `uvm_component_utils_end
 
   function new(string name = "smtdv_test", uvm_component parent=null);
     super.new(name, parent);

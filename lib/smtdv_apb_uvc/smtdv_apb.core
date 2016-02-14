@@ -7,7 +7,7 @@ spawn = TRUE
 stdout = FALSE
 unittest = TRUE
 clean = FALSE
-simulator = mti
+simulator = ius
 test = apb_stl_test
 
 # add your test below
@@ -21,7 +21,7 @@ tests =
   apb_hijack_test
   apb_polling_test
 
-# more need to do
+# TODO
 #  apb_interrupt_test
 #  apb_cfg_callback_test
 #  apb_uvm_reg_test
@@ -42,6 +42,7 @@ include_files =
   ${smtdv_common.systemverilog:include_files}
   ${main:apb}/sv/apb_pkg.sv
   ${main:apb}/seq/apb_seq_pkg.sv
+  ${main:apb}/vseq/apb_vseq_pkg.sv
   ${main:apb}/test/test_apb_pkg.sv
 
 include_dirs =
@@ -49,6 +50,7 @@ include_dirs =
   ${main:apb}
   ${main:apb}/stl
   ${main:apb}/seq
+  ${main:apb}/vseq
   ${main:apb}/sv
   ${main:apb}/tb
   ${main:apb}/test

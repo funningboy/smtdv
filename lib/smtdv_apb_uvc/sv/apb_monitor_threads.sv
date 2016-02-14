@@ -35,7 +35,7 @@ class apb_monitor_base_thread#(
   `uvm_object_param_utils_begin(th_t)
   `uvm_object_utils_end
 
-  function new(string name = "apb_monitor_base_thread", mon_t parent=null);
+  function new(string name = "apb_monitor_base_thread", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 
@@ -92,7 +92,7 @@ class apb_collect_cover_group#(
     apb_trx  : cross apb_addr, apb_rw, apb_data, apb_rsp;
   endgroup : apb_coverage
 
-  function new(string name = "apb_collect_cover_group", mon_t parent=null);
+  function new(string name = "apb_collect_cover_group", uvm_component parent=null);
     super.new(name, parent);
     apb_coverage = new();
   endfunction : new
@@ -127,7 +127,7 @@ class apb_export_collected_items#(
   `uvm_object_param_utils_begin(exp_items_t)
   `uvm_object_utils_end
 
-  function new(string name = "apb_export_collected_items", mon_t parent=null);
+  function new(string name = "apb_export_collected_items", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 
@@ -191,7 +191,7 @@ class apb_update_notify_cfgs#(
   `uvm_object_param_utils_begin(note_cfgs_t)
   `uvm_object_utils_end
 
-  function new(string name = "apb_update_notify_cfgs", mon_t parent=null);
+  function new(string name = "apb_update_notify_cfgs", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 
@@ -234,7 +234,7 @@ class apb_collect_stop_signal#(
     `uvm_field_int(stop_cnt, UVM_DEFAULT)
   `uvm_object_utils_end
 
-  function new(string name = "apb_collect_stop_signal", mon_t parent=null);
+  function new(string name = "apb_collect_stop_signal", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 
@@ -280,7 +280,7 @@ class apb_collect_write_items#(
   `uvm_object_param_utils_begin(coll_t)
   `uvm_object_utils_end
 
-  function new(string name = "apb_collect_write_items", mon_t parent=null);
+  function new(string name = "apb_collect_write_items", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 
@@ -288,11 +288,13 @@ class apb_collect_write_items#(
     forever begin
       @(negedge this.cmp.vif.clk iff (this.cmp.vif.psel && this.cmp.vif.penable && this.cmp.vif.prwd));
       populate_begin_item(item);
+
       // notify to sequencer
       if (!$cast(m_cfg, this.cmp.cfg) && item.trs_t == WR) `SMTDV_SWAP(0)
       this.cmp.item_asserted_port.write(item);
       @(negedge this.cmp.vif.clk iff (this.cmp.vif.pready));
       populate_end_item(item);
+
       // notify to scoreboard
       if (!$cast(m_cfg, this.cmp.cfg) && item.trs_t == WR) `SMTDV_SWAP(0)
       `uvm_info(this.cmp.get_full_name(), {$psprintf("TRY COLLECT WRITE ITEM\n%s", item.sprint())}, UVM_LOW)
@@ -349,7 +351,7 @@ class apb_collect_read_items#(
   `uvm_object_param_utils_begin(coll_t)
   `uvm_object_utils_end
 
-  function new(string name = "apb_collect_read_items", mon_t parent=null);
+  function new(string name = "apb_collect_read_items", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 
@@ -357,11 +359,13 @@ class apb_collect_read_items#(
     forever begin
       @(negedge this.cmp.vif.clk iff (this.cmp.vif.psel && this.cmp.vif.penable && !this.cmp.vif.prwd));
       populate_begin_item(item);
+
       // notify to sequencer
       if ($cast(m_cfg, this.cmp.cfg) && item.trs_t == RD) `SMTDV_SWAP(0)
       this.cmp.item_asserted_port.write(item);
       @(negedge this.cmp.vif.clk iff (this.cmp.vif.pready));
       populate_end_item(item);
+
       // notify to scoreboard
       if ($cast(m_cfg, this.cmp.cfg) && item.trs_t == RD) `SMTDV_SWAP(0)
       `uvm_info(this.cmp.get_full_name(), {$psprintf("TRY COLLECT READ ITEM\n%s", item.sprint())}, UVM_LOW)

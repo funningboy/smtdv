@@ -5,6 +5,11 @@ typedef class apb_master_cfg;
 typedef class apb_item;
 typedef class apb_master_drive_items;
 
+/*
+* a template apb master driver
+*
+* @class apb_master_driver#(ADDR_WIDTH, DATA_WIDTH)
+*/
 class apb_master_driver#(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32
@@ -67,10 +72,12 @@ task apb_master_driver::run_threads();
   th_handler.watch();
 endtask : run_threads
 
+
 task apb_master_driver::reset_driver();
   mbox.delete();
   reset_inf();
 endtask : reset_driver
+
 
 task apb_master_driver::reset_inf();
   this.vif.master.paddr <= 'h0;

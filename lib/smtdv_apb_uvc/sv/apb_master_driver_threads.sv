@@ -21,7 +21,7 @@ class apb_master_base_thread#(
   `uvm_object_param_utils_begin(th_t)
   `uvm_object_utils_end
 
-  function new(string name = "apb_master_base_thread", cmp_t parent=null);
+  function new(string name = "apb_master_base_thread", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 
@@ -48,7 +48,7 @@ class apb_master_drive_items#(
   `uvm_object_param_utils_begin(th_t)
   `uvm_object_utils_end
 
-  function new(string name = "apb_master_drive_items", cmp_t parent=null);
+  function new(string name = "apb_master_drive_items", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 

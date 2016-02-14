@@ -6,6 +6,11 @@ typedef class apb_slave_cfg;
 typedef class apb_item;
 typedef class apb_slave_drive_items;
 
+/*
+* a template apb slave driver
+*
+* @class apb_slave_driver#(ADDR_WIDTH, DATA_WIDTH)
+*/
 class apb_slave_driver#(
   ADDR_WIDTH  = 14,
   DATA_WIDTH = 32
@@ -33,7 +38,7 @@ class apb_slave_driver#(
   `uvm_component_param_utils_begin(drv_t)
   `uvm_component_utils_end
 
-  function new(string name = "apb_slave_driver", uvm_component parent);
+  function new(string name = "apb_slave_driver", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 
@@ -74,11 +79,13 @@ task apb_slave_driver::reset_driver();
   mbox.delete();
 endtask : reset_driver
 
+
 task apb_slave_driver::reset_inf();
   vif.slave.prdata <= 'h0;
   vif.slave.pready <= 1'b0;
   vif.slave.pslverr <= OK;
 endtask : reset_inf
+
 
 task apb_slave_driver::drive_bus();
   case(req.trs_t)

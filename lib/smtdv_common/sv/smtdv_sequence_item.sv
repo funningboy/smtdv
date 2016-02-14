@@ -13,8 +13,10 @@ class smtdv_base_item
   extends
   uvm_sequence_item;
 
-  bit                 debug = TRUE;
+  bit                 debug = FALSE;
   int                 uuid = 0;
+  int                 initorid = -1;
+  int                 targetid = -1;
 
   smtdv_base_item next = null;
   smtdv_base_item pre = null;
@@ -23,6 +25,8 @@ class smtdv_base_item
   `uvm_object_param_utils_begin(smtdv_base_item)
     if (debug) begin
       `uvm_field_int(uuid, UVM_ALL_ON)
+      `uvm_field_int(initorid, UVM_ALL_ON)
+      `uvm_field_int(targetid, UVM_ALL_ON)
       `uvm_field_object(pre, UVM_DEFAULT)
       `uvm_field_object(next, UVM_DEFAULT)
     end
@@ -170,7 +174,7 @@ endfunction : unpack_data
  *  compare addrs, data_beat, ...
  *  @return bool
  */
-function bit smtdv_sequence_item::compare(smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH) cmp);
+function bit smtdv_sequence_item::compare(smtdv_sequence_item::item_t cmp);
   // addr cmp
   if (addrs.size() != cmp.addrs.size() ) begin
     return FALSE;
@@ -198,6 +202,17 @@ function bit smtdv_sequence_item::compare(smtdv_sequence_item#(ADDR_WIDTH, DATA_
       return FALSE;
     end
   end
+
+  if (initorid!=-1 && cmp.initorid!=-1) begin
+    if (initorid != cmp.initorid)
+        return FALSE;
+  end
+
+  if (targetid!=-1 && cmp.targetid!=-1) begin
+    if (targetid != cmp.targetid)
+        return FALSE;
+  end
+
   return TRUE;
 endfunction : compare
 

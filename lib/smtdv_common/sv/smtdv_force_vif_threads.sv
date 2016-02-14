@@ -21,7 +21,7 @@ class smtdv_force_vif#(
   `uvm_object_param_utils_begin(force_vif_t)
   `uvm_object_utils_end
 
-  function new(string name = "smtdv_force_if", CMP parent=null);
+  function new(string name = "smtdv_force_if", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 

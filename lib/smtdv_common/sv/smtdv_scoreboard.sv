@@ -45,19 +45,19 @@ class smtdv_scoreboard#(
   typedef smtdv_watch_rd_lifetime#(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS, T1, T2, T3, CFG) rd_lf_t;
   typedef smtdv_mem_bkdor_wr_comp#(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS, T1, T2, T3, CFG) bk_wr_t;
   typedef smtdv_mem_bkdor_rd_comp#(ADDR_WIDTH, DATA_WIDTH, NUM_OF_INITOR, NUM_OF_TARGETS, T1, T2, T3, CFG) bk_rd_t;
-  typedef smtdv_queue#(T1) queue_t;
-  typedef smtdv_hash#(addr_t, smtdv_queue#(T1)) hash_t;
+  typedef smtdv_queue#(T1) item_q_t;
+  typedef smtdv_hash#(addr_t, smtdv_queue#(T1)) addr_h_t;
   typedef smtdv_thread_handler#(scb_t) hdler_t;
 
   bit debug = FALSE; // debug msg on
 
   hdler_t th_handler; // scb thread handler
 
-  queue_t rbox;  // rd mem channel backdoor
-  queue_t wbox;  // wr mem channel backdoor
+  item_q_t rbox;  // rd mem channel backdoor
+  item_q_t wbox;  // wr mem channel backdoor
 
-  hash_t wr_pool; // wr_pool
-  hash_t rd_pool; // rd_pool
+  addr_h_t wr_pool; // wr_pool
+  addr_h_t rd_pool; // rd_pool
 
   bak_t bkdor_wr;   // wr mem backdoor handler
   bak_t bkdor_rd;   // rd mem backdoor handler
@@ -67,6 +67,10 @@ class smtdv_scoreboard#(
   bk_wr_t th2; // backdoor wr trx at mem access thread
   bk_rd_t th3; // backdoor rd trx at mem access thread
 
+  // sting a = ["wr_lf_t"]
+  // foreach(a[i]) begin
+  //   `CAST_CREATE(a[i])
+  // end
   T2 initor_m[NUM_OF_INITOR];   // map to initiator as master
   T3 targets_s[NUM_OF_TARGETS]; // map to all targets as slaves
 
@@ -76,7 +80,7 @@ class smtdv_scoreboard#(
   `uvm_component_param_utils_begin(scb_t)
   `uvm_component_utils_end
 
-  function new(string name = "smtdv_scoreboard", uvm_component parent);
+  function new(string name = "smtdv_scoreboard", uvm_component parent=null);
     super.new(name, parent);
     for(int i=0; i<NUM_OF_INITOR; i++) begin
       initor[i] = new({$psprintf("initor[%0d]", i)}, this);
@@ -110,11 +114,11 @@ endclass : smtdv_scoreboard
 function void smtdv_scoreboard::build_phase(uvm_phase phase);
   super.build_phase(phase);
 
-  rbox = queue_t::type_id::create("smtdv_rbox");
-  wbox = queue_t::type_id::create("smtdv_wbox");
+  rbox = item_q_t::type_id::create("smtdv_rbox");
+  wbox = item_q_t::type_id::create("smtdv_wbox");
 
-  wr_pool = hash_t::type_id::create("smtdv_wr_pool");
-  rd_pool = hash_t::type_id::create("smtdv_rd_pool");
+  wr_pool = addr_h_t::type_id::create("smtdv_wr_pool");
+  rd_pool = addr_h_t::type_id::create("smtdv_rd_pool");
 
   bkdor_wr = bak_t::type_id::create("smtdv_mem_bkdor_wr", this);
   bkdor_rd = bak_t::type_id::create("smtdv_mem_bkdor_rd", this);
@@ -162,7 +166,7 @@ endfunction : end_of_elaboration_phase
  *  reset_scoreboard while resetn assert
  */
 function void smtdv_scoreboard::reset_scoreboard();
-  addr_t taddr[];
+  addr_t taddr[$];
 
   wr_pool.keys(taddr);
   foreach(taddr[i]) wr_pool.delete(taddr[i]);
@@ -241,14 +245,14 @@ endfunction : _create_atomic_item
 * put WR to wait pool when initor sent
 */
 function void smtdv_scoreboard::_do_initor_wr_check(smtdv_scoreboard::T1 item, int i, smtdv_scoreboard::T1 aitem);
-  queue_t tque;
+  item_q_t item_q;
   if (!wr_pool.exists(item.addrs[i])) begin
-    tque = queue_t::type_id::create({$psprintf("%h_wrq", item.addrs[i])});
-    wr_pool.set(item.addrs[i], tque);
+    item_q = item_q_t::type_id::create({$psprintf("smtdv_%h_wrq", item.addrs[i])});
+    wr_pool.set(item.addrs[i], item_q);
   end
 
-  tque = wr_pool.get(item.addrs[i]);
-  tque.push_back(aitem);
+  item_q = wr_pool.get(item.addrs[i]);
+  item_q.push_back(aitem);
   if (debug) `uvm_info(get_full_name(),
       {$psprintf("PUT wr_pool WRITE ATOMIC ITEM %h\n%s", item.addrs[i], aitem.sprint())}, UVM_LOW)
 endfunction : _do_initor_wr_check
@@ -258,12 +262,12 @@ endfunction : _do_initor_wr_check
 */
 function void smtdv_scoreboard::_do_initor_rd_check(smtdv_scoreboard::T1 item, int i, smtdv_scoreboard::T1 aitem);
   T1 it;
-  queue_t tque;
-  addr_t taddr[];
+  item_q_t item_q;
+  addr_t taddr[$];
 
   if (rd_pool.exists(item.addrs[i])) begin
-    tque = rd_pool.get(item.addrs[i]);
-    it = tque.pop_front();
+    item_q = rd_pool.get(item.addrs[i]);
+    it = item_q.pop_front();
     if (!it.compare(aitem)) begin
       `uvm_error("SMTDV_SCB_RD_COMP",
           {$psprintf("RECEIVED WRONG DATA %h\n%s", item.addrs[i], item.sprint())})
@@ -305,14 +309,14 @@ endfunction : _write_initor
 * put RD to wait pool when target sent
 */
 function void smtdv_scoreboard::_do_target_rd_check(smtdv_scoreboard::T1 item, int i, smtdv_scoreboard::T1 aitem);
-  queue_t tque;
+  item_q_t item_q;
   if (!rd_pool.exists(item.addrs[i])) begin
-    tque = queue_t::type_id::create({$psprintf("%h_rdq", item.addrs[i])});
-    rd_pool.set(item.addrs[i], tque);
+    item_q = item_q_t::type_id::create({$psprintf("smtdv_%h_rdq", item.addrs[i])});
+    rd_pool.set(item.addrs[i], item_q);
   end
 
-  tque = rd_pool.get(item.addrs[i]);
-  tque.push_back(aitem);
+  item_q = rd_pool.get(item.addrs[i]);
+  item_q.push_back(aitem);
   if (debug) `uvm_info(get_full_name(),
       {$psprintf("PUT rd_pool READ ATOMIC ITEM %h\n%s", item.addrs[i], aitem.sprint())}, UVM_LOW)
 endfunction : _do_target_rd_check
@@ -322,12 +326,12 @@ endfunction : _do_target_rd_check
 */
 function void smtdv_scoreboard::_do_target_wr_check(smtdv_scoreboard::T1 item, int i, smtdv_scoreboard::T1 aitem);
   T1 it;
-  queue_t tque;
-  addr_t taddr[];
+  item_q_t item_q;
+  addr_t taddr[$];
 
   if (wr_pool.exists(item.addrs[i])) begin
-    tque = wr_pool.get(item.addrs[i]);
-    it = tque.pop_front();
+    item_q = wr_pool.get(item.addrs[i]);
+    it = item_q.pop_front();
     if (!it.compare(aitem)) begin
       `uvm_error("SMTDV_SCB_WR_COMP",
           {$psprintf("RECEIVED WRONG DATA %h\n%s", item.addrs[i], item.sprint())})

@@ -2,8 +2,7 @@
 `define __APB_MASTER_CFG_SV__
 
 /**
- * apb_master_cfg
- * template class with apb master cfg
+ * a template apb master cfg
  *
  * @class apb_master_cfg
  */

@@ -10,7 +10,7 @@ typedef class smtdv_component;
 * smtdv_sequencer
 * a basic smtdv_sequencer
 *
-* @class smtdv_sequencer
+* @class smtdv_sequencer#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, REQ, RSP)
 *
 */
 class smtdv_sequencer#(
@@ -37,7 +37,7 @@ class smtdv_sequencer#(
   `uvm_sequencer_param_utils_begin(seqr_t)
   `uvm_sequencer_utils_end
 
-  function new(string name = "smtdv_sequencer", uvm_component parent);
+  function new(string name = "smtdv_sequencer", uvm_component parent=null);
     super.new(name, parent);
     mon_get_port =  new("mon_get_port", this);
   endfunction : new
@@ -108,10 +108,83 @@ endfunction : cleanup
 *
 * @return void
 */
-function void smtdv_sequencer::reorder(ref REQ iitem, int indx);
+function void smtdv_sequencer::reorder(ref smtdv_sequencer::REQ iitem, int indx);
 //  m_req_fifo.size();
 //  m_req_fifo.can_put()
 //  m_req_fifo.put()...
 endfunction : reorder
+
+
+/**
+* smtdv_master_sequencer
+* a basic smtdv_master_sequencer
+*
+* @class smtdv_master_sequencer
+*
+*/
+class smtdv_master_sequencer#(
+  ADDR_WIDTH = 14,
+  DATA_WIDTH = 32,
+  type VIF = virtual interface smtdv_if,
+  type CFG = smtdv_master_cfg,
+  type REQ = smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH),
+  type RSP = REQ
+  ) extends
+    smtdv_sequencer#(
+      .ADDR_WIDTH(ADDR_WIDTH),
+      .DATA_WIDTH(DATA_WIDTH),
+      .VIF(VIF),
+      .CFG(CFG),
+      .REQ(REQ),
+      .RSP(RSP)
+  );
+
+  typedef smtdv_master_sequencer#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, REQ, RSP) seqr_t;
+
+  `uvm_sequencer_param_utils_begin(seqr_t)
+  `uvm_sequencer_utils_end
+
+  function new(string name = "smtdv_master_sequencer", uvm_component parent=null);
+    super.new(name, parent);
+  endfunction : new
+
+endclass : smtdv_master_sequencer
+
+
+/**
+* smtdv_slave_sequencer
+* a basic smtdv_slave_sequencer
+*
+* @class smtdv_slave_sequencer
+*
+*/
+class smtdv_slave_sequencer#(
+  ADDR_WIDTH = 14,
+  DATA_WIDTH = 32,
+  type VIF = virtual interface smtdv_if,
+  type CFG = smtdv_slave_cfg,
+  type REQ = smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH),
+  type RSP = REQ
+  ) extends
+    smtdv_sequencer#(
+      .ADDR_WIDTH(ADDR_WIDTH),
+      .DATA_WIDTH(DATA_WIDTH),
+      .VIF(VIF),
+      .CFG(CFG),
+      .REQ(REQ),
+      .RSP(RSP)
+  );
+
+  typedef smtdv_slave_sequencer#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, REQ, RSP) seqr_t;
+
+  `uvm_sequencer_param_utils_begin(seqr_t)
+  `uvm_sequencer_utils_end
+
+  function new(string name = "smtdv_slave_sequencer", uvm_component parent=null);
+    super.new(name, parent);
+  endfunction : new
+
+endclass : smtdv_slave_sequencer
+
 
 `endif // end of __SMTDV_SEQUENCER_SV__

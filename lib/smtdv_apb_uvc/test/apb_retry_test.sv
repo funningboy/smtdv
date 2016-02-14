@@ -10,7 +10,7 @@ class apb_retry_test
   apb_base_test;
 
   typedef apb_retry_test test_t;
-  typedef apb_master_retry_vseq#(ADDR_WIDTH, DATA_WIDTH) m_vseq_t;
+  typedef apb_master_retry_vseq m_vseq_t;
   typedef apb_slave_base_seq#(ADDR_WIDTH, DATA_WIDTH) s_bseq_t;
 
   `uvm_component_utils(apb_retry_test)
@@ -23,12 +23,12 @@ class apb_retry_test
     super.build_phase(phase);
 
     uvm_config_db#(uvm_object_wrapper)::set(this,
-      "*master_agent[*0]*.seqr.run_phase",
+      "vseqr.run_phase",
       "default_sequence",
       m_vseq_t::type_id::get());
 
    uvm_config_db#(uvm_object_wrapper)::set(this,
-      "*slave_agent[*0]*.seqr.run_phase",
+      "*slv_agts[*0]*.seqr.run_phase",
       "default_sequence",
       s_bseq_t::type_id::get());
 

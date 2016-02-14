@@ -44,7 +44,7 @@ class smtdv_mem_bkdor_wr_comp#(
   `uvm_object_param_utils_begin(bk_wr_t)
   `uvm_object_utils_end
 
-  function new(string name = "smtdv_mem_bkdor_wr_comp", scb_t parent=null);
+  function new(string name = "smtdv_mem_bkdor_wr_comp", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 
@@ -62,11 +62,15 @@ task smtdv_mem_bkdor_wr_comp::run();
     wait(this.cmp.rbox.size()>0);
     item = this.cmp.rbox.pop_front();
     sid = this.cmp.initor_m[0].cfg.find_slave(item.addr);
-    if (sid<0) begin
+    if (sid<0)
       `uvm_fatal("SMTDV_BKDOR_NO_CFG",
           {$psprintf("SLAVE ADDR %h MUST BE SET FOR MASTER CFG %s", item.addr, this.cmp.initor_m[0].cfg.get_full_name())});
-    end
+
     table_nm = $psprintf("\"%s\"", this.cmp.targets_s[sid].seqr.get_full_name());
+
+    if (this.cmp.bkdor_wr.timeout<0)
+      `uvm_fatal("SMTDV_BKDOR_NO_TIMEOUT",
+          {$psprintf("TIMEOUT MUST BE SET %d >0", this.cmp.bkdor_wr.timeout)});
 
     // check mem backdoor data is match expected until timeout
     while(this.cmp.bkdor_wr.timeout>0) begin
@@ -81,8 +85,12 @@ task smtdv_mem_bkdor_wr_comp::run();
     end
 
     if (this.cmp.bkdor_wr.match == FALSE) begin
-      `uvm_error("SMTDV_BKDOR_CMP",
-          {$psprintf("BACKDOOR COMPARE WRONG DATA \n%s, %s", item.sprint(), ritem.sprint())})
+      if (item && ritem)
+        `uvm_error("SMTDV_BKDOR_CMP",
+            {$psprintf("BACKDOOR COMPARE WRONG DATA \n%s, %s", item.sprint(), ritem.sprint())})
+      else
+        `uvm_error("SMTDV_BKDOR_CMP",
+            {$psprintf("BACKDOOR COMPARE WRONG DATA \n%s, null", item.sprint())})
     end
     this.cmp.bkdor_wr.match = FALSE;
   end

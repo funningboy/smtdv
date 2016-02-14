@@ -2,10 +2,6 @@
 `ifndef __SMTDV_REPORT_SERVER_SV__
 `define __SMTDV_REPORT_SERVER_SV__
 
-// write
-import "DPI-C" function string getenv(input string env_name);
-import "DPI-C" function void setenv(input string env_name, value);
-
 /**
 * smtdv_report_server
 *
@@ -96,6 +92,7 @@ endfunction
 
 
 function void smtdv_report_server::summarize(UVM_FILE file=0);
+  string test_name;
   super.summarize(file);
 
   f_display(file, "");
@@ -107,9 +104,16 @@ function void smtdv_report_server::summarize(UVM_FILE file=0);
     f_display(file,
       $sformatf({"                         TEST PASSED ", get_severity_count(UVM_WARNING) ? "with %0d UVM_WARNING(S)" : ""},
         get_severity_count(UVM_WARNING)));
-
   f_display(file,   "=============================================================");
   f_display(file, "");
+
+  if(get_severity_count(UVM_FATAL) + get_severity_count(UVM_ERROR))
+    if ($value$plusargs("UVM_TESTNAME=%s", test_name))
+        setenv(test_name, "FAILED", 1);
+  else
+     if ($value$plusargs("UVM_TESTNAME=%s", test_name))
+        setenv(test_name, "PASSED", 1);
+
 endfunction
 
 `endif // end of __SMTDV_REPORT_SERVER_SV__

@@ -1,0 +1,30 @@
+[main]
+description = "SMTDV UTIL lib"
+root = os.getenv("SMTDV_HOME")
+debug = FALSE
+
+[systemverilog]
+src_files =
+
+include_files =
+  ${main:root}/dpi/util/smtdv_util_pkg.sv
+
+include_dirs =
+  ${main:root}/dpi/util
+
+[sharedlib]
+src_files =
+
+include_files =
+
+include_dirs =
+  ${main:root}/dpi/util
+
+[Makefile]
+
+
+[provider]
+name = funningboy@gmail.com
+repo_name = smtdv util lib
+repo_root = ${main:root}/dpi/util
+revision = 1.0

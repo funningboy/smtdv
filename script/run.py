@@ -133,6 +133,8 @@ def run_ius(pool, cp, section='ius'):
             eval_cp(cp, section)
             interpolate_cp(cp, section)
             pool.apply_async(call_syscall, (cp, section, 'irun', True)).get()
+            if cb:
+                report_ius()
             if cp.getboolean('main', 'clean'):
                 pool.apply_async(call_syscall, (cp, section, 'clean', False)).get()
     except:

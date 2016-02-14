@@ -26,17 +26,19 @@ class smtdv_backdoor#(
 
   CMP cmp;
 
-  int timeout = 2;   // define remain lifetime to check
-  bit debug = TRUE;
+  rand int timeout = 3;   // define remain lifetime to check
+  bit debug = FALSE;
   bit match = FALSE;
+
+  constraint c_timeout { timeout inside {[2:5]}; }
 
   `uvm_object_param_utils_begin(bak_t)
     `uvm_field_int(timeout, UVM_ALL_ON)
   `uvm_object_utils_end
 
-  function new (string name = "smtdv_backdoor", CMP parent=null);
+  function new (string name = "smtdv_backdoor", uvm_component parent=null);
     super.new(name);
-    cmp = parent;
+    $cast(cmp, parent);
   endfunction : new
 
   extern virtual function string gen_query_cmd(string table_nm, string map, ref T1 item);
@@ -92,7 +94,7 @@ endfunction
 /**
  * purage item
  */
-function void smtdv_backdoor::purge_item(T1 item);
+function void smtdv_backdoor::purge_item(smtdv_backdoor::T1 item);
   foreach(item.data_beat[i]) begin
     item.data_beat[i] = `SMTDV_UNKNOWN
   end
@@ -101,7 +103,7 @@ endfunction
 /**
  * do after backdoor access
  */
-function void smtdv_backdoor::post_item(string table_nm, T1 item);
+function void smtdv_backdoor::post_item(string table_nm, smtdv_backdoor::T1 item);
   foreach(item.addrs[i]) begin
     item.addr_idx = i;
     item.data_idx = i;
@@ -116,7 +118,7 @@ endfunction
 /**
  * convert backdoor access object to sequence item
  */
-function void smtdv_backdoor::convert_2_item(string table_nm, string query, T1 item);
+function void smtdv_backdoor::convert_2_item(string table_nm, string query, smtdv_backdoor::T1 item);
   chandle m_pl;  // iter pool
   chandle m_row; // iter row
   chandle m_col; // iter col
@@ -152,7 +154,7 @@ endfunction
 /**
  * compare backdoor item with cur sample trx item
  */
-function bit smtdv_backdoor::compare(string table_nm, T1 item, ref T1 ritem);
+function bit smtdv_backdoor::compare(string table_nm, smtdv_backdoor::T1 item, ref smtdv_backdoor::T1 ritem);
   $cast(ritem, item.clone());
   purge_item(ritem);
   post_item(table_nm, ritem);

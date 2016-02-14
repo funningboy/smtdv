@@ -1,0 +1,68 @@
+[main]
+description = "unittest SMTDV Util lib"
+root = os.getenv("SMTDV_HOME")
+debug = FALSE
+spawn = TRUE
+simulator = ius
+tests =
+
+[cores]
+import_files =
+  ${main:root}/script/mti.core
+  ${main:root}/script/ius.core
+  ${main:root}/dpi/util/smtdv_util.core
+
+[systemverilog]
+src_files =
+  ${main:root}/dpi/util/test/test_dpi_smtdv.sv
+
+include_files =
+  ${smtdv_util.systemverilog:include_files}
+
+include_dirs =
+  ${smtdv_util.systemverilog:include_dirs}
+  ${main:root}/dpi/util/test
+
+[sharedlib]
+include_files =
+  ${smtdv_util.sharedlib:include_files}
+
+include_dirs =
+  ${smtdv_util.sharedlib:include_dirs}
+
+[mti]
+vlib =
+  vlib ${mti.mti:vlib}
+
+vlog =
+  vlog ${mti.mti:vlog}
+  proc_incdir(\"mti\", \"${systemverilog:include_dirs}\")
+  proc_incfile(\"mti\", \"${systemverilog:include_files}\")
+  proc_srcfile(\"mti\", \"${systemverilog:src_files}\")
+
+vsim =
+  vsim ${mti.mti:vsim}
+  test
+  proc_incdir(\"mti\", \"${sharedlib:include_dirs}\")
+  proc_sharedlib(\"mti\", \"${sharedlib:include_files}\")
+
+clean =
+  ${mti.mti:clean}
+
+[ius]
+irun =
+  irun ${ius.ius:irun}
+  proc_incdir(\"ius\", \"${systemverilog:include_dirs}\")
+  proc_incfile(\"ius\", \"${systemverilog:include_files}\")
+  proc_srcfile(\"ius\", \"${systemverilog:src_files}\")
+  proc_incdir(\"ius\", \"${sharedlib:include_dirs}\")
+  proc_sharedlib(\"ius\", \"${sharedlib:include_files}\")
+
+clean =
+  ${ius.ius:clean}
+
+[provider]
+name = funningboy@gmail.com
+repo_name = unittest smtdv util lib
+repo_root = ${main:root}/dpi/util/test
+revision = 1.0

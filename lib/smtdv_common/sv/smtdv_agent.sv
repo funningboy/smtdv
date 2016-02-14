@@ -8,6 +8,8 @@ typedef class smtdv_sequencer;
 typedef class smtdv_driver;
 typedef class smtdv_monitor;
 typedef class smtdv_component;
+typedef class smtdv_cmp_node;
+
 
 /**
 * smtdv_agent
@@ -24,7 +26,8 @@ class smtdv_agent#(
   type T1 = smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH),
   type SEQR = smtdv_sequencer#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, T1),
   type DRV = smtdv_driver#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, T1),
-  type MON = smtdv_monitor#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, SEQR, T1)
+  type MON = smtdv_monitor#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, SEQR, T1),
+  type NODE = smtdv_cmp_node#(uvm_component, T1)
   ) extends
     smtdv_component#(uvm_agent);
 
@@ -36,8 +39,9 @@ class smtdv_agent#(
   CFG cfg;
 
   T1 item;
+  NODE node;
 
-  typedef smtdv_agent#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, T1, SEQR, DRV, MON) agent_t;
+  typedef smtdv_agent#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, T1, SEQR, DRV, MON, NODE) agent_t;
 
   `uvm_component_param_utils_begin(agent_t)
   `uvm_component_utils_end
@@ -51,12 +55,14 @@ class smtdv_agent#(
   extern virtual function void end_of_elaboration_phase(uvm_phase phase);
   extern virtual function void assign_vi(VIF vif);
   extern virtual function void assign_cfg(CFG cfg);
+  extern virtual function void set(NODE inode);
 
 endclass : smtdv_agent
 
 
 function void smtdv_agent::build_phase(uvm_phase phase);
   super.build_phase(phase);
+  mod = MASTER;
 
   mon= MON::type_id::create("mon", this);
 
@@ -93,7 +99,7 @@ endfunction : end_of_elaboration_phase
 /*
 * assign virtual interface to each sub component
 */
-function void smtdv_agent::assign_vi(VIF vif);
+function void smtdv_agent::assign_vi(smtdv_agent::VIF vif);
   mon.vif= vif;
   if(this.get_is_active()) begin
     drv.vif = vif;
@@ -104,7 +110,7 @@ endfunction : assign_vi
 /*
 * assign cfg to each sub components
 */
-function void smtdv_agent::assign_cfg(CFG cfg);
+function void smtdv_agent::assign_cfg(smtdv_agent::CFG cfg);
   mon.cfg = cfg;
   if(this.get_is_active()) begin
     drv.cfg = cfg;
@@ -113,5 +119,8 @@ function void smtdv_agent::assign_cfg(CFG cfg);
   end
 endfunction : assign_cfg
 
+function void smtdv_agent::set(smtdv_agent::NODE inode);
+  node = inode;
+endfunction : set
 
 `endif // end of __SMTDV_AGENT_SV__

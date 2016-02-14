@@ -49,7 +49,7 @@ class smtdv_scoreboard_base_thread #(
   `uvm_object_param_utils_begin(scb_th_t)
   `uvm_object_utils_end
 
-  function new(string name = "smtdv_scoreboard_base_thread", scb_t parent=null);
+  function new(string name = "smtdv_scoreboard_base_thread", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 

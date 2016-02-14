@@ -45,9 +45,9 @@ class smtdv_thread_handler#(
     end
   `uvm_object_utils_end
 
-  function new(string name = "smtdv_thread_handler", CMP parent=null);
+  function new(string name = "smtdv_thread_handler", uvm_component parent=null);
     super.new(name);
-    cmp = parent;
+    $cast(cmp, parent);
   endfunction : new
 
   extern virtual function void register(CMP cmp);
@@ -77,7 +77,7 @@ endfunction : fails
 /*
 * register handler to main component
 */
-function void smtdv_thread_handler::register(CMP cmp);
+function void smtdv_thread_handler::register(smtdv_thread_handler::CMP cmp);
   assert(cmp);
   this.cmp = cmp;
 endfunction : register

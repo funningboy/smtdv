@@ -21,7 +21,7 @@ class apb_slave_base_thread#(
   `uvm_object_param_utils_begin(th_t)
   `uvm_object_utils_end
 
-  function new(string name = "apb_slave_base_thread", cmp_t parent=null);//, callback, cb);
+  function new(string name = "apb_slave_base_thread", uvm_component parent=null);//, callback, cb);
     super.new(name, parent);
   endfunction : new
 
@@ -50,7 +50,7 @@ class apb_slave_drive_items#(
   `uvm_object_param_utils_begin(th_t)
   `uvm_object_utils_end
 
-  function new(string name = "apb_slave_drive_items", cmp_t parent=null);//, callback, cb);
+  function new(string name = "apb_slave_drive_items", uvm_component parent=null);//, callback, cb);
     super.new(name, parent);
   endfunction : new
 

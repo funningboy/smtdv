@@ -36,9 +36,15 @@ module top();
     .resetn(resetn)
   );
 
+  smtdv_if vif2(
+    .clk(clk),
+    .resetn(resetn)
+  );
+
   initial begin
-    uvm_config_db#(virtual interface smtdv_if)::set(uvm_root::get(), "*.master_agent[*0]*", "vif", vif0);
-    uvm_config_db#(virtual interface smtdv_if)::set(uvm_root::get(), "*.slave_agent[*0]*", "vif", vif1);
+    uvm_config_db#(virtual interface smtdv_if)::set(uvm_root::get(), "*.mst_agts[*0]*", "vif", vif0);
+    uvm_config_db#(virtual interface smtdv_if)::set(uvm_root::get(), "*.slv_agts[*0]*", "vif", vif1);
+    uvm_config_db#(virtual interface smtdv_if)::set(uvm_root::get(), "*.slv_agts[*1]*", "vif", vif2);
     uvm_config_db#(rst_t)::set(uvm_root::get(), "*", "rst_vif", rst_if);
     run_test();
   end

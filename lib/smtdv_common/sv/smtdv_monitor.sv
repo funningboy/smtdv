@@ -48,7 +48,6 @@ class smtdv_monitor#(
 
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
-    //b0.register(this); bk_handler.add(b0);
   endfunction : connect_phase
 
   virtual function void end_of_elaboration_phase(uvm_phase phase);

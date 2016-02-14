@@ -48,7 +48,7 @@ class smtdv_watch_wr_lifetime #(
   `uvm_object_param_utils_begin(wr_lf_t)
   `uvm_object_utils_end
 
-   function new(string name = "smtdv_watch_wr_lifetime", scb_t parent=null);
+   function new(string name = "smtdv_watch_wr_lifetime", uvm_component parent=null);
      super.new(name, parent);
    endfunction : new
 
@@ -60,7 +60,7 @@ endclass : smtdv_watch_wr_lifetime
  *  do check
  */
 task smtdv_watch_wr_lifetime::run();
-  addr_t taddr[];
+  addr_t taddr[$];
   queue_t tque;
   T1 item;
 

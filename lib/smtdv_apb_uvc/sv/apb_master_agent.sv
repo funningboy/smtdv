@@ -8,6 +8,11 @@ typedef class apb_master_sequencer;
 typedef class apb_master_driver;
 typedef class apb_monitor;
 
+/*
+* a template apb master agent
+*
+* @class apb_master_agent#(ADDR_WIDTH, DATA_WIDTH)
+*/
 class apb_master_agent#(
   ADDR_WIDTH  = 14,
   DATA_WIDTH = 32

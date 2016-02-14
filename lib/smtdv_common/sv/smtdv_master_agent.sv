@@ -23,7 +23,7 @@ class smtdv_master_agent#(
   type VIF = virtual interface smtdv_if,
   type CFG = smtdv_master_cfg,
   type T1 = smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH),
-  type SEQR = smtdv_sequencer#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, T1),
+  type SEQR = smtdv_master_sequencer#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, T1),
   type DRV = smtdv_driver#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, T1),
   type MON = smtdv_monitor#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, SEQR, T1)
   ) extends

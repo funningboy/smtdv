@@ -20,9 +20,7 @@ package apb_seq_pkg;
   import apb_pkg::*;
 
   `include "apb_master_seqs_lib.sv"
-  `include "apb_master_vseqs_lib.sv"
   `include "apb_slave_seqs_lib.sv"
-  `include "apb_slave_vseqs_lib.sv"
 
 endpackage : apb_seq_pkg
 

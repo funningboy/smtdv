@@ -30,7 +30,7 @@ class apb_slave_agent#(
   `uvm_component_param_utils_begin(agent_t)
   `uvm_component_utils_end
 
-  function new(string name = "apb_slave_agent", uvm_component parent);
+  function new(string name = "apb_slave_agent", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 

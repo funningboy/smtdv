@@ -52,14 +52,13 @@ class apb_monitor#(
   `uvm_component_param_utils_begin(mon_t)
   `uvm_component_utils_end
 
-  function new (string name = "apb_monitor", uvm_component parent);
+  function new (string name = "apb_monitor", uvm_component parent=null);
     super.new(name, parent);
     cbox = new();
     ebox = new();
     bbox = new();
   endfunction : new
 
-  // register thread to thread handler
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
     th_handler = hdler_t::type_id::create("apb_monitor_handler", this);

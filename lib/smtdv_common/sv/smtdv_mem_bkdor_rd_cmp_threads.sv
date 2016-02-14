@@ -44,7 +44,7 @@ class smtdv_mem_bkdor_rd_comp#(
   `uvm_object_param_utils_begin(bk_rd_t)
   `uvm_object_utils_end
 
-  function new(string name = "mem_bkdor_rd_comp", scb_t parent=null);
+  function new(string name = "mem_bkdor_rd_comp", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 
@@ -62,11 +62,15 @@ task smtdv_mem_bkdor_rd_comp::run();
     wait(this.cmp.wbox.size()>0);
     item = this.cmp.wbox.pop_front();
     sid = this.cmp.initor_m[0].cfg.find_slave(item.addr);
-    if (sid<0) begin
+    if (sid<0)
       `uvm_fatal("SMTDV_BKDOR_NO_CFG",
           {$psprintf("SLAVE ADDR %h MUST BE SET FOR MASTER CFG %s", item.addr, this.cmp.initor_m[0].cfg.get_full_name())});
-    end
+
     table_nm = $psprintf("\"%s\"", this.cmp.targets_s[sid].seqr.get_full_name());
+
+    if (this.cmp.bkdor_rd.timeout<0)
+      `uvm_fatal("SMTDV_BKDOR_NO_TIMEOUT",
+          {$psprintf("TIMEOUT MUST BE SET %d >0", this.cmp.bkdor_rd.timeout)});
 
     while(this.cmp.bkdor_rd.timeout>0) begin
       if (this.cmp.bkdor_rd.match == FALSE) begin
@@ -80,8 +84,12 @@ task smtdv_mem_bkdor_rd_comp::run();
     end
 
     if (this.cmp.bkdor_rd.match == FALSE) begin
-      `uvm_error("SMTDV_BKDOR_CMP",
-          {$psprintf("BACKDOOR COMPARE WRDONG DATA \n%s, %s", item.sprint(), ritem.sprint())})
+      if (item && ritem)
+        `uvm_error("SMTDV_BKDOR_CMP",
+            {$psprintf("BACKDOOR COMPARE WRDONG DATA \n%s, %s", item.sprint(), ritem.sprint())})
+      else
+        `uvm_error("SMTDV_BKDOR_CMP",
+            {$psprintf("BACKDOOR COMPARE WRDONG DATA \n%s, null", item.sprint())})
     end
     this.cmp.bkdor_rd.match = FALSE;
   end

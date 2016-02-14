@@ -19,6 +19,7 @@ class smtdv_slave_cfg
 
   function new(string name = "smtdv_slave_cfg",  uvm_component parent=null);
     super.new(name, parent);
+    mod = SLAVE;
   endfunction : new
 
 endclass : smtdv_slave_cfg

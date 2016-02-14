@@ -3,10 +3,9 @@
 `define __APB_ITEM_SV__
 
 /**
-* apb item
 * a basic apb item
 *
-* @class apb_item
+* @class apb_item#(ADDR_WIDTH, DATA_WIDTH)
 *
 */
 class apb_item #(

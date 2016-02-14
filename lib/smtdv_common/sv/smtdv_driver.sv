@@ -38,7 +38,7 @@ class smtdv_driver#(
   `uvm_component_param_utils_begin(drv_t)
   `uvm_component_utils_end
 
-  function new(string name = "smtdv_driver", uvm_component parent);
+  function new(string name = "smtdv_driver", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 

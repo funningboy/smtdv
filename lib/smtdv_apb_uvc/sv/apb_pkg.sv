@@ -32,10 +32,9 @@ package apb_pkg;
   `include "apb_slave_agent.sv"
 
   `include "apb_scoreboard.sv"
-  `include "apb_env.sv"
   `include "apb_reg_adapter.sv"
 endpackage
 
 `include "apb_if.sv"
 
-`endif
+`endif // __APB_PKG_SV__

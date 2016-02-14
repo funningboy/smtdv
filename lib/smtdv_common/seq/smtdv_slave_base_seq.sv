@@ -6,6 +6,7 @@
 //typedef class smtdv_slave_cfg;
 //typedef class smtdv_sequencer;
 //typedef class smtdv_sequence;
+//typedef class smtdv_seq_node;
 
 /**
 * smtdv_save_base_seq
@@ -20,7 +21,8 @@ class smtdv_slave_base_seq#(
   type T1 = smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH),
   type VIF = virtual interface smtdv_if,
   type CFG = smtdv_slave_cfg,
-  type SEQR = smtdv_sequencer#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, T1)
+  type SEQR = smtdv_sequencer#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, T1),
+  type NODE = smtdv_seq_node#(uvm_object, uvm_component)
   ) extends
     smtdv_sequence#(T1);
 
@@ -37,6 +39,7 @@ class smtdv_slave_base_seq#(
     T1 bitem; // item from mbox
     mailbox#(T1) mbox;
     SEQR seqr;
+    NODE node;
 
     `uvm_object_param_utils_begin(seq_t)
     `uvm_object_utils_end
@@ -53,12 +56,9 @@ class smtdv_slave_base_seq#(
 //    endtask : pre_do
 
     // work for this sequence
-    virtual task pre_body();
-      super.pre_body();
-      $cast(seqr, m_sequencer);
-    endtask : pre_body
-
+    extern virtual task pre_body();
     extern virtual task body();
+    extern virtual task post_body();
     extern virtual task pre_do_read_item(T1 item);
     extern virtual task pre_do_write_item(T1 item);
     extern virtual task mid_do_read_item(T1 item);
@@ -173,12 +173,18 @@ task smtdv_slave_base_seq::finish_from_mon();
       {$psprintf("TRY COLLECTED FINISH SIGNAL\n")}, UVM_LOW)
 endtask : finish_from_mon
 
+task smtdv_slave_base_seq::pre_body();
+  super.pre_body();
+  $cast(seqr, m_sequencer);
+endtask : pre_body
+
 /*
 * slave is a passive listener which means all trxs are driven start from master and
 * wait for slave rsp back. it needs used finish signal assert to drop object phase,
 * that can't run as background thread
 */
 task smtdv_slave_base_seq::body();
+  super.body();
   fork
     fork
       rcv_from_mon();
@@ -189,5 +195,8 @@ task smtdv_slave_base_seq::body();
   join
 endtask : body
 
+task smtdv_slave_base_seq::post_body();
+  super.post_body();
+endtask : post_body
 
 `endif // end of __SMTDV_SLAVE_BASE_SEQ_SV__

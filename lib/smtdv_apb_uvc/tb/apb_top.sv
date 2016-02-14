@@ -113,9 +113,9 @@ module top();
 
 
   initial begin
-    uvm_config_db#(apb_if_t)::set(uvm_root::get(), "*.slave_agent[*0]*", "vif", `APBSLAVEVIF(0));
-    uvm_config_db#(apb_if_t)::set(uvm_root::get(), "*.slave_agent[*1]*", "vif", `APBSLAVEVIF(1));
-    uvm_config_db#(apb_if_t)::set(uvm_root::get(), "*.master_agent[*0]*", "vif",`APBMASTERIVF(0));
+    uvm_config_db#(apb_if_t)::set(uvm_root::get(), "*.slv_agts[*0]*", "vif", `APBSLAVEVIF(0));
+    uvm_config_db#(apb_if_t)::set(uvm_root::get(), "*.slv_agts[*1]*", "vif", `APBSLAVEVIF(1));
+    uvm_config_db#(apb_if_t)::set(uvm_root::get(), "*.mst_agts[*0]*", "vif",`APBMASTERIVF(0));
     uvm_config_db#(rst_if_t)::set(uvm_root::get(), "*", "rst_vif", apb_rst_if);
     run_test();
   end

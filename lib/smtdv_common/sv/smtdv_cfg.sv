@@ -14,6 +14,7 @@ class smtdv_cfg
 
   uvm_component cmp;
 
+  mod_type_t mod;
   rand bit has_force = TRUE;    // force virtual vif to drive DUT without normal DUT behavior, ex: preloading img or debug
   rand bit has_coverage = TRUE; // coverage report
   rand bit has_export = TRUE;   // export to smtdv sqlite3 database

@@ -5,4 +5,4 @@
 package smtdv_stl_pkg;
   `include "dpi_smtdv_stl.sv"
 endpackage
-`endif
+`endif // __SMTDV_STL_PKG_SV__

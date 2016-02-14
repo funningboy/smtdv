@@ -63,9 +63,13 @@ def call_runpy(cp, path, test):
         traceback.print_exc()
         print "run {0} fail".format(args.file)
 
-def check_rst(test, status, time):
+
+
+def check_rst(test, status, time, cb=report_rst):
     "check sim rst with pass/fail tokens"
-    pass
+    cmd = ["python"]
+    #if cb:
+    #    cb()
 
 def spawn_runpy(cp, wait=60, cb=check_rst):
     "as decorator to run job"

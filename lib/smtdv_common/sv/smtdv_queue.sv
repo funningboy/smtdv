@@ -3,9 +3,11 @@
 `define __SMTDV_QUEUE_SV__
 
 typedef class smtdv_sequence_item;
+typedef class smtdv_base_item;
 
-// as eq uvm_queue
-
+/*
+*  extend uvm_queue to item queue
+*/
 class smtdv_queue#(
  type T = smtdv_sequence_item
  ) extends
@@ -26,8 +28,8 @@ class smtdv_queue#(
   extern virtual function void unlock();
   extern virtual function void sort();
   extern virtual function bit has_item(T item);
-  extern virtual function void find_all(T item, ref T founds[]);
-  extern virtual function void find_idxs(T item, ref int founds[]);
+  extern virtual function void find_all(T item, ref T founds[$]);
+  extern virtual function void find_idxs(T item, ref int founds[$]);
 
   extern virtual task async_push_front(T item, int delay=0);
   extern virtual task async_push_back(T item, int delay=0);
@@ -58,29 +60,36 @@ endfunction : is_lock
 
 
 function bit smtdv_queue::has_item(smtdv_queue::T item);
+  smtdv_base_item sitem;
+  // seq_item
+  if (!$cast(sitem, item))
+    `uvm_error("SMTDV_QUEUE",
+        {$psprintf("$cast item to sequence item fail")})
+
   foreach(this.queue[i]) begin
-    if (this.queue[i].compare(item))
-      return TRUE;
+    if (this.queue[i].compare(item)) return TRUE;
   end
   return FALSE;
 endfunction : has_item
 
 
-function void smtdv_queue::find_all(smtdv_queue::T item, ref smtdv_queue::T founds[]);
-  T tarr[$];
-  tarr = this.queue.find(it) with ( it.compare(item) == TRUE );
-  founds = new[tarr.size()];
-  foreach(tarr[i]) founds[i] = tarr[i];
-  tarr.delete();
+function void smtdv_queue::find_all(smtdv_queue::T item, ref smtdv_queue::T founds[$]);
+  smtdv_base_item sitem;
+  if (!$cast(sitem, item))
+    `uvm_error("SMTDV_QUEUE",
+        {$psprintf("$cast item to sequence item fail")})
+
+  founds = this.queue.find(it) with ( it.compare(item) == TRUE );
 endfunction : find_all
 
 
-function void smtdv_queue::find_idxs(smtdv_queue::T item, ref int founds[]);
-  int tarr[$];
-  tarr = this.queue.find_index(it) with ( it.compare(item) == TRUE );
-  founds = new[tarr.size()];
-  foreach(tarr[i]) founds[i] = tarr[i];
-  tarr.delete();
+function void smtdv_queue::find_idxs(smtdv_queue::T item, ref int founds[$]);
+  smtdv_base_item sitem;
+  if (!$cast(sitem, item))
+    `uvm_error("SMTDV_QUEUE",
+        {$psprintf("$cast item to sequence item fail")})
+
+    founds = this.queue.find_index(it) with ( it.compare(item) == TRUE );
 endfunction : find_idxs
 
 
@@ -155,6 +164,29 @@ task smtdv_queue::async_delete(int idx, int delay=0);
 endtask : async_delete
 
 
+/*
+* smtdv integer queue
+*/
+class smtdv_int_queue#(
+ type T = int
+ ) extends
+  uvm_queue#(T);
+
+  typedef smtdv_int_queue#(T) queue_t;
+
+  `uvm_object_param_utils_begin(queue_t)
+  `uvm_object_utils_end
+
+  function new(string name = "smtdv_int_queue");
+    super.new(name);
+  endfunction : new
+
+endclass : smtdv_int_queue
+
+
+/*
+* smtdv physical queue
+*/
 class smtdv_phy_queue#(
  integer SIZE = 10,
  type T = smtdv_sequence_item
@@ -172,6 +204,8 @@ class smtdv_phy_queue#(
 
   extern function bit is_full();
   extern function bit is_empty();
+  extern function void shit_right(T item);
+  extern function void shit_left(T item);
 
 endclass : smtdv_phy_queue
 
@@ -182,5 +216,18 @@ endfunction : is_full
 function bit smtdv_phy_queue::is_empty();
   return size() == 0;
 endfunction : is_empty
+
+function void smtdv_phy_queue::shit_right(smtdv_phy_queue::T item);
+  T eitem;
+  if (is_full()) eitem = pop_back();
+  push_front(item);
+endfunction : shit_right
+
+function void smtdv_phy_queue::shit_left(smtdv_phy_queue::T item);
+  T fitem;
+  if (is_full()) fitem = pop_front();
+  push_back(item);
+endfunction : shit_left
+
 
 `endif // __SMTDV_QUEUE_SV__

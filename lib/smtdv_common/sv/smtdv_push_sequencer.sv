@@ -10,7 +10,7 @@ class smtdv_push_sequencer#(
 
   `uvm_component_param_utils(smtdv_push_sequencer#(REQ, RSP))
 
-  function new(string name = "smtdv_push_sequencer", uvm_component parent);
+  function new(string name = "smtdv_push_sequencer", uvm_component parent=null);
     super.new(name, parent);
   endfunction
 

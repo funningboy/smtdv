@@ -50,6 +50,7 @@ class smtdv_master_cfg
 
   function new(string name = "smtdv_master_cfg", uvm_component parent=null);
     super.new(name, parent);
+    mod = MASTER;
   endfunction : new
 
   extern virtual function void delete_slave();

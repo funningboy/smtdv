@@ -22,6 +22,8 @@ class smtdv_component#(
 
   VIF vif;
   CFG cfg;
+  mod_type_t mod; // {MASTER, SLAVE}
+
   // An indicator showing if the Power-On Reset is completed
   bit         pwrst_done    = FALSE;
   // An indicator showing the type of the incoming reset {HW_RST, SW_RST, PWR_RST}
@@ -39,7 +41,7 @@ class smtdv_component#(
     `uvm_field_int(resetn, UVM_ALL_ON)
   `uvm_component_utils_end
 
-  function new(string name = "smtdv_component", uvm_component parent);
+  function new(string name = "smtdv_component", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 
