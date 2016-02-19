@@ -21,7 +21,7 @@ class smtdv_ready_notify#(
   `uvm_object_param_utils_begin(ready_notf_t)
   `uvm_object_utils_end
 
-  function new(string name = "smtdv_ready_notify", CMP parent=null);
+  function new(string name = "smtdv_ready_notify", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 

@@ -22,7 +22,7 @@ class ahb_master_base_thread #(
   `uvm_object_param_utils_begin(th_t)
   `uvm_object_utils_end
 
-  function new(string name = "ahb_master_base_thread", cmp_t parent=null);
+  function new(string name = "ahb_master_base_thread", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 
@@ -47,12 +47,13 @@ class ahb_master_drive_addr #(
   typedef ahb_master_drive_addr#(ADDR_WIDTH, DATA_WIDTH) th_t;
   typedef ahb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
 
+  item_t item;
   rand int opt;
 
   `uvm_object_param_utils_begin(th_t)
   `uvm_object_utils_end
 
-  function new(string name = "ahb_master_drive_addr", cmp_t parent=null);
+  function new(string name = "ahb_master_drive_addr", uvm_component parent=null);
     super.new(name);
   endfunction : new
 
@@ -100,10 +101,12 @@ class ahb_master_drive_addr #(
   endtask : listen_ERROR
 
   virtual task run();
+    item = null;
     forever begin
       // after reset
       populate_default_item(item);
-      this.cmp.addrbox.async_pop_front(0, item);
+      if (item==null)
+        this.cmp.addrbox.async_pop_front(0, item);
 
       while(!item.addr_complete) begin
         populate_nonseq_item(item);
@@ -117,6 +120,8 @@ class ahb_master_drive_addr #(
         disable fork;
       end
       `uvm_info(this.cmp.get_full_name(), {$psprintf("try do addr item \n%s", item.sprint())}, UVM_LOW)
+
+      $cast(item, item.next);
     end
   endtask : run
 
@@ -186,7 +191,7 @@ class ahb_master_drive_data #(
   `uvm_object_param_utils_begin(th_t)
   `uvm_object_utils_end
 
-  function new(string name = "ahb_master_drive_data", cmp_t parent=null);
+  function new(string name = "ahb_master_drive_data", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 
@@ -224,8 +229,11 @@ class ahb_master_drive_data #(
   endtask : listen_ERROR
 
   virtual task run();
+    item = null;
     forever begin
-      this.cmp.databox.async_pop_front(0, item);
+      if (item==null)
+        this.cmp.databox.async_pop_front(0, item);
+
       `SMTDV_SWAP(0) // data phase should be after addr phase
 
       while(!item.data_complete) begin
@@ -242,6 +250,8 @@ class ahb_master_drive_data #(
         disable fork;
       end
       `uvm_info(this.cmp.get_full_name(), {$psprintf("try do data item \n%s", item.sprint())}, UVM_LOW)
+
+      $cast(item, item.next);
     end
   endtask : run
 

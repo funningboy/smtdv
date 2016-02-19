@@ -6,7 +6,6 @@
 //typedef class smtdv_slave_cfg;
 //typedef class smtdv_sequencer;
 //typedef class smtdv_sequence;
-//typedef class smtdv_seq_node;
 
 /**
 * smtdv_save_base_seq
@@ -21,55 +20,47 @@ class smtdv_slave_base_seq#(
   type T1 = smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH),
   type VIF = virtual interface smtdv_if,
   type CFG = smtdv_slave_cfg,
-  type SEQR = smtdv_sequencer#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, T1),
-  type NODE = smtdv_seq_node#(uvm_object, uvm_component)
+  type SEQR = smtdv_sequencer#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, T1)
   ) extends
-    smtdv_sequence#(T1);
+  smtdv_sequence#(T1);
 
-    typedef smtdv_slave_base_seq#(ADDR_WIDTH, DATA_WIDTH, T1, VIF, CFG, SEQR) seq_t;
+  typedef smtdv_slave_base_seq#(ADDR_WIDTH, DATA_WIDTH, T1, VIF, CFG, SEQR) seq_t;
 
-    rand int trx_delay;
-    constraint c_trx_delay { trx_delay inside {[0:10]}; }
+  rand int trx_delay;
+  constraint c_trx_delay { trx_delay inside {[0:10]}; }
 
-    bit grabbing = FALSE;
-    bit locking = FALSE;
+  bit grabbing = FALSE;
+  bit locking = FALSE;
 
-    T1 item;  // default item
-    T1 mitem; // item from mon
-    T1 bitem; // item from mbox
-    mailbox#(T1) mbox;
-    SEQR seqr;
-    NODE node;
+  T1 item;  // default item
+  T1 mitem; // item from mon
+  T1 bitem; // item from mbox
+  mailbox#(T1) mbox;
+  SEQR seqr;
 
-    `uvm_object_param_utils_begin(seq_t)
-    `uvm_object_utils_end
+  `uvm_object_param_utils_begin(seq_t)
+  `uvm_object_utils_end
 
-    function new(string name = "smtdv_slave_base_seq");
-      super.new(name);
-      mbox = new();
-    endfunction : new
+  function new(string name = "smtdv_slave_base_seq");
+    super.new(name);
+    mbox = new();
+  endfunction : new
 
-// work for parant sequence
-//    virtual task pre_do(bit is_item);
-//      super.pre_do(is_item);
-//      $cast(seqr, m_sequencer);
-//    endtask : pre_do
-
-    // work for this sequence
-    extern virtual task pre_body();
-    extern virtual task body();
-    extern virtual task post_body();
-    extern virtual task pre_do_read_item(T1 item);
-    extern virtual task pre_do_write_item(T1 item);
-    extern virtual task mid_do_read_item(T1 item);
-    extern virtual task mid_do_write_item(T1 item);
-    extern virtual task post_do_read_item(T1 item);
-    extern virtual task post_do_write_item(T1 item);
-    extern virtual task do_read_item(T1 item);
-    extern virtual task do_write_item(T1 item);
-    extern virtual task rcv_from_mon();
-    extern virtual task note_to_drv();
-    extern virtual task finish_from_mon();
+  // work for this sequence
+  extern virtual task pre_body();
+  extern virtual task body();
+  extern virtual task post_body();
+  extern virtual task pre_do_read_item(T1 item);
+  extern virtual task pre_do_write_item(T1 item);
+  extern virtual task mid_do_read_item(T1 item);
+  extern virtual task mid_do_write_item(T1 item);
+  extern virtual task post_do_read_item(T1 item);
+  extern virtual task post_do_write_item(T1 item);
+  extern virtual task do_read_item(T1 item);
+  extern virtual task do_write_item(T1 item);
+  extern virtual task rcv_from_mon();
+  extern virtual task note_to_drv();
+  extern virtual task finish_from_mon();
 
 endclass : smtdv_slave_base_seq
 
@@ -149,8 +140,6 @@ task smtdv_slave_base_seq::note_to_drv();
     if (grabbing) grab();
     if (locking) lock();
 
-    repeat(trx_delay) @(posedge seqr.vif.clk);
-
     `uvm_create(req);
     req.copy(bitem);
     // do some override or purge
@@ -163,7 +152,7 @@ task smtdv_slave_base_seq::note_to_drv();
     if (locking) unlock();
 
    `uvm_info(get_type_name(),
-        {$psprintf("GET AFTER RETURN ITEM\n%s", bitem.sprint())}, UVM_LOW)
+        {$psprintf("GET AFTER RETURN ITEM\n%s", req.sprint())}, UVM_LOW)
   end
 endtask : note_to_drv
 
@@ -175,7 +164,11 @@ endtask : finish_from_mon
 
 task smtdv_slave_base_seq::pre_body();
   super.pre_body();
-  $cast(seqr, m_sequencer);
+
+ if (!$cast(seqr, m_sequencer))
+    `uvm_error("SMTDV_UCAST_P/MSEQR",
+        {$psprintf("UP CAST TO PHY SEQUENCER FAIL")})
+
 endtask : pre_body
 
 /*

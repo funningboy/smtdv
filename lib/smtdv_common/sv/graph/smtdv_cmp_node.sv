@@ -45,14 +45,20 @@ endclass : smtdv_cmp_node
 * cast to smtdv_cmp_graph
 */
 function void smtdv_cmp_node::register(uvm_object parent=null);
-  $cast(graph, parent);
+  if (!$cast(graph, parent))
+    `uvm_error("SMTDV_UCAST_CMP_GRAPH",
+        {$psprintf("UP CAST TO SMTDV CMP_GRAPH FAIL")})
+
 endfunction : register
 
 /*
 * set cmp(agent) ptr
 */
 function void smtdv_cmp_node::set(smtdv_cmp_node::CMP icmp, mod_type_t imod=MASTER);
-  cmp = icmp;
+  if (!$cast(cmp, icmp))
+    `uvm_error("SMTDV_DCAST_CMP",
+        {$psprintf("DOWN CAST TO SMTDV CMP FAIL")})
+
   mod = imod;
 endfunction : set
 

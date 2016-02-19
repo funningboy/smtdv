@@ -17,7 +17,7 @@ class ahb_slave_driver #(
   typedef ahb_slave_driver#(ADDR_WIDTH, DATA_WIDTH) drv_t;
   typedef ahb_slave_drive_addr#(ADDR_WIDTH, DATA_WIDTH) drv_addr_t;
   typedef ahb_slave_drive_data#(ADDR_WIDTH, DATA_WIDTH) drv_data_t;
-  typedef smtdv_queue#(ADDR_WIDTH, DATA_WIDTH, item_t) queue_t;
+  typedef smtdv_queue#(item_t) queue_t;
   typedef smtdv_thread_handler #(drv_t) hdler_t;
 
   // as frontend threads/handler
@@ -99,7 +99,7 @@ task ahb_slave_driver::drive_bus();
         end
     default:
       `uvm_fatal("UNXPCTDPKT",
-      $sformatf("receives an unexpected item: \n%s", req.sprint()))
+      $sformatf("RECEIVES AN UNEXPECTED ITEM: \n%s", req.sprint()))
   endcase
 endtask : drive_bus
 

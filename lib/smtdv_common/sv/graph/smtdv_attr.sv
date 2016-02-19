@@ -12,8 +12,8 @@ typedef struct {
 
 `define SMTDV_DEFAULT_ATTR \
   '{ \
-    -1, \
-    -1, \
+    0, \
+    0, \
     $time, \
     $time \
   }

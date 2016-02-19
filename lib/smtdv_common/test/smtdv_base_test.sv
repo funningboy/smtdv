@@ -66,7 +66,7 @@ class smtdv_base_test
 
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
-    vseqr.smtdv_magt = cmp_envs[0].mst_agts[0];
+    vseqr.smtdv_magts[0] = cmp_envs[0].mst_agts[0];
   endfunction : connect_phase
 
 

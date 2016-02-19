@@ -4,16 +4,14 @@
 //typedef class ahb_master_base_seq;
 
 // bind physical seqs to virtual seqs
-class ahb_master_rand_vseq #(
-  ADDR_WIDTH = 14,
-  DATA_WIDTH = 32
-  ) extends
-    ahb_master_base_vseq #(
-      .ADDR_WIDTH(ADDR_WIDTH),
-      .DATA_WIDTH(DATA_WIDTH)
-  );
+class ahb_master_rand_vseq
+  extends
+  ahb_master_base_vseq;
 
-  typedef ahb_master_rand_vseq#(ADDR_WIDTH, DATA_WIDTH) vseq_t;
+  parameter ADDR_WIDTH = 32;
+  parameter DATA_WIDTH = 32;
+
+  typedef ahb_master_rand_vseq vseq_t;
   typedef ahb_master_1w_seq#(ADDR_WIDTH, DATA_WIDTH) seq_1w_t;
   typedef ahb_master_1r_seq#(ADDR_WIDTH, DATA_WIDTH) seq_1r_t;
 
@@ -49,12 +47,12 @@ class ahb_master_rand_vseq #(
     cur_wr_addr = start_wr_addr;
 
     for(int i=0; i<cnt; i++) begin
-      `uvm_create_on(seq_1w, seqr)
+      `uvm_create_on(seq_1w, vseqr.ahb_magts[0].seqr)
       seq_1w.start_addr = cur_wr_addr;
       seq_1w.bst_type = bst_type;
       seq_1w.trx_size = trx_size;
-      seq_1w.start(seqr, this, 0);
-      repeat(wr_cyc) @(posedge seqr.vif.clk);
+      seq_1w.start(vseqr.ahb_magts[0].seqr, this, 0);
+      repeat(wr_cyc) @(posedge vseqr.ahb_magts[0].seqr.vif.clk);
       cur_wr_addr += incr_wr_addr;
     end
   endtask : do_rand_wr_seq
@@ -63,12 +61,12 @@ class ahb_master_rand_vseq #(
     cur_rd_addr = start_rd_addr;
 
     for(int i=0; i<cnt; i++) begin
-     `uvm_create_on(seq_1r, seqr)
+     `uvm_create_on(seq_1r, vseqr.ahb_magts[0].seqr)
      seq_1r.start_addr = cur_rd_addr;
      seq_1r.bst_type = bst_type;
      seq_1r.trx_size = trx_size;
-     seq_1r.start(seqr, this, 0);
-     repeat(rd_cyc) @(posedge seqr.vif.clk);
+     seq_1r.start(vseqr.ahb_magts[0].seqr, this, 0);
+     repeat(rd_cyc) @(posedge vseqr.ahb_magts[0].seqr.vif.clk);
      cur_rd_addr += incr_rd_addr;
     end
   endtask : do_rand_rd_seq

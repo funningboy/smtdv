@@ -36,6 +36,8 @@ class smtdv_driver#(
   hdler_t bk_handler;
 
   `uvm_component_param_utils_begin(drv_t)
+    `uvm_field_object(b0, UVM_ALL_ON)
+    `uvm_field_object(bk_handler, UVM_ALL_ON)
   `uvm_component_utils_end
 
   function new(string name = "smtdv_driver", uvm_component parent=null);
@@ -89,7 +91,11 @@ task smtdv_driver::run_phase(uvm_phase phase);
             @(posedge vif.clk iff (vif.clk));
 
             seq_item_port.get_next_item(req);
-            $cast(rsp, req.clone());
+
+            if (!$cast(rsp, req.clone()))
+                `uvm_error("SMTDV_DCAST_RSP/REQ",
+                    {$psprintf("DOWN CAST TO REQ/RSP FAIL")})
+
             rsp.set_id_info(req);
             drive_bus();
             seq_item_port.item_done();

@@ -5,16 +5,14 @@
 //typedef class smtdv_master_base_seq;
 
 // retry seq while err rsp received
-class ahb_master_retry_vseq #(
-  ADDR_WIDTH = 14,
-  DATA_WIDTH = 32
-  ) extends
-    ahb_master_base_vseq#(
-    .ADDR_WIDTH(ADDR_WIDTH),
-    .DATA_WIDTH(DATA_WIDTH)
-  );
+class ahb_master_retry_vseq
+  extends
+  ahb_master_base_vseq;
 
-  typedef ahb_master_retry_vseq#(ADDR_WIDTH, DATA_WIDTH) vseq_t;
+  parameter ADDR_WIDTH = 32;
+  parameter DATA_WIDTH = 32;
+
+  typedef ahb_master_retry_vseq vseq_t;
   typedef ahb_master_1w_seq#(ADDR_WIDTH, DATA_WIDTH) seq_1w_t;
   typedef ahb_master_1r_seq#(ADDR_WIDTH, DATA_WIDTH) seq_1r_t;
   typedef ahb_master_retry_seq#(ADDR_WIDTH, DATA_WIDTH) seq_rty_t;
@@ -45,9 +43,9 @@ class ahb_master_retry_vseq #(
     cur_addr = start_addr;
 
     repeat(outstanding) begin
-      `uvm_create_on(seq_1w, seqr)
+      `uvm_create_on(seq_1w, vseqr.ahb_magts[0].seqr)
       seq_1w.start_addr = cur_addr;
-      seq_1w.start(seqr, this, 0);
+      seq_1w.start(vseqr.ahb_magts[0].seqr, this, 0);
       cur_addr += incr_addr;
     end
 
@@ -60,9 +58,9 @@ class ahb_master_retry_vseq #(
     cur_addr = start_addr;
 
     repeat(outstanding) begin
-      `uvm_create_on(seq_1r, seqr)
+      `uvm_create_on(seq_1r, vseqr.ahb_magts[0].seqr)
       seq_1r.start_addr = cur_addr;
-      seq_1r.start(seqr, this, 0);
+      seq_1r.start(vseqr.ahb_magts[0].seqr, this, 0);
       cur_addr += incr_addr;
     end
 
@@ -70,12 +68,12 @@ class ahb_master_retry_vseq #(
   endtask : do_outstanding_rd_seq
 
   virtual task do_retry_seq();
-    seq_rty.start(seqr, this, -1);
+    seq_rty.start(vseqr.ahb_magts[0].seqr, this, -1);
   endtask : do_retry_seq
 
   virtual task pre_body();
     super.pre_body();
-    `uvm_create_on(seq_rty, seqr)
+    `uvm_create_on(seq_rty, vseqr.ahb_magts[0].seqr)
     `SMTDV_RAND(seq_rty)
     seq_rty.register_watch_table(start_addr, end_addr);
   endtask : pre_body
@@ -90,7 +88,7 @@ class ahb_master_retry_vseq #(
     do_outstanding_wr_seq();
     do_outstanding_rd_seq();
 
-    seqr.finish = TRUE;
+    vseqr.ahb_magts[0].seqr.finish = TRUE;
   endtask : body
 
 endclass : ahb_master_retry_vseq

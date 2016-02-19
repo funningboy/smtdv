@@ -279,10 +279,10 @@ function void smtdv_scoreboard::_do_initor_rd_check(smtdv_scoreboard::T1 item, i
     rd_pool.keys(taddr);
     foreach(taddr[i]) begin
       `uvm_warning(get_full_name(),
-          {$psprintf("AT rd_pool: %h\n", taddr)})
+          {$psprintf("AT rd_pool: %h\n", taddr[i])})
     end
 
-    `uvm_error("SMTDV_SCB_RD_COMP",
+    `uvm_error("SMTDV_SCB_RD_NOT",
         {$psprintf("RECEIVED NOTFOUND DATA %h\n%s", item.addrs[i], item.sprint())})
   end
 endfunction : _do_initor_rd_check
@@ -343,10 +343,10 @@ function void smtdv_scoreboard::_do_target_wr_check(smtdv_scoreboard::T1 item, i
     wr_pool.keys(taddr);
     foreach(taddr[i]) begin
       `uvm_warning(get_full_name(),
-          {$psprintf("AT wr_pool: %h \n", taddr)})
+          {$psprintf("AT wr_pool: %h \n", taddr[i])})
     end
 
-    `uvm_error("SMTDV_SCB_WR_COMP",
+    `uvm_error("SMTDV_SCB_WR_NOT",
         {$psprintf("RECEIVED NOTFOUND DATA %h\n%s", item.addrs[i], item.sprint())})
   end
 endfunction : _do_target_wr_check

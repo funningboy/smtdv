@@ -33,7 +33,7 @@ class apb_hijack_test
       "default_sequence",
       m_vseq_t::type_id::get());
 
-   uvm_config_db#(uvm_object_wrapper)::set(this,
+    uvm_config_db#(uvm_object_wrapper)::set(this,
       "*slv_agts[*0]*.seqr.run_phase",
       "default_sequence",
       s_cseq_t::type_id::get());
@@ -42,11 +42,14 @@ class apb_hijack_test
     foreach(cmp_envs[i]) begin
       foreach(cmp_envs[i].mst_scbs[j]) begin
         uvm_top.set_report_severity_id_override(UVM_ERROR, cmp_envs[i].mst_scbs[j].get_full_name(), UVM_WARNING);
-        uvm_top.set_report_severity_id_override(UVM_ERROR, "SMTDV_BKDOR_CMP", UVM_WARNING);
-        uvm_top.set_report_severity_id_override(UVM_ERROR, "SMTDV_SCB_RD_COMP", UVM_WARNING);
-        uvm_top.set_report_severity_id_override(UVM_ERROR, "SMTDV_SCB_WR_COMP", UVM_WARNING);
       end
     end
+
+    uvm_top.set_report_severity_id_override(UVM_ERROR, "SMTDV_BKDOR_CMP", UVM_WARNING);
+    uvm_top.set_report_severity_id_override(UVM_ERROR, "SMTDV_SCB_RD_COMP", UVM_WARNING);
+    uvm_top.set_report_severity_id_override(UVM_ERROR, "SMTDV_SCB_WR_COMP", UVM_WARNING);
+    uvm_top.set_report_severity_id_override(UVM_ERROR, "SMTDV_SCB_RD_NOT", UVM_WARNING);
+    uvm_top.set_report_severity_id_override(UVM_ERROR, "SMTDV_SCB_WR_NOT", UVM_WARNING);
 
     uvm_top.set_timeout(1000ns);
     uvm_top.set_report_severity_id_override(UVM_FATAL, "PH_TIMEOUT", UVM_WARNING);

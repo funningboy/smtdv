@@ -21,7 +21,7 @@ class ahb_slave_base_thread #(
   `uvm_object_param_utils_begin(th_t)
   `uvm_object_utils_end
 
-  function new(string name = "ahb_slave_base_thread", cmp_t parent=null);//, callback, cb);
+  function new(string name = "ahb_slave_base_thread", uvm_component parent=null);//, callback, cb);
     super.new(name, parent);
   endfunction : new
 
@@ -44,14 +44,15 @@ class ahb_slave_drive_addr #(
   );
 
   typedef ahb_slave_drive_addr#(ADDR_WIDTH, DATA_WIDTH) th_t;
-  typedef ahb_item#(ADDR_WIDTH, DATA_WIDTH) itemt_t;
+  typedef ahb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
 
+  item_t item;
   rand int opt;
 
   `uvm_object_param_utils_begin(th_t)
   `uvm_object_utils_end
 
-  function new(string name = "ahb_slave_drive_addr", cmp_t parent=null);//, callback, cb);
+  function new(string name = "ahb_slave_drive_addr", uvm_component parent=null);//, callback, cb);
     super.new(name);
   endfunction : new
 
@@ -96,10 +97,12 @@ class ahb_slave_drive_addr #(
   endtask : drive
 
   virtual task run();
+    item = null;
     forever begin
       // after reset
       populate_default_item(item);
-      this.cmp.addrbox.async_pop_front(0, item);
+      if (item==null)
+        this.cmp.addrbox.async_pop_front(0, item);
 
       while(!item.addr_complete) begin
         fork
@@ -108,6 +111,8 @@ class ahb_slave_drive_addr #(
         disable fork;
       end
       `uvm_info(this.cmp.get_full_name(), {$psprintf("try do addr item \n%s", item.sprint())}, UVM_LOW)
+
+      $cast(item, item.next);
     end
   endtask : run
 
@@ -174,7 +179,7 @@ endclass : ahb_slave_drive_addr
 class ahb_slave_drive_data #(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32
-) extends
+  ) extends
     ahb_slave_base_thread #(
       ADDR_WIDTH,
       DATA_WIDTH
@@ -188,7 +193,7 @@ class ahb_slave_drive_data #(
   `uvm_object_param_utils_begin(th_t)
   `uvm_object_utils_end
 
-  function new(string name = "ahb_slave_drive_data", cmp_t parent=null);//, callback);
+  function new(string name = "ahb_slave_drive_data", uvm_component parent=null);//, callback);
     super.new(name, parent);
   endfunction
 
@@ -197,14 +202,17 @@ class ahb_slave_drive_data #(
       if (item.data_idx > item.bst_len) break;
       if (item.split || item.retry || item.error) break;
       if (item.addr_idx > item.data_idx) populate_data_item(item);
-      @(posedge this.cmp.vif.clk iff (this.cmp.vif.hsel && this.cmp.vif.hready && this.cmp.vif.htrans inside {NONSEQ, SEQ}));
+      @(posedge this.cmp.vif.clk iff (this.cmp.vif.hsel && this.cmp.vif.hready && this.cmp.vif.htrans inside {NONSEQ, SEQ, IDLE}));
     end
     populate_complete_item(item);
   endtask : drive_OKAY
 
   virtual task run();
+    item = null;
     forever begin
-      this.cmp.databox.async_pop_front(0, item);
+      if (item==null)
+        this.cmp.databox.async_pop_front(0, item);
+
       `SMTDV_SWAP(0) // data phase should be after addr phase
 
       while(!item.data_complete) begin
@@ -217,6 +225,8 @@ class ahb_slave_drive_data #(
         disable fork;
       end
       `uvm_info(this.cmp.get_full_name(), {$psprintf("try do data item \n%s", item.sprint())}, UVM_LOW)
+
+      $cast(item, item.next);
     end
   endtask : run
 

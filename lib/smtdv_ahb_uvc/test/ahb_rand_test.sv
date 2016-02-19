@@ -12,32 +12,32 @@ class ahb_rand_test
   ahb_base_test;
 
   typedef ahb_rand_test test_t;
-  typedef ahb_master_rand_vseq#(ADDR_WIDTH, DATA_WIDTH) m_vseq_t;
+  typedef ahb_master_rand_vseq m_vseq_t;
   typedef ahb_slave_base_seq#(ADDR_WIDTH, DATA_WIDTH) s_bseq_t;
 
   `uvm_component_utils(ahb_rand_test)
 
   function new(string name = "ahb_rand_test", uvm_component parent=null);
     super.new(name, parent);
-  endfunction
+  endfunction : new
 
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
     uvm_config_db #(uvm_object_wrapper)::set(this,
-      "*master_agent[*0]*.seqr.run_phase",
+      "vseqr.run_phase",
       "default_sequence",
       m_vseq_t::type_id::get());
 
    uvm_config_db #(uvm_object_wrapper)::set(this,
-      "*slave_agent[*0]*.seqr.run_phase",
+      "*slv_agts[*0]*.seqr.run_phase",
       "default_sequence",
       s_bseq_t::type_id::get());
-  endfunction
+  endfunction : build_phase
 
   virtual function void end_of_elaboration_phase(uvm_phase phase);
     super.end_of_elaboration_phase(phase);
 
-    slave_agent[0].cfg.has_error = FALSE;
+    cmp_envs[0].slv_agts[0].cfg.has_error = FALSE;
   endfunction : end_of_elaboration_phase
 
 //  check trx with sqlite3 db

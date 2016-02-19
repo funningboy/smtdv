@@ -66,8 +66,10 @@ endclass : apb_master_drive_items
 
 // blocking for R/W trx
 task apb_master_drive_items::run();
+  item = null;
   forever begin
-    this.cmp.mbox.async_pop_front(0, item);
+    if(item==null)
+      this.cmp.mbox.async_pop_front(0, item);
 
     case(item.trs_t)
       RD: begin do_read_item(item); end
@@ -76,6 +78,11 @@ task apb_master_drive_items::run();
         `uvm_fatal("APB_UNXPCTDPKT",
         $sformatf("GET AN UNEXPECTED ITEM \n%s", item.sprint()))
     endcase
+
+    if (!$cast(item, item.next))
+     `uvm_error("SMTDV_UCAST_SEQ_ITEM",
+         {$psprintf("UP CAST TO SMTDV SEQ_ITEM FAIL")})
+
   end
 endtask : run
 
@@ -117,30 +124,30 @@ task apb_master_drive_items::populate_setup_write_item(item_t item);
   this.cmp.vif.master.prwd <= WR;
   this.cmp.vif.master.psel <= 1<<this.cmp.cfg.find_slave(item.addr);
   this.cmp.vif.master.pwdata <= item.unpack_data(0);
-endtask
+endtask : populate_setup_write_item
 
 
 task apb_master_drive_items::populate_access_write_item(item_t item);
   this.cmp.vif.master.penable <= 1'b1;
-endtask
+endtask : populate_access_write_item
 
 
 task apb_master_drive_items::populate_end_write_item(item_t item);
   this.cmp.vif.master.psel <= 1'b0;
   this.cmp.vif.master.penable <= 1'b0;
-endtask
+endtask : populate_end_write_item
 
 
 task apb_master_drive_items::populate_setup_read_item(item_t item);
   this.cmp.vif.master.paddr <= item.addr;
   this.cmp.vif.master.prwd <= RD;
   this.cmp.vif.master.psel <= 1<<this.cmp.cfg.find_slave(item.addr);
-endtask
+endtask : populate_setup_read_item
 
 
 task apb_master_drive_items::populate_access_read_item(item_t item);
   this.cmp.vif.master.penable <= 1'b1;
-endtask
+endtask : populate_access_read_item
 
 
 task apb_master_drive_items::populate_end_read_item(item_t item);

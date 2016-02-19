@@ -39,9 +39,12 @@ class ahb_monitor #(
   mailbox #(item_t) pbox; // port to data channel
   mailbox #(item_t) bbox; // update cfg channel
 
+  // as backend system services, don't override these.
   coll_addr_item_t th0;
   coll_data_item_t th1;
   coll_stop_sin_t th2;
+
+  // as frontend system services, user can override these at top level.
   coll_cov_grp_t th3;
   exp_coll_items_t th4;
 

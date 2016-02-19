@@ -4,20 +4,23 @@ root = os.getenv("SMTDV_HOME")
 common = ${main:root}/lib/smtdv_common
 debug = TRUE
 spawn = TRUE
+stdout = FALSE
 unittest = TRUE
 clean = FALSE
-simulator = ius
+simulator = mti
 test = smtdv_setup_test
 
 # for unittest
 tests =
-smtdv_base_test
-smtdv_setup_test
-smtdv_directed_graph_test
-smtdv_circular_graph_test
-smtdv_cmp_graph_test
-smtdv_seq_graph_test
-smtdv_top_graph_test
+  smtdv_base_test
+  smtdv_setup_test
+  smtdv_directed_graph_test
+  smtdv_circular_graph_test
+  smtdv_cmp_graph_test
+  smtdv_seq_graph_test
+
+# TODO
+#  smtdv_top_graph_test
 
 [cores]
 import_files =
@@ -44,6 +47,7 @@ include_dirs =
   ${smtdv_sqlite3.systemverilog:include_dirs}
   ${smtdv_stl.systemverilog:include_dirs}
   ${smtdv_util.systemverilog:include_dirs}
+  ${main:root}/lib
   ${main:common}
   ${main:common}/seq
   ${main:common}/vseq
@@ -84,6 +88,8 @@ vlog =
   proc_incdir(\"mti\", \"${verilog:include_dirs}\")
   proc_incdir(\"mti\", \"${verilog:include_files}\")
   proc_srcfile(\"mti\", \"${verilog:src_files}\")
+  +define+SMTDV_SEQ_32X32
+  +define+SMTDV_SEQ_64X64
 
 vsim =
   vsim ${mti.mti:vsim}
@@ -112,6 +118,9 @@ irun =
   -uvm
   +UVM_TESTNAME=${main:test}
   +UVM_VERBOSITY=UVM_DEBUG
+  +define+SMTDV_SEQ_32X32
+  +define+SMTDV_SEQ_64X64
+
 
 clean =
   ${ius.ius:clean}

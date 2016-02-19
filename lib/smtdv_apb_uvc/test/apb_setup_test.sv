@@ -2,7 +2,6 @@
 `ifndef __APB_SETUP_TEST_SV__
 `define __APB_SETUP_TEST_SV__
 
-//IUS doesn't support it
 //typedef class apb_base_test;
 //typedef class apb_master_1w1r_vseq;
 //typedef class apb_slave_base_seq;
@@ -17,7 +16,7 @@ class apb_setup_test
 
   `uvm_component_utils(apb_setup_test)
 
-  function new(string name = "apb_inject_test", uvm_component parent=null);
+  function new(string name = "apb_setup_test", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 

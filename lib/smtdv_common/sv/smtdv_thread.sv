@@ -36,7 +36,11 @@ class smtdv_run_thread#(
 
   function new(string name = "smtdv_run_thread", uvm_component parent=null);
     super.new(name);
-    $cast(cmp, parent);
+
+    if (!$cast(cmp, parent))
+     `uvm_error("SMTDV_UCAST_CMP",
+        {$psprintf("UP CAST TO SMTDV CMP FAIL")})
+
   endfunction : new
 
   extern virtual function void update_timestamp();

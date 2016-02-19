@@ -3,24 +3,22 @@
 `ifndef __AHB_MASTER_BASE_VSEQ_SV__
 `define __AHB_MASTER_BASE_VSEQ_SV__
 
-//typedef class ahb_master_sequencer;
+typedef class ahb_virtual_sequencer;
 
 // bind virtual sequencer as physical sequencer
-class ahb_master_base_vseq #(
-    ADDR_WIDTH = 14,
-    DATA_WIDTH = 32
-  ) extends
-    smtdv_master_base_vseq;
+class ahb_master_base_vseq
+  extends
+  smtdv_seq_env;
 
-  typedef ahb_master_base_vseq#(ADDR_WIDTH, DATA_WIDTH) vseq_t;
-  typedef ahb_master_sequencer#(ADDR_WIDTH, DATA_WIDTH) seqr_t;
+  typedef ahb_master_base_vseq vseq_t;
+  typedef ahb_virtual_sequencer vseqr_t;
 
-  seqr_t seqr;
+  vseqr_t vseqr;
 
   `uvm_object_param_utils_begin(vseq_t)
   `uvm_object_utils_end
 
-  `uvm_declare_p_sequencer(seqr_t)
+  `uvm_declare_p_sequencer(vseqr_t)
 
   function new(string name = "ahb_master_base_vseq");
     super.new(name);
@@ -30,7 +28,9 @@ class ahb_master_base_vseq #(
     super.pre_body();
     // p_sequencer == this.get_sequencer()
     //$cast(seqr, p_sequencer);
-    $cast(seqr, this.get_sequencer());
+    $cast(vseqr, this.get_sequencer());
+
+    seq_blder._create_seq_graph();
   endtask : pre_body
 
 endclass : ahb_master_base_vseq

@@ -14,7 +14,6 @@ test = apb_stl_test
 tests =
   apb_base_test
   apb_setup_test
-  apb_rand_test
   apb_stl_test
   apb_retry_test
   apb_err_inject_test

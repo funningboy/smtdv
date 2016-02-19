@@ -3,7 +3,7 @@
 
 class smtdv_master_base_vseq
   extends
-  smtdv_seq_env;
+  smtdv_base_vseq;
 
   typedef smtdv_master_base_vseq vseq_t;
 
@@ -13,11 +13,6 @@ class smtdv_master_base_vseq
   function new(string name = "smtdv_master_base_vseq");
     super.new(name);
   endfunction : new
-
-  virtual task pre_body();
-    super.pre_body();
-    seq_blder._create_seq_graph();
-  endtask : pre_body
 
 endclass : smtdv_master_base_vseq
 

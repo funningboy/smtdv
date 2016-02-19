@@ -68,9 +68,11 @@ endclass : apb_slave_drive_items
 
 // blocking for R/W trx
 task apb_slave_drive_items::run();
+  item = null;
   forever begin
     populate_default_item(item);
-    this.cmp.mbox.async_pop_front(0, item);
+    if (item==null)
+      this.cmp.mbox.async_pop_front(0, item);
 
     wait(this.cmp.vif.has_force);
     case(item.trs_t)
@@ -80,6 +82,11 @@ task apb_slave_drive_items::run();
         `uvm_fatal("APB_UNXPCTDPKT",
         $sformatf("GET AN UNEXPECTED ITEM \n%s", item.sprint()))
     endcase
+
+    if (!$cast(item, item.next))
+      `uvm_error("SMTDV_UCAST_SEQ_ITEM",
+         {$psprintf("UP CAST TO SMTDV SEQ_ITEM FAIL")})
+
   end
 endtask : run
 

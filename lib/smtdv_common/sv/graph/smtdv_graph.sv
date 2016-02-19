@@ -147,7 +147,8 @@ endfunction : is_sink
 function smtdv_graph::EDGE smtdv_graph::get_edge(int edgeid);
   if (edgeid<0 || edgeid>edge_q.size())
     `uvm_error("SMTDV_GRAPH",
-        {$psprintf("found null edge at %d", edgeid)})
+        {$psprintf("FOUND NULL EDGE AT %d", edgeid)})
+
   return edge_q.get(edgeid);
 endfunction : get_edge
 
@@ -194,7 +195,7 @@ endfunction : del_node
 function smtdv_graph::NODE smtdv_graph::get_node(int nodeid);
   if (!has_node(nodeid))
     `uvm_error("SMTDV_GRAPH",
-        {$psprintf("found null node at %d", nodeid)})
+        {$psprintf("FOUND NULL NODE AT %d", nodeid)})
   return node_m.get(nodeid);
 endfunction : get_node
 
@@ -240,7 +241,7 @@ function void smtdv_graph::finalize();
 
   if (parent==null)
     `uvm_error("SMTDV_GRAPH",
-        {$psprintf("found null parent, please using register")})
+        {$psprintf("FOUND NULL PARENT, PLEASE USING REGISTER")})
 
 endfunction : finalize
 
@@ -255,15 +256,21 @@ function void smtdv_graph::dump();
     for(int i=0; i<edge_q.size(); i++) begin
       tedge = get_edge(i);
       `uvm_info(get_full_name(),
-        {$psprintf("Edge(%0d): source Node(%0d)-> sink Node(%0d)", i, tedge.sourceid, tedge.sinkid)}, UVM_LOW);
+        {$psprintf("Edge(%0d): Source Node(%0d)-> Sink Node(%0d)", i, tedge.sourceid, tedge.sinkid)}, UVM_LOW);
     end
     `uvm_info(parent.get_full_name(),
         "-------------------------------", UVM_LOW);
   end
 endfunction : dump
 
+/*
+* register parent
+*/
 function void smtdv_graph::register(uvm_object iparent);
-  $cast(parent, iparent);
+  if (!$cast(parent, iparent))
+    `uvm_error("SMTDV_UCAST_GRAPH",
+        {$psprintf("UP CAST TO SMTDV GRAPH FAIL")})
+
 endfunction : register
 
 `endif // __SMTDV_GRAPH_SV__

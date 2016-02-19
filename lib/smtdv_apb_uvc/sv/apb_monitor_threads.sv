@@ -204,7 +204,10 @@ class apb_update_notify_cfgs#(
 
   //
   virtual task populate_item(item_t item);
-    $cast(bitem, item);
+    if (!$cast(bitem, item))
+      `uvm_error("SMTDV_DCAST_SEQ_ITEM",
+         {$psprintf("DOWN CAST TO SMTDV SEQ_ITEM FAIL")})
+
   // smtdv_label_handler::update_item(item);
   // smtdv_label_handler::run();
   endtask : populate_item

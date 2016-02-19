@@ -2,12 +2,13 @@
 description = "SMTDV AHB lib"
 root = os.getenv("SMTDV_HOME")
 ahb = ${main:root}/lib/smtdv_ahb_uvc
-debug = FALSE
+debug = TRUE
 spawn = TRUE
 stdout = FALSE
 unittest = TRUE
+clean = FALSE
 simulator = ius
-test = ahb_stl_test
+test = ahb_rand_test
 
 # add your test below
 tests =
@@ -22,10 +23,10 @@ tests =
   ahb_hijack_test
 
 # TODO
-  #ahb_fw_ctl_test
-  #ahb_incr_test
-  #ahb_wrap_test
-  #ahb_csim_test
+#  ahb_fw_ctl_test
+#  ahb_incr_test
+#  ahb_wrap_test
+#  ahb_csim_test
 
 [cores]
 import_files =
@@ -42,6 +43,7 @@ include_files =
   ${smtdv_common.systemverilog:include_files}
   ${main:ahb}/sv/ahb_pkg.sv
   ${main:ahb}/seq/ahb_seq_pkg.sv
+  ${main:ahb}/vseq/ahb_vseq_pkg.sv
   ${main:ahb}/test/test_ahb_pkg.sv
 
 include_dirs =
@@ -49,6 +51,7 @@ include_dirs =
   ${main:ahb}
   ${main:ahb}/stl
   ${main:ahb}/seq
+  ${main:ahb}/vseq
   ${main:ahb}/sv
   ${main:ahb}/tb
   ${main:ahb}/test

@@ -39,7 +39,8 @@ package uart_pkg;
   `include "uart_scoreboard.sv"
   `include "uart_scoreboard_threads.sv"
   `include "uart_env.sv"
-endpackage
+
+endpackage : uart_pkg
 
 `include "uart_if.sv"
 

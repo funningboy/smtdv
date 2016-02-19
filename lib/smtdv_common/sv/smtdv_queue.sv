@@ -63,8 +63,8 @@ function bit smtdv_queue::has_item(smtdv_queue::T item);
   smtdv_base_item sitem;
   // seq_item
   if (!$cast(sitem, item))
-    `uvm_error("SMTDV_QUEUE",
-        {$psprintf("$cast item to sequence item fail")})
+    `uvm_error("SMTDV_DCAST_ITEM",
+        {$psprintf("DOWN CAST ITEM TO SEQUENCE ITEM FAIL")})
 
   foreach(this.queue[i]) begin
     if (this.queue[i].compare(item)) return TRUE;
@@ -76,8 +76,8 @@ endfunction : has_item
 function void smtdv_queue::find_all(smtdv_queue::T item, ref smtdv_queue::T founds[$]);
   smtdv_base_item sitem;
   if (!$cast(sitem, item))
-    `uvm_error("SMTDV_QUEUE",
-        {$psprintf("$cast item to sequence item fail")})
+    `uvm_error("SMTDV_DCAST_ITEM",
+        {$psprintf("DOWN CAST ITEM TO SEQUENCE ITEM FAIL")})
 
   founds = this.queue.find(it) with ( it.compare(item) == TRUE );
 endfunction : find_all
@@ -86,8 +86,8 @@ endfunction : find_all
 function void smtdv_queue::find_idxs(smtdv_queue::T item, ref int founds[$]);
   smtdv_base_item sitem;
   if (!$cast(sitem, item))
-    `uvm_error("SMTDV_QUEUE",
-        {$psprintf("$cast item to sequence item fail")})
+    `uvm_error("SMTDV_DCAST_ITEM",
+        {$psprintf("DOWN CAST ITEM TO SEQUENCE ITEM FAIL")})
 
     founds = this.queue.find_index(it) with ( it.compare(item) == TRUE );
 endfunction : find_idxs

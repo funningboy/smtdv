@@ -28,7 +28,10 @@ class apb_slave_base_vseq#(
 
   virtual task pre_body();
     super.pre_body();
-    $cast(seqr, p_sequencer);
+    if (!$cast(seqr, p_sequencer))
+      `uvm_error("SMTDV_UCAST_V/PSEQR",
+         {$psprintf("UP CAST TO SMTDV V/PSEQR FAIL")})
+
   endtask : pre_body
 
 endclass : apb_slave_base_vseq

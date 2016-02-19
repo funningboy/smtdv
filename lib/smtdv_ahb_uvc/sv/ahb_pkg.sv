@@ -32,9 +32,9 @@ package ahb_pkg;
   `include "ahb_slave_agent.sv"
 
   `include "ahb_scoreboard.sv"
-  `include "ahb_env.sv"
   `include "ahb_reg_adapter.sv"
-endpackage
+
+endpackage : ahb_pkg
 
 `include "ahb_if.sv"
 

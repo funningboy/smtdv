@@ -45,7 +45,10 @@ endclass : smtdv_cmp_edge
 * cast from object to smtdv_cmp_graph
 */
 function void smtdv_cmp_edge::register(uvm_object parent=null);
-  $cast(graph, parent);
+  if (!$cast(graph, parent))
+    `uvm_error("SMTDV_UCAST_SEQ_GRAPH",
+        {$psprintf("UP CAST TO SMTDV SEQ_GRAPH FAIL")})
+
 endfunction : register
 
 

@@ -47,10 +47,13 @@ class smtdv_thread_handler#(
 
   function new(string name = "smtdv_thread_handler", uvm_component parent=null);
     super.new(name);
-    $cast(cmp, parent);
+    if (!$cast(cmp, parent))
+      `uvm_error("SMTDV_UCAST_CMP",
+        {$psprintf("UP CAST TO SMTDV CMP FAIL")})
+
   endfunction : new
 
-  extern virtual function void register(CMP cmp);
+  extern virtual function void register(CMP icmp);
   extern virtual function void add(th_t thread);
   extern virtual function void del(th_t thread);
   extern virtual function int successes();
@@ -77,9 +80,11 @@ endfunction : fails
 /*
 * register handler to main component
 */
-function void smtdv_thread_handler::register(smtdv_thread_handler::CMP cmp);
-  assert(cmp);
-  this.cmp = cmp;
+function void smtdv_thread_handler::register(smtdv_thread_handler::CMP icmp);
+  if (!$cast(cmp, icmp))
+    `uvm_error("SMTDV_UCAST_CMP",
+        {$psprintf("UP CAST TO SMTDV CMP FAIL")})
+
 endfunction : register
 
 /**
@@ -165,6 +170,7 @@ endtask : watch
 task smtdv_thread_handler::timer();
   `SMTDV_SWAP(sampwin)
   curstamp = $time;
+
   if ((curstamp-prestamp)>=timewin) begin
     foreach (thread_q[i]) begin
       if (curstamp - thread_q[i].timestamp > timewin) begin
@@ -175,7 +181,8 @@ task smtdv_thread_handler::timer();
           thread_q[i].err_msg);
       end
     end
-  end else begin
+  end
+  else begin
     prestamp = curstamp;
   end
 endtask : timer

@@ -28,7 +28,7 @@ class apb_slave_hijack_seq#(
     super.new(name);
   endfunction : new
 
-  //phase 1, release force while slave is running into normal behavior
+  // release force while slave is running into normal behavior
   virtual task mid_do_read_item(item_t item);
     super.mid_do_read_item(item);
     if (rd_idx >= rd_max) begin
@@ -37,10 +37,6 @@ class apb_slave_hijack_seq#(
     end
     rd_idx++;
   endtask : mid_do_read_item
-
-  //phase 2. goback to force behavior
-//  virtual task
-//  endtask :
 
 endclass : apb_slave_hijack_seq
 

@@ -13,8 +13,8 @@ class smtdv_cmp_graph_test
   smtdv_base_test;
 
   typedef uvm_component bcmp_t;
-  typedef smtdv_cmp_node#(bcmp_t) cmp_node_t;
   typedef smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef smtdv_cmp_node#(bcmp_t, item_t) cmp_node_t;
   typedef smtdv_cmp_edge#(cmp_node_t, cmp_node_t, item_t) cmp_edge_t;
 
   `uvm_component_utils(smtdv_cmp_graph_test)
@@ -58,7 +58,7 @@ function void smtdv_cmp_graph_test::test_circular_graph();
 //  // circular graph test
 //  if(!alg.is_circular_graph())
 //    `uvm_error("SMTDV_CMP_GRAPH_TEST",
-//        {$psprintf("graph must be circular graph")})
+//        {$psprintf("GRAPH MUST BE CIRCULAR GRAPH")})
 //
 endfunction : test_circular_graph
 
@@ -72,7 +72,7 @@ function void smtdv_cmp_graph_test::test_cast_masters();
   // check node cast
   if (!$cast(mst_node, cmp_envs[0].cmp_blder.cmp_graph.get_node(0)))
     `uvm_error("SMTDV_CMP_GRAPH_TEST",
-        {$psprintf("get cast mst_node fail")})
+        {$psprintf("GET CAST MST_NODE FAIL")})
 
   //update node.attr
   mst_node.attr = '{0, 0, $time, $time};
@@ -80,14 +80,14 @@ function void smtdv_cmp_graph_test::test_cast_masters();
   // check node bind
   if (!$cast(mst_agt, mst_node.get()))
     `uvm_error("SMTDV_CMP_GRAPH_TEST",
-        {$psprintf("get bined mst_agt fail")})
+        {$psprintf("GET BINED MST_AGT FAIL")})
 
   // check mst_agt.cfg
   cmp_envs[0].mst_agts[0].cfg.has_force = FALSE;
   cmp_envs[0].mst_agts[0].cfg.has_force = TRUE;
   if (!mst_agt.cfg.has_force)
     `uvm_error("SMTDV_CMP_GRAPH_TEST",
-        {$psprintf("get bined mst_agt.cfg.has_force must be TRUE fail")})
+        {$psprintf("GET BINED MST_AGT.CFG.HAS_FORCE MUST BE TRUE FAIL")})
 
 endfunction : test_cast_masters
 
@@ -101,7 +101,7 @@ function void smtdv_cmp_graph_test::test_cast_slaves();
   // check node cast
   if (!$cast(slv_node, cmp_envs[0].cmp_blder.cmp_graph.get_node(1)))
     `uvm_error("SMTDV_CMP_GRAPH_TEST",
-        {$psprintf("get cast slv_node fail")})
+        {$psprintf("GET CAST SLV_NODE FAIL")})
 
   //update node.attr
   slv_node.attr = '{0, 0, $time, $time};
@@ -109,14 +109,14 @@ function void smtdv_cmp_graph_test::test_cast_slaves();
   // check node bind
   if (!$cast(slv_agt, slv_node.get()))
     `uvm_error("SMTDV_CMP_GRAPH_TEST",
-        {$psprintf("get bined slv_agt fail")})
+        {$psprintf("GET BINED SLV_AGT FAIL")})
 
   // check mst_agt.cfg
   cmp_envs[0].slv_agts[0].cfg.has_force = FALSE;
   cmp_envs[0].slv_agts[0].cfg.has_force = TRUE;
   if (!slv_agt.cfg.has_force)
     `uvm_error("SMTDV_CMP_GRAPH_TEST",
-        {$psprintf("get bined slv_agt.cfg.has_force must be TRUE fail")})
+        {$psprintf("GET BINED SLV_AGT.CFG.HAS_FORCE MUST BE TRUE FAIL")})
 
 endfunction : test_cast_slaves
 
@@ -132,7 +132,7 @@ function void smtdv_cmp_graph_test::test_collected_item();
 
   if (!$cast(cmp_edge, cmp_envs[0].cmp_blder.cmp_graph.get_edge(0)))
     `uvm_error("SMTDV_CMP_GRAPH_TEST",
-        {$psprintf("get cast cmp_edge fail")})
+        {$psprintf("GET CAST CMP_EDGE FAIL")})
 
   // field in items as full
   for(int i=0; i<20; i++) begin
@@ -141,11 +141,11 @@ function void smtdv_cmp_graph_test::test_collected_item();
   end
   if (!cmp_edge.items.is_full() || cmp_edge.items.is_empty())
     `uvm_error("SMTDV_CMP_GRAPH_TEST",
-        {$psprintf("get items.full/empty fail")})
+        {$psprintf("GET ITEMS.FULL/EMPTY FAIL")})
 
   if (!$cast(item, cmp_edge.items.pop_back()))
     `uvm_error("SMTDV_CMP_GRAPH_TEST",
-        {$psprintf("get cast item fail")})
+        {$psprintf("GET CAST ITEM FAIL")})
 
 endfunction : test_collected_item
 

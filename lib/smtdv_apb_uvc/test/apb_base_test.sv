@@ -30,6 +30,10 @@ class apb_base_test
       slv_agt_t,
       item_t
   ) env_t;
+
+  // prefer to use apb_32x32_env_t not env_t;
+  // apb_32x32_env;
+
   typedef apb_virtual_sequencer vseqr_t;
 
   typedef virtual interface smtdv_gen_rst_if#("apb_rst_if", 100, 0) rst_t;
@@ -69,7 +73,7 @@ class apb_base_test
 
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
-    vseqr.apb_magt[0] = cmp_envs[0].mst_agts[0];
+    vseqr.apb_magts[0] = cmp_envs[0].mst_agts[0];
   endfunction : connect_phase
 
   virtual function void end_of_elaboration_phase(uvm_phase phase);

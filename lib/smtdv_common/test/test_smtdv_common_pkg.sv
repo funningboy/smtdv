@@ -29,6 +29,6 @@ package test_smtdv_common_pkg;
 //`include "smtdv_seq_graph_test.sv"
 //`include "smtdv_top_graph_test.sv"
 
-endpackage
+endpackage : test_smtdv_common_pkg
 
 `endif // end of __SMTDV_TEST_COMMON_PKG_SV__

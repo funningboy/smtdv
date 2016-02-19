@@ -32,19 +32,19 @@ class apb_master_polling_vseq
 
   // polling until expected value assert
   virtual task do_polling_cfg_seq();
-    seq_pol.start(vseqr.apb_magt[0].seqr, this, -1);
+    seq_pol.start(vseqr.apb_magts[0].seqr, this, -1);
   endtask : do_polling_cfg_seq
 
   virtual task do_cfg_rd_seq();
     seq_pol.set_polling_start();
     assert(seq_pol.is_ready_to_polling());
 
-    `uvm_create_on(seq_rd, vseqr.apb_magt[0].seqr)
+    `uvm_create_on(seq_rd, vseqr.apb_magts[0].seqr)
     `SMTDV_RAND_WITH(seq_rd,
     {
       seq_rd.start_addr == cur_addr;
     })
-    seq_rd.start(vseqr.apb_magt[0].seqr, this, 0);
+    seq_rd.start(vseqr.apb_magts[0].seqr, this, 0);
 
     wait(seq_pol.is_finish_to_polling());
   endtask : do_cfg_rd_seq
@@ -53,19 +53,19 @@ class apb_master_polling_vseq
     cur_addr = start_addr;
 
     foreach(pats[i]) begin
-      `uvm_create_on(seq_cfg, vseqr.apb_magt[0].seqr)
+      `uvm_create_on(seq_cfg, vseqr.apb_magts[0].seqr)
       `SMTDV_RAND_WITH(seq_cfg,
         {
           seq_cfg.start_addr == cur_addr;
           seq_cfg.write_data == pats[i];
         })
-      seq_cfg.start(vseqr.apb_magt[0].seqr, this, 0);
+      seq_cfg.start(vseqr.apb_magts[0].seqr, this, 0);
     end
   endtask : do_cfg_wr_seq
 
   virtual task pre_body();
     super.pre_body();
-    `uvm_create_on(seq_pol, vseqr.apb_magt[0].seqr)
+    `uvm_create_on(seq_pol, vseqr.apb_magts[0].seqr)
     `SMTDV_RAND(seq_pol)
     seq_pol.register_watch_table(start_addr, end_addr);
     seq_pol.register_polling_table(start_addr, pats[$]);
@@ -83,7 +83,7 @@ class apb_master_polling_vseq
       do_cfg_rd_seq();
     join
 
-    vseqr.apb_magt[0].seqr.finish = TRUE;
+    vseqr.apb_magts[0].seqr.finish = TRUE;
   endtask : body
 
 endclass : apb_master_polling_vseq

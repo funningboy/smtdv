@@ -3,7 +3,7 @@
 `define __APB_VIRTUAL_SEQUENCER_SV__
 
 
-//typedef class apb_master_agent
+//typedef class apb_master_agent;
 
 class apb_virtual_sequencer
   extends
@@ -14,8 +14,11 @@ class apb_virtual_sequencer
 
   typedef apb_virtual_sequencer vseqr_t;
   typedef apb_master_agent#(ADDR_WIDTH, DATA_WIDTH) apb_magt_t;
+  typedef apb_slave_agent#(ADDR_WIDTH, DATA_WIDTH) apb_sagt_t;
 
-  apb_magt_t apb_magt[$];
+  // prefer to use apb_32x32_magt_t if more typedefs
+  apb_magt_t apb_magts[$];
+  apb_sagt_t apb_sagts[$];
 
   `uvm_component_param_utils_begin(vseqr_t)
   `uvm_component_utils_end

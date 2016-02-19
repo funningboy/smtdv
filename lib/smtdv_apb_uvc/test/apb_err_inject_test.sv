@@ -43,9 +43,10 @@ class apb_err_inject_test
     foreach(cmp_envs[i]) begin
       foreach(cmp_envs[i].mst_scbs[j]) begin
         uvm_top.set_report_severity_id_override(UVM_ERROR, cmp_envs[i].mst_scbs[j].get_full_name(), UVM_WARNING);
-        uvm_top.set_report_severity_id_override(UVM_ERROR, "SMTDV_BKDOR_CMP", UVM_WARNING);
       end
     end
+
+    uvm_top.set_report_severity_id_override(UVM_ERROR, "SMTDV_BKDOR_CMP", UVM_WARNING);
 
   endfunction : build_phase
 

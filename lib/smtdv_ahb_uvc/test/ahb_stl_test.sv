@@ -11,7 +11,7 @@ class ahb_stl_test
   ahb_base_test;
 
   typedef ahb_stl_test test_t;
-  typedef ahb_master_stl_seq#(ADDR_WIDTH, DATA_WIDTH) m_seq_t;
+  typedef ahb_master_stl_vseq m_vseq_t;
   typedef ahb_slave_base_seq#(ADDR_WIDTH, DATA_WIDTH) s_bseq_t;
 
   `uvm_component_utils(ahb_stl_test)
@@ -23,12 +23,12 @@ class ahb_stl_test
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
     uvm_config_db #(uvm_object_wrapper)::set(this,
-      "*master_agent[*0]*.seqr.run_phase",
+      "vseqr.run_phase",
       "default_sequence",
-      m_seq_t::type_id::get());
+      m_vseq_t::type_id::get());
 
    uvm_config_db #(uvm_object_wrapper)::set(this,
-      "*slave_agent[*0]*.seqr.run_phase",
+      "*slv_agts[*0]*.seqr.run_phase",
       "default_sequence",
       s_bseq_t::type_id::get());
 
@@ -37,11 +37,11 @@ class ahb_stl_test
   virtual function void end_of_elaboration_phase(uvm_phase phase);
     super.end_of_elaboration_phase(phase);
 
-    master_agent[0].cfg.has_busy = FALSE;
+    cmp_envs[0].mst_agts[0].cfg.has_busy = FALSE;
 
-    slave_agent[0].cfg.has_error = FALSE;
-    slave_agent[0].cfg.has_retry = FALSE;
-    slave_agent[0].cfg.has_split = FALSE;
+    cmp_envs[0].slv_agts[0].cfg.has_error = FALSE;
+    cmp_envs[0].slv_agts[0].cfg.has_retry = FALSE;
+    cmp_envs[0].slv_agts[0].cfg.has_split = FALSE;
   endfunction : end_of_elaboration_phase
 
 //  check trx with sqlite3 db

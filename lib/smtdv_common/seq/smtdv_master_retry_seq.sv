@@ -202,7 +202,7 @@ task smtdv_master_retry_seq::rcv_from_mon();
       WR: begin do_write_item(mitem); end
       default:
         `uvm_fatal("SMTDV_UNXPCTDPKT",
-            {$psprintf("collected an unexpected item: \n%s", mitem.sprint())})
+            {$psprintf("COLLECTED AN UNEXPECTED ITEM: \n%s", mitem.sprint())})
       endcase
     end
 endtask : rcv_from_mon

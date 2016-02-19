@@ -76,7 +76,7 @@ class smtdv_sequence_item#(
 
   rand mod_type_t    mod_t;  // {MASTER/SLAVE}
   rand trs_type_t    trs_t;  // {RD/WR}
-  rand run_type_t    run_t;  // {FORCE/NORMAL/SKIP/ERRORINJECT}
+  rand run_type_t    run_t;  // {FORCE/NORMAL/SKIP/ERRORINJECT/LOCK}
 
   longint       bg_cyc;
   longint       ed_cyc;

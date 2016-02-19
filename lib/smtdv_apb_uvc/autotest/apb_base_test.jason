@@ -8,36 +8,37 @@
             'ADDR_WIDTH': 32,
             'DATA_WIDTH': 32
         },
-    'cmp_env': {[
+    'cmp_envs': {[
         {
             'uuid': 0,
             'type': 'apb',
+            'parameter': {
+                'ADDR_WIDTH': ${test.parameter.ADDR_WIDTH},
+                'DATA_WIDTH': ${test.parameter.DATA_WIDTH}
+            },
+
             'graph': {
                 'type': 'cmp_graph',
                 'nodes': {[
                     {
                         'uuid': 0,
-                        'model': 'master', // {slave, scb, vseqr}
+                        'model': 'master', // {master, slave, scoreboard, vseqr}
                         'override_class': 'test', // extend apb_master_agent#(ADDR_WIDTH, DATA_WIDTH)
-                        'parameter': {
-                            'ADDR_WIDTH': ${test.parameter.ADDR_WIDTH},
-                            'DATA_WIDTH': ${test.parameter.DATA_WIDTH}
-                        },
                         'bind_inst': 'xxx.xxx.xxx',
                         'interface': {
-                            'clk': ('clk', ${cmp_env[0].graph.nodes[0].bind_inst}.clk),
-                            'rst': ('resetn', ${cmp_env[0].bind_inst}.resetn),
+                            'clk': ('clk', ${cmp_envs[0].graph.nodes[0].bind_inst}.clk),
+                            'rst': ('resetn', ${cmp_envs[0].bind_inst}.resetn),
                             'output':{[
-                                ('paddr', ${cmp_env[0].bind_inst}.paddr),
-                                ('prwd', ${cmp_env[0].bind_inst}.prwd),
-                                ('pwdata', ${cmp_env[0].bind_inst}.pwdata),
-                                ('psel', {15'h0, ${cmp_env[0].bind_inst}.psel}),
-                                ('penable', ${cmp_env[0].bind_inst}.penable)
+                                ('paddr', ${cmp_envs[0].bind_inst}.paddr),
+                                ('prwd', ${cmp_envs[0].bind_inst}.prwd),
+                                ('pwdata', ${cmp_envs[0].bind_inst}.pwdata),
+                                ('psel', {15'h0, ${cmp_envs[0].bind_inst}.psel}),
+                                ('penable', ${cmp_envs[0].bind_inst}.penable)
                             ]},
                             'input':{[
-                                ('prdata', ${cmp_env[0].bind_inst}.prdata),
-                                ('pslverr', ${cmp_env[0].bind_inst}.pslverr),
-                                ('pready', ${cmp_env[0].bind_inst}.pready)
+                                ('prdata', ${cmp_envs[0].bind_inst}.prdata),
+                                ('pslverr', ${cmp_envs[0].bind_inst}.pslverr),
+                                ('pready', ${cmp_envs[0].bind_inst}.pready)
                             ]}
                         },
                         'cfg': { // apb_master_cfg
@@ -50,13 +51,13 @@
                                     'uuid': 0,
                                     'start_addr': 0,
                                     'end_addr': 0x7fffffff,
-                                    'slave_cfg': &{cmp_env[0].graph.nodes[1].cfg}
+                                    'slave_cfg': &{cmp_envs[0].graph.nodes[1].cfg}
                                 },
                                 {
                                     'uuid': 1,
                                     'start_addr':800000000,
                                     'end_addr': 0xffffffff,
-                                    'slave_cfg': &{cmp_env[0].graph.nodes[2].cfg}
+                                    'slave_cfg': &{cmp_envs[0].graph.nodes[2].cfg}
                                 }
                             ]},
                         }
@@ -71,17 +72,17 @@
                         },
                         'bind_inst': 'xxx.xxx.xxx',
                         'interface': {
-                            'clk': ('clk', ${cmp_env[0].graph.nodes[1].bind_inst}.clk),
-                            'resetn': ('resetn', ${cmp_env[0].graph.nodes[1].bind_inst}.resetn),
+                            'clk': ('clk', ${cmp_envs[0].graph.nodes[1].bind_inst}.clk),
+                            'resetn': ('resetn', ${cmp_envs[0].graph.nodes[1].bind_inst}.resetn),
                             'output':{[
-                                ('clk', ${cmp_env[0].graph.nodes[1].bind_inst}.clk),
-                                ('resetn', ${cmp_env[0].graph.nodes[1].bind_inst}.resetn),
-                                ('prdata', ${cmp_env[0].graph.nodes[1].bind_inst}.prdata),
-                                ('pslverr', ${cmp_env[0].graph.nodes[1].bind_inst}.pslverr),
-                                ('pready', ${cmp_env[0].graph.nodes[1].bind_inst}.pready)
+                                ('clk', ${cmp_envs[0].graph.nodes[1].bind_inst}.clk),
+                                ('resetn', ${cmp_envs[0].graph.nodes[1].bind_inst}.resetn),
+                                ('prdata', ${cmp_envs[0].graph.nodes[1].bind_inst}.prdata),
+                                ('pslverr', ${cmp_envs[0].graph.nodes[1].bind_inst}.pslverr),
+                                ('pready', ${cmp_envs[0].graph.nodes[1].bind_inst}.pready)
                             ]},
                             'input':{[
-                                ('paddr', ${cmp_env[0].graph.nodes[1].bind_inst}.paddr)
+                                ('paddr', ${cmp_envs[0].graph.nodes[1].bind_inst}.paddr)
                             ]}
                         },
                         'cfg': {
@@ -116,7 +117,7 @@
                         'stl': 'fwset.stl',
                         'pre': {[]},
                         'nxt': {[
-                            ${cmp_env[0].vseq.graph[1]}
+                            ${cmp_envs[0].vseq.graph[1]}
                         ]}
                     },
                     {
@@ -124,7 +125,7 @@
                         'seq': apb_master_stl_seq#(ADDR_WIDTH, DATA_WIDTH)
                         'stl': 'preload0.stl',
                         'pre':{[
-                            ${cmp_env[0].vseq.graph[0]}
+                            ${cmp_envs[0].vseq.graph[0]}
                         ]},
                         'nxt': {[]}
                     }

@@ -6,6 +6,8 @@
 `include "ahb_master_rand_vseq.sv"
 `include "ahb_master_retry_vseq.sv"
 `include "ahb_master_polling_vseq.sv"
+`include "ahb_master_stl_vseq.sv"
+
 `include "ahb_master_interrupt_vseq.sv"
 `include "ahb_master_mutex_vseq.sv"
 `include "ahb_master_fw_ctl_vseq.sv"

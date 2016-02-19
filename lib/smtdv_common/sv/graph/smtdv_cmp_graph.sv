@@ -12,7 +12,7 @@ typedef class smtdv_cmp_edge;
 class smtdv_cmp_graph#(
   type NODE = smtdv_cmp_node#(uvm_component, smtdv_base_item),
   type EDGE = smtdv_cmp_edge#(NODE, NODE, smtdv_base_item)
-  )extends
+  ) extends
   smtdv_graph#(
     .NODE(NODE),
     .EDGE(EDGE)

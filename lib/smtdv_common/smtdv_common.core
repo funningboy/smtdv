@@ -19,13 +19,16 @@ include_files =
   ${smtdv_util.systemverilog:include_files}
   ${main:common}/sv/smtdv_common_pkg.sv
   ${main:common}/seq/smtdv_common_seq_pkg.sv
+  ${main:common}/vseq/smtdv_common_vseq_pkg.sv
 
 include_dirs =
   ${smtdv_sqlite3.systemverilog:include_dirs}
   ${smtdv_stl.systemverilog:include_dirs}
   ${smtdv_util.systemverilog:include_dirs}
+  ${main:root}/lib
   ${main:common}
   ${main:common}/seq
+  ${main:common}/vseq
   ${main:common}/sv
   ${main:common}/sv/vif
   ${main:common}/sv/model

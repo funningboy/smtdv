@@ -16,8 +16,10 @@ class smtdv_virtual_sequencer
 
   typedef smtdv_virtual_sequencer vseqr_t;
   typedef smtdv_master_agent#(ADDR_WIDTH, DATA_WIDTH) smtdv_magt_t;
+  typedef smtdv_slave_agent#(ADDR_WIDTH, DATA_WIDTH) smtdv_sagt_t;
 
-  smtdv_magt_t smtdv_magt;
+  smtdv_magt_t smtdv_magts[$];
+  smtdv_sagt_t smtdv_sagts[$];
 
   `uvm_component_param_utils_begin(vseqr_t)
   `uvm_component_utils_end

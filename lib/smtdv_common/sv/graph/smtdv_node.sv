@@ -68,7 +68,10 @@ endclass : smtdv_node
 * cast from object to smtdv_graph
 */
 function void smtdv_node::register(uvm_object parent=null);
-  $cast(graph,parent);
+  if (!$cast(graph,parent))
+    `uvm_error("SMTDV_UCAST_GRAPH",
+        {$psprintf("UP CAST TO SMTDV GRAPH FAIL")})
+
 endfunction : register
 
 function bit smtdv_node::is_lock();
@@ -199,10 +202,12 @@ task smtdv_node::pre_do();
   wait(is_lock());
 endtask : pre_do
 
+
 task smtdv_node::mid_do();
   `uvm_info(get_full_name(), $sformatf("Starting run node ..."), UVM_HIGH)
   `SMTDV_SWAP(attr.delay)
 endtask : mid_do
+
 
 task smtdv_node::post_do();
   fork

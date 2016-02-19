@@ -41,7 +41,7 @@ class ahb_monitor_base_thread #(
 
   virtual function void pre_do();
     if (!this.cmp) begin
-      `uvm_fatal("NOCMP",{"cmp must be set for: ",get_full_name(),".cmp"});
+      `uvm_fatal("NOCMP",{"CMP MUST BE SET FOR: ",get_full_name(),".cmp"});
     end
   endfunction : pre_do
 

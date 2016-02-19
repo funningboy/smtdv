@@ -63,7 +63,6 @@ endclass : smtdv_agent
 function void smtdv_agent::build_phase(uvm_phase phase);
   super.build_phase(phase);
   mod = MASTER;
-
   mon= MON::type_id::create("mon", this);
 
   if(this.get_is_active()) begin
@@ -83,16 +82,17 @@ endfunction : connect_phase
 
 function void smtdv_agent::end_of_elaboration_phase(uvm_phase phase);
   super.end_of_elaboration_phase(phase);
-  if(vif == null) begin
+  if(vif == null)
     if(!uvm_config_db#(VIF)::get(this, "", "vif", vif))
       `uvm_fatal("SMTDV_AGENT_NO_VIF",{"VIRTUAL INTERFACE MUST BE SET ",get_full_name(),".vif"});
-  end
-  assign_vi(vif);
-  if(cfg == null) begin
+
+  if(cfg == null)
     if(!uvm_config_db#(CFG)::get(this, "", "cfg", cfg))
     `uvm_fatal("SMTDV_AGENT_NO_CFG",{"CFG MUST BE SET ",get_full_name(),".cfg"});
-  end
+
   `uvm_info(get_full_name(), {$psprintf("CREATE DEFAULT CFG: %s\n", cfg.sprint())}, UVM_LOW)
+
+  assign_vi(vif);
   assign_cfg(cfg);
 endfunction : end_of_elaboration_phase
 
@@ -119,8 +119,14 @@ function void smtdv_agent::assign_cfg(smtdv_agent::CFG cfg);
   end
 endfunction : assign_cfg
 
+/*
+* set backbone graph node
+*/
 function void smtdv_agent::set(smtdv_agent::NODE inode);
-  node = inode;
+  if(!$cast(node, inode))
+      `uvm_error("SMTDV_DCAST_CMP_NOE",
+        {$psprintf("DOWN CAST TO SMTDV CMP_NOE FAIL")})
+
 endfunction : set
 
 `endif // end of __SMTDV_AGENT_SV__

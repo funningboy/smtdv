@@ -2,12 +2,12 @@
 `ifndef __APB_MASTER_BASE_VSEQ_SV__
 `define __APB_MASTER_BASE_VSEQ_SV__
 
-//typedef class apb_master_sequencer;
+typedef class apb_virtual_sequencer;
 
 // bind virtual sequencer as physical sequencer
 class apb_master_base_vseq
   extends
-  smtdv_seq_env;
+  smtdv_master_base_vseq;
 
   typedef apb_master_base_vseq vseq_t;
   typedef apb_virtual_sequencer vseqr_t;
@@ -25,9 +25,9 @@ class apb_master_base_vseq
 
   virtual task pre_body();
     super.pre_body();
-    // p_sequencer == this.get_sequencer()
-    //$cast(seqr, p_sequencer);
-    $cast(vseqr, this.get_sequencer());
+    if (!$cast(vseqr, this.get_sequencer()))
+      `uvm_error("SMTDV_UCAST_V/PSEQR",
+         {$psprintf("UP CAST TO SMTDV V/PSEQR FAIL")})
 
     seq_blder._create_seq_graph();
   endtask : pre_body

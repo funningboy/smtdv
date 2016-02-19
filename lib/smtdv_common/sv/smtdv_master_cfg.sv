@@ -78,7 +78,10 @@ function int smtdv_master_cfg::find_slave(int unsigned addr);
   int founds[$];
   founds = map_cfgs.find_index(item)  with (item.start_addr <= addr && addr < item.end_addr);
   if (founds.size()==1) begin
-    $cast(mcfg, map_cfgs[founds[0]]);
+    if (!$cast(mcfg, map_cfgs[founds[0]]))
+      `uvm_error("SMTDV_DCAST_MST_CFG",
+        {$psprintf("DOWN CAST TO SMTDV MST CFG FAIL")})
+
     return mcfg.id;
   end
   return -1;

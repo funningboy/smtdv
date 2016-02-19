@@ -52,7 +52,7 @@ class apb_item #(
 
   function new (string name = "apb_item");
     super.new(name);
-  endfunction
+  endfunction : new
 
   function void post_randomize();
     bit [ADDR_WIDTH-1:0] addrs[$];

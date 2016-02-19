@@ -38,7 +38,10 @@ class smtdv_backdoor#(
 
   function new (string name = "smtdv_backdoor", uvm_component parent=null);
     super.new(name);
-    $cast(cmp, parent);
+    if (!$cast(cmp, parent))
+      `uvm_error("SMTDV_UCAST_CMP",
+        {$psprintf("UP CAST TO SMTDV CMP FAIL")})
+
   endfunction : new
 
   extern virtual function string gen_query_cmd(string table_nm, string map, ref T1 item);
@@ -56,19 +59,25 @@ endclass : smtdv_backdoor
 function string smtdv_backdoor::gen_query_cmd(string table_nm, string map, ref smtdv_backdoor::T1 item);
   string cmd;
   case(map)
-    "LAST_WR_TRX": begin
-      cmd = {$psprintf("SELECT * FROM %s WHERE dec_rw=%d AND dec_addr>=%d AND dec_addr<%d ORDER BY dec_ed_cyc DESC limit %d;",
+    "LAST_WR_TRX":
+    begin
+        cmd = {$psprintf("SELECT * FROM %s WHERE dec_rw=%d AND dec_addr>=%d AND dec_addr<%d ORDER BY dec_ed_cyc DESC limit %d;",
         table_nm, WR, item.addrs[item.addr_idx], item.addrs[item.addr_idx]+item.offset, item.offset)};
     end
-    "FRIST_WR_TRX": begin
-      cmd = {$psprintf("SELECT * FROM %s WHERE dec_rw=%d AND dec_addr>=%d AND dec_addr<%d ORDER BY dec_ed_cyc ASC limit %d;",
+
+    "FRIST_WR_TRX":
+    begin
+        cmd = {$psprintf("SELECT * FROM %s WHERE dec_rw=%d AND dec_addr>=%d AND dec_addr<%d ORDER BY dec_ed_cyc ASC limit %d;",
         table_nm, WR, item.addrs[item.addr_idx], item.addrs[item.addr_idx]+item.offset, item.offset)};
     end
+
     // extend your query ...
-    default: begin
-    cmd = {$psprintf("SELECT * FROM %s ORDER BY dec_ed_cyc ASC;", table_nm)};
-  end
+    default:
+    begin
+        cmd = {$psprintf("SELECT * FROM %s ORDER BY dec_ed_cyc ASC;", table_nm)};
+    end
   endcase
+
   `uvm_info(get_full_name(), {$psprintf("GET QUERY BACKDOOR CMD\n%s", cmd)}, UVM_LOW)
   return cmd;
 endfunction : gen_query_cmd
@@ -77,19 +86,16 @@ endfunction : gen_query_cmd
  * populate org item to backdoor access item if needed
  */
 function void smtdv_backdoor::populate_item(string header, int r, int c, string data, ref smtdv_backdoor::T1 item);
-  if (!cb_map.exists(header)) begin
+  if (!cb_map.exists(header))
     `uvm_fatal("SMTDV_BKDOR_NO_CBMAP", {"CALLBACK HEADER MUST BE SET FOR cb_map: %s", header});
-  end
 
   case(cb_map[header])
     // extend your cb event
     SMTDV_CB_DATA:  begin
       item.data_beat[item.data_idx] |= data.atoi() << (r*8);
     end
-    default:  begin
-    end
   endcase
-endfunction
+endfunction : populate_item
 
 /**
  * purage item
@@ -139,15 +145,20 @@ function void smtdv_backdoor::convert_2_item(string table_nm, string query, smtd
   for (int r=0; r<m_row_size; r++) begin
     m_row = smtdv_sqlite3::exec_row_step(m_pl, r);
     m_col_size = smtdv_sqlite3::exec_column_size(m_row);
+
     for (int c=0; c<m_col_size; c++) begin
       m_col = smtdv_sqlite3::exec_column_step(m_row, c);
+
       if (smtdv_sqlite3::is_longint_data(m_col)) begin
         header = smtdv_sqlite3::exec_header_data(m_col);
         data = smtdv_sqlite3::exec_string_data(m_col);
         populate_item(header, r, c, data, item);
       end
+
     end
+
   end
+
   smtdv_sqlite3::delete_pl(table_nm);
 endfunction
 
@@ -155,7 +166,10 @@ endfunction
  * compare backdoor item with cur sample trx item
  */
 function bit smtdv_backdoor::compare(string table_nm, smtdv_backdoor::T1 item, ref smtdv_backdoor::T1 ritem);
-  $cast(ritem, item.clone());
+  if (!$cast(ritem, item.clone()))
+    `uvm_error("SMTDV_DCAST_SEQ_ITEM",
+      {$psprintf("DOWN CAST TO SMTDV SEQ_ITEM FAIL")})
+
   purge_item(ritem);
   post_item(table_nm, ritem);
   return item.compare(ritem);

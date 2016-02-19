@@ -33,8 +33,10 @@ class smtdv_seq_node#(
   endfunction : new
 
   extern virtual function void register(uvm_object parent=null);
-  extern virtual function void set(SEQ iseq);
-  extern virtual function SEQ get();
+  extern virtual function void set_seq(SEQ iseq);
+  extern virtual function SEQ get_seq();
+  extern virtual function void set_seqr(SEQR iseqr);
+  extern virtual function SEQR get_seqr();
 
   extern virtual task async_try_lock();
   extern virtual task async_try_unlock();
@@ -46,16 +48,37 @@ endclass : smtdv_seq_node
 * cast from object to smtdv_seq_graph
 */
 function void smtdv_seq_node::register(uvm_object parent=null);
-  $cast(graph, parent);
+  if (!$cast(graph, parent))
+    `uvm_error("SMTDV_UCAST_SEQ_GRAPH",
+        {$psprintf("UP CAST TO SMTDV SEQ_GRAPH FAIL")})
+
 endfunction : register
 
-function void smtdv_seq_node::set(smtdv_seq_node::SEQ iseq);
-  seq = iseq;
-endfunction : set
 
-function smtdv_seq_node::SEQ smtdv_seq_node::get();
+function void smtdv_seq_node::set_seq(smtdv_seq_node::SEQ iseq);
+  if (!$cast(seq, iseq))
+    `uvm_error("SMTDV_DCAST_SEQ",
+        {$psprintf("DOWN CAST TO SMTDV SEQ FAIL")})
+
+endfunction : set_seq
+
+
+function smtdv_seq_node::SEQ smtdv_seq_node::get_seq();
   return seq;
-endfunction : get
+endfunction : get_seq
+
+
+function void smtdv_seq_node::set_seqr(smtdv_seq_node::SEQR iseqr);
+  if (!$cast(seqr, iseqr))
+    `uvm_error("SMTDV_DCAST_SEQR",
+        {$psprintf("DOWN CAST TO SMTDV SEQR FAIL")})
+
+endfunction : set_seqr
+
+
+function smtdv_seq_node::SEQR smtdv_seq_node::get_seqr();
+  return seqr;
+endfunction : get_seqr
 
 /*
 * wait all input nodes, edges are completed

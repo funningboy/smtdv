@@ -63,7 +63,10 @@ endclass : smtdv_edge
 * cast from object to smtdv_graph
 */
 function void smtdv_edge::register(uvm_object parent=null);
-  $cast(graph, parent);
+  if (!$cast(graph, parent))
+    `uvm_error("SMTDV_UCAST_GRAPH",
+        {$psprintf("UP CAST TO SMTDV GRAPH FAIL")})
+
 endfunction : register
 
 /*
@@ -79,7 +82,11 @@ endfunction : finalize
 function void smtdv_edge::add_source(int isourceid, SOURCE node);
   if(has_finalize) return;
   sourceid = isourceid;
-  source = node;
+
+  if (!$cast(source, node))
+    `uvm_error("SMTDV_DCAST_NODE",
+        {$psprintf("DOWN CAST TO SMTDV NODE FAIL")})
+
 endfunction : add_source
 
 /*
@@ -88,7 +95,11 @@ endfunction : add_source
 function void smtdv_edge::add_sink(int isinkid, SINK node);
   if(has_finalize) return;
   sinkid = isinkid;
-  sink = node;
+
+  if (!$cast(sink, node))
+    `uvm_error("SMTDV_DCAST_NODE",
+        {$psprintf("DOWN CAST TO SMTDV NODE FAIL")})
+
 endfunction : add_sink
 
 /*
@@ -97,7 +108,8 @@ endfunction : add_sink
 function void smtdv_edge::del_source();
   if(has_finalize) return;
   sourceid = -1;
-  source = null;
+  if (source)
+    source = null;
 endfunction : del_source
 
 /*
@@ -106,7 +118,8 @@ endfunction : del_source
 function void smtdv_edge::del_sink();
   if(has_finalize) return;
   sinkid = -1;
-  sink = null;
+  if (sink)
+    sink = null;
 endfunction : del_sink
 
 /*

@@ -43,12 +43,12 @@ class apb_master_retry_vseq
     cur_addr = start_addr;
 
     repeat(outstanding) begin
-      `uvm_create_on(seq_1w, vseqr.apb_magt[0].seqr)
+      `uvm_create_on(seq_1w, vseqr.apb_magts[0].seqr)
       `SMTDV_RAND_WITH(seq_1w,
       {
         seq_1w.start_addr == cur_addr;
       })
-      seq_1w.start(vseqr.apb_magt[0].seqr, this, 0);
+      seq_1w.start(vseqr.apb_magts[0].seqr, this, 0);
       cur_addr += incr_addr;
     end
 
@@ -61,12 +61,12 @@ class apb_master_retry_vseq
     cur_addr = start_addr;
 
     repeat(outstanding) begin
-      `uvm_create_on(seq_1r, vseqr.apb_magt[0].seqr)
+      `uvm_create_on(seq_1r, vseqr.apb_magts[0].seqr)
       `SMTDV_RAND_WITH(seq_1r,
       {
           seq_1r.start_addr == cur_addr;
       })
-      seq_1r.start(vseqr.apb_magt[0].seqr, this, 0);
+      seq_1r.start(vseqr.apb_magts[0].seqr, this, 0);
       cur_addr += incr_addr;
     end
 
@@ -74,12 +74,12 @@ class apb_master_retry_vseq
   endtask : do_outstanding_rd_seq
 
   virtual task do_retry_seq();
-    seq_rty.start(vseqr.apb_magt[0].seqr, this, -1);
+    seq_rty.start(vseqr.apb_magts[0].seqr, this, -1);
   endtask : do_retry_seq
 
   virtual task pre_body();
     super.pre_body();
-    `uvm_create_on(seq_rty, vseqr.apb_magt[0].seqr)
+    `uvm_create_on(seq_rty, vseqr.apb_magts[0].seqr)
     `SMTDV_RAND(seq_rty)
     seq_rty.register_watch_table(start_addr, end_addr);
   endtask : pre_body
@@ -94,7 +94,7 @@ class apb_master_retry_vseq
     do_outstanding_wr_seq();
     do_outstanding_rd_seq();
 
-    vseqr.apb_magt[0].seqr.finish = TRUE;
+    vseqr.apb_magts[0].seqr.finish = TRUE;
   endtask : body
 
 endclass : apb_master_retry_vseq

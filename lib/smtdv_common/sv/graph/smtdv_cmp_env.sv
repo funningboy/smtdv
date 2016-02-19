@@ -28,6 +28,11 @@ class smtdv_cmp_env#(
   typedef SCFG slv_cfg_t;
   typedef SAGT slv_agt_t;
 
+  mst_cfg_t mst_cfg;
+  slv_cfg_t slv_cfg;
+  mst_agt_t mst_agt;
+  slv_agt_t slv_agt;
+
   MCFG mst_cfgs[$];
   MAGT mst_agts[$];
   SCFG slv_cfgs[$];

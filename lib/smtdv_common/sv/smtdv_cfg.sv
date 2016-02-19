@@ -40,7 +40,10 @@ class smtdv_cfg
 
   function new(string name = "smtdv_cfg", uvm_component parent=null);
     super.new(name);
-    cmp = parent;
+    if (!$cast(cmp, parent))
+      `uvm_error("SMTDV_UCAST_CMP",
+        {$psprintf("UP CAST TO SMTDV CMP FAIL")})
+
   endfunction : new
 
 endclass : smtdv_cfg

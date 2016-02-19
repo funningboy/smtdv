@@ -20,9 +20,7 @@ package ahb_seq_pkg;
   import ahb_pkg::*;
 
   `include "ahb_master_seqs_lib.sv"
-  `include "ahb_master_vseqs_lib.sv"
   `include "ahb_slave_seqs_lib.sv"
-  `include "ahb_slave_vseqs_lib.sv"
 
 endpackage : ahb_seq_pkg
 

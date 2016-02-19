@@ -33,7 +33,8 @@ package apb_pkg;
 
   `include "apb_scoreboard.sv"
   `include "apb_reg_adapter.sv"
-endpackage
+
+endpackage : apb_pkg
 
 `include "apb_if.sv"
 

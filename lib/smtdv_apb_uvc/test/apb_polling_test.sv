@@ -18,7 +18,7 @@ class apb_polling_test
 
   function new(string name = "apb_polling_test", uvm_component parent=null);
     super.new(name, parent);
-  endfunction
+  endfunction : new
 
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
@@ -32,7 +32,7 @@ class apb_polling_test
       "default_sequence",
       s_bseq_t::type_id::get());
 
-  endfunction
+  endfunction : build_phase
 
   virtual function void end_of_elaboration_phase(uvm_phase phase);
     super.end_of_elaboration_phase(phase);

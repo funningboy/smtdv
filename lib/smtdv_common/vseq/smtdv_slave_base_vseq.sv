@@ -2,12 +2,11 @@
 `ifndef __SMTDV_SLAVE_BASE_VSEQ_SV__
 `define __SMTDV_SLAVE_BASE_VSEQ_SV__
 
-class smtdv_slave_base_vseq#(
-  type T1 = uvm_sequence_item
- ) extends
-    smtdv_sequence#(T1);
+class smtdv_slave_base_vseq
+  extends
+  smtdv_base_vseq;
 
-  typedef smtdv_slave_base_vseq#(T1) vseq_t;
+  typedef smtdv_slave_base_vseq vseq_t;
 
   `uvm_object_param_utils_begin(vseq_t)
   `uvm_object_utils_end

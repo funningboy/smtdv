@@ -27,11 +27,15 @@ class ahb_slave_err_inject_seq #(
 
   virtual task mid_do_read_item(item_t item);
     super.mid_do_read_item(item);
-    `uvm_info(get_type_name(), {$psprintf("GET BEFORE ERR_INJECT ITEM\n%s", item.sprint())}, UVM_LOW)
+    `uvm_info(get_type_name(),
+        {$psprintf("GET BEFORE ERR_INJECT ITEM\n%s", item.sprint())}, UVM_LOW)
+
     foreach(item.data_beat[0][i]) begin
       item.data_beat[0][i] = ~item.data_beat[0][i];
     end
-    `uvm_info(get_type_name(), {$psprintf("GET AFTER ERR_INJECT ITEM\n%s", item.sprint())}, UVM_LOW)
+
+    `uvm_info(get_type_name(),
+        {$psprintf("GET AFTER ERR_INJECT ITEM\n%s", item.sprint())}, UVM_LOW)
   endtask : mid_do_read_item
 
 endclass : ahb_slave_err_inject_seq

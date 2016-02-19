@@ -103,8 +103,8 @@ module top();
     );
 
   initial begin
-    uvm_config_db#(ahb_if_t)::set(uvm_root::get(), "*.slave_agent[*0]*", "vif", `AHBSLAVEVIF(0));
-    uvm_config_db#(ahb_if_t)::set(uvm_root::get(), "*.master_agent[*0]*", "vif", `AHBMASTERVIF(0));
+    uvm_config_db#(ahb_if_t)::set(uvm_root::get(), "*.slv_agts[*0]*", "vif", `AHBSLAVEVIF(0));
+    uvm_config_db#(ahb_if_t)::set(uvm_root::get(), "*.mst_agts[*0]*", "vif", `AHBMASTERVIF(0));
     uvm_config_db#(rst_if_t)::set(uvm_root::get(), "*", "rst_vif", ahb_rst_if);
     run_test();
   end

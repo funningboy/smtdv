@@ -59,8 +59,8 @@ task smtdv_mem_bkdor_wr_comp::run();
 
   forever begin
     sid = -1;
-    wait(this.cmp.rbox.size()>0);
-    item = this.cmp.rbox.pop_front();
+    wait(this.cmp.wbox.size()>0);
+    item = this.cmp.wbox.pop_front();
     sid = this.cmp.initor_m[0].cfg.find_slave(item.addr);
     if (sid<0)
       `uvm_fatal("SMTDV_BKDOR_NO_CFG",
