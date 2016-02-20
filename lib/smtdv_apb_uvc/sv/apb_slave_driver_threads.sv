@@ -1,7 +1,7 @@
 `ifndef __APB_SLAVE_DRIVER_THREADS_SV__
 `define __APB_SLAVE_DRIVER_THREADS_SV__
 
-typedef class apb_item;
+typedef class apb_sequence_item;
 typedef class apb_slave_driver;
 
 class apb_slave_base_thread#(
@@ -13,7 +13,7 @@ class apb_slave_base_thread#(
   );
 
   typedef apb_slave_base_thread#(ADDR_WIDTH, DATA_WIDTH) th_t;
-  typedef apb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
   typedef apb_slave_driver#(ADDR_WIDTH, DATA_WIDTH) cmp_t;
 
   item_t item;
@@ -37,8 +37,8 @@ endclass : apb_slave_base_thread
 class apb_slave_drive_items#(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32
-) extends
-    apb_slave_base_thread#(
+  ) extends
+  apb_slave_base_thread#(
       ADDR_WIDTH,
       DATA_WIDTH
   );

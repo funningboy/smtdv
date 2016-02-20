@@ -21,7 +21,7 @@ class apb_base_test
   typedef apb_master_agent#(ADDR_WIDTH, DATA_WIDTH) mst_agt_t;
   typedef apb_slave_cfg slv_cfg_t;
   typedef apb_slave_agent#(ADDR_WIDTH, DATA_WIDTH) slv_agt_t;
-  typedef apb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
   typedef apb_base_env#(ADDR_WIDTH, DATA_WIDTH,
       vif_t,
       mst_cfg_t,

@@ -1,7 +1,7 @@
 `ifndef __APB_MASTER_DRIVER_THREADS_SV__
 `define __APB_MASTER_DRIVER_THREADS_SV__
 
-typedef class apb_item;
+typedef class apb_sequence_item;
 typedef class apb_master_driver;
 
 class apb_master_base_thread#(
@@ -13,7 +13,7 @@ class apb_master_base_thread#(
   );
 
   typedef apb_master_base_thread#(ADDR_WIDTH, DATA_WIDTH) th_t;
-  typedef apb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
   typedef apb_master_driver#(ADDR_WIDTH, DATA_WIDTH) cmp_t;
 
   item_t item;

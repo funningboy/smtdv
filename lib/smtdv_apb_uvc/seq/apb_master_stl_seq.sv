@@ -3,7 +3,7 @@
 `define __APB_MASTER_STL_SEQ_SV__
 
 //typedef class apb_master_base_seq;
-//typedef class apb_item;
+//typedef class apb_sequence_item;
 
 class apb_master_stl_seq#(
   ADDR_WIDTH = 14,
@@ -15,7 +15,7 @@ class apb_master_stl_seq#(
   );
 
   typedef apb_master_stl_seq#(ADDR_WIDTH, DATA_WIDTH) seq_t;
-  typedef apb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   item_t pool[$];
 

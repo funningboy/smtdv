@@ -1,14 +1,14 @@
 
-`ifndef __APB_ITEM_SV__
-`define __APB_ITEM_SV__
+`ifndef __APB_SEQUENCE_ITEM_SV__
+`define __APB_SEQUENCE_ITEM_SV__
 
 /**
 * a basic apb item
 *
-* @class apb_item#(ADDR_WIDTH, DATA_WIDTH)
+* @class apb_seqience_item#(ADDR_WIDTH, DATA_WIDTH)
 *
 */
-class apb_item #(
+class apb_sequence_item #(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32
 ) extends
@@ -17,7 +17,7 @@ class apb_item #(
       DATA_WIDTH
     );
 
-  typedef apb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   rand bit [15:0]           sel;
   rand trx_rsp_t	          rsp;
@@ -50,7 +50,7 @@ class apb_item #(
     `endif
   `uvm_object_utils_end
 
-  function new (string name = "apb_item");
+  function new (string name = "apb_sequence_item");
     super.new(name);
   endfunction : new
 
@@ -69,7 +69,7 @@ class apb_item #(
 
   endfunction : post_randomize
 
-endclass : apb_item
+endclass : apb_sequence_item
 
-`endif // end of __APB_ITEM_SV__
+`endif // end of __APB_SEQUENCE_ITEM_SV__
 

@@ -7,6 +7,7 @@ typedef class apb_slave_sequencer;
 typedef class apb_master_sequencer;
 typedef class apb_master_cfg;
 typedef class apb_slave_cfg;
+typedef class apb_sequence_item;
 
 class apb_monitor_base_thread#(
   ADDR_WIDTH = 14,
@@ -23,7 +24,7 @@ class apb_monitor_base_thread#(
   );
 
   typedef apb_monitor_base_thread#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) th_t;
-  typedef apb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
   typedef apb_monitor#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) mon_t;
   typedef apb_master_cfg m_cfg_t;
   typedef apb_slave_cfg s_cfg_t;
@@ -183,7 +184,7 @@ class apb_update_notify_cfgs#(
 
   typedef apb_update_notify_cfgs#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) note_cfgs_t;
   typedef smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH) bitem_t;
-  typedef apb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   // cover to basic item
   bitem_t bitem;
@@ -278,7 +279,7 @@ class apb_collect_write_items#(
   );
 
   typedef apb_collect_write_items#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) coll_t;
-  typedef apb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   `uvm_object_param_utils_begin(coll_t)
   `uvm_object_utils_end
@@ -349,7 +350,7 @@ class apb_collect_read_items#(
   );
 
   typedef apb_collect_read_items#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) coll_t;
-  typedef apb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   `uvm_object_param_utils_begin(coll_t)
   `uvm_object_utils_end

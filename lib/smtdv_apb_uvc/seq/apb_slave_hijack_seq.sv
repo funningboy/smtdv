@@ -14,7 +14,7 @@ class apb_slave_hijack_seq#(
   );
 
   typedef apb_slave_hijack_seq#(ADDR_WIDTH, DATA_WIDTH) seq_t;
-  typedef apb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   item_t item;
 

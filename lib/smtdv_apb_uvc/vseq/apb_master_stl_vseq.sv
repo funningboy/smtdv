@@ -18,7 +18,7 @@ class apb_master_stl_vseq
   bcmp_t bseqr;
   obj_t bseq;
 
-  seq_stl_t seq_stl[$];
+  seq_stl_t seq_stls[$];
 
   typedef struct {
     string q[$];
@@ -42,25 +42,25 @@ class apb_master_stl_vseq
   virtual task pre_body();
     super.pre_body();
 
-   `uvm_create_on(seq_stl[0], vseqr.apb_magts[0].seqr)
-    seq_stl[0].m_file = stls.q[0];
+   `uvm_create_on(seq_stls[0], vseqr.apb_magts[0].seqr)
+    seq_stls[0].m_file = stls.q[0];
 
-   `uvm_create_on(seq_stl[1], vseqr.apb_magts[0].seqr)
-    seq_stl[1].m_file = stls.q[1];
+   `uvm_create_on(seq_stls[1], vseqr.apb_magts[0].seqr)
+    seq_stls[1].m_file = stls.q[1];
 
     graph = '{
         nodes:
            '{
                '{
                    uuid: 0,
-                   seq: seq_stl[0],
+                   seq: seq_stls[0],
                    seqr: vseqr.apb_magts[0].seqr,
                    prio: -1,
                    desc: {$psprintf("bind Node[%0d] as %s", 0, "stls[0]")}
                },
                '{
                    uuid: 1,
-                   seq: seq_stl[1],
+                   seq: seq_stls[1],
                    seqr: vseqr.apb_magts[0].seqr,
                    prio: -1,
                    desc: {$psprintf("bind Node[%0d] as %s", 1, "stls[1]")}
@@ -76,14 +76,13 @@ class apb_master_stl_vseq
                }
            }
      };
-
   endtask : pre_body
 
   virtual task body();
     super.body();
     fork
-      begin seq_stl[0].start(vseqr.apb_magts[0].seqr); end
-      begin seq_stl[1].start(vseqr.apb_magts[0].seqr); end
+      begin seq_stls[0].start(vseqr.apb_magts[0].seqr); end
+      begin seq_stls[1].start(vseqr.apb_magts[0].seqr); end
     join_none;
     #10;
   endtask : body

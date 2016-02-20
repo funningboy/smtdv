@@ -25,7 +25,9 @@ interface apb_if#(
 
     logic [DATA_WIDTH-1:0]  prdata,
     logic [0:0]             pslverr,
-    logic [0:0]             pready
+    logic [0:0]             pready,
+
+    logic [0:0]             pirq
   );
 
   bit has_force = `TRUE;
@@ -49,6 +51,8 @@ interface apb_if#(
     output  prdata;
     output  pready;
     output  pslverr;
+
+    output  pirq;
   endclocking
 
   clocking master @(posedge clk or negedge resetn);
@@ -65,6 +69,8 @@ interface apb_if#(
     input  prdata;
     input  pready;
     input  pslverr;
+
+    input  pirq;
   endclocking
 
   always @(negedge clk)

@@ -3,7 +3,7 @@
 `define __APB_MASTER_AGENT_SV__
 
 typedef class apb_master_cfg;
-typedef class apb_item;
+typedef class apb_sequence_item;
 typedef class apb_master_sequencer;
 typedef class apb_master_driver;
 typedef class apb_monitor;
@@ -22,7 +22,7 @@ class apb_master_agent#(
       .DATA_WIDTH(DATA_WIDTH),
       .VIF(virtual interface apb_if#(ADDR_WIDTH, DATA_WIDTH)),
       .CFG(apb_master_cfg),
-      .T1(apb_item#(ADDR_WIDTH, DATA_WIDTH)),
+      .T1(apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH)),
       .SEQR(apb_master_sequencer#(ADDR_WIDTH, DATA_WIDTH)),
       .DRV(apb_master_driver#(ADDR_WIDTH, DATA_WIDTH)),
       .MON(apb_monitor#(ADDR_WIDTH, DATA_WIDTH,apb_master_cfg, apb_master_sequencer#(ADDR_WIDTH, DATA_WIDTH)))

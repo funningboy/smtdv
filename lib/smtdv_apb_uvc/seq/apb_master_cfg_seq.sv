@@ -2,7 +2,7 @@
 `ifndef __APB_MASTER_CFG_SEQ_SV__
 `define __APB_MASTER_CFG_SEQ_SV__
 
-//typedef class apb_item;
+//typedef class apb_sequence_item;
 //typedef class apb_master_cfg;
 //typedef class apb_master_sequencer;
 
@@ -16,7 +16,7 @@ class apb_master_cfg_seq#(
   );
 
   typedef apb_master_cfg_seq#(ADDR_WIDTH, DATA_WIDTH) seq_t;
-  typedef apb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   rand bit [ADDR_WIDTH-1:0] start_addr;
   rand bit [DATA_WIDTH-1:0] write_data;

@@ -39,6 +39,7 @@ include_files =
   ${smtdv_stl.systemverilog:include_files}
   ${smtdv_util.systemverilog:include_files}
   ${main:common}/sv/smtdv_common_pkg.sv
+  ${main:root}/lib/smtdv_apb_uvc/sv/apb_pkg.sv
   ${main:common}/seq/smtdv_common_seq_pkg.sv
   ${main:common}/vseq/smtdv_common_vseq_pkg.sv
   ${main:common}/test/test_smtdv_common_pkg.sv
@@ -48,6 +49,7 @@ include_dirs =
   ${smtdv_stl.systemverilog:include_dirs}
   ${smtdv_util.systemverilog:include_dirs}
   ${main:root}/lib
+  ${main:root}/lib/smtdv_apb_uvc/sv
   ${main:common}
   ${main:common}/seq
   ${main:common}/vseq
@@ -88,8 +90,10 @@ vlog =
   proc_incdir(\"mti\", \"${verilog:include_dirs}\")
   proc_incdir(\"mti\", \"${verilog:include_files}\")
   proc_srcfile(\"mti\", \"${verilog:src_files}\")
+  +define+SMTDV
   +define+SMTDV_SEQ_32X32
-  +define+SMTDV_SEQ_64X64
+  +define+APB
+  +define+APB_SEQ_32X32
 
 vsim =
   vsim ${mti.mti:vsim}
@@ -118,9 +122,10 @@ irun =
   -uvm
   +UVM_TESTNAME=${main:test}
   +UVM_VERBOSITY=UVM_DEBUG
+  +define+SMTDV
   +define+SMTDV_SEQ_32X32
-  +define+SMTDV_SEQ_64X64
-
+  +define+APB
+  +define+APB_SEQ_32X32
 
 clean =
   ${ius.ius:clean}

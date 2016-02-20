@@ -1,7 +1,7 @@
 `ifndef __APB_MONITOR_SV__
 `define __APB_MONITOR_SV__
 
-typedef class apb_item;
+typedef class apb_sequence_item;
 typedef class apb_slave_sequencer;
 typedef class apb_master_sequencer;
 typedef class apb_slave_cfg;
@@ -19,11 +19,11 @@ class apb_monitor#(
       .VIF(virtual interface apb_if#(ADDR_WIDTH, DATA_WIDTH)),
       .CFG(CFG),
       .SEQR(SEQR),
-      .T1(apb_item#(ADDR_WIDTH,DATA_WIDTH))
+      .T1(apb_sequence_item#(ADDR_WIDTH,DATA_WIDTH))
       );
 
   typedef apb_monitor#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) mon_t;
-  typedef apb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
   typedef apb_collect_write_items#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) coll_wr_item_t;
   typedef apb_collect_read_items#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) coll_rd_item_t;
   typedef apb_collect_stop_signal#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) coll_stop_sin_t;
@@ -68,6 +68,10 @@ class apb_monitor#(
 
     th3 = coll_cov_grp_t::type_id::create("apb_collect_cover_group", this);
     th4 = exp_coll_items_t::type_id::create("apb_export_collected_items", this);
+
+`ifdef SMTDV_APB_IRQ
+    th5 = rsp_irq_t::type_id::create("apb_response_irq", this);
+`endif
   endfunction : build_phase
 
   virtual function void connect_phase(uvm_phase phase);
@@ -77,6 +81,10 @@ class apb_monitor#(
     th2.register(this); th_handler.add(th2);
     th3.register(this); th_handler.add(th3);
     th4.register(this); th_handler.add(th4);
+
+`ifdef SMTDV_APB_IRQ
+    th5.register(this); th_handler.add(th5);
+`endif
   endfunction : connect_phase
 
   virtual function void end_of_elaboration_phase(uvm_phase phase);

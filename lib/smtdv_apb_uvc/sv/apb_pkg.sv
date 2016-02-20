@@ -14,7 +14,7 @@ package apb_pkg;
 
   // top level override
   `include "apb_typedefs.svh"
-  `include "apb_item.sv"
+  `include "apb_sequence_item.sv"
 
   `include "apb_monitor_threads.sv"
   `include "apb_monitor.sv"

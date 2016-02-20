@@ -2,7 +2,7 @@
 `define __APB_SLAVE_AGENT_SV__
 
 typedef class apb_slave_cfg;
-typedef class apb_item;
+typedef class apb_sequence_item;
 typedef class apb_slave_sequencer;
 typedef class apb_slave_driver;
 typedef class apb_monitor;
@@ -18,7 +18,7 @@ class apb_slave_agent#(
       .DATA_WIDTH(DATA_WIDTH),
       .VIF(virtual interface apb_if#(ADDR_WIDTH, DATA_WIDTH)),
       .CFG(apb_slave_cfg),
-      .T1(apb_item#(ADDR_WIDTH, DATA_WIDTH)),
+      .T1(apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH)),
       .SEQR(apb_slave_sequencer#(ADDR_WIDTH, DATA_WIDTH)),
       .DRV(apb_slave_driver#(ADDR_WIDTH, DATA_WIDTH)),
       .MON(apb_monitor#(ADDR_WIDTH, DATA_WIDTH, apb_slave_cfg, apb_slave_sequencer#(ADDR_WIDTH, DATA_WIDTH)))

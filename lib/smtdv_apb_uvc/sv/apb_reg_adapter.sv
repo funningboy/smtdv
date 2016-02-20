@@ -8,7 +8,7 @@ class apb_reg_adapter#(
     smtdv_reg_adapter;
 
   typedef apb_reg_adapter reg_t;
-  typedef apb_item item_t;
+  typedef apb_sequence_item item_t;
 
   item_t item;
 
@@ -20,7 +20,7 @@ class apb_reg_adapter#(
   endfunction : new
 
   virtual function uvm_sequence_item reg2bus(const ref uvm_reg_bus_op rw);
-    item = item_t::type_id::create("apb_item");
+    item = item_t::type_id::create("apb_sequence_item");
     item.trs_t = (rw.kind == UVM_READ)? RD: WR;
     item.addr = rw.addr;
     item.pack_data(0, rw.data);
@@ -29,7 +29,7 @@ class apb_reg_adapter#(
 
   virtual function void bus2reg(uvm_sequence_item bus_item, ref uvm_reg_bus_op rw);
     if ($cast(item, bus_item)) begin
-      `uvm_fatal("APB_ITEM_ERR", "BUS ITEM IS NOT APB ITEM");
+      `uvm_fatal("APB_SEQ_ITEM_ERR", "BUS ITEM IS NOT APB ITEM");
       return;
     end
     rw.status = UVM_IS_OK;

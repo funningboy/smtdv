@@ -2,7 +2,7 @@
 `define __APB_MASTER_SEQUENCER_SV__
 
 typedef class apb_master_cfg;
-typedef class apb_item;
+typedef class apb_sequence_item;
 
 class apb_master_sequencer#(
   ADDR_WIDTH = 14,
@@ -13,7 +13,7 @@ class apb_master_sequencer#(
     .DATA_WIDTH(DATA_WIDTH),
     .VIF(virtual interface apb_if#(ADDR_WIDTH, DATA_WIDTH)),
     .CFG(apb_master_cfg),
-    .REQ(apb_item#(ADDR_WIDTH, DATA_WIDTH))
+    .REQ(apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH))
   );
 
   typedef apb_master_sequencer#(ADDR_WIDTH, DATA_WIDTH) seqr_t;

@@ -1,6 +1,7 @@
 `ifndef __SMTDV_BASE_VSEQ_SV__
 `define __SMTDV_BASE_VSEQ_SV__
 
+
 class smtdv_base_vseq
   extends
   smtdv_seq_env;

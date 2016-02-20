@@ -2,7 +2,7 @@
 `ifndef __APB_SLAVE_BASE_SEQ_SV__
 `define __APB_SLAVE_BASE_SEQ_SV__
 
-//typedef class apb_item;
+//typedef class apb_sequence_item;
 //typedef class apb_slave_cfg;
 //typedef class apb_slave_sequencer;
 
@@ -13,17 +13,17 @@ class apb_slave_base_seq #(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32
   ) extends
-    smtdv_slave_mem_seq#(
+    smtdv_slave_base_seq#(
       .ADDR_WIDTH(ADDR_WIDTH),
       .DATA_WIDTH(DATA_WIDTH),
-      .T1(apb_item#(ADDR_WIDTH, DATA_WIDTH)),
+      .T1(apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH)),
       .VIF(virtual interface apb_if#(ADDR_WIDTH, DATA_WIDTH)),
       .CFG(apb_slave_cfg),
       .SEQR(apb_slave_sequencer#(ADDR_WIDTH, DATA_WIDTH))
   );
 
   typedef apb_slave_base_seq#(ADDR_WIDTH, DATA_WIDTH) seq_t;
-  typedef apb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   item_t item;
 

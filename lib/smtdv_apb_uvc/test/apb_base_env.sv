@@ -7,7 +7,7 @@
 //typedef class apb_master_agent;
 //typedef class apb_slave_agent;
 //typedef class apb_base_scoreboard;
-//typedef class apb_item;
+//typedef class apb_sequence_item;
 
 /*
 * a basic 1Mx2S cluster env
@@ -22,7 +22,7 @@ class apb_base_env#(
   type MAGT = apb_master_agent#(ADDR_WIDTH, DATA_WIDTH),
   type SCFG = apb_slave_cfg,
   type SAGT = apb_slave_agent#(ADDR_WIDTH, DATA_WIDTH),
-  type T1 = apb_item#(ADDR_WIDTH, DATA_WIDTH)
+  type T1 = apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH)
   ) extends
   smtdv_cmp_env#(
     .MCFG(MCFG),

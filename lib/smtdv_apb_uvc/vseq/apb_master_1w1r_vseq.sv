@@ -30,10 +30,6 @@ class apb_master_1w1r_vseq
   static const bit [ADDR_WIDTH-1:0] incr_addr = 'h100;
   bit [ADDR_WIDTH-1:0] cur_addr;
 
-  rand int cnt;
-
-  constraint c_cnt { cnt inside {[10:20]}; }
-
   `uvm_object_param_utils_begin(vseq_t)
   `uvm_object_utils_end
 

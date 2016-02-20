@@ -2,7 +2,7 @@
 `define __APB_MASTER_DRIVER_SV__
 
 typedef class apb_master_cfg;
-typedef class apb_item;
+typedef class apb_sequence_item;
 typedef class apb_master_drive_items;
 
 /*
@@ -19,10 +19,10 @@ class apb_master_driver#(
       .DATA_WIDTH(DATA_WIDTH),
       .VIF(virtual interface apb_if#(ADDR_WIDTH, DATA_WIDTH)),
       .CFG(apb_master_cfg),
-      .REQ(apb_item#(ADDR_WIDTH, DATA_WIDTH))
+      .REQ(apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH))
   );
 
-  typedef apb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
   typedef apb_master_driver#(ADDR_WIDTH, DATA_WIDTH) drv_t;
   typedef apb_master_drive_items#(ADDR_WIDTH, DATA_WIDTH) drv_items_t;
   typedef smtdv_queue#(item_t) queue_t;
@@ -44,8 +44,9 @@ class apb_master_driver#(
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
     mbox = queue_t::type_id::create("apb_master_mbox");
-    th0 = drv_items_t::type_id::create("apb_master_drive_items", this);
+
     th_handler = hdler_t::type_id::create("apb_master_handler", this);
+    th0 = drv_items_t::type_id::create("apb_master_drive_items", this);
   endfunction : build_phase
 
   virtual function void connect_phase(uvm_phase phase);
