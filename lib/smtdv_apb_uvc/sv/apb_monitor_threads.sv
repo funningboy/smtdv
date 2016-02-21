@@ -211,6 +211,8 @@ class apb_update_notify_cfgs#(
 
   // smtdv_label_handler::update_item(item);
   // smtdv_label_handler::run();
+  // if (found)
+  //  smtdv_label_handler::update_cfg();
   endtask : populate_item
 
 endclass : apb_update_notify_cfgs

@@ -1,7 +1,7 @@
 `ifndef __AHB_MONITOR_SV__
 `define __AHB_MONITOR_SV__
 
-typedef class ahb_item;
+typedef class ahb_sequence_item;
 typedef class ahb_slave_sequencer;
 typedef class ahb_master_sequencer;
 typedef class ahb_slave_cfg;
@@ -19,11 +19,11 @@ class ahb_monitor #(
       .VIF(virtual interface ahb_if#(ADDR_WIDTH, DATA_WIDTH)),
       .CFG(CFG),
       .SEQR(SEQR),
-      .T1(ahb_item#(ADDR_WIDTH, DATA_WIDTH))
+      .T1(ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH))
       );
 
   typedef ahb_monitor#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) mon_t;
-  typedef ahb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
   typedef ahb_collect_addr_items#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) coll_addr_item_t;
   typedef ahb_collect_data_items#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) coll_data_item_t;
   typedef ahb_collect_stop_signal#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) coll_stop_sin_t;

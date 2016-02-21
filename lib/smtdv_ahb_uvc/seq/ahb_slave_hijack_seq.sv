@@ -13,7 +13,7 @@ class ahb_slave_hijack_seq #(
   );
 
   typedef ahb_slave_hijack_seq#(ADDR_WIDTH, DATA_WIDTH) seq_t;
-  typedef ahb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   item_t item;
 

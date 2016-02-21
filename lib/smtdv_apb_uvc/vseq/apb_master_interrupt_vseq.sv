@@ -24,10 +24,6 @@ class apb_master_interrupt_vseq
   seq_stl_t seq_stls[$];
   seq_irq_t seq_irq;
 
-  static const bit [ADDR_WIDTH-1:0] start_addr = `APB_START_ADDR(0)
-  static const bit [ADDR_WIDTH-1:0] incr_addr = 'h100;
-  bit [ADDR_WIDTH-1:0] cur_addr;
-
   rand int cnt;
   constraint c_cnt { cnt inside {[10:20]}; }
 
@@ -68,11 +64,7 @@ class apb_master_interrupt_vseq
     end
 
     `uvm_create_on(seq_irq, vseqr.apb_magts[0].seqr)
-    `SMTDV_RAND_WITH(seq_irq,
-      {
-        seq_irq.start_addr == cur_addr;
-      })
-      graph.nodes[nodeid] = '{
+    graph.nodes[nodeid] = '{
                     uuid: nodeid,
                     seq: seq_irq,
                     seqr: vseqr.apb_magts[0].seqr,

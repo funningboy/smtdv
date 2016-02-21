@@ -1,7 +1,7 @@
 `ifndef __AHB_MASTER_DRIVER_THREADS_SV__
 `define __AHB_MASTER_DRIVER_THREADS_SV__
 
-typedef class ahb_item;
+typedef class ahb_sequence_item;
 typedef class ahb_master_driver;
 
 
@@ -14,7 +14,7 @@ class ahb_master_base_thread #(
   );
 
   typedef ahb_master_base_thread#(ADDR_WIDTH, DATA_WIDTH) th_t;
-  typedef ahb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
   typedef ahb_master_driver#(ADDR_WIDTH, DATA_WIDTH) cmp_t;
 
   item_t item;
@@ -45,7 +45,7 @@ class ahb_master_drive_addr #(
   );
 
   typedef ahb_master_drive_addr#(ADDR_WIDTH, DATA_WIDTH) th_t;
-  typedef ahb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   item_t item;
   rand int opt;
@@ -184,7 +184,7 @@ class ahb_master_drive_data #(
   );
 
   typedef ahb_master_drive_data #(ADDR_WIDTH, DATA_WIDTH) th_t;
-  typedef ahb_item #(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef ahb_sequence_item #(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   item_t item;
 
@@ -251,7 +251,11 @@ class ahb_master_drive_data #(
       end
       `uvm_info(this.cmp.get_full_name(), {$psprintf("try do data item \n%s", item.sprint())}, UVM_LOW)
 
-      $cast(item, item.next);
+      if (item.next)
+        if (!$cast(item, item.next))
+          `uvm_error("SMTDV_UCAST_SEQ_ITEM",
+             {$psprintf("UP CAST TO SMTDV SEQ_ITEM FAIL")})
+
     end
   endtask : run
 

@@ -31,19 +31,18 @@ class apb_master_irq_seq#(
     cur_addr = start_addr;
 
     forever begin
-      @(seqr.vif.pirq);
+      @(posedge seqr.vif.pirq);
 
       grab(seqr);
-
+      // put seq_1r at front of the arbitration queue
       `uvm_create_on(seq_1r, seqr)
       `SMTDV_RAND_WITH(seq_1r,
         {
           seq_1r.start_addr == cur_addr;
         })
       seq_1r.start(seqr, this, -1);
-      #10;
+
       ungrab(seqr);
-      #10;
     end
   endtask : do_listen_irq
 

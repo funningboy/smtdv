@@ -13,7 +13,7 @@ class ahb_base_scoreboard #(
       .DATA_WIDTH(DATA_WIDTH),
       .NUM_OF_INITOR(NUM_OF_INITOR),
       .NUM_OF_TARGETS(NUM_OF_TARGETS),
-      .T1(ahb_item#(ADDR_WIDTH, DATA_WIDTH)),
+      .T1(ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH)),
       .T2(ahb_master_agent#(ADDR_WIDTH, DATA_WIDTH)),
       .T3(ahb_slave_agent#(ADDR_WIDTH, DATA_WIDTH)),
       .CFG(smtdv_cfg)

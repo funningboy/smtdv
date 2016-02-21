@@ -22,7 +22,7 @@ class ahb_monitor_base_thread #(
   );
 
   typedef ahb_monitor_base_thread#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) th_t;
-  typedef ahb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
   typedef ahb_monitor#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) mon_t;
   typedef ahb_master_cfg m_cfg_t;
   typedef ahb_slave_cfg s_cfg_t;
@@ -210,7 +210,7 @@ class ahb_update_notify_cfgs#(
 
   typedef ahb_update_notify_cfgs#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) note_cfgs_t;
   typedef smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH) bitem_t;
-  typedef ahb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   // cover to basic item
   bitem_t bitem;
@@ -310,7 +310,7 @@ class ahb_collect_addr_items#(
   );
 
   typedef ahb_collect_addr_items#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) coll_t;
-  typedef ahb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   `uvm_object_param_utils_begin(coll_t)
   `uvm_object_utils_end
@@ -385,7 +385,7 @@ class ahb_collect_addr_items#(
   endtask
 
   virtual task populate_nonseq_item(ref item_t item);
-    item = item_t::type_id::create("ahb_item");
+    item = item_t::type_id::create("ahb_sequence_item");
     item.mod_t = ($cast(m_cfg, this.cmp.cfg))? MASTER: SLAVE;
     item.run_t = (this.cmp.cfg.has_force)? FORCE: NORMAL;
     item.addr = this.cmp.vif.haddr;
@@ -470,7 +470,7 @@ class ahb_collect_data_items#(
   );
 
   typedef ahb_collect_data_items#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) coll_t;
-  typedef ahb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   `uvm_object_param_utils_begin(coll_t)
   `uvm_object_utils_end

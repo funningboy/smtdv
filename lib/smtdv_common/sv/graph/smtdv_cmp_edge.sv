@@ -9,9 +9,9 @@ typedef class smtdv_cmp_graph;
 
 
 class smtdv_cmp_edge#(
-  type SOURCE = smtdv_cmp_node#(uvm_component, uvm_sequence_item),
+  type SOURCE = smtdv_cmp_node#(uvm_component, smtdv_base_item),
   type SINK = SOURCE,
-  type T1 = uvm_sequence_item,
+  type T1 = smtdv_base_item,
   integer SIZE = 10 // collected latest trxs when label event has triigered from monitor
   ) extends
     smtdv_edge#(

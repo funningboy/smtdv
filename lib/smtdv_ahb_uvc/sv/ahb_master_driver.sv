@@ -2,7 +2,7 @@
 `define __AHB_MASTER_DRIVER_SV__
 
 typedef class ahb_master_cfg;
-typedef class ahb_item;
+typedef class ahb_sequence_item;
 typedef class ahb_master_drive_addr;
 typedef class ahb_master_drive_data;
 
@@ -15,10 +15,10 @@ class ahb_master_driver #(
       .DATA_WIDTH(DATA_WIDTH),
       .VIF(virtual interface ahb_if#(ADDR_WIDTH, DATA_WIDTH)),
       .CFG(ahb_master_cfg),
-      .REQ(ahb_item#(ADDR_WIDTH, DATA_WIDTH))
+      .REQ(ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH))
     );
 
-  typedef ahb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
   typedef ahb_master_driver#(ADDR_WIDTH, DATA_WIDTH) drv_t;
   typedef ahb_master_drive_addr#(ADDR_WIDTH, DATA_WIDTH) drv_addr_t;
   typedef ahb_master_drive_data#(ADDR_WIDTH, DATA_WIDTH) drv_data_t;

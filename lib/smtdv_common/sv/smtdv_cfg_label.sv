@@ -7,7 +7,11 @@ typedef class smtdv_cfg;
 typedef class smtdv_component;
 typedef class smtdv_run_label;
 
-// TODO
+/*
+* ex:
+*
+*/
+
 /*
 * smtdv register updated cfg label while after setting reg cfg
 *

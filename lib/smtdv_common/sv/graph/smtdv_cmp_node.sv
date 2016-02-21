@@ -12,7 +12,7 @@ typedef class smtdv_cmp_graph;
 */
 class smtdv_cmp_node#(
   type CMP = uvm_component,
-  type T1 = uvm_sequence_item
+  type T1 = smtdv_base_item
   ) extends
   smtdv_node;
 

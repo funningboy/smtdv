@@ -4,7 +4,7 @@
 
 
 // typedef class ahb_master_base_seq;
-// typedef class ahb_item;
+// typedef class ahb_sequence_item;
 
 class ahb_master_stl_seq #(
   ADDR_WIDTH = 14,
@@ -16,7 +16,7 @@ class ahb_master_stl_seq #(
   );
 
   typedef ahb_master_stl_seq#(ADDR_WIDTH, DATA_WIDTH) seq_t;
-  typedef ahb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   item_t pool[$];
 

@@ -2,7 +2,7 @@
 `define __AHB_MASTER_AGENT_SV__
 
 typedef class ahb_master_cfg;
-typedef class ahb_item;
+typedef class ahb_sequence_item;
 typedef class ahb_master_sequencer;
 typedef class ahb_master_driver;
 typedef class ahb_monitor;
@@ -16,7 +16,7 @@ class ahb_master_agent #(
       .DATA_WIDTH(DATA_WIDTH),
       .VIF(virtual interface ahb_if#(ADDR_WIDTH, DATA_WIDTH)),
       .CFG(ahb_master_cfg),
-      .T1(ahb_item#(ADDR_WIDTH, DATA_WIDTH)),
+      .T1(ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH)),
       .SEQR(ahb_master_sequencer#(ADDR_WIDTH, DATA_WIDTH)),
       .DRV(ahb_master_driver#(ADDR_WIDTH, DATA_WIDTH)),
       .MON(ahb_monitor#(ADDR_WIDTH, DATA_WIDTH, ahb_master_cfg, ahb_master_sequencer#(ADDR_WIDTH, DATA_WIDTH)))

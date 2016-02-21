@@ -2,7 +2,6 @@
 `ifndef __SMTDV_HASH_SV__
 `define __SMTDV_HASH_SV__
 
-typedef smtdv_queue;
 
 // as eq sv associate array
 //

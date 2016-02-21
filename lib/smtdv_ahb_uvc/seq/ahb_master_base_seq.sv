@@ -2,7 +2,7 @@
 `ifndef __AHB_MASTER_BASE_SEQ_SV__
 `define __AHB_MASTER_BASE_SEQ_SV__
 
-//typedef class ahb_item;
+//typedef class ahb_sequence_item;
 //typedef class ahb_master_cfg;
 //typedef class ahb_master_sequencer;
 
@@ -13,7 +13,7 @@ class ahb_master_base_seq #(
     smtdv_master_base_seq#(
       .ADDR_WIDTH(ADDR_WIDTH),
       .DATA_WIDTH(DATA_WIDTH),
-      .T1(ahb_item#(ADDR_WIDTH, DATA_WIDTH)),
+      .T1(ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH)),
       .CFG(ahb_master_cfg),
       .SEQR(ahb_master_sequencer#(ADDR_WIDTH, DATA_WIDTH))
   );
@@ -37,14 +37,14 @@ class ahb_master_retry_seq #(
   smtdv_master_retry_seq#(
       .ADDR_WIDTH(ADDR_WIDTH),
       .DATA_WIDTH(DATA_WIDTH),
-      .T1(ahb_item#(ADDR_WIDTH, DATA_WIDTH)),
+      .T1(ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH)),
       .VIF(virtual interface ahb_if#(ADDR_WIDTH, DATA_WIDTH)),
       .CFG(ahb_master_cfg),
       .SEQR(ahb_master_sequencer#(ADDR_WIDTH, DATA_WIDTH))
   );
 
   typedef ahb_master_retry_seq #(ADDR_WIDTH, DATA_WIDTH) seq_t;
-  typedef ahb_item #(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef ahb_sequence_item #(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   item_t item;
 
@@ -67,14 +67,14 @@ class ahb_master_polling_seq #(
     smtdv_master_polling_seq#(
       .ADDR_WIDTH(ADDR_WIDTH),
       .DATA_WIDTH(DATA_WIDTH),
-      .T1(ahb_item#(ADDR_WIDTH, DATA_WIDTH)),
+      .T1(ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH)),
       .VIF(virtual interface ahb_if#(ADDR_WIDTH, DATA_WIDTH)),
       .CFG(ahb_master_cfg),
       .SEQR(ahb_master_sequencer#(ADDR_WIDTH, DATA_WIDTH))
   );
 
   typedef ahb_master_polling_seq #(ADDR_WIDTH, DATA_WIDTH) seq_t;
-  typedef ahb_item #(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef ahb_sequence_item #(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   item_t item;
 

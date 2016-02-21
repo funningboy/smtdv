@@ -7,7 +7,7 @@ spawn = TRUE
 stdout = FALSE
 unittest = TRUE
 clean = FALSE
-simulator = mti
+simulator = ius
 test = smtdv_setup_test
 
 # for unittest

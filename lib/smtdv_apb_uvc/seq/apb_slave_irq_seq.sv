@@ -34,22 +34,24 @@ class apb_slave_irq_seq#(
     forever begin
       data = ritem.unpack_data(0);
 
-      //if (data == irq_data)
-      //  seqr.vif.pirq <= 1'b1;
+      if (data == irq_data) begin
+        seqr.vif.slave.pirq <= 1'b1;
+        `uvm_info(get_type_name(), {"GET AFTER IRQ\n"}, UVM_LOW)
+      end
 
-      //#10;
-      //seqr.vif.pirq <= 1'b0;
+      @(posedge seqr.vif.clk);
+      seqr.vif.slave.pirq <= 1'b0;
     end
   endtask : do_drive_irq
 
-  virtual task mid_do_read_item(item_t item);
-    super.mid_do_read_item(item);
+  virtual task pre_do_write_item(item_t item);
+    super.pre_do_write_item(item);
     ritem = item;
 
     fork
       do_drive_irq();
     join_none
-  endtask : mid_do_read_item
+  endtask : pre_do_write_item
 
 endclass : apb_slave_irq_seq
 

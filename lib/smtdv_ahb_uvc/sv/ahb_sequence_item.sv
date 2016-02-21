@@ -1,14 +1,14 @@
-`ifndef __AHB_ITEM_SV__
-`define __AHB_ITEM_SV__
+`ifndef __AHB_SEQUENCE_ITEM_SV__
+`define __AHB_SEQUENCE_ITEM_SV__
 
 /**
 * ahb item
 * a basic ahb item
 *
-* @class ahb_item
+* @class ahb_sequence_item
 *
 */
-class ahb_item #(
+class ahb_sequence_item #(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32
 ) extends
@@ -17,7 +17,7 @@ class ahb_item #(
     DATA_WIDTH
   );
 
-  typedef ahb_item #(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef ahb_sequence_item #(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   rand bst_type_t               bst_type;
   rand trx_size_t               trx_size;
@@ -135,7 +135,7 @@ class ahb_item #(
     `endif
   `uvm_object_utils_end
 
-  function new (string name = "ahb_item");
+  function new (string name = "ahb_sequence_item");
     super.new(name);
   endfunction : new
 
@@ -231,7 +231,7 @@ class ahb_item #(
     return bst_len;
   endfunction : get_bst_len
 
-endclass : ahb_item
+endclass : ahb_sequence_item
 
-`endif // end of __AHB_ITEM_SV__
+`endif // end of __AHB_SEQUENCE_ITEM_SV__
 

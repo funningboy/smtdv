@@ -8,7 +8,7 @@ class ahb_reg_adapter #(
     smtdv_reg_adapter;
 
   typedef ahb_reg_adapter reg_t;
-  typedef ahb_item item_t;
+  typedef ahb_sequence_item item_t;
 
   item_t item;
 
@@ -20,7 +20,7 @@ class ahb_reg_adapter #(
   endfunction : new
 
   virtual function uvm_sequence_item reg2bus(const ref uvm_reg_bus_op rw);
-    item = item_t::type_id::create("ahb_item");
+    item = item_t::type_id::create("ahb_sequence_item");
     item.trs_t = (rw.kind == UVM_READ)? RD: WR;
     item.addr = rw.addr;
     item.pack_data(0, rw.data);

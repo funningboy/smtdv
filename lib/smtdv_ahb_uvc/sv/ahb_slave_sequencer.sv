@@ -10,7 +10,7 @@ class ahb_slave_sequencer #(
       .DATA_WIDTH(DATA_WIDTH),
       .VIF(virtual interface ahb_if#(ADDR_WIDTH, DATA_WIDTH)),
       .CFG(ahb_slave_cfg),
-      .REQ(ahb_item#(ADDR_WIDTH, DATA_WIDTH))
+      .REQ(ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH))
   );
 
   typedef ahb_slave_sequencer #(ADDR_WIDTH, DATA_WIDTH) seqr_t;

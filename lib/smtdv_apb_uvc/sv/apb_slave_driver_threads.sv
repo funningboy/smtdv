@@ -16,7 +16,7 @@ class apb_slave_base_thread#(
   typedef apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
   typedef apb_slave_driver#(ADDR_WIDTH, DATA_WIDTH) cmp_t;
 
-  item_t item;
+  item_t item, nitem;
 
   `uvm_object_param_utils_begin(th_t)
   `uvm_object_utils_end
@@ -73,6 +73,7 @@ task apb_slave_drive_items::run();
     populate_default_item(item);
     if (item==null)
       this.cmp.mbox.async_pop_front(0, item);
+      //this.cmp.mbox.async_prio_get(0, item);
 
     wait(this.cmp.vif.has_force);
     case(item.trs_t)
@@ -83,10 +84,13 @@ task apb_slave_drive_items::run();
         $sformatf("GET AN UNEXPECTED ITEM \n%s", item.sprint()))
     endcase
 
-    if (!$cast(item, item.next))
-      `uvm_error("SMTDV_UCAST_SEQ_ITEM",
-         {$psprintf("UP CAST TO SMTDV SEQ_ITEM FAIL")})
+    if (item.next!=null)
+      if (!$cast(nitem, item.next))
+        `uvm_error("SMTDV_UCAST_SEQ_ITEM",
+           {$psprintf("UP CAST TO SMTDV SEQ_ITEM FAIL")})
+         item = nitem;
 
+    update_timestamp();
   end
 endtask : run
 

@@ -19,7 +19,7 @@ class ahb_base_test
   typedef ahb_master_agent#(ADDR_WIDTH, DATA_WIDTH) mst_agt_t;
   typedef ahb_slave_cfg slv_cfg_t;
   typedef ahb_slave_agent#(ADDR_WIDTH, DATA_WIDTH) slv_agt_t;
-  typedef ahb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
   typedef ahb_base_env#(ADDR_WIDTH, DATA_WIDTH,
       vif_t,
       mst_cfg_t,

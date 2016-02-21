@@ -37,7 +37,9 @@ endclass : smtdv_label_handler
 */
 function void smtdv_label_handler::register(uvm_component icmp);
   assert(icmp);
-  cmp = icmp;
+  if (!$cast(cmp, icmp))
+    `uvm_error("SMTDV_UCAST_CMP",
+        {$psprintf("UP CAST TO SMTDV CMP FAIL")})
 endfunction : register
 
 
@@ -70,7 +72,7 @@ function void smtdv_label_handler::finalize();
   has_finalize = TRUE;
 endfunction : finalize
 
-// TODO:
+// TODO
 function void smtdv_label_handler::run();
   begin : run_labels
   foreach (label_q[i]) begin

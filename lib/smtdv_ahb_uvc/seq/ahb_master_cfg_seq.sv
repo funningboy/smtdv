@@ -2,7 +2,7 @@
 `ifndef __AHB_MASTER_CFG_SEQ_SV__
 `define __AHB_MASTER_CFG_SEQ_SV__
 
-//typedef class ahb_item;
+//typedef class ahb_sequence_item;
 //typedef class ahb_master_cfg;
 //typedef class ahb_master_sequencer;
 
@@ -16,7 +16,7 @@ class ahb_master_cfg_seq #(
   );
 
   typedef ahb_master_cfg_seq#(ADDR_WIDTH, DATA_WIDTH) seq_t;
-  typedef ahb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   bit [ADDR_WIDTH-1:0] start_addr;
   bit [DATA_WIDTH-1:0] write_data;

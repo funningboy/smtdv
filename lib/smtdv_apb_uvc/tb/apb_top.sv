@@ -70,7 +70,9 @@ module top();
 
     .prdata(`APBMASTERATTR(0).prdata),
     .pready(`APBMASTERATTR(0).pready),
-    .pslverr(`APBMASTERATTR(0).pslverr)
+    .pslverr(`APBMASTERATTR(0).pslverr),
+
+    .pirq(`APBMASTERATTR(0).pirq)
   );
 
   bind `APBSLAVEATTR(0) apb_slave_if_harness#(
@@ -89,7 +91,9 @@ module top();
 
     .prdata(`APBSLAVEATTR(0).prdata),
     .pready(`APBSLAVEATTR(0).pready),
-    .pslverr(`APBSLAVEATTR(0).pslverr)
+    .pslverr(`APBSLAVEATTR(0).pslverr),
+
+    .pirq(`APBMASTERATTR(0).pirq)
   );
 
   bind `APBSLAVEATTR(1) apb_slave_if_harness#(
@@ -108,7 +112,9 @@ module top();
 
     .prdata(`APBSLAVEATTR(1).prdata),
     .pready(`APBSLAVEATTR(1).pready),
-    .pslverr(`APBSLAVEATTR(1).pslverr)
+    .pslverr(`APBSLAVEATTR(1).pslverr),
+
+    .pirq(`APBSLAVEATTR(1).pirq)
   );
 
 

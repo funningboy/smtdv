@@ -25,7 +25,7 @@ class smtdv_graph#(
   uvm_object;
 
   typedef smtdv_graph#(NODE, EDGE) graph_t;
-  typedef smtdv_queue#(EDGE) edge_q_t;
+  typedef smtdv_int_queue#(EDGE) edge_q_t;
   typedef smtdv_hash#(int, NODE) node_m_t;
   typedef uvm_object obj_t;
 

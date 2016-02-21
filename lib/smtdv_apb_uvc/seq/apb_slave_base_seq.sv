@@ -5,6 +5,7 @@
 //typedef class apb_sequence_item;
 //typedef class apb_slave_cfg;
 //typedef class apb_slave_sequencer;
+//typedef class smtdv_slave_base_seq
 
 /*
 * normal mem no bank, set, channel...
@@ -13,9 +14,10 @@ class apb_slave_base_seq #(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32
   ) extends
-    smtdv_slave_base_seq#(
+    smtdv_slave_mem_seq#(
       .ADDR_WIDTH(ADDR_WIDTH),
       .DATA_WIDTH(DATA_WIDTH),
+      .MEM_WIDTH(128),
       .T1(apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH)),
       .VIF(virtual interface apb_if#(ADDR_WIDTH, DATA_WIDTH)),
       .CFG(apb_slave_cfg),

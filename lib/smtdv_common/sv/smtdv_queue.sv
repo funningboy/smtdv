@@ -16,6 +16,8 @@ class smtdv_queue#(
   typedef smtdv_queue#(T) cmp_t;
   bit has_lock = FALSE;
 
+  T nitem;
+
   `uvm_object_param_utils_begin(cmp_t)
   `uvm_object_utils_end
 
@@ -30,6 +32,7 @@ class smtdv_queue#(
   extern virtual function bit has_item(T item);
   extern virtual function void find_all(T item, ref T founds[$]);
   extern virtual function void find_idxs(T item, ref int founds[$]);
+  extern virtual function void dump(int remain=10);
 
   extern virtual task async_push_front(T item, int delay=0);
   extern virtual task async_push_back(T item, int delay=0);
@@ -37,6 +40,7 @@ class smtdv_queue#(
   extern virtual task async_pop_back(int delay=0, ref T item);
   extern virtual task async_insert(int idx, T item, int delay=0);
   extern virtual task async_get(int idx, int delay=0, ref T item);
+  extern virtual task async_prio_get(int delay=0, ref T item); // Qos
   extern virtual task async_delete(int idx, int delay=0);
 
 endclass : smtdv_queue
@@ -93,6 +97,36 @@ function void smtdv_queue::find_idxs(smtdv_queue::T item, ref int founds[$]);
 endfunction : find_idxs
 
 
+function void smtdv_queue::dump(int remain=10);
+  int bg_idx = 0;
+  int ed_idx = 0;
+
+  if (size()==0) begin
+    `uvm_info(get_full_name(),
+        {$psprintf("QUEUE IS EMPTY\n")}, UVM_LOW)
+    return;
+  end
+
+  if (size()>=remain)
+    bg_idx = size() - remain;
+
+  ed_idx = size() -1;
+
+  `uvm_info(get_full_name(),
+      {$psprintf("START TO DUMP QUEUE")}, UVM_LOW)
+
+  `uvm_info(get_full_name(),
+      {$psprintf("--------------------")}, UVM_LOW)
+
+  for(int i=bg_idx; i<=ed_idx; i++)
+    `uvm_info(get_full_name(),
+        {$psprintf("%s\n", this.queue[i].sprint())}, UVM_LOW)
+
+  `uvm_info(get_full_name(),
+      {$psprintf("--------------------")}, UVM_LOW)
+
+endfunction : dump
+
 // TODO::quick sort, heap sort, merge sort...
 function void smtdv_queue::sort();
 endfunction : sort
@@ -143,6 +177,20 @@ task smtdv_queue::async_insert(int idx, smtdv_queue::T item, int delay=0);
   `SMTDV_SWAP(delay)
   unlock();
 endtask : async_insert
+
+
+task smtdv_queue::async_prio_get(int delay=0, ref smtdv_queue::T item);
+  wait(size()>0);
+  wait(!is_lock());
+  lock();
+  //this.queue.sort(it) with (it.prio);
+  async_pop_front(0, nitem);
+    `uvm_info(get_full_name(), {$psprintf("cccc \n%s", nitem.sprint())}, UVM_LOW)
+  item = nitem;
+
+  `SMTDV_SWAP(delay)
+  unlock();
+endtask : async_prio_get
 
 
 task smtdv_queue::async_get(int idx, int delay=0, ref smtdv_queue::T item);

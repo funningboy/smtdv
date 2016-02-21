@@ -14,7 +14,7 @@ class ahb_master_1w_seq#(
   );
 
   typedef ahb_master_1w_seq#(ADDR_WIDTH, DATA_WIDTH) seq_t;
-  typedef ahb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   rand bit [ADDR_WIDTH-1:0] start_addr;
   rand bst_type_t           bst_type;
@@ -74,7 +74,7 @@ class ahb_master_1r_seq#(
   );
 
   typedef ahb_master_1r_seq#(ADDR_WIDTH, DATA_WIDTH) seq_t;
-  typedef ahb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   rand bit [ADDR_WIDTH-1:0] start_addr;
   rand bst_type_t           bst_type;

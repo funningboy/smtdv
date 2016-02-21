@@ -16,7 +16,7 @@ class apb_master_base_thread#(
   typedef apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
   typedef apb_master_driver#(ADDR_WIDTH, DATA_WIDTH) cmp_t;
 
-  item_t item;
+  item_t item, nitem;
 
   `uvm_object_param_utils_begin(th_t)
   `uvm_object_utils_end
@@ -69,7 +69,12 @@ task apb_master_drive_items::run();
   item = null;
   forever begin
     if(item==null)
-      this.cmp.mbox.async_pop_front(0, item);
+      this.cmp.mbox.async_prio_get(0, item);
+      //this.cmp.mbox.async_pop_front(0, item);
+      // debug ??
+      //this.cmp.mbox.async_prio_get(0, item);
+
+    `uvm_info(this.cmp.get_full_name(), {$psprintf("xxxxxxx \n%s", item.sprint())}, UVM_LOW)
 
     case(item.trs_t)
       RD: begin do_read_item(item); end
@@ -79,43 +84,58 @@ task apb_master_drive_items::run();
         $sformatf("GET AN UNEXPECTED ITEM \n%s", item.sprint()))
     endcase
 
-    if (!$cast(item, item.next))
-     `uvm_error("SMTDV_UCAST_SEQ_ITEM",
-         {$psprintf("UP CAST TO SMTDV SEQ_ITEM FAIL")})
+    if (item.next!=null)
+      if (!$cast(nitem, item.next))
+        `uvm_error("SMTDV_UCAST_SEQ_ITEM",
+           {$psprintf("UP CAST TO SMTDV SEQ_ITEM FAIL")})
+        item = nitem;
 
+    update_timestamp();
   end
 endtask : run
 
 
 task apb_master_drive_items::do_write_item(item_t item);
   wait(this.cmp.vif.cyc >= item.bg_cyc);
+
   // SetUp
   if (this.cmp.cfg.block_psel) repeat(item.psel_L2H) @(posedge this.cmp.vif.clk);
   populate_setup_write_item(item);
   @(posedge this.cmp.vif.clk);
+
   // Access
   if (this.cmp.cfg.block_penable) repeat(item.penable_L2H) @(posedge this.cmp.vif.clk);
   populate_access_write_item(item);
-  // wait until pready assert
+
+// wait until pready assert
   @(posedge this.cmp.vif.clk iff (this.cmp.vif.pready));
   populate_end_write_item(item);
-  `uvm_info(this.cmp.get_full_name(), {$psprintf("TRY DO WRITE ITEM \n%s", item.sprint())}, UVM_LOW)
+
+  `uvm_info(this.cmp.get_full_name(),
+      {$psprintf("TRY DO WRITE ITEM \n%s", item.sprint())}, UVM_LOW)
+
 endtask : do_write_item
 
 
 task apb_master_drive_items::do_read_item(item_t item);
   wait(this.cmp.vif.cyc >= item.bg_cyc);
+
   // SetUp
   if (this.cmp.cfg.block_psel) repeat(item.psel_L2H) @(posedge this.cmp.vif.clk);
   populate_setup_read_item(item);
   @(posedge this.cmp.vif.clk);
+
   // Access
   if (this.cmp.cfg.block_penable) repeat(item.penable_L2H) @(posedge this.cmp.vif.clk);
   populate_access_read_item(item);
-  // wait until pready assert
+
+// wait until pready assert
   @(posedge this.cmp.vif.clk iff (this.cmp.vif.pready));
   populate_end_read_item(item);
-  `uvm_info(this.cmp.get_full_name(), {$psprintf("TRY DO READ ITEM \n%s", item.sprint())}, UVM_LOW)
+
+  `uvm_info(this.cmp.get_full_name(),
+      {$psprintf("TRY DO READ ITEM \n%s", item.sprint())}, UVM_LOW)
+
 endtask : do_read_item
 
 

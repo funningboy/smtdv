@@ -1,7 +1,7 @@
 `ifndef __AHB_SLAVE_BASE_SEQ_SV__
 `define __AHB_SLAVE_BASE_SEQ_SV__
 
-//typedef class ahb_item;
+//typedef class ahb_sequence_item;
 //typedef class ahb_slave_cfg;
 //typedef class ahb_slave_sequencer;
 
@@ -12,14 +12,15 @@ class ahb_slave_base_seq #(
     smtdv_slave_mem_seq#(
       .ADDR_WIDTH(ADDR_WIDTH),
       .DATA_WIDTH(DATA_WIDTH),
-      .T1(ahb_item#(ADDR_WIDTH, DATA_WIDTH)),
+      .MEM_WIDTH(128),
+      .T1(ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH)),
       .VIF(virtual interface ahb_if#(ADDR_WIDTH, DATA_WIDTH)),
       .CFG(ahb_slave_cfg),
       .SEQR(ahb_slave_sequencer#(ADDR_WIDTH, DATA_WIDTH))
   );
 
   typedef ahb_slave_base_seq#(ADDR_WIDTH, DATA_WIDTH) seq_t;
-  typedef ahb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   `uvm_object_param_utils_begin(seq_t)
   `uvm_object_utils_end

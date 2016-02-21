@@ -10,7 +10,7 @@ class apb_interrupt_test
   typedef apb_master_interrupt_vseq m_vseq_t;
   typedef apb_slave_irq_seq#(ADDR_WIDTH, DATA_WIDTH) s_bseq_t;
 
-  `uvm_component_utils(apb_stl_test)
+  `uvm_component_utils(apb_interrupt_test)
 
   function new(string name = "apb_stl_test", uvm_component parent=null);
     super.new(name, parent);

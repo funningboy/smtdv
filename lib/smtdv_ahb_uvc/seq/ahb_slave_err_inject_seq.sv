@@ -3,7 +3,7 @@
 `define __AHB_SLAVE_ERR_INJECT_SEQ_SV__
 
 //typedef class ahb_slave_base_seq;
-//typedef class ahb_item;
+//typedef class ahb_sequence_item;
 
 
 class ahb_slave_err_inject_seq #(
@@ -16,7 +16,7 @@ class ahb_slave_err_inject_seq #(
   );
 
   typedef ahb_slave_err_inject_seq#(ADDR_WIDTH, DATA_WIDTH) seq_t;
-  typedef ahb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   `uvm_object_param_utils_begin(seq_t)
   `uvm_object_utils_end

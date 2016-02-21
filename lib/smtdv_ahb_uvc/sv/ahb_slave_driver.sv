@@ -10,10 +10,10 @@ class ahb_slave_driver #(
       .DATA_WIDTH(DATA_WIDTH),
       .VIF(virtual interface ahb_if#(ADDR_WIDTH, DATA_WIDTH)),
       .CFG(ahb_slave_cfg),
-      .REQ(ahb_item#(ADDR_WIDTH, DATA_WIDTH))
+      .REQ(ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH))
   );
 
-  typedef ahb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
   typedef ahb_slave_driver#(ADDR_WIDTH, DATA_WIDTH) drv_t;
   typedef ahb_slave_drive_addr#(ADDR_WIDTH, DATA_WIDTH) drv_addr_t;
   typedef ahb_slave_drive_data#(ADDR_WIDTH, DATA_WIDTH) drv_data_t;

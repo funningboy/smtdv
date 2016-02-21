@@ -7,7 +7,7 @@ spawn = TRUE
 stdout = FALSE
 unittest = TRUE
 clean = FALSE
-simulator = mti
+simulator = ius
 test = apb_stl_test
 
 # add your test below
@@ -24,7 +24,7 @@ tests =
 # TODO
 #  apb_cfg_callback_test
 #  apb_uvm_reg_test
-#  apb_fw_ctl_test #debug
+#  apb_fw_ctl_test #need label
 
 [cores]
 import_files =

@@ -56,7 +56,10 @@ endclass : smtdv_run_thread
 */
 function void smtdv_run_thread::register(smtdv_run_thread::CMP icmp);
   assert(icmp);
-  cmp = icmp;
+  if (!$cast(cmp, icmp))
+    `uvm_error("SMTDV_UCAST_CMP",
+        {$psprintf("UP CAST TO SMTDV CMP FAIL")})
+
 endfunction : register
 
 

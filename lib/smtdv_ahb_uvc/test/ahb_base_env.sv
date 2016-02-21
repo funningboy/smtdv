@@ -7,7 +7,7 @@
 //typedef class ahb_master_agent;
 //typedef class ahb_slave_agent;
 //typedef class ahb_base_scoreboard;
-//typedef class ahb_item;
+//typedef class ahb_sequence_item;
 
 // 1Mx2S
 class ahb_base_env#(
@@ -18,7 +18,7 @@ class ahb_base_env#(
   type MAGT = ahb_master_agent#(ADDR_WIDTH, DATA_WIDTH),
   type SCFG = ahb_slave_cfg,
   type SAGT = ahb_slave_agent#(ADDR_WIDTH, DATA_WIDTH),
-  type T1 = ahb_item#(ADDR_WIDTH, DATA_WIDTH))
+  type T1 = ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH))
   extends
   smtdv_cmp_env#(
     .MCFG(MCFG),

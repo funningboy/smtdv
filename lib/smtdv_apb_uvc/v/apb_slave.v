@@ -15,7 +15,9 @@ module apb_slave #(
 
     prdata,
     pslverr,
-    pready
+    pready,
+
+    pirq
   );
 
   input [0:0]             clk;
@@ -31,6 +33,8 @@ module apb_slave #(
   output [0:0]             pslverr;
   output [0:0]             pready;
   reg [DATA_WIDTH-1:0]     prdata;
+
+  output [0:0]             pirq;
 
   // implement your func here ...
   assign pready = 1'b1;

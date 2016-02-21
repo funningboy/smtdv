@@ -25,12 +25,16 @@ module dut_1m2s #(
   wire [0:0]             w_pslverr[3];
   wire [0:0]             w_pready[3];
 
+  wire [0:0]             w_pirq[3];
+
   assign w_pready[2] =  (w_psel==16'h1)? w_pready[0]:
                         (w_psel==16'h2)? w_pready[1]: w_pready[0];
   assign w_pslverr[2] = (w_psel==16'h1)? w_pslverr[0]:
                         (w_psel==16'h2)? w_pslverr[1]: w_pslverr[0];
   assign w_prdata[2] =  (w_psel==16'h1)? w_prdata[0]:
                         (w_psel==16'h2)? w_prdata[1]: w_prdata[0];
+  assign w_pirq[2] =    (w_psel==16'h1)? w_pirq[0]:
+                        (w_psel==16'h2)? w_pirq[1]: w_pirq[0];
 
   genvar i;
   generate
@@ -51,7 +55,9 @@ module dut_1m2s #(
 
       .prdata(w_prdata[2]),
       .pready(w_pready[2]),
-      .pslverr(w_pslverr[2])
+      .pslverr(w_pslverr[2]),
+
+      .pirq(w_pirq[2])
     );
   end
   endgenerate
@@ -74,7 +80,9 @@ module dut_1m2s #(
 
       .prdata(w_prdata[i]),
       .pready(w_pready[i]),
-      .pslverr(w_pslverr[i])
+      .pslverr(w_pslverr[i]),
+
+      .pirq(w_pirq[i])
     );
   end
   endgenerate
