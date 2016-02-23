@@ -90,6 +90,8 @@ task smtdv_driver::run_phase(uvm_phase phase);
             // align to posege clk to drive
             @(posedge vif.clk iff (vif.clk));
 
+            wait(!cfg.has_block);
+
             seq_item_port.get_next_item(req);
 
             if (!$cast(rsp, req.clone()))

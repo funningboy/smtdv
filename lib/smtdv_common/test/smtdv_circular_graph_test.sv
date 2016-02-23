@@ -90,7 +90,7 @@ function void smtdv_circular_graph_test::build_phase(uvm_phase phase);
 
     // create graph
     graph = graph_t::type_id::create("graph");
-    graph.debug = TRUE;
+    graph.has_debug = TRUE;
 
     // create node[0] ~ node[4]
     for(int i=0; i<maxnodes; i++) begin

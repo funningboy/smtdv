@@ -37,7 +37,7 @@ include_dirs =
   ${main:tb}/../
   ${main:tb}
   ${main:tb}/stl
-  ${main:tb}/seq
+  ${main:tb}/vseq
   ${main:tb}/sv
   ${main:tb}/tb
   ${main:tb}/test

@@ -65,11 +65,9 @@ def call_runpy(cp, path, test):
 
 
 
-def check_rst(test, status, time, cb=report_rst):
+def check_rst(test, status, time):
     "check sim rst with pass/fail tokens"
-    cmd = ["python"]
-    #if cb:
-    #    cb()
+    pass
 
 def spawn_runpy(cp, wait=60, cb=check_rst):
     "as decorator to run job"
@@ -148,6 +146,7 @@ if __name__ == '__main__':
     parser.add_argument('--timeout', dest='timeout', type=int, action='store', default=3*60*60, help='timeout')
     parser.add_argument('--clean', dest='clean', action='store', default=False, help='clean all')
     parser.add_argument('--simulator', dest='simulator', action='store', default='mti', help='pick up simulator')
+    #parser.add_argument('--report')
     args = parser.parse_args()
     try:
         run_assign(args)

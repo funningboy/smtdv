@@ -91,9 +91,7 @@ module top();
 
     .prdata(`APBSLAVEATTR(0).prdata),
     .pready(`APBSLAVEATTR(0).pready),
-    .pslverr(`APBSLAVEATTR(0).pslverr),
-
-    .pirq(`APBMASTERATTR(0).pirq)
+    .pslverr(`APBSLAVEATTR(0).pslverr)
   );
 
   bind `APBSLAVEATTR(1) apb_slave_if_harness#(
@@ -112,9 +110,7 @@ module top();
 
     .prdata(`APBSLAVEATTR(1).prdata),
     .pready(`APBSLAVEATTR(1).pready),
-    .pslverr(`APBSLAVEATTR(1).pslverr),
-
-    .pirq(`APBSLAVEATTR(1).pirq)
+    .pslverr(`APBSLAVEATTR(1).pslverr)
   );
 
 

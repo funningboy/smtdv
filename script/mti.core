@@ -31,7 +31,7 @@ clean =
 	rm -rf work
 	rm -rf *.log
 	rm -rf *.db
-  rm -rf *.vcd
+    rm -rf *.vcd
 	rm -rf cov_work
 	rm -rf waves.shm
 

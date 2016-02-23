@@ -8,7 +8,7 @@ class apb_interrupt_test
 
   typedef apb_interrupt_test test_t;
   typedef apb_master_interrupt_vseq m_vseq_t;
-  typedef apb_slave_irq_seq#(ADDR_WIDTH, DATA_WIDTH) s_bseq_t;
+  typedef apb_slave_base_seq#(ADDR_WIDTH, DATA_WIDTH) s_bseq_t;
 
   `uvm_component_utils(apb_interrupt_test)
 

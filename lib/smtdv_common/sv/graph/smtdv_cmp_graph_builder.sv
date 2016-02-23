@@ -72,13 +72,10 @@ class smtdv_cmp_graph_builder#(
 
   function new(string name = "smtdv_cmp_graph_builder", uvm_component parent=null);
     super.new(name, parent);
-    if (!$cast(cmp_env, parent))
-      `uvm_error("SMTDV_UCAST_SEQ_ENV",
-         {$psprintf("UP CAST TO SMTDV SEQ_ENV FAIL")})
-
+    register(parent);
   endfunction : new
 
-  //extern virtual function void register(uvm_component parent);
+  extern virtual function void register(uvm_component parent);
   extern virtual function void build_phase(uvm_phase phase);
   extern virtual function void connect_phase(uvm_phase phase);
   extern virtual function void end_of_elaboration_phase(uvm_phase phase);
@@ -95,6 +92,11 @@ class smtdv_cmp_graph_builder#(
 
 endclass : smtdv_cmp_graph_builder
 
+function void smtdv_cmp_graph_builder::register(uvm_component parent);
+  if (!$cast(cmp_env, parent))
+    `uvm_error("SMTDV_UCAST_SEQ_ENV",
+       {$psprintf("UP CAST TO SMTDV SEQ_ENV FAIL")})
+endfunction : register
 
 function void smtdv_cmp_graph_builder::build_phase(uvm_phase phase);
   super.build_phase(phase);
@@ -118,7 +120,7 @@ function void smtdv_cmp_graph_builder::_create_cmp_graph();
          {$psprintf("DOWN CAST TO SMTDV SEQ_BUILDER FAIL")})
 
     cmp_graph.register(parent);
-    cmp_graph.debug = TRUE;
+    cmp_graph.has_debug = TRUE;
 
     if (!$cast(bgraph, cmp_graph))
       `uvm_error("SMTDV_DCAST_GRAPH",
@@ -251,7 +253,7 @@ endfunction : _create_read_cmp_edge
 
 function void smtdv_cmp_graph_builder::_finalize_cmp_graph();
   cmp_graph.finalize();
-  if (cmp_graph.debug)
+  if (cmp_graph.has_debug)
     cmp_graph.dump();
 endfunction : _finalize_cmp_graph
 

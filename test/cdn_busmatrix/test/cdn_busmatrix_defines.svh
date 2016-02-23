@@ -52,11 +52,11 @@
 
 // bind Master UVC vif to cdn slave port
 `define CDNBUS_SLAVE_ASSIGN_VIF(i) \
-    uvm_config_db#(`AHB_VIF)::set(uvm_root::get(), {$psprintf("*.m_agent[%0d]*",``i)}, "vif", `CDNBUSMATRIX.cdn_busmatrix_if_harness.S[``i].vif); \
+    uvm_config_db#(`AHB_VIF)::set(uvm_root::get(), {$psprintf("*.mst_agts[%0d]*",``i)}, "vif", `CDNBUSMATRIX.cdn_busmatrix_if_harness.S[``i].vif); \
 
 // bind Slave UVC vif to cdn master port
 `define CDNBUS_MASTER_ASSIGN_VIF(i) \
-    uvm_config_db#(`AHB_VIF)::set(uvm_root::get(), {$psprintf("*.s_agent[%0d]*", ``i)}, "vif", `CDNBUSMATRIX.cdn_busmatrix_if_harness.M[``i].vif); \
+    uvm_config_db#(`AHB_VIF)::set(uvm_root::get(), {$psprintf("*.slv_agts[%0d]*", ``i)}, "vif", `CDNBUSMATRIX.cdn_busmatrix_if_harness.M[``i].vif); \
 
 `define CDNBUS_SLAVE_CONNT(i) \
     .HSELS``i(`CDNBUSMATRIX.HSELS``i), \

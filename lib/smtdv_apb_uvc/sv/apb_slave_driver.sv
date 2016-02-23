@@ -85,8 +85,6 @@ task apb_slave_driver::reset_inf();
   vif.slave.prdata <= 'h0;
   vif.slave.pready <= 1'b0;
   vif.slave.pslverr <= OK;
-
-  vif.slave.pirq <= 1'b0;
 endtask : reset_inf
 
 

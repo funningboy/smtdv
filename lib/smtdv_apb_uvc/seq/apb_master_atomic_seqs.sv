@@ -18,7 +18,10 @@ class apb_master_1w_seq#(
   typedef apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   rand bit [ADDR_WIDTH-1:0] start_addr;
+  rand int prio;
   bit blocking = TRUE;
+
+  constraint c_prio { prio inside {[0:1]}; }
 
   `uvm_object_param_utils_begin(seq_t)
   `uvm_object_utils_end
@@ -36,6 +39,7 @@ class apb_master_1w_seq#(
       item.trs_t == WR;
       item.run_t == FORCE;
       item.addr == start_addr;
+      item.prio == prio;
       })
 
     `uvm_create(req)
@@ -61,6 +65,9 @@ class apb_master_1r_seq#(
   typedef apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   rand bit [ADDR_WIDTH-1:0] start_addr;
+  rand int prio;
+
+  constraint c_prio { prio inside {[-1:1]}; }
   bit blocking = TRUE;
 
   `uvm_object_param_utils_begin(seq_t)
@@ -79,6 +86,7 @@ class apb_master_1r_seq#(
       item.trs_t == RD;
       item.run_t == FORCE;
       item.addr == start_addr;
+      item.prio == prio;
       })
 
     `uvm_create(req)

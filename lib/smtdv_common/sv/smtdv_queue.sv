@@ -15,6 +15,7 @@ class smtdv_queue#(
 
   typedef smtdv_queue#(T) cmp_t;
   bit has_lock = FALSE;
+  bit has_debug = TRUE;
 
   T nitem;
 
@@ -183,11 +184,10 @@ task smtdv_queue::async_prio_get(int delay=0, ref smtdv_queue::T item);
   wait(size()>0);
   wait(!is_lock());
   lock();
-  //this.queue.sort(it) with (it.prio);
-  async_pop_front(0, nitem);
-    `uvm_info(get_full_name(), {$psprintf("cccc \n%s", nitem.sprint())}, UVM_LOW)
-  item = nitem;
-
+  this.queue.sort(it) with (it.prio);
+  if (has_debug)
+    dump();
+  item = pop_front();
   `SMTDV_SWAP(delay)
   unlock();
 endtask : async_prio_get

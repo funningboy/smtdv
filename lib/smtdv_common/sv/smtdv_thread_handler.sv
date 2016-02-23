@@ -22,9 +22,9 @@ class smtdv_thread_handler#(
   typedef smtdv_thread_handler#(CMP) hdler_t;
 
   CMP cmp;
-  bit debug = FALSE; // turn on watchdog if needed
+  bit has_debug = FALSE; // turn on watchdog if needed
   bit has_finalize = FALSE;
-  longint uuid = -1;
+
   time prestamp; // pre timestamp
   time curstamp; // cur timestamp
   longint timewin;
@@ -42,26 +42,21 @@ class smtdv_thread_handler#(
   `uvm_object_param_utils_begin(hdler_t)
     // not work for "unpack struct"
     //`uvm_field_queue_object(thread_q, UVM_ALL_ON)
-    if (debug) begin
-        `uvm_field_int(prestamp, UVM_ALL_ON)
-        `uvm_field_int(curstamp, UVM_ALL_ON)
-        `uvm_field_int(timewin, UVM_ALL_ON)
-        `uvm_field_int(sampwin, UVM_ALL_ON)
-    end
+    `uvm_field_int(prestamp, UVM_ALL_ON)
+    `uvm_field_int(curstamp, UVM_ALL_ON)
+    `uvm_field_int(timewin, UVM_ALL_ON)
+    `uvm_field_int(sampwin, UVM_ALL_ON)
   `uvm_object_utils_end
 
   function new(string name = "smtdv_thread_handler", uvm_component parent=null);
     super.new(name);
-    if (!$cast(cmp, parent))
-      `uvm_error("SMTDV_UCAST_CMP",
-        {$psprintf("UP CAST TO SMTDV CMP FAIL")})
-
+    register(parent);
   endfunction : new
 
-  extern virtual function void register(CMP icmp);
+  extern virtual function void register(uvm_component parent);
   extern virtual function void add(th_t thread, bit on=TRUE);
   extern virtual function void del(th_t thread);
-  extern virtual function int successes();
+  extern virtual function int succes();
   extern virtual function int fails();
   extern virtual function void finalize();
   extern virtual task run();
@@ -73,20 +68,22 @@ endclass : smtdv_thread_handler
 /*
 * get num of success threads
 */
-function int smtdv_thread_handler::successes();
-endfunction : successes
+function int smtdv_thread_handler::succes();
+  return 0;
+endfunction : succes
 
 /*
 * get num of fail threads
 */
 function int smtdv_thread_handler::fails();
+  return 0;
 endfunction : fails
 
 /*
 * register handler to main component
 */
-function void smtdv_thread_handler::register(smtdv_thread_handler::CMP icmp);
-  if (!$cast(cmp, icmp))
+function void smtdv_thread_handler::register(uvm_component parent);
+  if (!$cast(cmp, parent))
     `uvm_error("SMTDV_UCAST_CMP",
         {$psprintf("UP CAST TO SMTDV CMP FAIL")})
 
@@ -163,7 +160,7 @@ endtask : run
 *  start to watch threads are health or not
 */
 task smtdv_thread_handler::watch();
-  if (debug) begin: watch_threads
+  if (has_debug) begin: watch_threads
     prestamp = $time;
     fork
       timer();

@@ -91,7 +91,7 @@ function void smtdv_seq_graph_builder::_create_seq_graph();
         {$psprintf("DOWN CAST TO SMTDV SEQ_ENV FAIL")})
 
     seq_graph.register(parent);
-    seq_graph.debug = TRUE;
+    seq_graph.has_debug = TRUE;
 
     if (!$cast(bgraph, seq_graph))
     `uvm_error("SMTDV_DCAST_GRAPH",
@@ -157,7 +157,7 @@ endfunction : _create_seq_edge
 function void smtdv_seq_graph_builder::_finalize_seq_graph();
   seq_graph.finalize();
 
-  if (seq_graph.debug)
+  if (seq_graph.has_debug)
     seq_graph.dump();
 
 endfunction : _finalize_seq_graph

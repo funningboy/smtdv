@@ -158,7 +158,7 @@ function void smtdv_directed_graph_test::build_phase(uvm_phase phase);
 
     // create graph
     graph = graph_t::type_id::create("smtdv_graph");
-    graph.debug = TRUE;
+    graph.has_debug = TRUE;
 
     // create node[0] ~ node[5]
     foreach(node_tb[i]) begin

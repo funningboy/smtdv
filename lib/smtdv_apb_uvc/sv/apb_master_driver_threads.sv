@@ -70,11 +70,6 @@ task apb_master_drive_items::run();
   forever begin
     if(item==null)
       this.cmp.mbox.async_prio_get(0, item);
-      //this.cmp.mbox.async_pop_front(0, item);
-      // debug ??
-      //this.cmp.mbox.async_prio_get(0, item);
-
-    `uvm_info(this.cmp.get_full_name(), {$psprintf("xxxxxxx \n%s", item.sprint())}, UVM_LOW)
 
     case(item.trs_t)
       RD: begin do_read_item(item); end
@@ -90,7 +85,9 @@ task apb_master_drive_items::run();
            {$psprintf("UP CAST TO SMTDV SEQ_ITEM FAIL")})
         item = nitem;
 
-    update_timestamp();
+    if (this.cmp.cfg.has_debug)
+      update_timestamp();
+
   end
 endtask : run
 

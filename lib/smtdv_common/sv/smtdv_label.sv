@@ -28,10 +28,10 @@ class smtdv_run_label#(
 
   function new(string name = "smtdv_run_label", uvm_component parent=null);
     super.new(name);
-    $cast(cmp, parent);
+    register(parent);
   endfunction : new
 
-  extern virtual function void register(CMP icmp);
+  extern virtual function void register(uvm_component parent);
   extern virtual function void pre_do();
   extern virtual function void run(); // only for function no timing info
   extern virtual function void post_do();
@@ -41,9 +41,7 @@ endclass : smtdv_run_label
 /*
 * register cmp to label
 */
-function void smtdv_run_label::register(smtdv_run_label::CMP icmp);
-  assert(icmp);
-  cmp = icmp;
+function void smtdv_run_label::register(uvm_component parent);
 endfunction : register
 
 function void smtdv_run_label::pre_do();

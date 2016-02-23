@@ -12,41 +12,44 @@ class smtdv_label_handler
 
   typedef smtdv_run_label lab_t;
   typedef smtdv_label_handler hdler_t;
-  typedef uvm_component cmp_t;
+  typedef uvm_component test_t;
 
   static bit has_finalize = FALSE;
-  static longint uuid = -1;
-  static cmp_t cmp;
-  static lab_t  label_q[$];
+  static test_t test;
+
+  typedef struct {
+    bit [0:0] on;
+    lab_t lab;
+  } label_t;
+  static label_t label_q[$];
 
   `uvm_object_param_utils_begin(hdler_t)
-    `uvm_field_queue_object(label_q, UVM_ALL_ON)
+    //`uvm_field_queue_object(label_q, UVM_ALL_ON)
   `uvm_object_utils_end
 
-  extern static function void register(uvm_component icmp);
-  extern static function void add(lab_t label);
+  extern static function void register(uvm_component parent);
+  extern static function void add(lab_t label, bit on=TRUE);
   extern static function void del(lab_t label);
   extern static function void finalize();
   extern static function void run();
 
-  //static
 endclass : smtdv_label_handler
 
 /*
 * default smtdv_label_handler should be registered at uvm_test level
 */
-function void smtdv_label_handler::register(uvm_component icmp);
-  assert(icmp);
-  if (!$cast(cmp, icmp))
+function void smtdv_label_handler::register(uvm_component parent);
+  if (!$cast(test, parent))
     `uvm_error("SMTDV_UCAST_CMP",
         {$psprintf("UP CAST TO SMTDV CMP FAIL")})
 endfunction : register
 
 
-function void smtdv_label_handler::add(lab_t label);
+function void smtdv_label_handler::add(lab_t label, bit on=TRUE);
   if (has_finalize) return;
+
   assert(label);
-  label_q.push_back(label);
+  label_q.push_back('{on, label});
 endfunction : add
 
 
@@ -54,9 +57,9 @@ function void smtdv_label_handler::del(lab_t label);
   int idx_q[$];
 
   if (has_finalize) return;
-  assert(label);
 
-  idx_q = label_q.find_index with (item == label);
+  assert(label);
+  idx_q = label_q.find_index with (item.lab == label);
   if (idx_q.size() == 1) begin
     label_q.delete(idx_q[0]);
   end
@@ -75,8 +78,6 @@ endfunction : finalize
 // TODO
 function void smtdv_label_handler::run();
   begin : run_labels
-  foreach (label_q[i]) begin
-  end
   end
 endfunction : run
 

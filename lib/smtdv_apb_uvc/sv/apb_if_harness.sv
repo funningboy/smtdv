@@ -53,9 +53,8 @@ interface apb_master_if_harness#(
 
       .prdata(),
       .pslverr(),
-      .pready(),
+      .pready()
 
-      .pirq()
     );
 
     `ifndef APBMASTERATTR
@@ -69,7 +68,6 @@ interface apb_master_if_harness#(
       `SMTDV_PORT2VIF(vif.has_force, clk, `APBMASTERATTR(UID).prdata, vif.prdata)
       `SMTDV_PORT2VIF(vif.has_force, clk, `APBMASTERATTR(UID).pslverr, vif.pslverr)
       `SMTDV_PORT2VIF(vif.has_force, clk, `APBMASTERATTR(UID).pready, vif.pready)
-      `SMTDV_PORT2VIF(vif.has_force, clk, `APBMASTERATTR(UID).pirq, vif.pirq)
 
 endinterface
 
@@ -90,9 +88,8 @@ interface apb_slave_if_harness#(
 
     logic [DATA_WIDTH-1:0]  prdata,
     logic [0:0]             pslverr,
-    logic [0:0]             pready,
+    logic [0:0]             pready
 
-    logic [0:0]             pirq
   );
 
     apb_if#(
@@ -111,9 +108,8 @@ interface apb_slave_if_harness#(
 
       .prdata(),
       .pslverr(),
-      .pready(),
+      .pready()
 
-      .pirq()
     );
 
     `ifndef APBSLAVEATTR
@@ -127,7 +123,6 @@ interface apb_slave_if_harness#(
       `SMTDV_VIF2PORT(vif.has_force, clk, vif.prdata, `APBSLAVEATTR(UID).prdata)
       `SMTDV_VIF2PORT(vif.has_force, clk, vif.pslverr, `APBSLAVEATTR(UID).pslverr)
       `SMTDV_VIF2PORT(vif.has_force, clk, vif.pready, `APBSLAVEATTR(UID).pready)
-      `SMTDV_VIF2PORT(vif.has_force, clk, vif.pirq, `APBSLAVEATTR(UID).pirq)
 
 endinterface
 

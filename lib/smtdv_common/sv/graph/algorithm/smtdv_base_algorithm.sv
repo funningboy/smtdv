@@ -16,7 +16,7 @@ class smtdv_base_algorithm#(
   typedef smtdv_base_algorithm#(NODE, EDGE, GRAPH) alg_t;
 
   GRAPH G;
-  bit debug = FALSE;
+  bit has_debug = FALSE;
 
   `uvm_object_param_utils_begin(alg_t)
   `uvm_object_utils_end

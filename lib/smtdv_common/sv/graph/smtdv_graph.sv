@@ -35,7 +35,7 @@ class smtdv_graph#(
   edge_q_t edge_q;
 
   bit has_finalize = FALSE;
-  bit debug = FALSE;
+  bit has_debug = FALSE;
 
   `uvm_object_param_utils_begin(graph_t)
   `uvm_object_utils_end
@@ -250,7 +250,7 @@ endfunction : finalize
 */
 function void smtdv_graph::dump();
   EDGE tedge;
-  if (debug) begin
+  if (has_debug) begin
     `uvm_info(parent.get_full_name(),
         "-------------------------------", UVM_LOW);
     for(int i=0; i<edge_q.size(); i++) begin

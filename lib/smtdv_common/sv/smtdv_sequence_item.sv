@@ -13,25 +13,21 @@ class smtdv_base_item
   extends
   uvm_sequence_item;
 
-  bit                 debug = FALSE;
-  int                 uuid = 0;
-  int                 initorid = -1;
-  int                 targetid = -1;
-  int                 prio = 0;
+  int initorid = -1;
+  int targetid = -1;
+  int prio = 0;
 
   smtdv_base_item next = null;
   smtdv_base_item pre = null;
   smtdv_base_item parent = null;
 
   `uvm_object_param_utils_begin(smtdv_base_item)
-     `uvm_field_int(uuid, UVM_ALL_ON)
     `uvm_field_int(prio, UVM_ALL_ON)
-    if (debug) begin
-      `uvm_field_int(initorid, UVM_ALL_ON)
-      `uvm_field_int(targetid, UVM_ALL_ON)
-      `uvm_field_object(pre, UVM_DEFAULT)
-      `uvm_field_object(next, UVM_DEFAULT)
-    end
+    `uvm_field_int(initorid, UVM_ALL_ON)
+    `uvm_field_int(targetid, UVM_ALL_ON)
+    `uvm_field_object(parent, UVM_DEFAULT)
+    `uvm_field_object(pre, UVM_DEFAULT)
+    `uvm_field_object(next, UVM_DEFAULT)
   `uvm_object_utils_end
 
   function new(string name = "smtdv_base_item");
@@ -57,7 +53,6 @@ class smtdv_sequence_item#(
 
   typedef smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
 
-  bit                 debug = TRUE;
   rand bit [ADDR_WIDTH-1:0]     addr;
   rand bit [ADDR_WIDTH-1:0]     addrs[$];
   rand bit [(DATA_WIDTH>>3)-1:0][7:0] data_beat[$];
@@ -72,7 +67,7 @@ class smtdv_sequence_item#(
   bit                 fifo_complete = FALSE;
   bit                 addr_complete = FALSE;
   bit                 data_complete = FALSE;
-  int                 uid = 0;
+  int                 uuid = 0;
   int                 addr_idx = 0;
   int                 data_idx = 0;
 
@@ -84,7 +79,7 @@ class smtdv_sequence_item#(
   longint       ed_cyc;
   longint       bg_time;
   longint       ed_time;
-  rand int      life_time = 0;
+  rand int      life_time;
 
   /**
    * life_time Int Constraint.
@@ -96,7 +91,7 @@ class smtdv_sequence_item#(
   }
 
   `uvm_object_param_utils_begin(item_t)
-    `uvm_field_int(uid, UVM_ALL_ON)
+    `uvm_field_int(uuid, UVM_ALL_ON)
     // virtual field should be imp at top level
     `uvm_field_int(addr, UVM_ALL_ON)
     `uvm_field_int(bst_len, UVM_ALL_ON)
@@ -104,26 +99,25 @@ class smtdv_sequence_item#(
     `uvm_field_queue_int(addrs, UVM_ALL_ON)
     `uvm_field_queue_int(data_beat, UVM_ALL_ON)
     `uvm_field_queue_int(byten_beat, UVM_ALL_ON)
-    // hiden info
-    if (debug) begin
-      `uvm_field_int(offset, UVM_ALL_ON)
-      `uvm_field_int(success, UVM_ALL_ON)
-      `uvm_field_int(retry, UVM_ALL_ON)
-      `uvm_field_int(mem_complete, UVM_ALL_ON)
-      `uvm_field_int(fifo_complete, UVM_ALL_ON)
-      `uvm_field_int(addr_complete, UVM_ALL_ON)
-      `uvm_field_int(data_complete, UVM_ALL_ON)
-      `uvm_field_int(addr_idx, UVM_ALL_ON)
-      `uvm_field_int(data_idx, UVM_ALL_ON)
-      `uvm_field_enum(mod_type_t, mod_t, UVM_ALL_ON)
-      `uvm_field_enum(trs_type_t, trs_t, UVM_ALL_ON)
-      `uvm_field_enum(run_type_t, run_t, UVM_ALL_ON)
+    `uvm_field_int(offset, UVM_ALL_ON)
+    `uvm_field_int(success, UVM_ALL_ON)
+    `uvm_field_int(retry, UVM_ALL_ON)
 
-      `uvm_field_int(bg_cyc, UVM_ALL_ON)
-      `uvm_field_int(ed_cyc, UVM_ALL_ON)
-      `uvm_field_int(bg_time, UVM_ALL_ON)
-      `uvm_field_int(ed_time, UVM_ALL_ON)
-    end
+    `uvm_field_int(mem_complete, UVM_ALL_ON)
+    `uvm_field_int(fifo_complete, UVM_ALL_ON)
+    `uvm_field_int(addr_complete, UVM_ALL_ON)
+    `uvm_field_int(data_complete, UVM_ALL_ON)
+
+    `uvm_field_int(addr_idx, UVM_ALL_ON)
+    `uvm_field_int(data_idx, UVM_ALL_ON)
+    `uvm_field_enum(mod_type_t, mod_t, UVM_ALL_ON)
+    `uvm_field_enum(trs_type_t, trs_t, UVM_ALL_ON)
+    `uvm_field_enum(run_type_t, run_t, UVM_ALL_ON)
+
+    `uvm_field_int(bg_cyc, UVM_ALL_ON)
+    `uvm_field_int(ed_cyc, UVM_ALL_ON)
+    `uvm_field_int(bg_time, UVM_ALL_ON)
+    `uvm_field_int(ed_time, UVM_ALL_ON)
   `uvm_object_utils_end
 
   function new(string name = "smtdv_sequence_item");
@@ -135,6 +129,7 @@ class smtdv_sequence_item#(
   extern virtual function bit compare(item_t cmp);
   extern virtual function void reset_index();
   extern virtual function void reset_status();
+
 endclass : smtdv_sequence_item
 
 // data stream is [0] = da, [1]...

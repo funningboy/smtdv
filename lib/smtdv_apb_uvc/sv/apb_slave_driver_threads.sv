@@ -72,8 +72,7 @@ task apb_slave_drive_items::run();
   forever begin
     populate_default_item(item);
     if (item==null)
-      this.cmp.mbox.async_pop_front(0, item);
-      //this.cmp.mbox.async_prio_get(0, item);
+      this.cmp.mbox.async_prio_get(0, item);
 
     wait(this.cmp.vif.has_force);
     case(item.trs_t)
@@ -90,7 +89,9 @@ task apb_slave_drive_items::run();
            {$psprintf("UP CAST TO SMTDV SEQ_ITEM FAIL")})
          item = nitem;
 
-    update_timestamp();
+    if (this.cmp.cfg.has_debug)
+      update_timestamp();
+
   end
 endtask : run
 

@@ -9,7 +9,16 @@ typedef class smtdv_run_label;
 
 /*
 * ex:
-*
+'{
+    addr: 0x0,
+    mask: 0xf,
+    data: 0x1,
+    require: TRUE,
+    depend: -1,
+    visit: FALSE
+}
+desc:
+func: magt.cfg.force;
 */
 
 /*
@@ -41,20 +50,20 @@ class smtdv_cfg_label#(
 
   typdef struct {
     rule_t rule;
-    int idcb; // map to registered cfg and decode id to it's callback func
-  } lookup_t;
+    uvm_void func; // callback func
+    string desc;
+  } cfgtb_t;
 
   T1 item;   // notify item get
   CFG cfg;   // notify cfg put
 
   int idx;
-  lookup_t lookup[int]; // key: indx, value: lookup_t
-  int sorted[int]; // seq map depend
+  cfgtb_t cfgtb;
 
   `uvm_object_param_utils_begin(label_t)
   `uvm_object_utils_end
 
-  function new(string name = "smtdv_label", CMP parent=null);
+  function new(string name = "smtdv_label", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 
@@ -63,7 +72,6 @@ class smtdv_cfg_label#(
   extern virtual function void post_do();
   extern virtual function bit ready_to_update();
   extern virtual function void ready_to_clear();
-  extern virtual function CFG update_cfg();
   extern virtual function void update_item(T1 iitem);
   extern virtual function void flush();
 
@@ -131,18 +139,6 @@ endfunction : ready_to_clear
 function void smtdv_cfg_label::flush();
   ready_to_clear();
 endfunction : flush
-
-/*
-* need to be overriden at top class
-*/
-function smtdv_cfg_label::CFG smtdv_cfg_label::update_cfg();
-    // ex:
-    //swicth(idcb)
-    // 0: update_block_req_cfg();
-    // 1: update_block_rsp_cfg();
-    // endcase
-  return cfg;
-endfunction : update_cfg
 
 
 `endif // __SMTDV_CFG_label_SV__

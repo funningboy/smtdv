@@ -50,7 +50,8 @@ HTML_FOOTER            = <PATH_DOXYSCR>/html/idv_dox_footer.html
 #EXAMPLE_PATH           = <PATH_PRJ>/src
 INCLUDE_PATH           = <PATH_PRJ>/lib/smtdv_common/sv \
                          <PATH_PRJ>/lib/smtdv_common/seq \
-                         <PATH_PRJ>/lib/smtdv_common/graph \
+                         <PATH_PRJ>/lib/smtdv_common/sv/graph \
+                         <PATH_PRJ>/lib/smtdv_common/sv/graph/algorithm \
                          <PATH_PRJ>/lib/smtdv_common/vseq \
                          <PATH_PRJ>/lib/smtdv_common/test \
                          <PATH_PRJ>/lib/smtdv_apb_uvc/sv \
@@ -66,7 +67,8 @@ INCLUDE_PATH           = <PATH_PRJ>/lib/smtdv_common/sv \
 
 INPUT                  = <PATH_PRJ>/lib/smtdv_common/sv \
                          <PATH_PRJ>/lib/smtdv_common/seq \
-                         <PATH_PRJ>/lib/smtdv_common/graph \
+                         <PATH_PRJ>/lib/smtdv_common/sv/graph \
+                         <PATH_PRJ>/lib/smtdv_common/sv/graph/algorithm \
                          <PATH_PRJ>/lib/smtdv_common/vseq \
                          <PATH_PRJ>/lib/smtdv_common/test \
                          <PATH_PRJ>/lib/smtdv_apb_uvc/sv \

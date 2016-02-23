@@ -31,17 +31,23 @@ class apb_master_irq_seq#(
     cur_addr = start_addr;
 
     forever begin
-      @(posedge seqr.vif.pirq);
-
+      #100;
       grab(seqr);
+      seqr.cfg.has_block = TRUE;
+      #100;
       // put seq_1r at front of the arbitration queue
       `uvm_create_on(seq_1r, seqr)
       `SMTDV_RAND_WITH(seq_1r,
         {
           seq_1r.start_addr == cur_addr;
+          seq_1r.prio == -1;
         })
-      seq_1r.start(seqr, this, -1);
 
+      `uvm_info(get_type_name(),
+        {$psprintf("GET IRQ READ")}, UVM_LOW)
+
+      seq_1r.start(seqr, this, -1);
+      seqr.cfg.has_block = FALSE;
       ungrab(seqr);
     end
   endtask : do_listen_irq

@@ -8,7 +8,7 @@ class spi_master_drive_data #(
 ) extends
     smtdv_run_thread;
 
-    rand int opt = 0;
+    rand int opt ;
     `SPI_ITEM item, req;
     `SPI_MASTER_DRIVER cmp;
 

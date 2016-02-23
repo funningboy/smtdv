@@ -75,7 +75,7 @@ function void smtdv_graph::_iter_dfs_visit(int nodeid, ref paths_t paths, ref vi
   if (visits.q[$] inside {endids})
     paths.q.push_back(visits);
 
-  if (debug) _dump_visits(visits);
+  if (has_debug) _dump_visits(visits);
 
   if (visits.q.size()>0) void'(visits.q.pop_back());
 endfunction : _iter_deepest_visit

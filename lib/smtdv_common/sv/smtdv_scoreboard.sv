@@ -49,7 +49,7 @@ class smtdv_scoreboard#(
   typedef smtdv_hash#(addr_t, smtdv_queue#(T1)) addr_h_t;
   typedef smtdv_thread_handler#(scb_t) hdler_t;
 
-  bit debug = FALSE; // debug msg on
+  bit has_debug = FALSE; // debug msg on
 
   hdler_t th_handler; // scb thread handler
 
@@ -253,7 +253,7 @@ function void smtdv_scoreboard::_do_initor_wr_check(smtdv_scoreboard::T1 item, i
 
   item_q = wr_pool.get(item.addrs[i]);
   item_q.push_back(aitem);
-  if (debug) `uvm_info(get_full_name(),
+  if (has_debug) `uvm_info(get_full_name(),
       {$psprintf("PUT wr_pool WRITE ATOMIC ITEM %h\n%s", item.addrs[i], aitem.sprint())}, UVM_LOW)
 endfunction : _do_initor_wr_check
 
@@ -272,7 +272,7 @@ function void smtdv_scoreboard::_do_initor_rd_check(smtdv_scoreboard::T1 item, i
       `uvm_error("SMTDV_SCB_RD_COMP",
           {$psprintf("RECEIVED WRONG DATA %h\n%s", item.addrs[i], item.sprint())})
     end
-    if (debug) `uvm_info(get_full_name(),
+    if (has_debug) `uvm_info(get_full_name(),
         {$psprintf("POP rd_pool READ ATOMIC ITEM %h\n%s", item.addrs[i], it.sprint())}, UVM_LOW)
   end
   else begin
@@ -317,7 +317,7 @@ function void smtdv_scoreboard::_do_target_rd_check(smtdv_scoreboard::T1 item, i
 
   item_q = rd_pool.get(item.addrs[i]);
   item_q.push_back(aitem);
-  if (debug) `uvm_info(get_full_name(),
+  if (has_debug) `uvm_info(get_full_name(),
       {$psprintf("PUT rd_pool READ ATOMIC ITEM %h\n%s", item.addrs[i], aitem.sprint())}, UVM_LOW)
 endfunction : _do_target_rd_check
 
@@ -336,7 +336,7 @@ function void smtdv_scoreboard::_do_target_wr_check(smtdv_scoreboard::T1 item, i
       `uvm_error("SMTDV_SCB_WR_COMP",
           {$psprintf("RECEIVED WRONG DATA %h\n%s", item.addrs[i], item.sprint())})
     end
-    if (debug) `uvm_info(get_full_name(),
+    if (has_debug) `uvm_info(get_full_name(),
         {$psprintf("POP wr_pool WRITE ATOMIC ITEM %h\n%s", item.addrs[i], it.sprint())}, UVM_LOW)
   end
   else begin

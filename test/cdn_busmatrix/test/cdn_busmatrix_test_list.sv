@@ -3,10 +3,7 @@
 `define __CDN_BUSMATRIX_TEST_LIST_SV__
 
 `include "cdn_base_test.sv"
-// one 2 one
-`include "cdn_cpu_s0_2_dma_m0_test.sv"
-// one 2 all
-//`include "cdn_cpu_s0_2_all_test.sv"
+`include "cdn_setup_test.sv"
 
 `endif // __CDN_BUSMATRIX_TEST_LIST_SV__
 
