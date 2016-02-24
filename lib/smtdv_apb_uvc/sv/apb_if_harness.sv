@@ -32,9 +32,8 @@ interface apb_master_if_harness#(
 
     logic [DATA_WIDTH-1:0]  prdata,
     logic [0:0]             pslverr,
-    logic [0:0]             pready,
+    logic [0:0]             pready
 
-    logic [0:0]             pirq
   );
 
     apb_if#(
@@ -53,9 +52,12 @@ interface apb_master_if_harness#(
 
       .prdata(),
       .pslverr(),
-      .pready()
+      .pready(),
 
+      .dummy()
     );
+
+    assign vif.dummy = (vif.pwdata == 'hdead)? 1'b1: 1'b0;
 
     `ifndef APBMASTERATTR
         $fatal("please define APBMASTERATTR as forced.vif at top design");
@@ -108,7 +110,9 @@ interface apb_slave_if_harness#(
 
       .prdata(),
       .pslverr(),
-      .pready()
+      .pready(),
+
+      .dummy()
 
     );
 

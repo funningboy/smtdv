@@ -15,11 +15,13 @@ class smtdv_base_item
 
   int initorid = -1;
   int targetid = -1;
-  int prio = 0;
+  rand int prio;
 
   smtdv_base_item next = null;
   smtdv_base_item pre = null;
   smtdv_base_item parent = null;
+
+  constraint c_prio { prio inside {[-2:10]}; }
 
   `uvm_object_param_utils_begin(smtdv_base_item)
     `uvm_field_int(prio, UVM_ALL_ON)

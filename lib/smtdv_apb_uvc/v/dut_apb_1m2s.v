@@ -55,9 +55,8 @@ module dut_1m2s #(
 
       .prdata(w_prdata[2]),
       .pready(w_pready[2]),
-      .pslverr(w_pslverr[2]),
+      .pslverr(w_pslverr[2])
 
-      .pirq(w_pirq[2])
     );
   end
   endgenerate
@@ -80,9 +79,8 @@ module dut_1m2s #(
 
       .prdata(w_prdata[i]),
       .pready(w_pready[i]),
-      .pslverr(w_pslverr[i]),
+      .pslverr(w_pslverr[i])
 
-      .pirq(w_pirq[i])
     );
   end
   endgenerate

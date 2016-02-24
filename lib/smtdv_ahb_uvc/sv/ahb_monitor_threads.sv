@@ -120,6 +120,9 @@ class ahb_collect_cover_group#(
       forever begin
         this.cmp.cbox.get(item);
         ahb_coverage.sample();
+
+        if (this.cmp.cfg.has_debug)
+          update_timestamp();
       end
     endtask : run
 
@@ -155,6 +158,9 @@ class ahb_export_collected_items#(
     forever begin
       this.cmp.ebox.get(item);
       populate_item(item);
+
+      if (this.cmp.cfg.has_debug)
+        update_timestamp();
     end
   endtask : run
 
@@ -226,6 +232,9 @@ class ahb_update_notify_cfgs#(
     forever begin
       this.cmp.bbox.get(item);
       populate_item(item);
+
+      if (this.cmp.cfg.has_debug)
+        update_timestamp();
     end
   endtask : run
 
@@ -277,6 +286,9 @@ class ahb_collect_stop_signal#(
         pre_st = this.cmp.vif.htrans;
         cnt = 0;
       end
+
+      if (this.cmp.cfg.has_debug)
+        update_timestamp();
     end
   endtask : do_stop
 
@@ -375,8 +387,14 @@ class ahb_collect_addr_items#(
         listen_SPLIT(item);
       join_any
       disable fork;
-      `uvm_info(this.cmp.get_full_name(), {$psprintf("try collect addr item \n%s", item.sprint())}, UVM_LOW)
-      end
+
+      `uvm_info(this.cmp.get_full_name(),
+          {$psprintf("try collect addr item \n%s", item.sprint())}, UVM_LOW)
+
+       if (this.cmp.cfg.has_debug)
+        update_timestamp();
+
+    end
   endtask : run
 
   virtual task popilate_idle_item(item_t item);
@@ -530,12 +548,19 @@ class ahb_collect_data_items#(
       // notify to scoreboard
       if (!$cast(m_cfg, this.cmp.cfg) && item.trs_t == WR) `SMTDV_SWAP(0)
       if ($cast(m_cfg, this.cmp.cfg) && item.trs_t == RD) `SMTDV_SWAP(0)
-      `uvm_info(this.cmp.get_full_name(), {$psprintf("try collect data item \n%s", item.sprint())}, UVM_LOW)
+
+      `uvm_info(this.cmp.get_full_name(),
+          {$psprintf("try collect data item \n%s", item.sprint())}, UVM_LOW)
+
       if (item.success) this.cmp.item_collected_port.write(item);
 
       if (this.cmp.cfg.has_coverage) this.cmp.cbox.put(item);
       if (this.cmp.cfg.has_export)   this.cmp.ebox.put(item);
       if (this.cmp.cfg.has_notify)   this.cmp.bbox.put(item);
+
+      if (this.cmp.cfg.has_debug)
+        update_timestamp();
+
     end
   endtask : run
 

@@ -14,7 +14,9 @@ import uvm_pkg::*;
  */
 interface smtdv_if (
   input clk, // hclk
-  input resetn // hresetn
+  input resetn, // hresetn
+
+  logic dummy
   );
 
   bit has_force = `TRUE;

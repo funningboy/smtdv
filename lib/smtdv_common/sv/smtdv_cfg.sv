@@ -16,7 +16,7 @@ class smtdv_cfg
 
   mod_type_t mod;
 
-  bit has_debug = FALSE;        // turn on debug mode
+  rand bit has_debug;        // turn on debug mode
 
   rand bit has_force;    // force virtual vif to drive DUT without normal DUT behavior, ex: preloading img or debug
   rand bit has_coverage; // coverage report
@@ -27,6 +27,7 @@ class smtdv_cfg
 
   rand bit clock_req;    // Master Cfg =1, Slave Cfg =0
 
+  constraint c_has_debug { has_debug inside {FALSE, TRUE}; }
   constraint c_has_error { has_error inside {FALSE, TRUE}; }
   constraint c_has_force { has_force inside {FALSE, TRUE}; }
   constraint c_has_export { has_export inside {FALSE, TRUE}; }

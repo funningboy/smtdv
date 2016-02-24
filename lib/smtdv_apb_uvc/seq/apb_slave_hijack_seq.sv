@@ -33,7 +33,8 @@ class apb_slave_hijack_seq#(
     super.mid_do_read_item(item);
     if (rd_idx >= rd_max) begin
       seqr.cfg.has_force = FALSE;
-      `uvm_info(get_type_name(), {"GET AFTER RELEASE FORCE\n"}, UVM_LOW)
+      `uvm_info(get_type_name(),
+          {"GET AFTER RELEASE FORCE\n"}, UVM_LOW)
     end
     rd_idx++;
   endtask : mid_do_read_item

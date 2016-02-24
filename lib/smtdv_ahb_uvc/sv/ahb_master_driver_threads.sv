@@ -28,7 +28,8 @@ class ahb_master_base_thread #(
 
   virtual function void pre_do();
     if (!this.cmp) begin
-      `uvm_fatal("NOCMP",{"cmp must be set for: ",get_full_name(),".cmp"});
+      `uvm_fatal("NOCMP",
+          {"cmp must be set for: ",get_full_name(),".cmp"});
     end
   endfunction : pre_do
 
@@ -101,12 +102,10 @@ class ahb_master_drive_addr #(
   endtask : listen_ERROR
 
   virtual task run();
-    item = null;
     forever begin
       // after reset
       populate_default_item(item);
-      if (item==null)
-        this.cmp.addrbox.async_pop_front(0, item);
+      this.cmp.addrbox.async_pop_front(0, item);
 
       while(!item.addr_complete) begin
         populate_nonseq_item(item);
@@ -119,9 +118,13 @@ class ahb_master_drive_addr #(
         join_any
         disable fork;
       end
-      `uvm_info(this.cmp.get_full_name(), {$psprintf("try do addr item \n%s", item.sprint())}, UVM_LOW)
 
-      $cast(item, item.next);
+      `uvm_info(this.cmp.get_full_name(),
+          {$psprintf("try do addr item \n%s", item.sprint())}, UVM_LOW)
+
+      if (this.cmp.cfg.has_debug)
+        update_timestamp();
+
     end
   endtask : run
 
@@ -229,10 +232,8 @@ class ahb_master_drive_data #(
   endtask : listen_ERROR
 
   virtual task run();
-    item = null;
     forever begin
-      if (item==null)
-        this.cmp.databox.async_pop_front(0, item);
+      this.cmp.databox.async_pop_front(0, item);
 
       `SMTDV_SWAP(0) // data phase should be after addr phase
 
@@ -249,12 +250,11 @@ class ahb_master_drive_data #(
         join_any
         disable fork;
       end
-      `uvm_info(this.cmp.get_full_name(), {$psprintf("try do data item \n%s", item.sprint())}, UVM_LOW)
+      `uvm_info(this.cmp.get_full_name(),
+          {$psprintf("try do data item \n%s", item.sprint())}, UVM_LOW)
 
-      if (item.next)
-        if (!$cast(item, item.next))
-          `uvm_error("SMTDV_UCAST_SEQ_ITEM",
-             {$psprintf("UP CAST TO SMTDV SEQ_ITEM FAIL")})
+      if (this.cmp.cfg.has_debug)
+        update_timestamp();
 
     end
   endtask : run

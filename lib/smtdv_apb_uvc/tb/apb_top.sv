@@ -30,7 +30,7 @@ module top();
   // due to MTI is got compiler error at costructing the init virtual vif of each template component.
   // we use fake vif to skip it
   // for reset vif, apb vif
-  smtdv_if    fk_smtdv_if(.clk(clk), .resetn(fresetn));
+  smtdv_if    fk_smtdv_if(.clk(clk), .resetn(fresetn), .dummy());
   smtdv_gen_rst_if rst_if(fresetn);
   defparam rst_if.if_name       = "smtdv_rst_if";
   defparam rst_if.PWRST_PERIOD  = 100;
@@ -70,9 +70,8 @@ module top();
 
     .prdata(`APBMASTERATTR(0).prdata),
     .pready(`APBMASTERATTR(0).pready),
-    .pslverr(`APBMASTERATTR(0).pslverr),
+    .pslverr(`APBMASTERATTR(0).pslverr)
 
-    .pirq(`APBMASTERATTR(0).pirq)
   );
 
   bind `APBSLAVEATTR(0) apb_slave_if_harness#(

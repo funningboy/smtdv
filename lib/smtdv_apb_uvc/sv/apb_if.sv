@@ -25,8 +25,17 @@ interface apb_if#(
 
     logic [DATA_WIDTH-1:0]  prdata,
     logic [0:0]             pslverr,
-    logic [0:0]             pready
+    logic [0:0]             pready,
 
+    // only for pirq test
+    logic [0:0]             dummy
+
+  );
+
+  smtdv_if pvif (
+    .clk(clk),
+    .resetn(resetn),
+    .dummy()
   );
 
   bit has_force = `TRUE;

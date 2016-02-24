@@ -9,6 +9,7 @@
        has_coverage == TRUE; \
        has_export == TRUE;   \
        has_error == TRUE;    \
+       has_debug == TRUE;    \
    }) \
    \
    if (!$cast(slv_cfgs[ID], ``CFG``)) \
@@ -41,6 +42,7 @@
         has_coverage == TRUE; \
         has_export == TRUE;   \
         has_retry == TRUE;    \
+        has_debug == TRUE;    \
     }) \
     \
     if (!$cast(mst_cfgs[ID], ``CFG``)) \

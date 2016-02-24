@@ -66,10 +66,10 @@ endclass : apb_master_drive_items
 
 // blocking for R/W trx
 task apb_master_drive_items::run();
-  item = null;
   forever begin
-    if(item==null)
-      this.cmp.mbox.async_prio_get(0, item);
+    wait(!this.cmp.cfg.has_block);
+
+    this.cmp.mbox.async_prio_get(0, item);
 
     case(item.trs_t)
       RD: begin do_read_item(item); end
@@ -78,12 +78,6 @@ task apb_master_drive_items::run();
         `uvm_fatal("APB_UNXPCTDPKT",
         $sformatf("GET AN UNEXPECTED ITEM \n%s", item.sprint()))
     endcase
-
-    if (item.next!=null)
-      if (!$cast(nitem, item.next))
-        `uvm_error("SMTDV_UCAST_SEQ_ITEM",
-           {$psprintf("UP CAST TO SMTDV SEQ_ITEM FAIL")})
-        item = nitem;
 
     if (this.cmp.cfg.has_debug)
       update_timestamp();

@@ -26,6 +26,7 @@ class smtdv_queue#(
     super.new(name);
   endfunction : new
 
+  extern virtual function void is_item(T item);
   extern virtual function bit is_lock();
   extern virtual function void lock();
   extern virtual function void unlock();
@@ -64,37 +65,35 @@ function bit smtdv_queue::is_lock();
 endfunction : is_lock
 
 
-function bit smtdv_queue::has_item(smtdv_queue::T item);
+function void smtdv_queue::is_item(smtdv_queue::T item);
   smtdv_base_item sitem;
   // seq_item
   if (!$cast(sitem, item))
     `uvm_error("SMTDV_DCAST_ITEM",
         {$psprintf("DOWN CAST ITEM TO SEQUENCE ITEM FAIL")})
 
+endfunction : is_item
+
+
+function bit smtdv_queue::has_item(smtdv_queue::T item);
+  is_item(item);
   foreach(this.queue[i]) begin
-    if (this.queue[i].compare(item)) return TRUE;
+    if (this.queue[i].compare(item))
+      return TRUE;
   end
   return FALSE;
 endfunction : has_item
 
 
 function void smtdv_queue::find_all(smtdv_queue::T item, ref smtdv_queue::T founds[$]);
-  smtdv_base_item sitem;
-  if (!$cast(sitem, item))
-    `uvm_error("SMTDV_DCAST_ITEM",
-        {$psprintf("DOWN CAST ITEM TO SEQUENCE ITEM FAIL")})
-
+  is_item(item);
   founds = this.queue.find(it) with ( it.compare(item) == TRUE );
 endfunction : find_all
 
 
 function void smtdv_queue::find_idxs(smtdv_queue::T item, ref int founds[$]);
-  smtdv_base_item sitem;
-  if (!$cast(sitem, item))
-    `uvm_error("SMTDV_DCAST_ITEM",
-        {$psprintf("DOWN CAST ITEM TO SEQUENCE ITEM FAIL")})
-
-    founds = this.queue.find_index(it) with ( it.compare(item) == TRUE );
+  is_item(item);
+  founds = this.queue.find_index(it) with ( it.compare(item) == TRUE );
 endfunction : find_idxs
 
 

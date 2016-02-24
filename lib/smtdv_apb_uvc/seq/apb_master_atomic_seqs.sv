@@ -67,7 +67,7 @@ class apb_master_1r_seq#(
   rand bit [ADDR_WIDTH-1:0] start_addr;
   rand int prio;
 
-  constraint c_prio { prio inside {[-1:1]}; }
+  constraint c_prio { prio inside {[-1:0]}; }
   bit blocking = TRUE;
 
   `uvm_object_param_utils_begin(seq_t)

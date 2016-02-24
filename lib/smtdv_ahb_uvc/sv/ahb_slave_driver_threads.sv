@@ -97,12 +97,10 @@ class ahb_slave_drive_addr #(
   endtask : drive
 
   virtual task run();
-    item = null;
     forever begin
       // after reset
       populate_default_item(item);
-      if (item==null)
-        this.cmp.addrbox.async_pop_front(0, item);
+      this.cmp.addrbox.async_pop_front(0, item);
 
       while(!item.addr_complete) begin
         fork
@@ -110,12 +108,12 @@ class ahb_slave_drive_addr #(
         join_any
         disable fork;
       end
-      `uvm_info(this.cmp.get_full_name(), {$psprintf("try do addr item \n%s", item.sprint())}, UVM_LOW)
 
-      if (item.next)
-        if (!$cast(item, item.next))
-          `uvm_error("SMTDV_UCAST_SEQ_ITEM",
-             {$psprintf("UP CAST TO SMTDV SEQ_ITEM FAIL")})
+      `uvm_info(this.cmp.get_full_name(),
+          {$psprintf("try do addr item \n%s", item.sprint())}, UVM_LOW)
+
+      if (this.cmp.cfg.has_debug)
+        update_timestamp();
 
     end
   endtask : run

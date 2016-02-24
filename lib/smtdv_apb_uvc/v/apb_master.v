@@ -16,9 +16,8 @@ module apb_master #(
 
     prdata,
     pslverr,
-    pready,
+    pready
 
-    pirq
   );
 
   input [0:0]             clk;
@@ -35,7 +34,6 @@ module apb_master #(
   input [0:0]             pready;
   reg [DATA_WIDTH-1:0]    pwdata;
 
-  input [0:0]             pirq;
 
   // implement your func here ...
   assign penable = 1'b1;

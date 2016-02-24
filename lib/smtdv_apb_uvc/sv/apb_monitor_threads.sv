@@ -42,7 +42,8 @@ class apb_monitor_base_thread#(
 
   virtual function void pre_do();
     if (!this.cmp) begin
-      `uvm_fatal("APB_NO_CMP",{"CMP MUST BE SET ",get_full_name(),".cmp"});
+      `uvm_fatal("APB_NO_CMP",
+          {"CMP MUST BE SET ",get_full_name(),".cmp"});
     end
   endfunction : pre_do
 
@@ -102,6 +103,9 @@ class apb_collect_cover_group#(
     forever begin
       this.cmp.cbox.get(item);
       apb_coverage.sample();
+
+      if (this.cmp.cfg.has_debug)
+        update_timestamp();
     end
   endtask : run
 
@@ -137,12 +141,16 @@ class apb_export_collected_items#(
     forever begin
       this.cmp.ebox.get(item);
       populate_item(item);
+
+      if (this.cmp.cfg.has_debug)
+        update_timestamp();
     end
   endtask : run
 
   virtual task create_table();
     string table_nm = $psprintf("\"%s\"", this.cmp.get_full_name());
-    `uvm_info(this.cmp.get_full_name(), {$psprintf("CREATE MON SQLITE3: %s\n", table_nm)}, UVM_LOW)
+    `uvm_info(this.cmp.get_full_name(),
+        {$psprintf("CREATE MON SQLITE3: %s\n", table_nm)}, UVM_LOW)
 
     smtdv_sqlite3::create_tb(table_nm);
     foreach (attr_longint[i])
@@ -200,6 +208,9 @@ class apb_update_notify_cfgs#(
     forever begin
       this.cmp.bbox.get(item);
       populate_item(item);
+
+      if (this.cmp.cfg.has_debug)
+        update_timestamp();
     end
   endtask : run
 
@@ -245,6 +256,9 @@ class apb_collect_stop_signal#(
     while (cnt < stop_cnt) begin
       @(negedge this.cmp.vif.clk);
       cnt = (this.cmp.vif.penable || this.cmp.vif.pready || !this.cmp.vif.resetn)? 0 : cnt+1;
+
+      if (this.cmp.cfg.has_debug)
+        update_timestamp();
     end
   endtask : do_stop
 
@@ -254,10 +268,12 @@ class apb_collect_stop_signal#(
     // like timeout watch dog ref: http://www.synapse-da.com/Uploads/PDFFiles/04_UVM-Heartbeat.pdf
     if (this.cmp.seqr) begin
       this.cmp.seqr.finish = TRUE;
-      `uvm_info(this.cmp.get_full_name(), {$psprintf("TRY COLLECT FINISH SIGNAL\n")}, UVM_LOW)
+      `uvm_info(this.cmp.get_full_name(),
+          {$psprintf("TRY COLLECT FINISH SIGNAL\n")}, UVM_LOW)
     end
     else begin
-      `uvm_fatal("APB_MON_STOP", {$psprintf("TRY COLLECT FINISH SIGNAL\n")})
+      `uvm_fatal("APB_MON_STOP",
+          {$psprintf("TRY COLLECT FINISH SIGNAL\n")})
     end
   endtask : run
 
@@ -300,12 +316,19 @@ class apb_collect_write_items#(
 
       // notify to scoreboard
       if (!$cast(m_cfg, this.cmp.cfg) && item.trs_t == WR) `SMTDV_SWAP(0)
-      `uvm_info(this.cmp.get_full_name(), {$psprintf("TRY COLLECT WRITE ITEM\n%s", item.sprint())}, UVM_LOW)
+
+      `uvm_info(this.cmp.get_full_name(),
+            {$psprintf("TRY COLLECT WRITE ITEM\n%s", item.sprint())}, UVM_LOW)
+
       if (item.success) this.cmp.item_collected_port.write(item);
 
-     if (this.cmp.cfg.has_coverage) this.cmp.cbox.put(item);
-     if (this.cmp.cfg.has_export)   this.cmp.ebox.put(item);
-     if (this.cmp.cfg.has_notify)   this.cmp.bbox.put(item);
+      if (this.cmp.cfg.has_coverage) this.cmp.cbox.put(item);
+      if (this.cmp.cfg.has_export)   this.cmp.ebox.put(item);
+      if (this.cmp.cfg.has_notify)   this.cmp.bbox.put(item);
+
+      if (this.cmp.cfg.has_debug)
+         update_timestamp();
+
     end
   endtask : run
 
@@ -371,12 +394,19 @@ class apb_collect_read_items#(
 
       // notify to scoreboard
       if ($cast(m_cfg, this.cmp.cfg) && item.trs_t == RD) `SMTDV_SWAP(0)
-      `uvm_info(this.cmp.get_full_name(), {$psprintf("TRY COLLECT READ ITEM\n%s", item.sprint())}, UVM_LOW)
+
+      `uvm_info(this.cmp.get_full_name(),
+          {$psprintf("TRY COLLECT READ ITEM\n%s", item.sprint())}, UVM_LOW)
+
       if (item.success) this.cmp.item_collected_port.write(item);
 
       if (this.cmp.cfg.has_coverage) this.cmp.cbox.put(item);
       if (this.cmp.cfg.has_export)   this.cmp.ebox.put(item);
       if (this.cmp.cfg.has_notify)   this.cmp.bbox.put(item);
+
+      if (this.cmp.cfg.has_debug)
+         update_timestamp();
+
     end
   endtask : run
 

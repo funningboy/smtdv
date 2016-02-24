@@ -27,7 +27,8 @@ class apb_slave_base_thread#(
 
   virtual function void pre_do();
     if (!this.cmp) begin
-      `uvm_fatal("APB_NO_CMP",{"CMP MUST BE SET ",get_full_name(),".cmp"});
+      `uvm_fatal("APB_NO_CMP",
+          {"CMP MUST BE SET ",get_full_name(),".cmp"});
     end
 endfunction : pre_do
 
@@ -68,11 +69,9 @@ endclass : apb_slave_drive_items
 
 // blocking for R/W trx
 task apb_slave_drive_items::run();
-  item = null;
   forever begin
     populate_default_item(item);
-    if (item==null)
-      this.cmp.mbox.async_prio_get(0, item);
+    this.cmp.mbox.async_prio_get(0, item);
 
     wait(this.cmp.vif.has_force);
     case(item.trs_t)
@@ -80,14 +79,8 @@ task apb_slave_drive_items::run();
       RD: begin do_read_item(item);  end
       default:
         `uvm_fatal("APB_UNXPCTDPKT",
-        $sformatf("GET AN UNEXPECTED ITEM \n%s", item.sprint()))
+            $sformatf("GET AN UNEXPECTED ITEM \n%s", item.sprint()))
     endcase
-
-    if (item.next!=null)
-      if (!$cast(nitem, item.next))
-        `uvm_error("SMTDV_UCAST_SEQ_ITEM",
-           {$psprintf("UP CAST TO SMTDV SEQ_ITEM FAIL")})
-         item = nitem;
 
     if (this.cmp.cfg.has_debug)
       update_timestamp();

@@ -11,9 +11,7 @@ class apb_master_irq_seq#(
   );
 
   typedef apb_master_irq_seq#(ADDR_WIDTH, DATA_WIDTH) seq_t;
-  typedef apb_master_1r_seq#(ADDR_WIDTH, DATA_WIDTH) seq_1r_t;
-
-  seq_1r_t seq_1r;
+  typedef apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   static const bit [ADDR_WIDTH-1:0] start_addr = `APB_START_ADDR(0)
   bit [ADDR_WIDTH-1:0] cur_addr;
@@ -31,22 +29,30 @@ class apb_master_irq_seq#(
     cur_addr = start_addr;
 
     forever begin
-      #100;
+      @(posedge seqr.vif.dummy);
       grab(seqr);
       seqr.cfg.has_block = TRUE;
       #100;
-      // put seq_1r at front of the arbitration queue
-      `uvm_create_on(seq_1r, seqr)
-      `SMTDV_RAND_WITH(seq_1r,
+
+      // put item at front of the arbitration queue
+      item = item_t::type_id::create("item");
+      `SMTDV_RAND_WITH(item,
         {
-          seq_1r.start_addr == cur_addr;
-          seq_1r.prio == -1;
+        item.mod_t == MASTER;
+        item.trs_t == RD;
+        item.run_t == FORCE;
+        item.addr == cur_addr;
+        item.prio == -1;
         })
 
-      `uvm_info(get_type_name(),
-        {$psprintf("GET IRQ READ")}, UVM_LOW)
+      `uvm_create(req)
+      req.copy(item);
+      start_item(req);
+      finish_item(req);
 
-      seq_1r.start(seqr, this, -1);
+      `uvm_info(get_type_name(),
+        {$psprintf("GET IRQ READ \n%s", item.sprint())}, UVM_LOW)
+
       seqr.cfg.has_block = FALSE;
       ungrab(seqr);
     end
