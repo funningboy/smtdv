@@ -44,6 +44,7 @@ class smtdv_run_thread#(
   extern virtual function void pre_do();
   extern virtual function void mid_do();
   extern virtual function void post_do();
+  extern virtual function void callback();
   extern virtual task run();
 
 endclass : smtdv_run_thread
@@ -94,5 +95,12 @@ endtask : run
 function void smtdv_run_thread::update_timestamp();
   timestamp = $time;
 endfunction : update_timestamp
+
+/*
+* virtual callback func must be imp at top level
+*/
+function void smtdv_run_thread::callback();
+endfunction : callback
+
 
 `endif // end of __SMTDV_THREAD_SV__

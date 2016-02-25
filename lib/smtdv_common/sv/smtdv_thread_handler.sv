@@ -22,7 +22,6 @@ class smtdv_thread_handler#(
   typedef smtdv_thread_handler#(CMP) hdler_t;
 
   CMP cmp;
-  bit has_debug = FALSE; // turn on watchdog if needed
   bit has_finalize = FALSE;
 
   time prestamp; // pre timestamp
@@ -62,6 +61,7 @@ class smtdv_thread_handler#(
   extern virtual task run();
   extern virtual task watch();
   extern virtual task timer();
+  extern virtual function void callback();
 
 endclass : smtdv_thread_handler
 
@@ -110,8 +110,10 @@ function void smtdv_thread_handler::del(th_t thread);
   assert(thread);
 
   idx_q= thread_q.find_index with (item.th == thread);
+
   if(idx_q.size() == 1) begin
     thread_q.delete(idx_q[0]);
+
     `uvm_info(get_full_name(),
     $sformatf("Delete a run thread called \"%s\" in run thread queue", thread.get_name()),
     UVM_FULL)
@@ -143,13 +145,15 @@ task smtdv_thread_handler::run();
       if (!thread_q[i].th.has_finalize) begin
         automatic int k;
         k = i;
-        `uvm_info(get_full_name(),
-          $sformatf("start to run thread \"%s\" in run thread queue", thread_q[k].th.get_name()),
-          UVM_FULL)
-          fork
-            thread_q[k].th.run();
-          join_none
-          thread_q[i].th.has_finalize = TRUE;
+
+        if (cmp.has_debug)
+          `uvm_info(get_full_name(),
+             $sformatf("start to run thread \"%s\" in run thread queue", thread_q[k].th.get_name()), UVM_FULL)
+
+        fork
+          thread_q[k].th.run();
+        join_none
+        thread_q[k].th.has_finalize = TRUE;
       end
     end
   end
@@ -160,7 +164,7 @@ endtask : run
 *  start to watch threads are health or not
 */
 task smtdv_thread_handler::watch();
-  if (has_debug) begin: watch_threads
+  if (cfg.has_timer) begin: watch_threads
     prestamp = $time;
     fork
       timer();

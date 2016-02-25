@@ -55,36 +55,42 @@ endclass : smtdv_mem_bkdor_wr_comp
 
 task smtdv_mem_bkdor_wr_comp::run();
   int sid;
+  int timeout;
   string table_nm;
+  bit match;
+
+  if (this.cmp.bkdor_wr.timeout<0)
+    `uvm_fatal("SMTDV_BKDOR_NO_TIMEOUT",
+        {$psprintf("TIMEOUT MUST BE SET %d >0", this.cmp.bkdor_wr.timeout)});
 
   forever begin
     sid = -1;
+    match = FALSE;
+    timeout = this.cmp.bkdor_wr.timeout;
+
     wait(this.cmp.wbox.size()>0);
     item = this.cmp.wbox.pop_front();
     sid = this.cmp.initor_m[0].cfg.find_slave(item.addr);
+
     if (sid<0)
       `uvm_fatal("SMTDV_BKDOR_NO_CFG",
           {$psprintf("SLAVE ADDR %h MUST BE SET FOR MASTER CFG %s", item.addr, this.cmp.initor_m[0].cfg.get_full_name())});
 
     table_nm = $psprintf("\"%s\"", this.cmp.targets_s[sid].seqr.get_full_name());
 
-    if (this.cmp.bkdor_wr.timeout<0)
-      `uvm_fatal("SMTDV_BKDOR_NO_TIMEOUT",
-          {$psprintf("TIMEOUT MUST BE SET %d >0", this.cmp.bkdor_wr.timeout)});
-
     // check mem backdoor data is match expected until timeout
-    while(this.cmp.bkdor_wr.timeout>0) begin
-      if (this.cmp.bkdor_wr.match == FALSE) begin
+    while(timeout>0) begin
+      if (match == FALSE) begin
         if (this.cmp.bkdor_wr.compare(table_nm, item, ritem)) begin
-          this.cmp.bkdor_wr.match = TRUE;
+          match = TRUE;
           break;
         end
       end
       @(posedge cmp.initor_m[0].vif.clk);
-      this.cmp.bkdor_wr.timeout--;
+      timeout--;
     end
 
-    if (this.cmp.bkdor_wr.match == FALSE) begin
+    if (match == FALSE) begin
       if (item && ritem)
         `uvm_error("SMTDV_BKDOR_CMP",
             {$psprintf("BACKDOOR COMPARE WRONG DATA \n%s, %s", item.sprint(), ritem.sprint())})
@@ -92,8 +98,11 @@ task smtdv_mem_bkdor_wr_comp::run();
         `uvm_error("SMTDV_BKDOR_CMP",
             {$psprintf("BACKDOOR COMPARE WRONG DATA \n%s, null", item.sprint())})
     end
-    this.cmp.bkdor_wr.match = FALSE;
+
+    if (this.cmp.initor_m[0].cfg.has_debug)
+      update_timestamp();
+
   end
-endtask
+endtask : run
 
 `endif // end of __SMTDV_MEM_BKDOR_WR_COMP_THREADS_SV__

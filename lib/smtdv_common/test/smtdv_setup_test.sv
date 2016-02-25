@@ -8,12 +8,19 @@ class smtdv_setup_test
 
   typedef smtdv_master_test_vseq m_vseq_t;
   typedef smtdv_slave_test_seq#(ADDR_WIDTH, DATA_WIDTH) s_seq_t;
+  typedef uvm_object obj_t;
+
+  obj_t obj;
 
   `uvm_component_utils(smtdv_setup_test)
 
   function new(string name = "smtdv_setup_test", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
+
+  virtual function void do_test();
+    $display("hello test");
+  endfunction : do_test
 
   virtual function void build_phase(uvm_phase phase);
     // override slave base seq to err_inject seq
@@ -31,6 +38,12 @@ class smtdv_setup_test
       "default_sequence",
       s_seq_t::type_id::get());
   endfunction : build_phase
+
+  virtual task run_phase(uvm_phase phase);
+    super.run_phase(phase);
+    obj = this;
+    this.do_test();
+  endtask : run_phase
 
 endclass : smtdv_setup_test
 

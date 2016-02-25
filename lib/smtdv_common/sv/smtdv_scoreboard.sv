@@ -246,6 +246,7 @@ endfunction : _create_atomic_item
 */
 function void smtdv_scoreboard::_do_initor_wr_check(smtdv_scoreboard::T1 item, int i, smtdv_scoreboard::T1 aitem);
   item_q_t item_q;
+
   if (!wr_pool.exists(item.addrs[i])) begin
     item_q = item_q_t::type_id::create({$psprintf("smtdv_%h_wrq", item.addrs[i])});
     wr_pool.set(item.addrs[i], item_q);
@@ -253,8 +254,11 @@ function void smtdv_scoreboard::_do_initor_wr_check(smtdv_scoreboard::T1 item, i
 
   item_q = wr_pool.get(item.addrs[i]);
   item_q.push_back(aitem);
-  if (has_debug) `uvm_info(get_full_name(),
+
+  if (has_debug)
+    `uvm_info(get_full_name(),
       {$psprintf("PUT wr_pool WRITE ATOMIC ITEM %h\n%s", item.addrs[i], aitem.sprint())}, UVM_LOW)
+
 endfunction : _do_initor_wr_check
 
 /*
@@ -268,11 +272,13 @@ function void smtdv_scoreboard::_do_initor_rd_check(smtdv_scoreboard::T1 item, i
   if (rd_pool.exists(item.addrs[i])) begin
     item_q = rd_pool.get(item.addrs[i]);
     it = item_q.pop_front();
-    if (!it.compare(aitem)) begin
+
+    if (!it.compare(aitem))
       `uvm_error("SMTDV_SCB_RD_COMP",
           {$psprintf("RECEIVED WRONG DATA %h\n%s", item.addrs[i], item.sprint())})
-    end
-    if (has_debug) `uvm_info(get_full_name(),
+
+    if (has_debug)
+      `uvm_info(get_full_name(),
         {$psprintf("POP rd_pool READ ATOMIC ITEM %h\n%s", item.addrs[i], it.sprint())}, UVM_LOW)
   end
   else begin
@@ -317,8 +323,11 @@ function void smtdv_scoreboard::_do_target_rd_check(smtdv_scoreboard::T1 item, i
 
   item_q = rd_pool.get(item.addrs[i]);
   item_q.push_back(aitem);
-  if (has_debug) `uvm_info(get_full_name(),
+
+  if (has_debug)
+    `uvm_info(get_full_name(),
       {$psprintf("PUT rd_pool READ ATOMIC ITEM %h\n%s", item.addrs[i], aitem.sprint())}, UVM_LOW)
+
 endfunction : _do_target_rd_check
 
 /*
@@ -332,11 +341,13 @@ function void smtdv_scoreboard::_do_target_wr_check(smtdv_scoreboard::T1 item, i
   if (wr_pool.exists(item.addrs[i])) begin
     item_q = wr_pool.get(item.addrs[i]);
     it = item_q.pop_front();
-    if (!it.compare(aitem)) begin
+
+    if (!it.compare(aitem))
       `uvm_error("SMTDV_SCB_WR_COMP",
           {$psprintf("RECEIVED WRONG DATA %h\n%s", item.addrs[i], item.sprint())})
-    end
-    if (has_debug) `uvm_info(get_full_name(),
+
+    if (has_debug)
+      `uvm_info(get_full_name(),
         {$psprintf("POP wr_pool WRITE ATOMIC ITEM %h\n%s", item.addrs[i], it.sprint())}, UVM_LOW)
   end
   else begin

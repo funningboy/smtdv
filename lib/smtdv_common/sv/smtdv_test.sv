@@ -20,6 +20,8 @@ class smtdv_test
 
   typedef smtdv_test test_t;
 
+  bit has_debug = TRUE;
+
   smtdv_timeout_cb tout_cb;
   uvm_table_printer tbprt;
 

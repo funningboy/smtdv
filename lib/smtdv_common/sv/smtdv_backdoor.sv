@@ -26,9 +26,7 @@ class smtdv_backdoor#(
 
   CMP cmp;
 
-  rand int timeout = 3;   // define remain lifetime to check
-  bit debug = FALSE;
-  bit match = FALSE;
+  rand int timeout;   // define remain lifetime to check
 
   constraint c_timeout { timeout inside {[2:5]}; }
 

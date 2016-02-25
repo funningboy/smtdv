@@ -36,6 +36,9 @@ class smtdv_base_item
     super.new(name);
   endfunction : new
 
+  virtual function void callback();
+  endfunction : callback
+
 endclass : smtdv_base_item
 
 /**

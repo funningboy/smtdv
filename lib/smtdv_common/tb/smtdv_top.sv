@@ -28,17 +28,20 @@ module top();
 
   smtdv_if vif0(
     .clk(clk),
-    .resetn(resetn)
+    .resetn(resetn),
+    .dummy()
   );
 
   smtdv_if vif1(
     .clk(clk),
-    .resetn(resetn)
+    .resetn(resetn),
+    .dummy()
   );
 
   smtdv_if vif2(
     .clk(clk),
-    .resetn(resetn)
+    .resetn(resetn),
+    .dummy()
   );
 
   initial begin

@@ -34,6 +34,10 @@ task smtdv_force_vif::run();
     forever begin
       @(negedge this.cmp.vif.clk);
       this.cmp.vif.has_force = this.cmp.cfg.has_force;
+
+      if (this.cmp.cfg.has_debug)
+        update_timestamp();
+
     end
   join_none
 endtask : run

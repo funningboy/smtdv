@@ -67,17 +67,24 @@ task smtdv_watch_wr_lifetime::run();
   forever begin
     #watch_per_ns;
     this.cmp.wr_pool.keys(taddr);
+
     foreach(taddr[i])begin
       tque = this.cmp.wr_pool.get(taddr[i]);
+
       for(int j=0; j<tque.size(); j++) begin
         item = tque.get(j);
-        if (item.life_time<0) begin
+
+        if (item.life_time<0)
           `uvm_error("SMTDV_SB_LIFE_TIMEOUT",
               {$psprintf("RUN OUT OF LIFE TIMEOUT DATA \n%s", item.sprint())})
-        end
+
         item.life_time--;
       end
     end
+
+    if (this.cmp.has_debug)
+      update_timestamp();
+
   end
 endtask : run
 

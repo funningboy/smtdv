@@ -75,9 +75,24 @@ function void smtdv_label_handler::finalize();
   has_finalize = TRUE;
 endfunction : finalize
 
-// TODO
+
 function void smtdv_label_handler::run();
   begin : run_labels
+    foreach (label_q[i]) begin
+      if (!label_q[i].lab.has_finalize) begin
+        automatic int k;
+        k = i;
+
+        if (test.has_debug)
+          `uvm_info(get_full_name(),
+             $sformatf("start to run label \"%s\" in run label queue", label_q[k].lab.get_name()), UVM_FULL)
+
+        fork
+          label_q[k].lab.run();
+        join_none
+        label_q[k].lab.has_finalize = TRUE;
+      end
+    end
   end
 endfunction : run
 
