@@ -8,8 +8,7 @@ typedef class smtdv_component;
 typedef class smtdv_run_label;
 
 /*
-* ex:
-'{
+'cfg_lab = {
     addr: 0x0,
     mask: 0xf,
     data: 0x1,
@@ -32,25 +31,30 @@ class smtdv_cfg_label#(
   type T1 = smtdv_sequence_item#(ADDR_WIDTH,DATA_WIDTH),
   type CFG = smtdv_cfg,          // need to update cfg
   type CMP = smtdv_component     // belong to which cmp
-) extends
-  smtdv_run_label#(CMP);
+  ) extends
+  smtdv_run_label#(
+    .ADDR_WIDTH(ADDR_WIDTH),
+    .DATA_WIDTH(DATA_WIDTH),
+    .T1(T1),
+    .CFG(CFG),
+    .CMP(CMP)
+  );
 
   typedef smtdv_cfg_label#(ADDR_WIDTH, DATA_WIDTH, T1, CFG, CMP) label_t;
 
   /* declare rule table */
   typedef struct {
     bit [0:0] match;
-    bit [ADDR_WIDTH-1:0] addr;
     bit [DATA_WIDTH-1:0] mask;
-    bit [DATA_WIDTH-1:0] data;
     bit require;
     int depend; // depend on index correlation
     bit visit;
+    col_t cols[$];
   } rule_t;
 
   typdef struct {
-    rule_t rule;
-    uvm_void func; // callback func
+    rule_t rules[$];
+    uvm_object cbcls; // cbcls.callback
     string desc;
   } cfgtb_t;
 
@@ -74,6 +78,7 @@ class smtdv_cfg_label#(
   extern virtual function void ready_to_clear();
   extern virtual function void update_item(T1 iitem);
   extern virtual function void flush();
+  extern virtual function void callback();
 
 endclass : smtdv_cfg_label
 

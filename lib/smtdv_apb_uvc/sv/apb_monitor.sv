@@ -29,7 +29,7 @@ class apb_monitor#(
   typedef apb_collect_stop_signal#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) coll_stop_sin_t;
   typedef apb_collect_cover_group#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) coll_cov_grp_t;
   typedef apb_export_collected_items#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) exp_coll_items_t;
-  //typedef apb_update_notify_cfg#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR);
+  //typedef apb_update_notify_labels#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR);
   typedef smtdv_thread_handler#(mon_t) hdler_t;
 
   // as frontend threads/handler
@@ -60,18 +60,14 @@ class apb_monitor#(
 
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    th_handler = hdler_t::type_id::create("apb_monitor_handler", this);
+    th_handler = hdler_t::type_id::create("apb_monitor_handler", this); `SMTDV_RAND(th_handler)
 
-    th0 = coll_wr_item_t::type_id::create("apb_collect_write_items", this);
-    th1 = coll_rd_item_t::type_id::create("apb_collect_read_items", this);
-    th2 = coll_stop_sin_t::type_id::create("apb_collect_stop_signal", this);
+    th0 = coll_wr_item_t::type_id::create("apb_collect_write_items", this); `SMTDV_RAND(th0)
+    th1 = coll_rd_item_t::type_id::create("apb_collect_read_items", this); `SMTDV_RAND(th1)
+    th2 = coll_stop_sin_t::type_id::create("apb_collect_stop_signal", this); `SMTDV_RAND(th2)
 
-    th3 = coll_cov_grp_t::type_id::create("apb_collect_cover_group", this);
-    th4 = exp_coll_items_t::type_id::create("apb_export_collected_items", this);
-
-`ifdef SMTDV_APB_IRQ
-    th5 = rsp_irq_t::type_id::create("apb_response_irq", this);
-`endif
+    th3 = coll_cov_grp_t::type_id::create("apb_collect_cover_group", this); `SMTDV_RAND(th3)
+    th4 = exp_coll_items_t::type_id::create("apb_export_collected_items", this); `SMTDV_RAND(th4)
   endfunction : build_phase
 
   virtual function void connect_phase(uvm_phase phase);
@@ -81,14 +77,11 @@ class apb_monitor#(
     th2.register(this); th_handler.add(th2);
     th3.register(this); th_handler.add(th3);
     th4.register(this); th_handler.add(th4);
-
-`ifdef SMTDV_APB_IRQ
-    th5.register(this); th_handler.add(th5);
-`endif
   endfunction : connect_phase
 
   virtual function void end_of_elaboration_phase(uvm_phase phase);
     super.end_of_elaboration_phase(phase);
+    th_handler.register(this);
     th_handler.finalize();
   endfunction : end_of_elaboration_phase
 

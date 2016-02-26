@@ -45,8 +45,8 @@ class apb_master_driver#(
     super.build_phase(phase);
     mbox = queue_t::type_id::create("apb_master_mbox");
 
-    th_handler = hdler_t::type_id::create("apb_master_handler", this);
-    th0 = drv_items_t::type_id::create("apb_master_drive_items", this);
+    th_handler = hdler_t::type_id::create("apb_master_handler", this); `SMTDV_RAND(th_handler)
+    th0 = drv_items_t::type_id::create("apb_master_drive_items", this); `SMTDV_RAND(th0)
   endfunction : build_phase
 
   virtual function void connect_phase(uvm_phase phase);
@@ -56,6 +56,7 @@ class apb_master_driver#(
 
   virtual function void end_of_elaboration_phase(uvm_phase phase);
     super.end_of_elaboration_phase(phase);
+    th_handler.register(this);
     th_handler.finalize();
   endfunction : end_of_elaboration_phase
 

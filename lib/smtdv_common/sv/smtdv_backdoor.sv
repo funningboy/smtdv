@@ -36,20 +36,29 @@ class smtdv_backdoor#(
 
   function new (string name = "smtdv_backdoor", uvm_component parent=null);
     super.new(name);
-    if (!$cast(cmp, parent))
-      `uvm_error("SMTDV_UCAST_CMP",
-        {$psprintf("UP CAST TO SMTDV CMP FAIL")})
-
+    register(parent);
   endfunction : new
 
+  extern virtual function void register(uvm_component parent);
   extern virtual function string gen_query_cmd(string table_nm, string map, ref T1 item);
   extern virtual function void populate_item(string header, int r, int c, string data, ref T1 item);
   extern virtual function void purge_item(T1 item);
   extern virtual function void post_item(string table_nm, T1 item);
   extern virtual function void convert_2_item(string table_nm, string query, T1 item);
   extern virtual function bit compare(string table_nm, T1 item, ref T1 ritem);
+  extern virtual function void finalize();
 
 endclass : smtdv_backdoor
+
+function void smtdv_backdoor::finalize();
+endfunction : finalize
+
+function void smtdv_backdoor::register(uvm_component parent);
+  if (!$cast(cmp, parent))
+    `uvm_error("SMTDV_UCAST_CMP",
+      {$psprintf("UP CAST TO SMTDV CMP FAIL")})
+
+endfunction : register
 
 /**
  *  generate query cmd for backdoor access

@@ -2,6 +2,10 @@
 `ifndef __SMTDV_LABEL_HANDLER_SV__
 `define __SMTDV_LABEL_HANDLER_SV__
 
+typedef class smtdv_test;
+typedef class smtdv_run_label;
+typedef class smtdv_label_handler;
+
 /* a static global label handler,
 * collect label item from whole system and do itself run task
 *
@@ -12,16 +16,13 @@ class smtdv_label_handler
 
   typedef smtdv_run_label lab_t;
   typedef smtdv_label_handler hdler_t;
-  typedef uvm_component test_t;
+  typedef smtdv_test test_t;
+  typedef smtdv_queue#(lab_t) queue_t;
 
-  static bit has_finalize = FALSE;
   static test_t test;
+  static queue_t mbox;
 
-  typedef struct {
-    bit [0:0] on;
-    lab_t lab;
-  } label_t;
-  static label_t label_q[$];
+  bit has_finalize = FALSE;
 
   `uvm_object_param_utils_begin(hdler_t)
     //`uvm_field_queue_object(label_q, UVM_ALL_ON)

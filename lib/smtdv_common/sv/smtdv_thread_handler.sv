@@ -26,8 +26,8 @@ class smtdv_thread_handler#(
 
   time prestamp; // pre timestamp
   time curstamp; // cur timestamp
-  longint timewin;
-  longint sampwin;
+  rand longint timewin;
+  rand longint sampwin;
 
   typedef struct {
     bit[0:0] on;
@@ -146,9 +146,11 @@ task smtdv_thread_handler::run();
         automatic int k;
         k = i;
 
-        if (cmp.has_debug)
-          `uvm_info(get_full_name(),
-             $sformatf("start to run thread \"%s\" in run thread queue", thread_q[k].th.get_name()), UVM_FULL)
+        // debug scoreboard.cmp.cfg???
+        //if (cmp.cfg.has_debug)
+
+        `uvm_info(get_full_name(),
+           $sformatf("start to run thread \"%s\" in run thread queue", thread_q[k].th.get_name()), UVM_FULL)
 
         fork
           thread_q[k].th.run();
@@ -164,7 +166,7 @@ endtask : run
 *  start to watch threads are health or not
 */
 task smtdv_thread_handler::watch();
-  if (cfg.has_timer) begin: watch_threads
+  if (cmp.cfg.has_timer) begin: watch_threads
     prestamp = $time;
     fork
       timer();
@@ -195,5 +197,10 @@ task smtdv_thread_handler::timer();
     prestamp = curstamp;
   end
 endtask : timer
+
+
+function void smtdv_thread_handler::callback();
+endfunction : callback
+
 
 `endif // end of __SMTDV_THREAD_HANDLER_SV__

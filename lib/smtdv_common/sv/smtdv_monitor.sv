@@ -43,7 +43,7 @@ class smtdv_monitor#(
 
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    bk_handler = hdler_t::type_id::create("smtdv_monitor_handler", this);
+    bk_handler = hdler_t::type_id::create("smtdv_monitor_handler", this); `SMTDV_RAND(bk_handler)
   endfunction : build_phase
 
   virtual function void connect_phase(uvm_phase phase);
@@ -52,6 +52,7 @@ class smtdv_monitor#(
 
   virtual function void end_of_elaboration_phase(uvm_phase phase);
     super.end_of_elaboration_phase(phase);
+    bk_handler.register(this);
     bk_handler.finalize();
   endfunction : end_of_elaboration_phase
 

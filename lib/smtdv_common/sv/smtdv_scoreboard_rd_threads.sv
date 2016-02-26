@@ -43,7 +43,9 @@ class smtdv_watch_rd_lifetime #(
   typedef smtdv_queue#(T1) queue_t;
   typedef bit [ADDR_WIDTH-1:0] addr_t;
 
-  int watch_per_ns = 100;
+  rand int watch_per_ns;
+
+  constraint c_watch_per_ns { watch_per_ns inside {[100:200]}; }
 
   `uvm_object_param_utils_begin(rd_lf_t)
   `uvm_object_utils_end

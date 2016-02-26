@@ -16,11 +16,16 @@ typedef class smtdv_sequence_item;
 *
 */
 class smtdv_run_label#(
+  ADDR_WIDTH = 14,
+  DATA_WIDTH = 32
   type CMP = uvm_component
   ) extends
-    uvm_object;
+  smtdv_sequence_frame#(
+    .ADDR_WIDTH(ADDR_WIDTH),
+    .DATA_WIDTH(DATA_WIDTH)
+  );
 
-  typedef smtdv_run_label#(CMP) label_t;
+  typedef smtdv_run_label#(ADDR_WIDTH, DATA_WIDTH, CMP) label_t;
 
   bit has_finalize = FALSE;
   CMP cmp;
@@ -38,6 +43,7 @@ class smtdv_run_label#(
   extern virtual function void pre_do();
   extern virtual function void mid_do();
   extern virtual function void post_do();
+  extern virtual function
 
 endclass : smtdv_run_label
 
@@ -45,6 +51,10 @@ endclass : smtdv_run_label
 * register cmp to label
 */
 function void smtdv_run_label::register(uvm_component parent);
+  if (!$cast(cmp, parent))
+    `uvm_error("SMTDV_UCAST_CMP",
+        {$psprintf("UP CAST TO SMTDV CMP FAIL")})
+
 endfunction : register
 
 function void smtdv_run_label::pre_do();
@@ -65,6 +75,7 @@ function void smtdv_run_label::run();
       $sformatf("Starting run label ..."), UVM_HIGH)
 
   pre_do();
+  mid_do();
   post_do();
 endfunction : run
 

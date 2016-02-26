@@ -73,6 +73,7 @@ class smtdv_scoreboard#(
   // end
   T2 initor_m[NUM_OF_INITOR];   // map to initiator as master
   T3 targets_s[NUM_OF_TARGETS]; // map to all targets as slaves
+  T2 cmp;
 
   uvm_analysis_imp_initor#(T1, scb_t) initor[NUM_OF_INITOR];
   uvm_analysis_imp_target#(T1, scb_t) targets[NUM_OF_TARGETS];
@@ -120,14 +121,14 @@ function void smtdv_scoreboard::build_phase(uvm_phase phase);
   wr_pool = addr_h_t::type_id::create("smtdv_wr_pool");
   rd_pool = addr_h_t::type_id::create("smtdv_rd_pool");
 
-  bkdor_wr = bak_t::type_id::create("smtdv_mem_bkdor_wr", this);
-  bkdor_rd = bak_t::type_id::create("smtdv_mem_bkdor_rd", this);
+  bkdor_wr = bak_t::type_id::create("smtdv_mem_bkdor_wr", this); `SMTDV_RAND(bkdor_wr)
+  bkdor_rd = bak_t::type_id::create("smtdv_mem_bkdor_rd", this); `SMTDV_RAND(bkdor_rd)
 
-  th_handler = hdler_t::type_id::create("smtdv_backend_handler", this);
-  th0 = wr_lf_t::type_id::create("smtdv_watch_wr_lifetime", this);
-  th1 = rd_lf_t::type_id::create("smtdv_watch_rd_lifetime", this);
-  th2 = bk_wr_t::type_id::create("smtdv_mem_bkdor_wr_comp", this);
-  th3 = bk_rd_t::type_id::create("smtdv_mem_bkdor_rd_comp", this);
+  th_handler = hdler_t::type_id::create("smtdv_backend_handler", this); `SMTDV_RAND(th_handler)
+  th0 = wr_lf_t::type_id::create("smtdv_watch_wr_lifetime", this); `SMTDV_RAND(th0)
+  th1 = rd_lf_t::type_id::create("smtdv_watch_rd_lifetime", this); `SMTDV_RAND(th1)
+  th2 = bk_wr_t::type_id::create("smtdv_mem_bkdor_wr_comp", this); `SMTDV_RAND(th2)
+  th3 = bk_rd_t::type_id::create("smtdv_mem_bkdor_rd_comp", this); `SMTDV_RAND(th3)
 endfunction : build_phase
 
 /**
@@ -159,7 +160,17 @@ function void smtdv_scoreboard::end_of_elaboration_phase(uvm_phase phase);
           {"SLAVE AGENT MUST BE SET ", get_full_name(), {$psprintf(".targets_s[%0d]", i)}});
   end
 
+  // assign to cmp
+  cmp = initor_m[0];
+
+  th_handler.register(this);
   th_handler.finalize();
+
+  bkdor_wr.register(this);
+  bkdor_wr.finalize();
+
+  bkdor_rd.register(this);
+  bkdor_rd.finalize();
 endfunction : end_of_elaboration_phase
 
 /**

@@ -7,7 +7,7 @@ spawn = TRUE
 stdout = FALSE
 unittest = TRUE
 clean = FALSE
-simulator = ius
+simulator = mti
 test = apb_interrupt_test
 
 # add your test below

@@ -12,13 +12,12 @@
 `define __SMTDV_SEQUENCE_FRAME_SV__
 
 // bunch of sequence_items
-// ex:
-// frame0 = sequence_frame("frame0");
-// while (frame0.item) begin
-//   frame0.item = frame0.item.next;
-// end
-class smtdv_sequence_frame #(
-  ADDR_WIDTH =14,
+// frame = '{
+// };
+//
+
+class smtdv_sequence_frame#(
+  ADDR_WIDTH = 14,
   DATA_WIDTH = 32
   ) extends
   smtdv_sequence_item#(
@@ -29,21 +28,23 @@ class smtdv_sequence_frame #(
   typedef smtdv_sequence_frame#(ADDR_WIDTH, DATA_WIDTH) frame_t;
 
   typedef struct {
+    int ucid;
     int left;   // left Boundary
     int right;  // right Boundary
     int def;    // default value
     int val;    // value
-    // MSB/LSB
     string desc;
   } col_t;
 
   typedef struct {
+    int urid;
     col_t cols[$];
     bit [DATA_WIDTH-1:0] data; // unpackage data
     bit [ADDR_WIDTH-1:0] addr; // map addr
   } row_t;
 
   typedef struct {
+    int ufid;
     row_t rows[$];
     string desc; // frame description
   } dframe_t;
@@ -58,11 +59,16 @@ class smtdv_sequence_frame #(
   endfunction : new
 
 
-//  extern virtual function bit is_valid();  // it's valid sequence_frame
-//  extern virtual function void pack(); //  from sequence_item to sequence_frame
-//  extern virtual function void unpack(); // fraome sequence_frame to sequence_item
+  extern virtual function bit is_valid();  // it's valid sequence_frame
+  extern virtual function void pack(); //  from sequence_item to sequence_frame
+  extern virtual function void unpack(); // fraome sequence_frame to sequence_item
+//  extern virtual
 
 endclass : smtdv_sequence_frame
+
+function bit is_valid();
+  return TRUE;
+endfunction : is_valid
 
 `endif // end of __SMTDV_FRAME_SV__
 

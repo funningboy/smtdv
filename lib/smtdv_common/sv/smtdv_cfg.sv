@@ -24,6 +24,7 @@ class smtdv_cfg
   rand bit has_notify;   // callback to event listener when notify event is triggered
   rand bit has_error;    // support err response
   rand bit has_block;    // block trx
+  rand bit has_timer;    // turn on timer
 
   rand bit clock_req;    // Master Cfg =1, Slave Cfg =0
 
@@ -34,6 +35,7 @@ class smtdv_cfg
   constraint c_has_notify { has_notify inside {FALSE, TRUE}; }
   constraint c_has_coverage { has_coverage inside {FALSE, TRUE}; }
   constraint c_has_block { has_block inside {FALSE}; }
+  constraint c_has_timer { has_timer inside {TRUE}; }
 
   `uvm_object_param_utils_begin(cfg_t)
     `uvm_field_int(has_debug, UVM_DEFAULT)
@@ -44,6 +46,7 @@ class smtdv_cfg
     `uvm_field_int(has_notify, UVM_DEFAULT)
     `uvm_field_int(has_error, UVM_DEFAULT)
     `uvm_field_int(has_block, UVM_DEFAULT)
+    `uvm_field_int(has_timer, UVM_DEFAULT)
     `uvm_field_int(clock_req, UVM_DEFAULT)
   `uvm_object_utils_end
 
