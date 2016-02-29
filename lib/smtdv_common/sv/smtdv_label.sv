@@ -3,59 +3,45 @@
 `define __SMTDV_RUN_LABEL_SV__
 
 typedef class smtdv_component;
-typedef class smtdv_cfg;
-typedef class smtdv_sequence_item;
 
 /**
 * smtdv_run_label
-* a basic lightweight label task, that should be overridden at top main label
+* a basic lightweight recorder, that should be overridden at top main label
 * task.
-* ex: update_cfg_label, export_path_label
+* ex: force_vif_label, force_replay_label
 *
 * @class smtdv_run_label
 *
 */
-class smtdv_run_label#(
-  ADDR_WIDTH = 14,
-  DATA_WIDTH = 32
-  type CMP = uvm_component
-  ) extends
-  smtdv_sequence_frame#(
-    .ADDR_WIDTH(ADDR_WIDTH),
-    .DATA_WIDTH(DATA_WIDTH)
-  );
+class smtdv_run_label
+  extends
+  uvm_object;
 
-  typedef smtdv_run_label#(ADDR_WIDTH, DATA_WIDTH, CMP) label_t;
+  typedef smtdv_run_label label_t;
+  typedef uvm_object obj_t;
+  typedef smtdv_base_item bitem_t;
+
+  label_t pre = null;
+  label_t next = null;
 
   bit has_finalize = FALSE;
-  CMP cmp;
+  bit has_ready = FALSE;
 
   `uvm_object_param_utils_begin(label_t)
   `uvm_object_utils_end
 
   function new(string name = "smtdv_run_label", uvm_component parent=null);
     super.new(name);
-    register(parent);
   endfunction : new
 
-  extern virtual function void register(uvm_component parent);
   extern virtual function void run(); // only for function no timing info
   extern virtual function void pre_do();
   extern virtual function void mid_do();
   extern virtual function void post_do();
-  extern virtual function
+  extern virtual function void callback();
+  extern virtual function void update_item(bitem_t bitem);
 
 endclass : smtdv_run_label
-
-/*
-* register cmp to label
-*/
-function void smtdv_run_label::register(uvm_component parent);
-  if (!$cast(cmp, parent))
-    `uvm_error("SMTDV_UCAST_CMP",
-        {$psprintf("UP CAST TO SMTDV CMP FAIL")})
-
-endfunction : register
 
 function void smtdv_run_label::pre_do();
 endfunction : pre_do
@@ -68,16 +54,24 @@ endfunction : post_do
 
 /**
 *  override this when running task
-*  @return void
 */
 function void smtdv_run_label::run();
-  `uvm_info(get_full_name(),
+  if (!has_finalize)
+    `uvm_info(get_full_name(),
       $sformatf("Starting run label ..."), UVM_HIGH)
+  has_finalize = TRUE;
 
-  pre_do();
-  mid_do();
-  post_do();
+  if (has_ready) begin
+    pre_do();
+    mid_do();
+    post_do();
+  end
 endfunction : run
 
+function void smtdv_run_label::callback();
+endfunction : callback
+
+function void smtdv_run_label::update_item(bitem_t bitem);
+endfunction : update_item
 
 `endif // __SMTDV_RUN_LABEL_SV__

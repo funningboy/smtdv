@@ -17,13 +17,15 @@ class smtdv_base_item
   int targetid = -1;
   rand int prio;
 
-  smtdv_base_item next = null;
-  smtdv_base_item pre = null;
-  smtdv_base_item parent = null;
+  typedef smtdv_base_item bitem_t;
+
+  bitem_t next = null;
+  bitem_t pre = null;
+  bitem_t parent = null;
 
   constraint c_prio { prio inside {[-2:10]}; }
 
-  `uvm_object_param_utils_begin(smtdv_base_item)
+  `uvm_object_param_utils_begin(bitem_t)
     `uvm_field_int(prio, UVM_ALL_ON)
     `uvm_field_int(initorid, UVM_ALL_ON)
     `uvm_field_int(targetid, UVM_ALL_ON)
@@ -173,7 +175,8 @@ function bit[smtdv_sequence_item::DATA_WIDTH-1:0] smtdv_sequence_item::unpack_da
 endfunction : unpack_data
 
 /**
- *  compare addrs, data_beat, ...
+ *  compare addrs, data_beat, ... at the same type,
+ *  sync to base item while type of item is not match
  *  @return bool
  */
 function bit smtdv_sequence_item::compare(smtdv_sequence_item::item_t cmp);

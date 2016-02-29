@@ -1,24 +1,11 @@
 
-`ifndef __SMTDV_CFG_label_SV__
-`define __SMTDV_CFG_label_SV__
+`ifndef __SMTDV_CFG_LABEL_SV__
+`define __SMTDV_CFG_LABEL_SV__
 
 typedef class smtdv_sequence_item;
 typedef class smtdv_cfg;
 typedef class smtdv_component;
 typedef class smtdv_run_label;
-
-/*
-'cfg_lab = {
-    addr: 0x0,
-    mask: 0xf,
-    data: 0x1,
-    require: TRUE,
-    depend: -1,
-    visit: FALSE
-}
-desc:
-func: magt.cfg.force;
-*/
 
 /*
 * smtdv register updated cfg label while after setting reg cfg
@@ -28,122 +15,157 @@ func: magt.cfg.force;
 class smtdv_cfg_label#(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32,
-  type T1 = smtdv_sequence_item#(ADDR_WIDTH,DATA_WIDTH),
   type CFG = smtdv_cfg,          // need to update cfg
-  type CMP = smtdv_component     // belong to which cmp
+  type CMP = smtdv_component,     // belong to which cmp
+  type T1 = smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH)
   ) extends
-  smtdv_run_label#(
-    .ADDR_WIDTH(ADDR_WIDTH),
-    .DATA_WIDTH(DATA_WIDTH),
-    .T1(T1),
-    .CFG(CFG),
-    .CMP(CMP)
-  );
+  smtdv_run_label;
 
-  typedef smtdv_cfg_label#(ADDR_WIDTH, DATA_WIDTH, T1, CFG, CMP) label_t;
+  typedef smtdv_cfg_label#(ADDR_WIDTH, DATA_WIDTH, CFG, CMP, T1) label_t;
 
-  /* declare rule table */
   typedef struct {
-    bit [0:0] match;
-    bit [DATA_WIDTH-1:0] mask;
-    bit require;
-    int depend; // depend on index correlation
-    bit visit;
-    col_t cols[$];
-  } rule_t;
-
-  typdef struct {
-    rule_t rules[$];
-    uvm_object cbcls; // cbcls.callback
+    int ucid;
+    int left;   // left Boundary
+    int right;  // right Boundary
+    int def;    // default value
+    int val;    // value
     string desc;
+  } col_t;
+
+  typedef struct {
+    bit match;
+    bit require;
+    int depends[$]; // depend on row
+    bit visit;
+   } attr_t;
+
+  typedef struct {
+    int urid;
+    attr_t attr;
+    col_t cols[$];
+    bit [DATA_WIDTH-1:0] data; // unpackage data
+    bit [ADDR_WIDTH-1:0] addr; // map addr
+    trs_type_t trs;
+  } row_t;
+
+  typedef struct {
+    int ufid;
+    row_t rows[$];
+    CMP cmp;
+    CFG cfg;
+    string desc; // frame description
   } cfgtb_t;
 
-  T1 item;   // notify item get
-  CFG cfg;   // notify cfg put
+  typedef struct {
+    int ufid;
+  } test_t;
 
-  int idx;
+  test_t test;
+
+  typedef smtdv_base_item bitem_t;
+
+  CFG cfg;
+  CMP cmp;
+  T1 item;
+
   cfgtb_t cfgtb;
+  row_t row;
+  col_t col;
+
+  bit has_pass;
 
   `uvm_object_param_utils_begin(label_t)
   `uvm_object_utils_end
 
-  function new(string name = "smtdv_label", uvm_component parent=null);
+  function new(string name = "smtdv_cfg_label", uvm_component parent=null);
     super.new(name, parent);
+    register(parent);
   endfunction : new
 
+  extern virtual function void register(uvm_component parent);
   extern virtual function void pre_do();
-  extern virtual function void run();
+  extern virtual function void mid_do();
   extern virtual function void post_do();
-  extern virtual function bit ready_to_update();
-  extern virtual function void ready_to_clear();
-  extern virtual function void update_item(T1 iitem);
-  extern virtual function void flush();
-  extern virtual function void callback();
+  extern virtual function void update_item(bitem_t bitem);
 
 endclass : smtdv_cfg_label
+
+function void smtdv_cfg_label::register(uvm_component parent);
+  if (!$cast(cmp, parent))
+    `uvm_error("SMTDV_UCAST_CMP",
+        {$psprintf("UP CAST TO SMTDV CMP FAIL")})
+
+endfunction : register
 
 /*
 *  that should be called at monitor thread when latest even trigger
 */
-function void smtdv_cfg_label::update_item(smtdv_cfg_label::T1 iitem);
-  item = iitem;
+function void smtdv_cfg_label::update_item(bitem_t bitem);
+  has_ready = FALSE;
+  if ($cast(item, bitem) && cmp!=null && cfg!=null)
+    has_ready = TRUE;
+
 endfunction : update_item
 
-
 /*
-* check no circular dependency at lookup table
+* update lookup table while item has updated
 */
 function void smtdv_cfg_label::pre_do();
-  while (lookup.next(idx)) begin
-    sorted[idx] = lookup[idx].rule.dependency;
-  end
-  sorted.sort
-endfunction : pre_do
+  int dep;
+  bit go = TRUE;
 
-/*
-* visit lookup table and update while item updated
-*/
-function void smtdv_cfg_label::run();
-  while (lookup.next(idx)) begin
-    foreach(item.addrs[i]) begin
-      if (item.addrs[i] == lookup[idx].rule.addr) begin
-        // if match, compare data and expected value is eq
-        if (lookup[idx].rule.match) begin
-          if (item.unpack_data(i) & lookup[idx].rule.mask == lookup[idx].rule.data) begin
-            lookup[idx].rule.visit = TRUE;
+  foreach(cfgtb.rows[i]) begin
+    row = cfgtb.rows[i];
+
+    if (row.trs != item.trs_t)
+      continue;
+
+    foreach(item.addrs[k]) begin
+      if (item.addrs[k] == row.addr) begin
+        go = TRUE;
+
+        foreach(row.attr.depends[d]) begin
+          dep = row.attr.depends[d];
+          if (dep inside {[0:cfgtb.rows.size()]})
+            if (cfgtb.rows[dep].attr.visit == FALSE)
+              go = FALSE;
+        end
+
+        if (go) begin
+          if (row.attr.match) begin
+            if (item.data_beat[k] == row.data)
+              row.attr.visit = TRUE;
+          end
+          else begin
+            row.data = item.data_beat[k];
+            row.attr.visit = TRUE;
           end
         end
-        //collect item data
-        else begin
-          lookup[idx].rule.data = item.unpack_data(i) & lookup[idx].rule.mask;
-          lookup[idx].rule.visit = TRUE;
-        end
+
       end
     end
+
   end
-endfunction : run
+endfunction : pre_do
 
 
-function bit smtdv_cfg_label::ready_to_update();
-  while (lookup.next(idx)) begin
-    if (lookup[idx].rule.visit == FALSE && lookup[idx].rule.require == TRUE) begin
-      return FALSE;
-    end
+function void smtdv_cfg_label::mid_do();
+  has_pass = TRUE;
+
+  foreach(cfgtb.rows[i]) begin
+    row = cfgtb.rows[i];
+    if (row.attr.visit == FALSE)
+      has_pass = FALSE;
+
   end
-  return TRUE;
-endfunction : ready_to_update
+endfunction : mid_do
 
 
-function void smtdv_cfg_label::ready_to_clear();
-  while (lookup.next(idx)) begin
-    lookup[idx].rule.visit = FALSE;
-  end
-endfunction : ready_to_clear
+function void smtdv_cfg_label::post_do();
+  if (has_pass)
+    callback();
+
+endfunction : post_do
 
 
-function void smtdv_cfg_label::flush();
-  ready_to_clear();
-endfunction : flush
-
-
-`endif // __SMTDV_CFG_label_SV__
+`endif // __SMTDV_CFG_LABEL_SV__

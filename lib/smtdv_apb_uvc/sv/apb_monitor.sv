@@ -29,7 +29,7 @@ class apb_monitor#(
   typedef apb_collect_stop_signal#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) coll_stop_sin_t;
   typedef apb_collect_cover_group#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) coll_cov_grp_t;
   typedef apb_export_collected_items#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) exp_coll_items_t;
-  //typedef apb_update_notify_labels#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR);
+  typedef apb_update_notify_labels#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) updt_note_lab_t;
   typedef smtdv_thread_handler#(mon_t) hdler_t;
 
   // as frontend threads/handler
@@ -43,6 +43,7 @@ class apb_monitor#(
   coll_wr_item_t th0;
   coll_rd_item_t th1;
   coll_stop_sin_t th2;
+  updt_note_lab_t th5;
 
   // as frontend system services, user can override these at top level.
   coll_cov_grp_t th3;
@@ -60,14 +61,23 @@ class apb_monitor#(
 
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    th_handler = hdler_t::type_id::create("apb_monitor_handler", this); `SMTDV_RAND(th_handler)
+    th_handler = hdler_t::type_id::create("apb_monitor_handler", this);
 
-    th0 = coll_wr_item_t::type_id::create("apb_collect_write_items", this); `SMTDV_RAND(th0)
-    th1 = coll_rd_item_t::type_id::create("apb_collect_read_items", this); `SMTDV_RAND(th1)
-    th2 = coll_stop_sin_t::type_id::create("apb_collect_stop_signal", this); `SMTDV_RAND(th2)
+    th0 = coll_wr_item_t::type_id::create("apb_collect_write_items", this);
+    th1 = coll_rd_item_t::type_id::create("apb_collect_read_items", this);
+    th2 = coll_stop_sin_t::type_id::create("apb_collect_stop_signal", this);
 
-    th3 = coll_cov_grp_t::type_id::create("apb_collect_cover_group", this); `SMTDV_RAND(th3)
-    th4 = exp_coll_items_t::type_id::create("apb_export_collected_items", this); `SMTDV_RAND(th4)
+    th3 = coll_cov_grp_t::type_id::create("apb_collect_cover_group", this);
+    th4 = exp_coll_items_t::type_id::create("apb_export_collected_items", this);
+    th5 = updt_note_lab_t::type_id::create("apb_update_notify_labels", this);
+
+    `SMTDV_RAND(th_handler)
+    `SMTDV_RAND(th0)
+    `SMTDV_RAND(th1)
+    `SMTDV_RAND(th2)
+    `SMTDV_RAND(th3)
+    `SMTDV_RAND(th4)
+    `SMTDV_RAND(th5)
   endfunction : build_phase
 
   virtual function void connect_phase(uvm_phase phase);
@@ -77,6 +87,7 @@ class apb_monitor#(
     th2.register(this); th_handler.add(th2);
     th3.register(this); th_handler.add(th3);
     th4.register(this); th_handler.add(th4);
+    th5.register(this); th_handler.add(th5);
   endfunction : connect_phase
 
   virtual function void end_of_elaboration_phase(uvm_phase phase);

@@ -121,14 +121,22 @@ function void smtdv_scoreboard::build_phase(uvm_phase phase);
   wr_pool = addr_h_t::type_id::create("smtdv_wr_pool");
   rd_pool = addr_h_t::type_id::create("smtdv_rd_pool");
 
-  bkdor_wr = bak_t::type_id::create("smtdv_mem_bkdor_wr", this); `SMTDV_RAND(bkdor_wr)
-  bkdor_rd = bak_t::type_id::create("smtdv_mem_bkdor_rd", this); `SMTDV_RAND(bkdor_rd)
+  bkdor_wr = bak_t::type_id::create("smtdv_mem_bkdor_wr", this);
+  bkdor_rd = bak_t::type_id::create("smtdv_mem_bkdor_rd", this);
 
-  th_handler = hdler_t::type_id::create("smtdv_backend_handler", this); `SMTDV_RAND(th_handler)
-  th0 = wr_lf_t::type_id::create("smtdv_watch_wr_lifetime", this); `SMTDV_RAND(th0)
-  th1 = rd_lf_t::type_id::create("smtdv_watch_rd_lifetime", this); `SMTDV_RAND(th1)
-  th2 = bk_wr_t::type_id::create("smtdv_mem_bkdor_wr_comp", this); `SMTDV_RAND(th2)
-  th3 = bk_rd_t::type_id::create("smtdv_mem_bkdor_rd_comp", this); `SMTDV_RAND(th3)
+  th_handler = hdler_t::type_id::create("smtdv_backend_handler", this);
+  th0 = wr_lf_t::type_id::create("smtdv_watch_wr_lifetime", this);
+  th1 = rd_lf_t::type_id::create("smtdv_watch_rd_lifetime", this);
+  th2 = bk_wr_t::type_id::create("smtdv_mem_bkdor_wr_comp", this);
+  th3 = bk_rd_t::type_id::create("smtdv_mem_bkdor_rd_comp", this);
+
+  `SMTDV_RAND(bkdor_wr)
+  `SMTDV_RAND(bkdor_rd)
+  `SMTDV_RAND(th_handler)
+  `SMTDV_RAND(th0)
+  `SMTDV_RAND(th1)
+  `SMTDV_RAND(th2)
+  `SMTDV_RAND(th3)
 endfunction : build_phase
 
 /**

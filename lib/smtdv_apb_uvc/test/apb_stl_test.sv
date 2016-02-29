@@ -1,7 +1,6 @@
 `ifndef __APB_STL_TEST_SV__
 `define __APB_STL_TEST_SV__
 
-//IUS doesn't support it
 //typedef class apb_base_test;
 //typedef class apb_master_stl_seq;
 

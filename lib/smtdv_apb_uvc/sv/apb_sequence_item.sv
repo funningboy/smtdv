@@ -11,11 +11,11 @@
 class apb_sequence_item #(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32
-) extends
-    smtdv_sequence_item #(
-      ADDR_WIDTH,
-      DATA_WIDTH
-    );
+  ) extends
+  smtdv_sequence_item #(
+    ADDR_WIDTH,
+    DATA_WIDTH
+  );
 
   typedef apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
 
@@ -43,11 +43,9 @@ class apb_sequence_item #(
 
   `uvm_object_param_utils_begin(item_t)
     `uvm_field_enum(trx_rsp_t, rsp, UVM_ALL_ON)
-    `ifdef APB_DEBUG
-      `uvm_field_int(psel_L2H, UVM_DEFAULT)
-      `uvm_field_int(penable_L2H, UVM_DEFAULT)
-      `uvm_field_int(pready_L2H, UVM_DEFAULT)
-    `endif
+    `uvm_field_int(psel_L2H, UVM_DEFAULT)
+    `uvm_field_int(penable_L2H, UVM_DEFAULT)
+    `uvm_field_int(pready_L2H, UVM_DEFAULT)
   `uvm_object_utils_end
 
   function new (string name = "apb_sequence_item");

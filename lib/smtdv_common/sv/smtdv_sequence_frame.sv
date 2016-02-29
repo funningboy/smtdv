@@ -59,16 +59,12 @@ class smtdv_sequence_frame#(
   endfunction : new
 
 
-  extern virtual function bit is_valid();  // it's valid sequence_frame
-  extern virtual function void pack(); //  from sequence_item to sequence_frame
-  extern virtual function void unpack(); // fraome sequence_frame to sequence_item
+//  extern virtual function bit is_valid();  // it's valid sequence_frame
+//  extern virtual function void pack(); //  from sequence_item to sequence_frame
+//  extern virtual function void unpack(); // fraome sequence_frame to sequence_item
 //  extern virtual
 
 endclass : smtdv_sequence_frame
-
-function bit is_valid();
-  return TRUE;
-endfunction : is_valid
 
 `endif // end of __SMTDV_FRAME_SV__
 

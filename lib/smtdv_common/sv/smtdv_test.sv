@@ -35,6 +35,7 @@ class smtdv_test
 
   extern virtual function void build_phase(uvm_phase phase);
   extern virtual task run_phase(uvm_phase phase);
+  extern virtual function void end_of_elaboration_phase(uvm_phase phase);
 
 endclass : smtdv_test
 
@@ -73,10 +74,14 @@ function void smtdv_test::build_phase(uvm_phase phase);
   print_mask= smtdv_print_mask_t'(no_filename & no_line & no_time & no_name & no_id);
 
   rpt_svr.set_display_mode(print_mask);
+
+  smtdv_label_handler::register(this);
 endfunction : build_phase
 
 
 task smtdv_test::run_phase(uvm_phase phase);
+  super.run_phase(phase);
+
   fork
     super.run_phase(phase);
     tout_cb.m_run_ph= phase;
@@ -85,6 +90,14 @@ task smtdv_test::run_phase(uvm_phase phase);
     uvm_report_object::set_report_max_quit_count(2);  // set max error quit counts
     phase.phase_done.set_drain_time(this, 1000);      // set the extend $finish time when the all trxs are done
   join_none
+
+  smtdv_label_handler::run();
 endtask : run_phase
+
+function void smtdv_test::end_of_elaboration_phase(uvm_phase phase);
+  super.end_of_elaboration_phase(phase);
+
+  smtdv_label_handler::finalize();
+endfunction : end_of_elaboration_phase
 
 `endif // end of __SMTDV_TEST_SV__

@@ -10,6 +10,7 @@
     if ($cast(``LIB``_seq_``ADDR_WIDTH``X``DATA_WIDTH``, ``SEQ``)) \
         ``LIB``_seq_``ADDR_WIDTH``X``DATA_WIDTH``.set(``NODE``);
 
+//TODO:
 //`define SMTDV_MAGIC_SEQR
 //`define SMTDV_MAGIC_AGENT
 //`define SMTDV_MAGIC_MONITOR

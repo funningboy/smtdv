@@ -177,7 +177,7 @@ class apb_export_collected_items#(
 endclass : apb_export_collected_items
 
 
-class apb_update_notify_cfgs#(
+class apb_update_notify_labels#(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32,
   type CFG = apb_slave_cfg,
@@ -190,17 +190,16 @@ class apb_update_notify_cfgs#(
       .SEQR(SEQR)
   );
 
-  typedef apb_update_notify_cfgs#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) note_cfgs_t;
-  typedef smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH) bitem_t;
+  typedef apb_update_notify_labels#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) note_labs_t;
   typedef apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef smtdv_base_item bitem_t;
 
-  // cover to basic item
   bitem_t bitem;
 
-  `uvm_object_param_utils_begin(note_cfgs_t)
+  `uvm_object_param_utils_begin(note_labs_t)
   `uvm_object_utils_end
 
-  function new(string name = "apb_update_notify_cfgs", uvm_component parent=null);
+  function new(string name = "apb_update_notify_labels", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 
@@ -211,19 +210,20 @@ class apb_update_notify_cfgs#(
 
       if (this.cmp.cfg.has_debug)
         update_timestamp();
+
     end
   endtask : run
 
-  //
   virtual task populate_item(item_t item);
     if (!$cast(bitem, item))
       `uvm_error("SMTDV_DCAST_SEQ_ITEM",
          {$psprintf("DOWN CAST TO SMTDV SEQ_ITEM FAIL")})
 
-  // smtdv_label_handler::update_item(item);
+    smtdv_label_handler::push_item(bitem);
+
   endtask : populate_item
 
-endclass : apb_update_notify_cfgs
+endclass : apb_update_notify_labels
 
 
 class apb_collect_stop_signal#(
@@ -241,8 +241,10 @@ class apb_collect_stop_signal#(
 
   typedef apb_collect_stop_signal#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) stop_t;
 
-  int stop_cnt = 100;
+  rand int stop_cnt;
   int cnt = 0;
+
+  constraint c_stop_cnt { stop_cnt inside {[100:200]}; }
 
   `uvm_object_param_utils_begin(stop_t)
     `uvm_field_int(stop_cnt, UVM_DEFAULT)

@@ -74,7 +74,7 @@ task smtdv_watch_rd_lifetime::run();
       tque = this.cmp.rd_pool.get(taddr[i]);
 
       for(int j=0; j<tque.size(); j++) begin
-        item = tque.get(j);
+        tque.async_get(j, 0, item);
 
         if (item.life_time<0)
           `uvm_error("SMTDV_SB_LIFE_TIMEOUT",

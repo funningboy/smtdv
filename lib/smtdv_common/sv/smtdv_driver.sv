@@ -47,8 +47,11 @@ class smtdv_driver#(
   virtual function void build_phase(uvm_phase phase);
     super.build_phase(phase);
     // build backend threads
-    bk_handler = hdler_t::type_id::create("smtdv_backend_handler", this); `SMTDV_RAND(bk_handler)
-    b0 = force_t::type_id::create("smtdv_force_vif", this); `SMTDV_RAND(b0)
+    bk_handler = hdler_t::type_id::create("smtdv_backend_handler", this);
+    b0 = force_t::type_id::create("smtdv_force_vif", this);
+
+    `SMTDV_RAND(bk_handler)
+    `SMTDV_RAND(b0)
   endfunction : build_phase
 
   virtual function void connect_phase(uvm_phase phase);

@@ -1,20 +1,12 @@
+`ifndef __SMTDV_FORCE_RSP_ERR_LABEL_SV__
+`define __SMTDV_FORCE_RSP_ERR_LABEL_SV__
 
-`ifndef __SMTDV_FORCE_REPLAY_LABEL_SV__
-`define __SMTDV_FORCE_REPLAY_LABEL_SV__
+typedef class smtdv_cfg;
+typedef class smtdv_component;
+typedef class smtdv_sequence_item;
+typedef class smtdv_cfg_label;
 
-//ph0:  wait DUT is working into idle mode
-//ph1:  using force vif to control DUT and switch to UVC ctrl
-//ph2:  block (stop) UVC, wait all settings are already
-//ph3:  flush all sequences at sequencer
-//ph4:  set preload sequence ID to sequencer
-//ph5:  start to preload
-//ph6:  interrupt while sequence is completed
-//ph7:  release UVC ctrl to original DUT
-
-/*
-* using FW ctl to replaying img/seq to DUT
-*/
-class smtdv_force_replay_label#(
+class smtdv_force_rsp_err_label#(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32,
   type CFG = smtdv_cfg,
@@ -38,25 +30,26 @@ class smtdv_force_replay_label#(
   } meta_t;
   meta_t meta;
 
-  typedef smtdv_force_replay_label#(ADDR_WIDTH, DATA_WIDTH, CFG, CMP, T1) label_t;
+
+  typedef smtdv_force_rsp_err_label#(ADDR_WIDTH, DATA_WIDTH, CFG, CMP, T1) label_t;
 
   `uvm_object_param_utils_begin(label_t)
   `uvm_object_utils_end
 
-  function new(string name = "smtdv_force_replay_label", uvm_component parent=null);
+  function new(string name = "smtdv_force_rsp_err_label", uvm_component parent=null);
     super.new(name, parent);
     register(parent);
 
     cfgtb = '{
         ufid: 0,
-        desc: {$psprintf("force set cfg.stlid as %d", meta.data)},
+        desc: {$psprintf("force set cfg.has_error %d", meta.data)},
         cmp: cmp,
         cfg: cfg,
         rows: '{
             '{
                 urid: 0,
                 addr: meta.addr,
-                data: meta.data,
+                data: meata.data,
                 trs: meta.trs,
                 attr: '{
                     match: TRUE,
@@ -67,11 +60,11 @@ class smtdv_force_replay_label#(
                 cols: '{
                     '{
                         ucid: 0,
-                        left: 5,
-                        right: 3,
+                        left: 2,
+                        right: 2,
                         def: 0,
-                        val: 0,
-                        desc: "stl id, default 0"
+                        val: 1,
+                        desc: "force err rsp back, do as UVC behavior"
                     }
                 }
             }
@@ -90,29 +83,31 @@ class smtdv_force_replay_label#(
     };
   endfunction : set
 
+
   virtual function void callback();
     if (cfgtb.rows.size() != 1)
-      `uvm_error("SMTDV_FORCE_REPLAY_LABEL",
+      `uvm_error("SMTDV_FORCE_RSP_ERR_LABEL",
           {$psprintf("cfg.rows.size() == 1 FAIL")})
 
     row = cfgtb.rows[0];
     if (row.cols.size() != 1)
-      `uvm_error("SMTDV_FORCE_REPLAY_LABEL",
+      `uvm_error("SMTDV_FORCE_RSP_ERR_LABEL",
           {$psprintf("cfg.rows[0].cols.size() == 1 FAIL")})
 
     col = row.cols[0];
 
-    if (col.left!=5 && col.right!=3)
+    if (col.left!=2 && col.right!=2)
       `uvm_error("SMTDV_FORCE_RSP_ERR_LABEL",
-          {$psprintf("cfg.rows[0].cols[0] range must be [5:3] FAIL")})
+          {$psprintf("cfg.rows[0].cols[0] range must be [2:2] FAIL")})
 
     if (row.trs == WR)
-      cfgtb.cfg.stlid = row.data[col.left-:3];
+      cfgtb.cfg.has_force = row.data[col.left-:1];
     else
-      row.data[col.left-:3] = cfgtb.cfg.stlid;
+      row.data[col.left-:1] = cfgtb.cfg.has_force;
 
   endfunction : callback
 
-endclass : smtdv_force_replay_label
+endclass : smtdv_force_rsp_err_label
 
-`endif // end of __smtdv_FORCE_replay_SV__
+`endif // __SMTDV_FORCE_RSP_ERR_LABEL_SV__
+

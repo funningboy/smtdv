@@ -46,8 +46,11 @@ class apb_slave_driver#(
     super.build_phase(phase);
     mbox = queue_t::type_id::create("apb_slave_mbox");
 
-    th_handler = hdler_t::type_id::create("apb_slave_handler", this); `SMTDV_RAND(th_handler)
-    th0 = drv_items_t::type_id::create("apb_slave_drive_items", this); `SMTDV_RAND(th0)
+    th_handler = hdler_t::type_id::create("apb_slave_handler", this);
+    th0 = drv_items_t::type_id::create("apb_slave_drive_items", this);
+
+    `SMTDV_RAND(th_handler)
+    `SMTDV_RAND(th0)
   endfunction : build_phase
 
   virtual function void connect_phase(uvm_phase phase);

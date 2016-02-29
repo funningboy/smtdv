@@ -83,7 +83,9 @@ endfunction: post_do
  *  override this when running task
  */
 task smtdv_run_thread::run();
-  `uvm_info(get_full_name(), $sformatf("Starting run thread ..."), UVM_HIGH)
+  `uvm_info(get_full_name(),
+      $sformatf("Starting run thread ..."), UVM_HIGH)
+
   pre_do();
   mid_do();
   post_do();
