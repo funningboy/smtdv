@@ -194,6 +194,7 @@ class apb_update_notify_labels#(
   typedef apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
   typedef smtdv_base_item bitem_t;
 
+  item_t item;
   bitem_t bitem;
 
   `uvm_object_param_utils_begin(note_labs_t)

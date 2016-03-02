@@ -38,6 +38,7 @@ class smtdv_run_label
   extern virtual function void pre_do();
   extern virtual function void mid_do();
   extern virtual function void post_do();
+  extern virtual function void flush();
   extern virtual function void callback();
   extern virtual function void update_item(bitem_t bitem);
 
@@ -59,6 +60,7 @@ function void smtdv_run_label::run();
   if (!has_finalize)
     `uvm_info(get_full_name(),
       $sformatf("Starting run label ..."), UVM_HIGH)
+
   has_finalize = TRUE;
 
   if (has_ready) begin
@@ -73,5 +75,8 @@ endfunction : callback
 
 function void smtdv_run_label::update_item(bitem_t bitem);
 endfunction : update_item
+
+function void smtdv_run_label::flush();
+endfunction : flush
 
 `endif // __SMTDV_RUN_LABEL_SV__

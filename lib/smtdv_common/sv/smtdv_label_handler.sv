@@ -101,7 +101,8 @@ task smtdv_label_handler::dec_labels();
       //  `uvm_info(get_full_name(),
       //     $sformatf("start to run label \"%s\" in run label queue", label_q[i].lab.get_name()), UVM_FULL)
 
-      label_q[i].lab.has_finalize = TRUE;
+      // call by itself
+      //label_q[i].lab.has_finalize = TRUE;
     end
   end
 endtask : dec_labels

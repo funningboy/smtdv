@@ -10,6 +10,7 @@
        has_export == TRUE;   \
        has_error == TRUE;    \
        has_debug == TRUE;    \
+       has_notify == TRUE;   \
    }) \
    \
    if (!$cast(slv_cfgs[ID], ``CFG``)) \
@@ -43,6 +44,7 @@
         has_export == TRUE;   \
         has_retry == TRUE;    \
         has_debug == TRUE;    \
+        has_notify == TRUE;   \
     }) \
     \
     if (!$cast(mst_cfgs[ID], ``CFG``)) \

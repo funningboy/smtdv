@@ -37,6 +37,7 @@ class smtdv_cfg_label#(
     bit require;
     int depends[$]; // depend on row
     bit visit;
+    bit clear;
    } attr_t;
 
   typedef struct {
@@ -64,8 +65,6 @@ class smtdv_cfg_label#(
 
   typedef smtdv_base_item bitem_t;
 
-  CFG cfg;
-  CMP cmp;
   T1 item;
 
   cfgtb_t cfgtb;
@@ -79,30 +78,24 @@ class smtdv_cfg_label#(
 
   function new(string name = "smtdv_cfg_label", uvm_component parent=null);
     super.new(name, parent);
-    register(parent);
   endfunction : new
 
-  extern virtual function void register(uvm_component parent);
   extern virtual function void pre_do();
   extern virtual function void mid_do();
   extern virtual function void post_do();
+  extern virtual function void flush();
   extern virtual function void update_item(bitem_t bitem);
 
 endclass : smtdv_cfg_label
-
-function void smtdv_cfg_label::register(uvm_component parent);
-  if (!$cast(cmp, parent))
-    `uvm_error("SMTDV_UCAST_CMP",
-        {$psprintf("UP CAST TO SMTDV CMP FAIL")})
-
-endfunction : register
 
 /*
 *  that should be called at monitor thread when latest even trigger
 */
 function void smtdv_cfg_label::update_item(bitem_t bitem);
+  super.update_item(bitem);
+
   has_ready = FALSE;
-  if ($cast(item, bitem) && cmp!=null && cfg!=null)
+  if ($cast(item, bitem))
     has_ready = TRUE;
 
 endfunction : update_item
@@ -114,6 +107,8 @@ function void smtdv_cfg_label::pre_do();
   int dep;
   bit go = TRUE;
 
+  super.pre_do();
+
   foreach(cfgtb.rows[i]) begin
     row = cfgtb.rows[i];
 
@@ -121,6 +116,7 @@ function void smtdv_cfg_label::pre_do();
       continue;
 
     foreach(item.addrs[k]) begin
+
       if (item.addrs[k] == row.addr) begin
         go = TRUE;
 
@@ -137,7 +133,7 @@ function void smtdv_cfg_label::pre_do();
               row.attr.visit = TRUE;
           end
           else begin
-            row.data = item.data_beat[k];
+            row.data = item.unpack_data(k);
             row.attr.visit = TRUE;
           end
         end
@@ -145,11 +141,13 @@ function void smtdv_cfg_label::pre_do();
       end
     end
 
+   cfgtb.rows[i] = row;
   end
 endfunction : pre_do
 
 
 function void smtdv_cfg_label::mid_do();
+  super.mid_do();
   has_pass = TRUE;
 
   foreach(cfgtb.rows[i]) begin
@@ -162,10 +160,25 @@ endfunction : mid_do
 
 
 function void smtdv_cfg_label::post_do();
-  if (has_pass)
-    callback();
+  super.post_do();
 
+  if (has_pass) begin
+    callback();
+    flush();
+  end
 endfunction : post_do
 
+
+function void smtdv_cfg_label::flush();
+  super.flush();
+
+  foreach(cfgtb.rows[i]) begin
+    row = cfgtb.rows[i];
+    if (row.attr.clear)
+      row.attr.visit = FALSE;
+
+    cfgtb.rows[i] = row;
+  end
+endfunction : flush
 
 `endif // __SMTDV_CFG_LABEL_SV__

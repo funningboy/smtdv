@@ -45,6 +45,6 @@
 `include "smtdv_runtime_phases.svh"
 `include "smtdv_report_server.sv"
 `include "smtdv_reg_adapter.sv"
-`include "smtdv_system_table.svh"
+//`include "smtdv_system_table.sv"
 
 `endif

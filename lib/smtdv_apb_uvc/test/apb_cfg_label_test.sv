@@ -79,7 +79,12 @@ class apb_cfg_label_test
 
 
   virtual function void check_phase(uvm_phase phase);
-    //cmp_envs[0].mst_agts[0].cfg.stlid;
+    super.check_phase(phase);
+
+    if (cmp_envs[0].mst_agts[0].cfg.stlid != 7)
+      `uvm_error("SMTDV_CFG_LABEL",
+         {$psprintf("REPLAY CFG LABEL UPDATED FAIL")})
+
   endfunction : check_phase
 
 endclass : apb_cfg_label_test

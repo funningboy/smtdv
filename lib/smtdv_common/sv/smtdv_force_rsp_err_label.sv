@@ -28,8 +28,6 @@ class smtdv_force_rsp_err_label#(
     CMP cmp;
     CFG cfg;
   } meta_t;
-  meta_t meta;
-
 
   typedef smtdv_force_rsp_err_label#(ADDR_WIDTH, DATA_WIDTH, CFG, CMP, T1) label_t;
 
@@ -38,22 +36,24 @@ class smtdv_force_rsp_err_label#(
 
   function new(string name = "smtdv_force_rsp_err_label", uvm_component parent=null);
     super.new(name, parent);
-    register(parent);
+  endfunction : new
 
+  virtual function void set(meta_t meta);
     cfgtb = '{
         ufid: 0,
         desc: {$psprintf("force set cfg.has_error %d", meta.data)},
-        cmp: cmp,
-        cfg: cfg,
+        cmp: meta.cmp,
+        cfg: meta.cfg,
         rows: '{
             '{
                 urid: 0,
                 addr: meta.addr,
-                data: meata.data,
+                data: meta.data,
                 trs: meta.trs,
                 attr: '{
-                    match: TRUE,
+                    match: FALSE,
                     require: TRUE,
+                    clear: TRUE,
                     depends: '{-1},
                     visit: FALSE
                 },
@@ -70,21 +70,12 @@ class smtdv_force_rsp_err_label#(
             }
         }
     };
-
-  endfunction : new
-
-  virtual function void set(meta_t data);
-    meta = '{
-        trs: data.trs,
-        addr: data.addr,
-        data: data.data,
-        cmp: data.cmp,
-        cfg: data.cfg
-    };
   endfunction : set
 
 
   virtual function void callback();
+    super.callback();
+
     if (cfgtb.rows.size() != 1)
       `uvm_error("SMTDV_FORCE_RSP_ERR_LABEL",
           {$psprintf("cfg.rows.size() == 1 FAIL")})

@@ -32,21 +32,20 @@ class smtdv_force_vif_label#(
     CMP cmp;
     CFG cfg;
   } meta_t;
-  meta_t meta;
-
 
   `uvm_object_param_utils_begin(label_t)
   `uvm_object_utils_end
 
   function new(string name = "smtdv_force_vif_label", uvm_component parent=null);
     super.new(name, parent);
-    register(parent);
+  endfunction : new
 
+  virtual function void set(meta_t meta);
     cfgtb = '{
         ufid: 0,
         desc: {$psprintf("force set cfg.has_force as %d", meta.data)},
-        cmp: cmp,
-        cfg: cfg,
+        cmp: meta.cmp,
+        cfg: meta.cfg,
         rows: '{
             '{
                 urid: 0,
@@ -54,8 +53,9 @@ class smtdv_force_vif_label#(
                 data: meta.data,
                 trs: meta.trs,
                 attr: '{
-                    match: TRUE,
+                    match: FALSE,
                     require: TRUE,
+                    clear: TRUE,
                     depends: '{-1},
                     visit: FALSE
                 },
@@ -72,20 +72,10 @@ class smtdv_force_vif_label#(
             }
         }
     };
-
-  endfunction : new
-
-  virtual function void set(meta_t data);
-    meta = '{
-        trs: data.trs,
-        addr: data.addr,
-        data: data.data,
-        cmp: data.cmp,
-        cfg: data.cfg
-    };
   endfunction : set
 
   virtual function void callback();
+    super.callback();
 
     if (cfgtb.rows.size() != 1)
       `uvm_error("SMTDV_FORCE_VIF_LABEL",

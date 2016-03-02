@@ -7,8 +7,8 @@ spawn = TRUE
 stdout = FALSE
 unittest = TRUE
 clean = FALSE
-simulator = ius
-test = apb_cfg_label_test
+simulator = mti
+test = apb_rand_test
 
 # add your test below
 tests =
@@ -21,6 +21,7 @@ tests =
   apb_polling_test
   apb_interrupt_test
   apb_cfg_label_test
+  apb_rand_test
 
 # TODO
 #  apb_uvm_reg_test
