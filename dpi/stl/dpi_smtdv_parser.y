@@ -21,6 +21,13 @@ void* global_trx; /* smtdv_trx */
 extern "C" int yylex();
 extern "C" int yyparse();
 extern "C" FILE *yyin;
+extern "C" int yywrap();
+%}
+
+%{
+int yywrap(void) {
+    return 1;
+}
 %}
 
 %{
