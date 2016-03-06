@@ -338,12 +338,27 @@ class ahb_collect_addr_items#(
   endtask : listen_nonseq
 
   virtual task listen_OKAY(item_t item);
-    while (item.addr_idx <= item.bst_len) begin
-      @(negedge this.cmp.vif.clk iff (this.cmp.vif.hready && this.cmp.vif.hresp == OKAY));
+    // nonseq rsp
+    @(negedge this.cmp.vif.clk iff (this.cmp.vif.hgrant && this.cmp.vif.hresp == OKAY && this.cmp.vif.hready));
+    item.addr_idx++;
 
-      if (this.cmp.vif.htrans == SEQ) begin populate_seq_item(item); end
-      else if (this.cmp.vif.htrans == BUSY) begin populate_busy_item(item); end
-      else if (this.cmp.vif.htrans == IDLE) begin popilate_idle_item(item); end
+    while (1) begin
+      if (item.addr_idx > item.bst_len) break;
+
+      if (this.cmp.vif.htrans == SEQ) begin
+        populate_seq_item(item);
+        @(negedge this.cmp.vif.clk iff (this.cmp.vif.hready && this.cmp.vif.hresp == OKAY));
+        item.addr_idx++;
+      end
+      else if (this.cmp.vif.htrans == BUSY) begin
+        populate_busy_item(item);
+        @(negedge this.cmp.vif.clk iff (this.cmp.vif.hready && this.cmp.vif.hresp == OKAY));
+      end
+      else if (this.cmp.vif.htrans == IDLE) begin
+        popilate_idle_item(item);
+        @(negedge this.cmp.vif.clk iff (this.cmp.vif.hready && this.cmp.vif.hresp == OKAY));
+      end
+
     end
     populate_okay_item(item);
     populate_complete_item(item);
@@ -429,13 +444,11 @@ class ahb_collect_addr_items#(
     item.hmastlock = this.cmp.vif.hmastlock;
     item.bg_cyc = this.cmp.vif.cyc;
     item.bg_time = $time;
-    item.addr_idx++;
     item.addrs.push_back(this.cmp.vif.haddr);
     void'(this.cmp.begin_tr(item, this.cmp.get_full_name()));
   endtask : populate_nonseq_item
 
   virtual task populate_seq_item(item_t item);
-    item.addr_idx++;
     item.addrs.push_back(this.cmp.vif.haddr);
   endtask : populate_seq_item
 
@@ -522,7 +535,9 @@ class ahb_collect_data_items#(
   endtask : listen_ERROR
 
   virtual task listen_OKAY(item_t item);
-    while (item.data_idx <= item.bst_len) begin
+    while (1) begin
+      if (item.data_idx > item.bst_len) break;
+
       @(negedge this.cmp.vif.clk iff (this.cmp.vif.hready && this.cmp.vif.hresp == OKAY && this.cmp.vif.htrans inside {NONSEQ, SEQ, IDLE}));
       if(item.addr_idx > item.data_idx) begin
         populate_data_item(item);
@@ -569,6 +584,10 @@ class ahb_collect_data_items#(
     data = (item.trs_t == WR)? this.cmp.vif.hwdata : this.cmp.vif.hrdata;
     item.pack_data(item.data_idx, data);
     item.data_idx++;
+
+    `uvm_info(this.cmp.get_full_name(), {$psprintf("ssss \n%s", item.sprint())}, UVM_LOW)
+
+
   endtask : populate_data_item
 
   virtual task populate_complete_item(item_t item);

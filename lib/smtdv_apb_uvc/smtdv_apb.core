@@ -41,6 +41,7 @@ src_files =
 include_files =
   ${smtdv_common.systemverilog:include_files}
   ${main:apb}/sv/apb_pkg.sv
+  ${main:root}/lib/smtdv_ahb_uvc/sv/ahb_pkg.sv
   ${main:apb}/seq/apb_seq_pkg.sv
   ${main:root}/lib/smtdv_common/vseq/smtdv_common_vseq_pkg.sv
   ${main:apb}/vseq/apb_vseq_pkg.sv
@@ -48,6 +49,7 @@ include_files =
 
 include_dirs =
   ${smtdv_common.systemverilog:include_dirs}
+  ${main:root}/lib/smtdv_ahb_uvc/sv
   ${main:apb}
   ${main:apb}/stl
   ${main:apb}/seq

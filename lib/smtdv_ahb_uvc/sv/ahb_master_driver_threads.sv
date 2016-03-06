@@ -104,8 +104,11 @@ class ahb_master_drive_addr #(
   virtual task run();
     forever begin
       // after reset
+      //
+this.cmp.addrbox.dump(10);
+
       populate_default_item(item);
-      this.cmp.addrbox.async_pop_front(0, item);
+      this.cmp.addrbox.async_prio_get(0, item);
 
       while(!item.addr_complete) begin
         populate_nonseq_item(item);
@@ -233,7 +236,7 @@ class ahb_master_drive_data #(
 
   virtual task run();
     forever begin
-      this.cmp.databox.async_pop_front(0, item);
+      this.cmp.databox.async_prio_get(0, item);
 
       `SMTDV_SWAP(0) // data phase should be after addr phase
 
@@ -274,11 +277,9 @@ class ahb_master_drive_data #(
   endtask : populate_error_item
 
   virtual task populate_retry_item(item_t item);
-    this.cmp.redrive_bus(item);
   endtask : populate_retry_item
 
   virtual task populate_split_item(item_t item);
-    this.cmp.redrive_bus(item);
   endtask : populate_split_item
 
 endclass : ahb_master_drive_data

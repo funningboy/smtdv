@@ -1,7 +1,6 @@
 `ifndef __AHB_RAND_TEST_SV__
 `define __AHB_RAND_TEST_SV__
 
-//IUS doesn't support it
 //typedef class ahb_base_test;
 //typedef class ahb_master_rand_vseq;
 //typedef class ahb_slave_base_seq;
@@ -37,7 +36,15 @@ class ahb_rand_test
   virtual function void end_of_elaboration_phase(uvm_phase phase);
     super.end_of_elaboration_phase(phase);
 
+    cmp_envs[0].mst_agts[0].cfg.block_hbusreq = TRUE;
+    cmp_envs[0].mst_agts[0].cfg.block_hnonseq = TRUE;
+    cmp_envs[0].mst_agts[0].cfg.has_busy = TRUE;
+
+    cmp_envs[0].slv_agts[0].cfg.block_hready = TRUE;
     cmp_envs[0].slv_agts[0].cfg.has_error = FALSE;
+    cmp_envs[0].slv_agts[0].cfg.has_retry = TRUE;
+    cmp_envs[0].slv_agts[0].cfg.has_split = TRUE;
+
   endfunction : end_of_elaboration_phase
 
 //  check trx with sqlite3 db

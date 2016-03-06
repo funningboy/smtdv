@@ -56,7 +56,9 @@ interface ahb_master_if_harness #(
     .hgrant(),
     .hrdata(),
     .hready(),
-    .hresp()
+    .hresp(),
+
+    .dummy()
   );
 
     `ifndef AHBMASTERATTR
@@ -128,7 +130,9 @@ interface ahb_slave_if_harness #(
 
     .hrdata(),
     .hreadyout(),
-    .hresp()
+    .hresp(),
+
+    .dummy()
   );
 
     `ifndef AHBSLAVEATTR

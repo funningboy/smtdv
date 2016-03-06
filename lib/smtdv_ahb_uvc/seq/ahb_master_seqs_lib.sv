@@ -5,5 +5,6 @@
 `include "ahb_master_atomic_seqs.sv"
 `include "ahb_master_stl_seq.sv"
 `include "ahb_master_cfg_seq.sv"
+`include "ahb_master_irq_seq.sv"
 
 `endif // end of __AHB_MASTER_SEQS_LIB_SV__

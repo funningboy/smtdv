@@ -119,9 +119,17 @@ endtask : drive_bus
 
 
 task ahb_master_driver::redrive_bus(item_t item);
+  item_t ritem;
+  if (!$cast(ritem, item.clone()))
+      `uvm_error("SMTDV_DCAST_RSP/REQ",
+          {$psprintf("DOWN CAST TO REQ/RSP FAIL")})
+
+  ritem.prio = -1;
+  ritem.reset_index();
+  ritem.reset_status();
   fork
-    addrbox.async_push_front(item, 0);
-    databox.async_push_front(item, 0);
+    addrbox.async_push_front(ritem, 0);
+    databox.async_push_front(ritem, 0);
   join_none
 endtask : redrive_bus
 

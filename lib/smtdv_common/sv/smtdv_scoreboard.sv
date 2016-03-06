@@ -49,7 +49,7 @@ class smtdv_scoreboard#(
   typedef smtdv_hash#(addr_t, smtdv_queue#(T1)) addr_h_t;
   typedef smtdv_thread_handler#(scb_t) hdler_t;
 
-  bit has_debug = FALSE; // debug msg on
+  bit has_debug = TRUE; // debug msg on
 
   hdler_t th_handler; // scb thread handler
 

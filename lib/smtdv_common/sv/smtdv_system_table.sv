@@ -27,10 +27,14 @@ class smtdv_system_table
   typedef smtdv_system_table sys_tb_t;
 
   typedef struct {
-    string full_names[$];
     string abbr_names[$];
-    string desc;
   } header_t;
+
+  typedef struct {
+    time sitme;
+    string abbr_name;
+    string desc;
+  } meta_t;
 
   headr_t header;
 
@@ -39,34 +43,34 @@ class smtdv_system_table
 
   extern static function string get_full_name();
   extern static task run();
+  extern static task set(string abbr_name);
   extern static task create_table();
-  extern static task populate_label();
+  extern static task populate_label(meta_t meta);
 
 endclass : smtdv_system_table
 
 function string get_full_name();
-  return "system_table";
+  return "top.system_table";
 endfunction : get_full_name
 
-task create_table();
+task set()
+
+task smtdv_system_table::create_table();
   string table_nm = $psprintf("\"%s\"", this.get_full_name());
-  $display(this.get_full_name(),
-      {$psprintf("CREATE SYS SQLITE3: %s\n", table_nm)}, UVM_LOW)
 
   smtdv_sqlite3::create_tb(table_nm);
-  foreach (attr_longint[i])
-     smtdv_sqlite3::register_longint_field(table_nm, attr_longint[i]);
+  foreach (header.abbr_names[i])
+    smtdv_sqlite3::register_int_field(table_nm, header.abbr_names[i]);
 
-  foreach (attr_str[i])
-    smtdv_sqlite3::register_longint_field(table_nm, attr_longint[i]);
-
+  smtdv_sqlite3::register_longint_field(table_nm, "time");
+  smtdv_sqlite3::register_str_field(table_nm, "desc");
   smtdv_sqlite3::exec_field(table_nm);
 endtask : create_table
 
 
-task populate_label();
+task smtdv_system_table::populate_label();
     string table_nm = $psprintf("\"%s\"", this.cmp.get_full_name());
-    smtdv_sqlite3::insert_value(table_nm, "dec_uuid",    $psprintf("%d", item.get_transaction_id()));
-
+    //smtdv_sqlite3::insert_value(table_nm, "dec_uuid",    $psprintf("%d", item.get_transaction_id()));
+endtask : populate_label
 
 `endif // __SMTDV_SYSTEM_TABLE_SVH__

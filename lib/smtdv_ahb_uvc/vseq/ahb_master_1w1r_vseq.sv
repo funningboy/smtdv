@@ -49,28 +49,50 @@ class ahb_master_1w1r_vseq
         bst_type inside {SINGLE, WRAP4, INCR4, WRAP8, INCR8, WRAP16, INCR16};
     })
     `uvm_create_on(seq_1w, vseqr.ahb_magts[0].seqr)
-    seq_1w.start_addr = cur_addr;
-    seq_1w.bst_type = bst_type;
-    seq_1w.trx_size = trx_size;
-    $cast(bseq, seq_1w);
-    seqs.push_back(bseq);
-    seq_blder._create_seq_node(0);
-    seq_1w.set(seq_blder.seq_graph.get_node(0));
+    `SMTDV_RAND_WITH(seq_1w,
+      {
+        seq_1w.start_addr == cur_addr;
+        seq_1w.bst_type == bst_type;
+        seq_1w.trx_size == trx_size;
+      })
 
     // create seq_1r as seq_graph node1
     `uvm_create_on(seq_1r, vseqr.ahb_magts[0].seqr)
-    seq_1r.start_addr = cur_addr;
-    seq_1r.bst_type = bst_type;
-    seq_1r.trx_size = trx_size;
-    $cast(bseq, seq_1r);
-    seqs.push_back(bseq);
-    seq_blder._create_seq_node(1);
-    seq_1r.set(seq_blder.seq_graph.get_node(1));
+    `SMTDV_RAND_WITH(seq_1r,
+      {
+        seq_1r.start_addr == cur_addr;
+        seq_1r.bst_type == bst_type;
+        seq_1r.trx_size == trx_size;
+      })
 
-    // link node0 to node1
-    seq_blder._create_seq_edge(0, 1);
-
-    seq_blder._finalize_seq_graph();
+    graph = '{
+        nodes:
+           '{
+               '{
+                   uuid: 0,
+                   seq: seq_1w,
+                   seqr: vseqr.ahb_magts[0].seqr,
+                   prio: -1,
+                   desc: {$psprintf("bind Node[%0d] as %s", 0, "seq_1w")}
+               },
+               '{
+                   uuid: 1,
+                   seq: seq_1r,
+                   seqr: vseqr.ahb_magts[0].seqr,
+                   prio: -1,
+                   desc: {$psprintf("bind Node[%0d] as %s", 1, "seq_1r")}
+               }
+           },
+        edges:
+           '{
+               '{
+                   uuid: 0,
+                   sourceid: 0,
+                   sinkid: 1,
+                   desc: {$psprintf("bind Edge[%0d] from Node[%0d] to Node[%0d]", 0, 0, 1)}
+               }
+           }
+     };
   endtask : pre_body
 
   // read after write

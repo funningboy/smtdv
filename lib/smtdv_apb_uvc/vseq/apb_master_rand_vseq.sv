@@ -25,12 +25,6 @@ class apb_master_rand_vseq
   bit [ADDR_WIDTH-1:0] cur_wr_addr;
   bit [ADDR_WIDTH-1:0] cur_rd_addr;
 
-  int nodeid = 0;
-  int edgeid = 0;
-
-  rand int cnt;
-  constraint c_cnt { cnt inside {[10:20]}; }
-
   `uvm_object_param_utils_begin(vseq_t)
   `uvm_object_utils_end
 
@@ -41,66 +35,73 @@ class apb_master_rand_vseq
   virtual task dec_rand_wr_seq();
     cur_wr_addr = start_wr_addr;
 
-    for(int i=0; i<cnt; i++) begin
-      `uvm_create_on(seq_1w[i], vseqr.apb_magts[0].seqr)
-      `SMTDV_RAND_WITH(seq_1w[i],
-        {
-          seq_1w[i].start_addr == cur_wr_addr;
-        })
-        cur_wr_addr += incr_wr_addr;
+    `uvm_create_on(seq_1w[0], vseqr.apb_magts[0].seqr)
+    `SMTDV_RAND_WITH(seq_1w[0],
+      {
+        seq_1w[0].start_addr == cur_wr_addr;
+      })
+      cur_wr_addr += incr_wr_addr;
 
-        graph.nodes[nodeid] = '{
-            uuid: nodeid,
-            seq: seq_1w[nodeid],
+    `uvm_create_on(seq_1w[1], vseqr.apb_magts[0].seqr)
+    `SMTDV_RAND_WITH(seq_1w[1],
+      {
+        seq_1w[1].start_addr == cur_wr_addr;
+      })
+      cur_wr_addr += incr_wr_addr;
+
+    graph.nodes[0] =
+        '{
+            uuid: 0,
+            seq: seq_1w[0],
             seqr: vseqr.apb_magts[0].seqr,
             prio: -1,
-            desc: {$psprintf("Node[%0d]", nodeid)}
-        };
-        nodeid++;
-    end
+            desc: {$psprintf("Node[%0d]", 0)}
+    };
 
-    for(int i=0; i<cnt-1; i++) begin
-        graph.edges[edgeid] = '{
-            uuid: edgeid,
-            sourceid: edgeid,
-            sinkid: edgeid+1,
-            desc: {$psprintf("Edge[%0d]", edgeid)}
-        };
-        edgeid++;
-    end
+    graph.nodes[1] =
+        '{
+            uuid: 1,
+            seq: seq_1w[1],
+            seqr: vseqr.apb_magts[0].seqr,
+            prio: -1,
+            desc: {$psprintf("Node[%0d]", 1)}
+    };
+
+    graph.edges[0] =
+        '{
+            uuid: 0,
+            sourceid: 0,
+            sinkid: 1,
+            desc: {$psprintf("Edge[%0d]", 0)}
+    };
   endtask : dec_rand_wr_seq
 
 
   virtual task dec_rand_rd_seq();
     cur_rd_addr = start_rd_addr;
 
-    for(int i=0; i<cnt; i++) begin
-      `uvm_create_on(seq_1r[i], vseqr.apb_magts[0].seqr)
-      `SMTDV_RAND_WITH(seq_1r[i],
-        {
-          seq_1r[i].start_addr == cur_rd_addr;
-        })
-        cur_rd_addr += incr_rd_addr;
+    `uvm_create_on(seq_1r[0], vseqr.apb_magts[0].seqr)
+    `SMTDV_RAND_WITH(seq_1r[0],
+      {
+        seq_1r[0].start_addr == cur_rd_addr;
+      })
+      cur_rd_addr += incr_rd_addr;
 
-        graph.nodes[nodeid] = '{
-            uuid: nodeid,
-            seq: seq_1r[nodeid],
+    graph.nodes[2] =
+        '{
+            uuid: 2,
+            seq: seq_1r[0],
             seqr: vseqr.apb_magts[0].seqr,
             prio: -1,
-            desc: {$psprintf("Node[%0d]", nodeid)}
+            desc: {$psprintf("Node[%0d]", 2)}
         };
-        nodeid++;
-    end
 
-    for(int i=0; i<cnt-1; i++) begin
-        graph.edges[edgeid] = '{
-            uuid: edgeid,
-            sourceid: edgeid,
-            sinkid: edgeid+1,
-            desc: {$psprintf("Edge[%0d]", edgeid)}
-        };
-        edgeid++;
-    end
+    graph.edges[1] = '{
+         uuid: 1,
+         sourceid: 1,
+         sinkid: 2,
+         desc: {$psprintf("Edge[%0d]", 1)}
+     };
   endtask : dec_rand_rd_seq
 
 

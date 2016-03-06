@@ -14,7 +14,7 @@ package ahb_pkg;
   import smtdv_stl_pkg::*;
 
   `include "ahb_typedefs.svh"
-  `include "ahb_item.sv"
+  `include "ahb_sequence_item.sv"
 
   `include "ahb_monitor_threads.sv"
   `include "ahb_monitor.sv"

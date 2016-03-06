@@ -15,6 +15,7 @@ package ahb_vseq_pkg;
   `include "smtdv_macros.svh"
 
   import smtdv_common_seq_pkg::*;
+  import smtdv_common_vseq_pkg::*;
 
   import ahb_pkg::*;
   import ahb_seq_pkg::*;

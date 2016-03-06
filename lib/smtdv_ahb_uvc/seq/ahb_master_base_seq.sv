@@ -14,11 +14,15 @@ class ahb_master_base_seq #(
       .ADDR_WIDTH(ADDR_WIDTH),
       .DATA_WIDTH(DATA_WIDTH),
       .T1(ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH)),
+      .VIF(virtual interface ahb_if#(ADDR_WIDTH, DATA_WIDTH)),
       .CFG(ahb_master_cfg),
       .SEQR(ahb_master_sequencer#(ADDR_WIDTH, DATA_WIDTH))
   );
 
   typedef ahb_master_base_seq#(ADDR_WIDTH, DATA_WIDTH) seq_t;
+  typedef ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+
+  item_t item;
 
   `uvm_object_utils_begin(seq_t)
   `uvm_object_utils_end

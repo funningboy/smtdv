@@ -8,7 +8,7 @@ stdout = FALSE
 unittest = TRUE
 clean = FALSE
 simulator = ius
-test = ahb_rand_test
+test = ahb_split_test
 
 # add your test below
 tests =
@@ -21,8 +21,12 @@ tests =
   ahb_retry_test
   ahb_err_inject_test
   ahb_hijack_test
+  ahb_interrupt_test
+  ahb_cfg_label_test
 
 # TODO
+#  ahb_split_test
+#  ahb_retry_test
 #  ahb_fw_ctl_test
 #  ahb_incr_test
 #  ahb_wrap_test
@@ -42,12 +46,15 @@ src_files =
 include_files =
   ${smtdv_common.systemverilog:include_files}
   ${main:ahb}/sv/ahb_pkg.sv
+  ${main:root}/lib/smtdv_apb_uvc/sv/apb_pkg.sv
   ${main:ahb}/seq/ahb_seq_pkg.sv
+  ${main:root}/lib/smtdv_common/vseq/smtdv_common_vseq_pkg.sv
   ${main:ahb}/vseq/ahb_vseq_pkg.sv
   ${main:ahb}/test/test_ahb_pkg.sv
 
 include_dirs =
   ${smtdv_common.systemverilog:include_dirs}
+  ${main:root}/lib/smtdv_apb_uvc/sv
   ${main:ahb}
   ${main:ahb}/stl
   ${main:ahb}/seq
@@ -91,6 +98,10 @@ vlog =
   proc_incdir(\"mti\", \"${verilog:include_dirs}\")
   proc_incdir(\"mti\", \"${verilog:include_files}\")
   proc_srcfile(\"mti\", \"${verilog:src_files}\")
+  +define+AHB
+  +define+AHB_SEQ_32X32
+  +define+AHB_SEQ_64X64
+  +define+AHB_IRQ
 
 vsim =
   vsim ${mti.mti:vsim}
@@ -120,6 +131,10 @@ irun =
   -input simvision.tcl
   +UVM_TESTNAME=${main:test}
   +UVM_VERBOSITY=UVM_DEBUG
+  +define+AHB
+  +define+AHB_SEQ_32X32
+  +define+AHB_SEQ_64X64
+  +define+AHB_IRQ
 
 clean =
   ${ius.ius:clean}

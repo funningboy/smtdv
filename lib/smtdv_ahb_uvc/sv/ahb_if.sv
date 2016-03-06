@@ -31,7 +31,16 @@ interface ahb_if #(
   logic [1:0]             hresp,
 
   logic [0:0]             hbusreq,
-  logic [0:0]             hgrant
+  logic [0:0]             hgrant,
+
+  // only for pirq test
+  logic [0:0]             dummy
+  );
+
+  smtdv_if pvif (
+    .clk(clk),
+    .resetn(resetn),
+    .dummy()
   );
 
   bit has_force = 1;

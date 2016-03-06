@@ -2,7 +2,7 @@
 `define __AHB_SLAVE_AGENT_SV__
 
 typedef class ahb_slave_cfg;
-typedef class ahb_item;
+typedef class ahb_sequence_item;
 typedef class ahb_slave_sequencer;
 typedef class ahb_slave_driver;
 typedef class ahb_monitor;
@@ -18,7 +18,7 @@ class ahb_slave_agent #(
       .DATA_WIDTH(DATA_WIDTH),
       .VIF(virtual interface ahb_if#(ADDR_WIDTH, DATA_WIDTH)),
       .CFG(ahb_slave_cfg),
-      .T1(ahb_item#(ADDR_WIDTH, DATA_WIDTH)),
+      .T1(ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH)),
       .SEQR(ahb_slave_sequencer#(ADDR_WIDTH, DATA_WIDTH)),
       .DRV(ahb_slave_driver#(ADDR_WIDTH, DATA_WIDTH)),
       .MON(ahb_monitor#(ADDR_WIDTH, DATA_WIDTH, ahb_slave_cfg, ahb_slave_sequencer#(ADDR_WIDTH, DATA_WIDTH)))

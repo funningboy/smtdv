@@ -15,6 +15,7 @@ package smtdv_common_vseq_pkg;
 
   import smtdv_common_seq_pkg::*;
   import apb_pkg::*;
+  import ahb_pkg::*;
 
   `include "smtdv_virtual_sequencer.sv"
   `include "smtdv_base_vseq.sv"

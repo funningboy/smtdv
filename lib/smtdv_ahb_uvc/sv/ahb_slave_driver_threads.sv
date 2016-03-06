@@ -100,7 +100,7 @@ class ahb_slave_drive_addr #(
     forever begin
       // after reset
       populate_default_item(item);
-      this.cmp.addrbox.async_pop_front(0, item);
+      this.cmp.addrbox.async_prio_get(0, item);
 
       while(!item.addr_complete) begin
         fork

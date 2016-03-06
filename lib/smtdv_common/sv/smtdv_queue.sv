@@ -113,14 +113,14 @@ function void smtdv_queue::dump(int remain=10);
   ed_idx = size() -1;
 
   `uvm_info(get_full_name(),
-      {$psprintf("START TO DUMP QUEUE")}, UVM_LOW)
+      {$psprintf("START TO DUMP QUEUE from start %d to %d", bg_idx, ed_idx)}, UVM_LOW)
 
   `uvm_info(get_full_name(),
       {$psprintf("--------------------")}, UVM_LOW)
 
   for(int i=bg_idx; i<=ed_idx; i++)
     `uvm_info(get_full_name(),
-        {$psprintf("%s\n", this.queue[i].sprint())}, UVM_LOW)
+        {$psprintf("at %d,\n %s\n", i, this.queue[i].sprint())}, UVM_LOW)
 
   `uvm_info(get_full_name(),
       {$psprintf("--------------------")}, UVM_LOW)
