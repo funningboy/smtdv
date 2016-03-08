@@ -38,6 +38,7 @@ class ahb_slave_base_seq #(
     data= new[DATA_WIDTH>>3];
     super.mid_do_read_item(item);
 
+    #1;
     wait(!gene_mem.is_lock());
     gene_mem.lock();
     item.post_addr(item.addr, item.trx_size, item.bst_len, item.bst_type, addrs);
@@ -49,7 +50,8 @@ class ahb_slave_base_seq #(
     end
     item.mem_complete = TRUE;
     gene_mem.unlock();
-    `uvm_info(get_type_name(), {$psprintf("GET AHB READ ITEM\n%s", item.sprint())}, UVM_LOW)
+
+    `uvm_info(get_type_name(), {$psprintf("GET AHB READ ITEM FROM MEM\n%s", item.sprint())}, UVM_LOW)
 
   endtask : mid_do_read_item
 
@@ -72,6 +74,8 @@ class ahb_slave_base_seq #(
       end
       item.mem_complete = TRUE;
       gene_mem.unlock();
+
+     `uvm_info(get_type_name(), {$psprintf("GET AHB WRITE ITEM TO MEM\n%s", item.sprint())}, UVM_LOW)
     end
   endtask : mid_do_write_item
 

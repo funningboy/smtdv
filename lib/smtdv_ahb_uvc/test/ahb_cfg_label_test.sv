@@ -1,5 +1,5 @@
-`ifndef __APB_CFG_LABEL_TEST_SV__
-`define __APB_CFG_LABEL_TEST_SV__
+`ifndef __AHB_CFG_LABEL_TEST_SV__
+`define __AHB_CFG_LABEL_TEST_SV__
 
 //typedef class apb_base_test;
 //typedef class apb_master_stl_seq;
@@ -65,11 +65,10 @@ class apb_cfg_label_test
     super.end_of_elaboration_phase(phase);
 
     cmp_envs[0].slv_agts[0].cfg.has_error = FALSE;
-    cmp_envs[0].slv_agts[1].cfg.has_error = FALSE;
 
     cfg_labs[0].set('{
         WR,
-        `APB_SLAVE_START_ADDR_0,
+        `AHB_SLAVE_START_ADDR_0,
         1,
         cmp_envs[0].mst_agts[0],
         cmp_envs[0].mst_agts[0].cfg
@@ -89,4 +88,4 @@ class apb_cfg_label_test
 
 endclass : apb_cfg_label_test
 
-`endif // end of __APB_STL_TEST_SV__
+`endif // end of __AHB_CFG_LABEL_TEST_SV__

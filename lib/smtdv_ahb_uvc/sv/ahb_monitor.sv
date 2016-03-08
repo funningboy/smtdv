@@ -29,6 +29,7 @@ class ahb_monitor #(
   typedef ahb_collect_stop_signal#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) coll_stop_sin_t;
   typedef ahb_collect_cover_group#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) coll_cov_grp_t;
   typedef ahb_export_collected_items#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) exp_coll_items_t;
+  typedef ahb_update_notify_labels#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) updt_note_lab_t;
   typedef smtdv_thread_handler#(mon_t) hdler_t;
 
   // as frontend threads/handler
@@ -43,6 +44,7 @@ class ahb_monitor #(
   coll_addr_item_t th0;
   coll_data_item_t th1;
   coll_stop_sin_t th2;
+  updt_note_lab_t th5;
 
   // as frontend system services, user can override these at top level.
   coll_cov_grp_t th3;
@@ -70,6 +72,15 @@ class ahb_monitor #(
 
     th3 = coll_cov_grp_t::type_id::create("ahb_collect_cover_group", this);
     th4 = exp_coll_items_t::type_id::create("ahb_export_collected_items", this);
+    th5 = updt_note_lab_t::type_id::create("ahb_update_notify_labels", this);
+
+    `SMTDV_RAND(th_handler)
+    `SMTDV_RAND(th0)
+    `SMTDV_RAND(th1)
+    `SMTDV_RAND(th2)
+    `SMTDV_RAND(th3)
+    `SMTDV_RAND(th4)
+    `SMTDV_RAND(th5)
   endfunction : build_phase
 
 
@@ -80,10 +91,12 @@ class ahb_monitor #(
     th2.register(this); th_handler.add(th2);
     th3.register(this); th_handler.add(th3);
     th4.register(this); th_handler.add(th4);
+    th5.register(this); th_handler.add(th5);
   endfunction : connect_phase
 
   virtual function void end_of_elaboration_phase(uvm_phase phase);
     super.end_of_elaboration_phase(phase);
+    th_handler.register(this);
     th_handler.finalize();
   endfunction : end_of_elaboration_phase
 

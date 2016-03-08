@@ -48,6 +48,10 @@ class ahb_master_driver #(
     th0 = drv_addr_t::type_id::create("ahb_master_drive_addr", this);
     th1 = drv_data_t::type_id::create("ahb_master_drive_data", this);
     th_handler = hdler_t::type_id::create("ahb_master_handler", this);
+
+    `SMTDV_RAND(th_handler)
+    `SMTDV_RAND(th0)
+    `SMTDV_RAND(th1)
   endfunction : build_phase
 
   virtual function void connect_phase(uvm_phase phase);
@@ -58,6 +62,7 @@ class ahb_master_driver #(
 
   virtual function void end_of_elaboration_phase(uvm_phase phase);
     super.end_of_elaboration_phase(phase);
+    th_handler.register(this);
     th_handler.finalize();
   endfunction : end_of_elaboration_phase
 

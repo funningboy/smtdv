@@ -35,7 +35,7 @@ class ahb_monitor_base_thread #(
   `uvm_object_param_utils_begin(th_t)
   `uvm_object_utils_end
 
-  function new(string name = "ahb_monitor_base_thread", mon_t parent=null);
+  function new(string name = "ahb_monitor_base_thread", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 
@@ -201,7 +201,7 @@ class ahb_export_collected_items#(
 endclass : ahb_export_collected_items
 
 
-class ahb_update_notify_cfgs#(
+class ahb_update_notify_labels#(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32,
   type CFG = ahb_slave_cfg,
@@ -214,17 +214,17 @@ class ahb_update_notify_cfgs#(
       .SEQR(SEQR)
   );
 
-  typedef ahb_update_notify_cfgs#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) note_cfgs_t;
-  typedef smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH) bitem_t;
+  typedef ahb_update_notify_labels#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) note_labs_t;
   typedef ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef smtdv_base_item bitem_t;
 
-  // cover to basic item
+  item_t item;
   bitem_t bitem;
 
-  `uvm_object_param_utils_begin(note_cfgs_t)
+  `uvm_object_param_utils_begin(note_labs_t)
   `uvm_object_utils_end
 
-  function new(string name = "ahb_update_notify_cfgs", mon_t parent=null);
+  function new(string name = "ahb_update_notify_labels", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 
@@ -235,17 +235,20 @@ class ahb_update_notify_cfgs#(
 
       if (this.cmp.cfg.has_debug)
         update_timestamp();
+
     end
   endtask : run
 
-  //
   virtual task populate_item(item_t item);
-    $cast(bitem, item);
-  // smtdv_label_handler::update_item(item);
-  // smtdv_label_handler::run();
+    if (!$cast(bitem, item))
+      `uvm_error("SMTDV_DCAST_SEQ_ITEM",
+         {$psprintf("DOWN CAST TO SMTDV SEQ_ITEM FAIL")})
+
+    smtdv_label_handler::push_item(bitem);
+
   endtask : populate_item
 
-endclass : ahb_update_notify_cfgs
+endclass : ahb_update_notify_labels
 
 
 class ahb_collect_stop_signal#(
@@ -338,27 +341,12 @@ class ahb_collect_addr_items#(
   endtask : listen_nonseq
 
   virtual task listen_OKAY(item_t item);
-    // nonseq rsp
-    @(negedge this.cmp.vif.clk iff (this.cmp.vif.hgrant && this.cmp.vif.hresp == OKAY && this.cmp.vif.hready));
-    item.addr_idx++;
+    while (item.addr_idx <= item.bst_len) begin
+      @(negedge this.cmp.vif.clk iff (this.cmp.vif.hready && this.cmp.vif.hresp == OKAY));
 
-    while (1) begin
-      if (item.addr_idx > item.bst_len) break;
-
-      if (this.cmp.vif.htrans == SEQ) begin
-        populate_seq_item(item);
-        @(negedge this.cmp.vif.clk iff (this.cmp.vif.hready && this.cmp.vif.hresp == OKAY));
-        item.addr_idx++;
-      end
-      else if (this.cmp.vif.htrans == BUSY) begin
-        populate_busy_item(item);
-        @(negedge this.cmp.vif.clk iff (this.cmp.vif.hready && this.cmp.vif.hresp == OKAY));
-      end
-      else if (this.cmp.vif.htrans == IDLE) begin
-        popilate_idle_item(item);
-        @(negedge this.cmp.vif.clk iff (this.cmp.vif.hready && this.cmp.vif.hresp == OKAY));
-      end
-
+      if (this.cmp.vif.htrans == SEQ) begin populate_seq_item(item); end
+      else if (this.cmp.vif.htrans == BUSY) begin populate_busy_item(item); end
+      else if (this.cmp.vif.htrans == IDLE) begin popilate_idle_item(item); end
     end
     populate_okay_item(item);
     populate_complete_item(item);
@@ -395,13 +383,18 @@ class ahb_collect_addr_items#(
       if (!$cast(m_cfg, this.cmp.cfg) && item.trs_t == WR) `SMTDV_SWAP(0)
       if ($cast(m_cfg, this.cmp.cfg) && item.trs_t == RD) `SMTDV_SWAP(0)
       this.cmp.item_asserted_port.write(item);
+
       fork
-        listen_OKAY(item);
-        listen_ERROR(item);
-        listen_RETRY(item);
-        listen_SPLIT(item);
-      join_any
-      disable fork;
+        begin
+          fork
+            listen_OKAY(item);
+            listen_ERROR(item);
+            listen_RETRY(item);
+            listen_SPLIT(item);
+          join_any
+          disable fork;
+        end
+      join
 
       `uvm_info(this.cmp.get_full_name(),
           {$psprintf("try collect addr item \n%s", item.sprint())}, UVM_LOW)
@@ -444,11 +437,13 @@ class ahb_collect_addr_items#(
     item.hmastlock = this.cmp.vif.hmastlock;
     item.bg_cyc = this.cmp.vif.cyc;
     item.bg_time = $time;
+    item.addr_idx++;
     item.addrs.push_back(this.cmp.vif.haddr);
     void'(this.cmp.begin_tr(item, this.cmp.get_full_name()));
   endtask : populate_nonseq_item
 
   virtual task populate_seq_item(item_t item);
+    item.addr_idx++;
     item.addrs.push_back(this.cmp.vif.haddr);
   endtask : populate_seq_item
 
@@ -535,13 +530,10 @@ class ahb_collect_data_items#(
   endtask : listen_ERROR
 
   virtual task listen_OKAY(item_t item);
-    while (1) begin
-      if (item.data_idx > item.bst_len) break;
-
+    while (item.data_idx <= item.bst_len) begin
+      wait(item.addr_idx > item.data_idx);
       @(negedge this.cmp.vif.clk iff (this.cmp.vif.hready && this.cmp.vif.hresp == OKAY && this.cmp.vif.htrans inside {NONSEQ, SEQ, IDLE}));
-      if(item.addr_idx > item.data_idx) begin
-        populate_data_item(item);
-      end
+      populate_data_item(item);
     end
     populate_okay_item(item);
     populate_complete_item(item);
@@ -553,13 +545,18 @@ class ahb_collect_data_items#(
 
       while(!item.data_complete) begin
         fork
-          listen_ERROR(item);
-          listen_SPLIT(item);
-          listen_RETRY(item);
-          listen_OKAY(item);
-        join_any
-        disable fork;
+          begin
+            fork
+              listen_ERROR(item);
+              listen_SPLIT(item);
+              listen_RETRY(item);
+              listen_OKAY(item);
+            join_any
+            disable fork;
+          end
+        join
       end
+
       // notify to scoreboard
       if (!$cast(m_cfg, this.cmp.cfg) && item.trs_t == WR) `SMTDV_SWAP(0)
       if ($cast(m_cfg, this.cmp.cfg) && item.trs_t == RD) `SMTDV_SWAP(0)
@@ -584,10 +581,6 @@ class ahb_collect_data_items#(
     data = (item.trs_t == WR)? this.cmp.vif.hwdata : this.cmp.vif.hrdata;
     item.pack_data(item.data_idx, data);
     item.data_idx++;
-
-    `uvm_info(this.cmp.get_full_name(), {$psprintf("ssss \n%s", item.sprint())}, UVM_LOW)
-
-
   endtask : populate_data_item
 
   virtual task populate_complete_item(item_t item);

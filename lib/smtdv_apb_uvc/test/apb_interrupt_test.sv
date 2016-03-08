@@ -1,6 +1,6 @@
 
-`ifndef __AHB_INTERRUPT_TEST_SV__
-`define __AHB_INTERRUPT_TEST_SV__
+`ifndef __APB_INTERRUPT_TEST_SV__
+`define __APB_INTERRUPT_TEST_SV__
 
 class apb_interrupt_test
   extends
@@ -39,5 +39,5 @@ class apb_interrupt_test
 
 endclass : apb_interrupt_test
 
-`endif // __AHB_INTERRUPT_TEST_SV__
+`endif // __APB_INTERRUPT_TEST_SV__
 
