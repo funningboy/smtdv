@@ -2,6 +2,25 @@
 `define __CDN_BUSMATRIX_DEFINES_SV__
 
 `include "ahb_if.sv"
+`include "bm_params.v"
+
+bit [`AHB_ADDR_WIDTH-1:0] cdn_start_addr_t[] = {
+  SLAVE0_START_ADDR,
+  SLAVE1_START_ADDR
+};
+
+bit [`AHB_ADDR_WIDTH-1:0] cdn_end_addr_t[] = {
+  SLAVE0_END_ADDR,
+  SLAVE1_END_ADDR
+};
+
+`define CDN_START_ADDR(i) \
+  cdn_start_addr_t[i];
+
+`define CDN_END_ADDR(i) \
+  cdn_end_addr_t[i];
+
+
 
 `define CDNBUSMATRIX u_tb_top.i_BusMatrix
 `define CDNBUSPORT(inst, port, i) inst.port``i

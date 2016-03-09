@@ -27,7 +27,7 @@ package cdn_busmatrix_pkg;
 
   `include "cdn_tcm_s0.sv"
   `include "cdn_sram_s1.sv"
-  `include "cdn_busmatrix_env.sv"
+
 
 endpackage : cdn_busmatrix_pkg
 

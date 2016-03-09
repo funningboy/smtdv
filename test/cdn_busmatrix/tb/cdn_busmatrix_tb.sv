@@ -9,13 +9,7 @@ module top();
   import uvm_pkg::*;
   `include "uvm_macros.svh"
 
-  import smtdv_common_pkg::*;
-  `include "smtdv_macros.svh"
-
-  import cdn_busmatrix_pkg::*;
-  `include "cdn_typedefs.svh"
-
-  `include "./test/cdn_busmatrix_test_list.sv"
+  import test_cdn_busmatrix_pkg::*;
 
   parameter ADDR_WIDTH = `AHB_ADDR_WIDTH;
   parameter DATA_WIDTH = `AHB_DATA_WIDTH;
@@ -27,6 +21,8 @@ module top();
     clk = 0;
     forever clk= #5 ~clk;
   end
+
+  typedef virtual interface smtdv_gen_rst_if#("cdn_rst_if", 100, 0) rst_if_t;
 
   smtdv_gen_rst_if cdn_rst_if(resetn);
   defparam cdn_rst_if.if_name       = "cdn_rst_if";
@@ -113,7 +109,7 @@ module top();
     `ifdef MASTER14 `CDNBUS_MASTER_ASSIGN_VIF(14) `endif
     `ifdef MASTER15 `CDNBUS_MASTER_ASSIGN_VIF(15) `endif
 
-    uvm_config_db#(`CDN_RST_VIF)::set(uvm_root::get(), "*", "cdn_rst_vif", cdn_rst_if);
+    uvm_config_db#(rst_if_t)::set(uvm_root::get(), "*", "rst_vif", cdn_rst_if);
     run_test();
   end
 

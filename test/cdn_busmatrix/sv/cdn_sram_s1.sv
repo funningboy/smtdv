@@ -4,7 +4,7 @@
 
 class cdn_sram_s1_cfg
   extends
-  ahb_slave_cfg
+  ahb_slave_cfg;
 
   typedef cdn_sram_s1_cfg cfg_t;
 

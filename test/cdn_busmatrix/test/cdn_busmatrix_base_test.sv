@@ -2,20 +2,23 @@
 `ifndef __CDN_BASE_TEST_SV__
 `define __CDN_BASE_TEST_SV__
 
-typedef class cdn_cluster0;
-//typedef class cdn_virtual_sequencer;
+//typedef class cdn_cluster0;
+//typedef class cdn_busmatrix_virtual_sequencer;
 
-class cdn_base_test
+class cdn_busmatrix_base_test
   extends
   smtdv_test;
 
-  typedef cdn_base_test test_t;
+  parameter ADDR_WIDTH = 32;
+  parameter DATA_WIDTH = 32;
+
+  typedef cdn_busmatrix_base_test test_t;
   typedef virtual interface ahb_if#(ADDR_WIDTH, DATA_WIDTH) vif_t;
   typedef ahb_master_cfg mst_cfg_t;
   typedef ahb_master_agent#(ADDR_WIDTH, DATA_WIDTH) mst_agt_t;
   typedef ahb_slave_cfg slv_cfg_t;
   typedef ahb_slave_agent#(ADDR_WIDTH, DATA_WIDTH) slv_agt_t;
-  typedef ahb_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+  typedef ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
   typedef cdn_cluster0#(ADDR_WIDTH, DATA_WIDTH,
       vif_t,
       mst_cfg_t,
@@ -24,20 +27,20 @@ class cdn_base_test
       slv_agt_t,
       item_t
   ) clu0_t;
-  typedef cdn_virtual_sequencer vseqr_t;
+  typedef cdn_busmatrix_virtual_sequencer vseqr_t;
 
   typedef virtual interface smtdv_gen_rst_if#("cdn_rst_if", 100, 0) rst_t;
   typedef smtdv_reset_model #(ADDR_WIDTH, DATA_WIDTH, rst_t) rst_mod_t;
 
   vseqr_t vseqr;
   rst_t rst_vif;
-  rst_mode_t rst_model;
+  rst_mod_t rst_model;
   clu0_t clu0;
 
-  `uvm_component_param_utils_begin(cdn_base_test)
+  `uvm_component_param_utils_begin(cdn_busmatrix_base_test)
   `uvm_component_utils_end
 
-  function new(string name = "cdn_base_test", uvm_component parent=null);
+  function new(string name = "cdn_busmatrix_base_test", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 
@@ -47,6 +50,9 @@ class cdn_base_test
     //sqlite3
     smtdv_sqlite3::delete_db("cdn_busmatrix.db");
     smtdv_sqlite3::new_db("cdn_busmatrix.db");
+
+    // virtual seqr
+    vseqr = vseqr_t::type_id::create({$psprintf("vseqr")}, this);
 
     // build up your cluster env for power domain partition issue
     clu0 = clu0_t::type_id::create("cdn_cluster0", this);
@@ -59,7 +65,8 @@ class cdn_base_test
 
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
-    for(int i=0; i<NUM_OF_MASTERS; i++) vseqr.ahb_magts[i] = clu0.mst_agts[i];
+    vseqr.ahb_magts[0] = clu0.mst_agts[0];
+    //vseqr.ahb_magts[1] = clu0.mst_agts[1];
   endfunction : connect_phase
 
   virtual function void end_of_elaboration_phase(uvm_phase phase);
@@ -69,7 +76,7 @@ class cdn_base_test
     rst_model.show_components(0);
   endfunction : end_of_elaboration_phase
 
-endclass : cdn_base_test
+endclass : cdn_busmatrix_base_test
 
 
-`endif // __CDN_BASE_TEST_SV__
+`endif // __CDN_BUSMATRIX_BASE_TEST_SV__

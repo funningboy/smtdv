@@ -103,7 +103,9 @@ interface cdn_busmatrix_if_harness #(
         .hready(),
         .hresp(),
 
-        .hreadyout()
+        .hreadyout(),
+
+        .dummy()
       );
     end
     endgenerate
@@ -157,7 +159,9 @@ interface cdn_busmatrix_if_harness #(
         .hready(),
         .hresp(),
 
-        .hreadyout()
+        .hreadyout(),
+
+        .dummy()
       );
     end
     endgenerate

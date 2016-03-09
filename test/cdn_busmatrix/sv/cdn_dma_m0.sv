@@ -11,7 +11,7 @@ class cdn_dma_m0_cfg
   `uvm_object_param_utils_begin(cfg_t)
   `uvm_object_utils_end
 
-  function new(string name = "cdn_dma_m0_cfg",  uvm_component parent=null);
+  function new(string name = "cdn_dma_m0_cfg",  smtdv_component cmp=null);
     super.new(name, cmp);
   endfunction : new
 

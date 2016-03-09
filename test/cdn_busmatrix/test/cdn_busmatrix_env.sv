@@ -15,7 +15,7 @@ class cdn_cluster0#(
   type MAGT = ahb_master_agent#(ADDR_WIDTH, DATA_WIDTH),
   type SCFG = ahb_slave_cfg,
   type SAGT = ahb_slave_agent#(ADDR_WIDTH, DATA_WIDTH),
-  type T1 = ahb_item#(ADDR_WIDTH, DATA_WIDTH))
+  type T1 = ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH))
   extends
   smtdv_cmp_env#(
     .MCFG(MCFG),
@@ -27,8 +27,8 @@ class cdn_cluster0#(
 
   `include "bm_params.v"
 
-  parameter NUM_OF_MASTERS = 2;
-  parameter NUM_OF_SLAVES = 2;
+  parameter NUM_OF_MASTERS = 1;
+  parameter NUM_OF_SLAVES = 1;
   parameter NUM_OF_INITOR = 1;
   parameter NUM_OF_TARGETS = NUM_OF_SLAVES;
 
@@ -52,7 +52,7 @@ class cdn_cluster0#(
   typedef cdn_sram_s1_agent#(ADDR_WIDTH, DATA_WIDTH) s1_agt_t;
 
   typedef cdn_dma_m0_cfg m0_cfg_t;
-  typedef cdn_dma_m1_cfg m1_cfg_t;
+  typedef cdn_cpu_m1_cfg m1_cfg_t;
   typedef cdn_tcm_s0_cfg s0_cfg_t;
   typedef cdn_sram_s1_cfg s1_cfg_t;
 
@@ -74,6 +74,7 @@ class cdn_cluster0#(
   endfunction : new
 
   virtual function void build_phase(uvm_phase phase);
+    bit [ADDR_WIDTH-1:0] start_addr, end_addr;
     super.build_phase(phase);
 
     `ifdef SLAVE0 `CDN_SLAVE_CREATE(s0_cfg, s0_agt, 0)`endif
