@@ -1,7 +1,8 @@
 `ifndef __CDN_BUSMATRIX_DEFINES_SV__
 `define __CDN_BUSMATRIX_DEFINES_SV__
 
-`include "ahb_if.sv"
+//`include "ahb_if.sv"
+`include "bm_defs.v"
 `include "bm_params.v"
 
 bit [`AHB_ADDR_WIDTH-1:0] cdn_start_addr_t[] = {
@@ -48,8 +49,10 @@ bit [`AHB_ADDR_WIDTH-1:0] cdn_end_addr_t[] = {
     //`SMTDV_VIF2PORT(1, clk, vif_m[i].hbusreq, `CDNBUSMATRIX(i).HBUSREQS``i) \
     `SMTDV_PORT2VIF(S[``i].vif.has_force, clk, tie_hi_1bit,                  S[``i].vif.hgrant) \
     `SMTDV_PORT2VIF(S[``i].vif.has_force, clk, `CDNBUSPORT(`CDNBUSMATRIX, HRDATAS, ``i),     S[``i].vif.hrdata) \
-    `SMTDV_PORT2VIF(S[``i].vif.has_force, clk, `CDNBUSPORT(`CDNBUSMATRIX, HREADYOUTS, ``i),  S[``i].vif.hready) \
-    `SMTDV_PORT2VIF(S[``i].vif.has_force, clk, `CDNBUSPORT(`CDNBUSMATRIX, HRESPS, ``i),      S[``i].vif.hresp)
+    `SMTDV_PORT2VIF(S[``i].vif.has_force, clk, `CDNBUSPORT(`CDNBUSMATRIX, HREADYOUTS, ``i),  S[``i].vif.hreadyout) \
+    `SMTDV_PORT2VIF(S[``i].vif.has_force, clk, `CDNBUSPORT(`CDNBUSMATRIX, HRESPS, ``i),      S[``i].vif.hresp) \
+    // hreadyout feedback to hready \
+    assign S[``i].vif.hready = S[``i].vif.hreadyout;
 
 // receive from CDN bus master to slave uvc vif
 `define CDNBUS_MASTER_VIF(i) \

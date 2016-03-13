@@ -83,7 +83,8 @@ class ahb_slave_drive_addr #(
   virtual task drive_OKAY(item_t item);
     while (item.addr_idx <= item.bst_len) begin
       populate_okay_item(item);
-      @(posedge this.cmp.vif.clk iff (this.cmp.vif.hsel && this.cmp.vif.hready));
+      @(posedge this.cmp.vif.clk iff (this.cmp.vif.hsel && this.cmp.vif.hready && this.cmp.vif.htrans inside {NONSEQ, SEQ}));
+      item.addr_idx++;
     end
     populate_complete_item(item);
   endtask : drive_OKAY
@@ -135,8 +136,6 @@ class ahb_slave_drive_addr #(
     end
     this.cmp.vif.slave.hreadyout <= 1'b1;
     this.cmp.vif.slave.hresp <= OKAY;
-    item.addr_idx++;
-
   endtask : populate_okay_item
 
   virtual task populate_error_item(item_t item);
@@ -203,8 +202,11 @@ class ahb_slave_drive_data #(
     while (1) begin
       if (item.data_idx > item.bst_len) break;
       if (item.split || item.retry || item.error) break;
-      if (item.addr_idx > item.data_idx) populate_data_item(item);
+
+      wait(item.addr_idx > item.data_idx);
+      populate_data_item(item);
       @(posedge this.cmp.vif.clk iff (this.cmp.vif.hsel && this.cmp.vif.hready && this.cmp.vif.htrans inside {NONSEQ, SEQ, IDLE}));
+      item.data_idx++;
     end
     populate_complete_item(item);
   endtask : drive_OKAY
@@ -235,8 +237,11 @@ class ahb_slave_drive_data #(
   virtual task populate_data_item(item_t item);
     if (item.trs_t == RD) begin
       this.cmp.vif.slave.hrdata <= item.unpack_data(item.data_idx);
+
+      `uvm_info(this.cmp.get_full_name(),
+          {$psprintf("sssss \n%s", item.sprint())}, UVM_LOW)
+
     end
-    item.data_idx++;
   endtask : populate_data_item
 
   virtual task populate_complete_item(item_t item);

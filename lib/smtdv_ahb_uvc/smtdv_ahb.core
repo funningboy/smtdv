@@ -7,7 +7,7 @@ spawn = TRUE
 stdout = FALSE
 unittest = TRUE
 clean = FALSE
-simulator = ius
+simulator = mti
 test = ahb_split_test
 
 # add your test below

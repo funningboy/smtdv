@@ -20,7 +20,7 @@ class ahb_master_stl_seq #(
 
   item_t pool[$];
 
-  static string m_file = "../stl/incr.stl";
+  string m_file = "../stl/incr.stl";
   chandle m_dpi_mb;
   chandle m_dpi_trx;
 

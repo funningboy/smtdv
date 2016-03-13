@@ -516,7 +516,7 @@ class ahb_collect_data_items#(
   virtual task listen_SPLIT(item_t item);
     @(negedge this.cmp.vif.clk iff (!this.cmp.vif.hready && this.cmp.vif.hresp == SPLIT));
     populate_split_item(item);
-    @(negedge this.cmp.vif.clk iff (!this.cmp.vif.hready && this.cmp.vif.hresp == SPLIT && this.cmp.vif.htrans == IDLE));
+    @(negedge this.cmp.vif.clk iff (this.cmp.vif.hready && this.cmp.vif.hresp == SPLIT && this.cmp.vif.htrans == IDLE));
     populate_split_item(item);
     populate_complete_item(item);
   endtask : listen_SPLIT
@@ -524,7 +524,7 @@ class ahb_collect_data_items#(
   virtual task listen_ERROR(item_t item);
     @(negedge this.cmp.vif.clk iff (!this.cmp.vif.hready && this.cmp.vif.hresp == ERROR));
     populate_error_item(item);
-    @(negedge this.cmp.vif.clk iff (!this.cmp.vif.hready && this.cmp.vif.hresp == ERROR && this.cmp.vif.htrans == IDLE));
+    @(negedge this.cmp.vif.clk iff (this.cmp.vif.hready && this.cmp.vif.hresp == ERROR && this.cmp.vif.htrans == IDLE));
     populate_error_item(item);
     populate_complete_item(item);
   endtask : listen_ERROR

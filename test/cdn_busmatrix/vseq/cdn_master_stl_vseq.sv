@@ -136,7 +136,8 @@ class cdn_master_stl_vseq
 
   virtual task post_body();
     super.post_body();
-    wait(vseqr.ahb_magts[0].seqr.finish && vseqr.ahb_magts[1].seqr.finish);
+    wait(vseqr.ahb_magts[0].seqr.finish);
+    //wait(vseqr.ahb_magts[0].seqr.finish && vseqr.ahb_magts[1].seqr.finish);
   endtask : post_body
 
 endclass : cdn_master_stl_vseq
