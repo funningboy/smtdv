@@ -125,14 +125,12 @@ class ahb_sequence_item #(
   `uvm_object_param_utils_begin(item_t)
     `uvm_field_enum(bst_type_t, bst_type, UVM_DEFAULT)
     `uvm_field_enum(trx_size_t, trx_size, UVM_DEFAULT)
-    `ifdef AHB_DEBUG
-      `uvm_field_int(hbusreq_L2H, UVM_DEFAULT)
-      `uvm_field_int(hready_L2H, UVM_DEFAULT)
-      `uvm_field_int(hnonseq_L2H, UVM_DEFAULT)
-      `uvm_field_int(retry, UVM_DEFAULT)
-      `uvm_field_int(split, UVM_DEFAULT)
-      `uvm_field_int(error, UVM_DEFAULT)
-    `endif
+    `uvm_field_int(hbusreq_L2H, UVM_DEFAULT)
+    `uvm_field_int(hready_L2H, UVM_DEFAULT)
+    `uvm_field_int(hnonseq_L2H, UVM_DEFAULT)
+    `uvm_field_int(retry, UVM_DEFAULT)
+    `uvm_field_int(split, UVM_DEFAULT)
+    `uvm_field_int(error, UVM_DEFAULT)
   `uvm_object_utils_end
 
   function new (string name = "ahb_sequence_item");

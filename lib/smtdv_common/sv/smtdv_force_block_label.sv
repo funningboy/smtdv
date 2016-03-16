@@ -95,6 +95,8 @@ class smtdv_force_block_label#(
     else
       row.data[col.left-:1] = cfgtb.cfg.has_force;
 
+    cfgtb.desc = {$psprintf("force set cfg.has_block as %d", cfgtb.cfg.has_force)};
+
   endfunction : callback
 
 endclass : smtdv_force_block_label

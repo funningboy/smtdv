@@ -244,6 +244,7 @@ class ahb_update_notify_labels#(
       `uvm_error("SMTDV_DCAST_SEQ_ITEM",
          {$psprintf("DOWN CAST TO SMTDV SEQ_ITEM FAIL")})
 
+    bitem.cmp = this.cmp;
     smtdv_label_handler::push_item(bitem);
 
   endtask : populate_item
@@ -532,7 +533,7 @@ class ahb_collect_data_items#(
   virtual task listen_OKAY(item_t item);
     while (item.data_idx <= item.bst_len) begin
       wait(item.addr_idx > item.data_idx);
-      @(negedge this.cmp.vif.clk iff (this.cmp.vif.hready && this.cmp.vif.hresp == OKAY && this.cmp.vif.htrans inside {NONSEQ, SEQ, IDLE}));
+      @(negedge this.cmp.vif.clk iff (this.cmp.vif.hready && this.cmp.vif.hresp == OKAY && this.cmp.vif.htrans inside {NONSEQ, SEQ, BUSY, IDLE}));
       populate_data_item(item);
     end
     populate_okay_item(item);

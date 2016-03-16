@@ -4,6 +4,7 @@
 
 typedef class smtdv_test;
 typedef class smtdv_run_label;
+typedef class smtdv_system_table;
 
 /* a static global label handler,
 * collect label item from whole system and do itself run task
@@ -88,7 +89,17 @@ endfunction : del
 
 
 function void smtdv_label_handler::finalize();
+  string cmp_name;
   has_finalize = TRUE;
+
+  foreach(label_q[i]) begin
+    if (label_q[i].on) begin
+        cmp_name = label_q[i].lab.cmp.get_full_name();
+        smtdv_system_table::set_header(cmp_name);
+    end
+  end
+  smtdv_system_table::create_table();
+
 endfunction : finalize
 
 

@@ -43,7 +43,7 @@ class cdn_busmatrix_setup_test
 
     clu0.slv_agts[0].cfg.has_error = FALSE;
 //    clu0.slv_agts[0].cfg.has_split = TRUE;
-//    clu0.mst_agts[0].cfg.has_busy = TRUE;
+//    clu0.mst_agts[0].cfg.has_busy = FALSE;
 //    clu0.slv_agts[1].cfg.has_error = FALSE;
   endfunction : end_of_elaboration_phase
 

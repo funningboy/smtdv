@@ -85,6 +85,7 @@ class smtdv_cfg_label#(
   extern virtual function void post_do();
   extern virtual function void flush();
   extern virtual function void update_item(bitem_t bitem);
+  extern virtual function void populate();
 
 endclass : smtdv_cfg_label
 
@@ -106,8 +107,12 @@ endfunction : update_item
 function void smtdv_cfg_label::pre_do();
   int dep;
   bit go = TRUE;
-
+  string cmp_name;
   super.pre_do();
+
+  cmp_name = this.cmp.get_full_name();
+  if (!cmp_name.compare(item.cmp.get_full_name()))
+    return;
 
   foreach(cfgtb.rows[i]) begin
     row = cfgtb.rows[i];
@@ -164,9 +169,20 @@ function void smtdv_cfg_label::post_do();
 
   if (has_pass) begin
     callback();
+    populate();
     flush();
   end
 endfunction : post_do
+
+
+function void smtdv_cfg_label::populate();
+  super.populate();
+  smtdv_system_table::populate_label('{
+      stime: $time,
+      abbr_name: this.cmp.get_full_name(),
+      desc: cfgtb.desc
+  });
+endfunction : populate
 
 
 function void smtdv_cfg_label::flush();

@@ -103,6 +103,8 @@ class smtdv_force_replay_label#(
     else
       row.data[col.left-:3] = cfgtb.cfg.stlid;
 
+    cfgtb.desc =  {$psprintf("force set cfg.stlid as %d", cfgtb.cfg.stlid)};
+
   endfunction : callback
 
 endclass : smtdv_force_replay_label

@@ -19,6 +19,7 @@
 `include "smtdv_force_block_label.sv"
 `include "smtdv_force_rsp_err_label.sv"
 `include "smtdv_force_replay_label.sv"
+`include "smtdv_system_table.sv"
 `include "smtdv_label_handler.sv"
 `include "smtdv_thread.sv"
 `include "smtdv_thread_handler.sv"
@@ -45,6 +46,5 @@
 `include "smtdv_runtime_phases.svh"
 `include "smtdv_report_server.sv"
 `include "smtdv_reg_adapter.sv"
-//`include "smtdv_system_table.sv"
 
 `endif

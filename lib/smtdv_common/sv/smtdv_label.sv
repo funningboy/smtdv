@@ -19,7 +19,10 @@ class smtdv_run_label
 
   typedef smtdv_run_label label_t;
   typedef uvm_object obj_t;
+  typedef uvm_component cmp_t;
   typedef smtdv_base_item bitem_t;
+
+  cmp_t cmp;
 
   label_t pre = null;
   label_t next = null;
@@ -40,6 +43,7 @@ class smtdv_run_label
   extern virtual function void post_do();
   extern virtual function void flush();
   extern virtual function void callback();
+  extern virtual function void populate();
   extern virtual function void update_item(bitem_t bitem);
 
 endclass : smtdv_run_label
@@ -72,6 +76,9 @@ endfunction : run
 
 function void smtdv_run_label::callback();
 endfunction : callback
+
+function void smtdv_run_label::populate();
+endfunction : populate
 
 function void smtdv_run_label::update_item(bitem_t bitem);
 endfunction : update_item

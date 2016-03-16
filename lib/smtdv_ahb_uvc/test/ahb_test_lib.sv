@@ -16,6 +16,7 @@
 `include "ahb_incr_test.sv"
 `include "ahb_swap_test.sv"
 `include "ahb_wrap_test.sv"
+`include "ahb_cfg_label_test.sv"
 //`include "ahb_fw_ctl_test.sv"
 //`include "ahb_csim_test.sv"
 

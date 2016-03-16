@@ -7,8 +7,8 @@ spawn = TRUE
 stdout = FALSE
 unittest = TRUE
 clean = FALSE
-simulator = mti
-test = ahb_split_test
+simulator = ius
+test = ahb_cfg_label_test
 
 # add your test below
 tests =

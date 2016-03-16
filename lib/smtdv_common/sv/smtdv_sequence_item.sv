@@ -17,8 +17,10 @@ class smtdv_base_item
   int targetid = -1;
   rand int prio;
 
+  typedef uvm_component cmp_t;
   typedef smtdv_base_item bitem_t;
 
+  cmp_t cmp;  // registered cmp
   bitem_t next = null;
   bitem_t pre = null;
   bitem_t parent = null;

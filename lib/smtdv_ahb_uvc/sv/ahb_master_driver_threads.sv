@@ -104,14 +104,10 @@ class ahb_master_drive_addr #(
   virtual task run();
     forever begin
       // after reset
-      //
-this.cmp.addrbox.dump(10);
-
       populate_default_item(item);
       this.cmp.addrbox.async_prio_get(0, item);
 
       while(!item.addr_complete) begin
-        populate_nonseq_item(item);
         // join listen one of resp is back
         fork
           listen_OKAY(item);

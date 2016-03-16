@@ -92,9 +92,11 @@ class smtdv_force_rsp_err_label#(
           {$psprintf("cfg.rows[0].cols[0] range must be [2:2] FAIL")})
 
     if (row.trs == WR)
-      cfgtb.cfg.has_force = row.data[col.left-:1];
+      cfgtb.cfg.has_error = row.data[col.left-:1];
     else
-      row.data[col.left-:1] = cfgtb.cfg.has_force;
+      row.data[col.left-:1] = cfgtb.cfg.has_error;
+
+    cfgtb.desc = {$psprintf("force set cfg.has_error %d", cfgtb.cfg.has_error)};
 
   endfunction : callback
 

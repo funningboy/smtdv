@@ -220,6 +220,7 @@ class apb_update_notify_labels#(
       `uvm_error("SMTDV_DCAST_SEQ_ITEM",
          {$psprintf("DOWN CAST TO SMTDV SEQ_ITEM FAIL")})
 
+    bitem.cmp = this.cmp;
     smtdv_label_handler::push_item(bitem);
 
   endtask : populate_item
