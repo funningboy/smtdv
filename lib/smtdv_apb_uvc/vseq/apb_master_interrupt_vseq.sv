@@ -15,6 +15,7 @@ class apb_master_interrupt_vseq
   typedef apb_master_interrupt_vseq vseq_t;
   typedef apb_master_stl_seq#(ADDR_WIDTH, DATA_WIDTH) seq_stl_t;
   typedef apb_master_irq_seq#(ADDR_WIDTH, DATA_WIDTH) seq_irq_t;
+  typedef apb_master_stop_seqr_seq#(ADDR_WIDTH, DATA_WIDTH) seq_stop_t;
   typedef uvm_component bcmp_t;
   typedef uvm_object obj_t;
 
@@ -23,6 +24,7 @@ class apb_master_interrupt_vseq
 
   seq_stl_t seq_stls[$];
   seq_irq_t seq_irq;
+  seq_stop_t seq_stop;
 
   rand int cnt;
   constraint c_cnt { cnt inside {[10:20]}; }
@@ -72,6 +74,9 @@ class apb_master_interrupt_vseq
                     desc: {$psprintf("bind Node[%0d] as %s", nodeid, "seq_irq")}
                 };
       nodeid++;
+
+    `uvm_create_on(seq_stop, vseqr.apb_magts[0].seqr)
+    nodeid++;
    endtask : pre_body
 
   // read after write
@@ -88,6 +93,7 @@ class apb_master_interrupt_vseq
 
     fork
       begin seq_irq.start(vseqr.apb_magts[0].seqr, this, 0); end
+      begin seq_stop.start(vseqr.apb_magts[0].seqr, this, 0); end
     join_none
 
     #10;

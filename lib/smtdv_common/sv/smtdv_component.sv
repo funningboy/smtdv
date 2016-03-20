@@ -31,6 +31,7 @@ class smtdv_component#(
   // A Reset flag for component to deal with its internal reset scheme
   bit         resetn        = TRUE;
   bit         finish        = FALSE;
+  dump_type_t dump          = NOT_DUMP;
 
   // used to record the time interval in reset phase
   time        reset_phase_start   = 0;

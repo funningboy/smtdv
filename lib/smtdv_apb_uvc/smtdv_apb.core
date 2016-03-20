@@ -8,7 +8,7 @@ stdout = FALSE
 unittest = TRUE
 clean = FALSE
 simulator = ius
-test = apb_cfg_label_test
+test = apb_setup_test
 
 # add your test below
 tests =

@@ -152,6 +152,9 @@ class ahb_sequence_item #(
     end
   endfunction : post_data
 
+  function void post_byten();
+  endfunction : post_byten
+
   function void post_addr(
                           bit [ADDR_WIDTH-1:0] addr,
                           int trx_size,
@@ -208,15 +211,19 @@ class ahb_sequence_item #(
     super.post_randomize();
     this.data_beat.delete();
     this.addrs.delete();
+    this.byten_beat.delete();
 
     post_addr(this.addr, this.trx_size, this.bst_len, this.bst_type, addrs);
     for(int i=0; i<=this.bst_len; i++) begin
       this.addrs.push_back(addrs[i]);
     end
+
     post_data(this.bst_len, data_beat);
     for(int i=0; i<=this.bst_len; i++) begin
       this.data_beat.push_back(data_beat[i]);
     end
+
+    post_byten();
   endfunction : post_randomize
 
   function int get_bst_len(int bst_type);

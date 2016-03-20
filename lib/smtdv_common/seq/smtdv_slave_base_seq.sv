@@ -61,6 +61,9 @@ class smtdv_slave_base_seq#(
   extern virtual task rcv_from_mon();
   extern virtual task note_to_drv();
   extern virtual task finish_from_mon();
+  extern virtual task stop_from_mon();
+  extern virtual task callback();
+  extern virtual task stop_to_seqr();
 
 endclass : smtdv_slave_base_seq
 
@@ -118,6 +121,7 @@ task smtdv_slave_base_seq::rcv_from_mon();
     seqr.mon_get_port.get(mitem);
     `uvm_info(get_type_name(),
         {$psprintf("GET MONITOR COLLECTED ITEM\n%s", mitem.sprint())}, UVM_LOW)
+
     case(mitem.trs_t)
       RD: begin  do_read_item(mitem);  end
       WR: begin
@@ -165,9 +169,20 @@ endtask : finish_from_mon
 task smtdv_slave_base_seq::pre_body();
   super.pre_body();
 
- if (!$cast(seqr, m_sequencer))
+  if (!$cast(seqr, m_sequencer))
     `uvm_error("SMTDV_UCAST_P/MSEQR",
         {$psprintf("UP CAST TO PHY SEQUENCER FAIL")})
+
+  fork
+    fork
+      begin
+        stop_from_mon();
+        callback();
+        stop_to_seqr();
+      end
+    join_any
+    disable fork;
+  join_none
 
 endtask : pre_body
 
@@ -191,5 +206,17 @@ endtask : body
 task smtdv_slave_base_seq::post_body();
   super.post_body();
 endtask : post_body
+
+task smtdv_slave_base_seq::stop_from_mon();
+  wait(seqr.cfg.start_to_stop);
+endtask : stop_from_mon
+
+task smtdv_slave_base_seq::callback();
+endtask : callback
+
+task smtdv_slave_base_seq::stop_to_seqr();
+  seqr.cfg.end_to_stop = TRUE;
+endtask : stop_to_seqr
+
 
 `endif // end of __SMTDV_SLAVE_BASE_SEQ_SV__

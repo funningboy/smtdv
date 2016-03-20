@@ -16,6 +16,7 @@ class apb_master_1w1r_vseq
   typedef apb_virtual_sequencer vseqr_t;
   typedef apb_master_1w_seq#(ADDR_WIDTH, DATA_WIDTH) seq_1w_t;
   typedef apb_master_1r_seq#(ADDR_WIDTH, DATA_WIDTH) seq_1r_t;
+  typedef apb_master_stop_seqr_seq#(ADDR_WIDTH, DATA_WIDTH) seq_stop_t;
   typedef uvm_component bcmp_t;
   typedef uvm_object obj_t;
 
@@ -25,6 +26,7 @@ class apb_master_1w1r_vseq
 
   seq_1w_t seq_1w;
   seq_1r_t seq_1r;
+  seq_stop_t seq_stop;
 
   static const bit [ADDR_WIDTH-1:0] start_addr = `APB_START_ADDR(0)
   static const bit [ADDR_WIDTH-1:0] incr_addr = 'h100;
@@ -59,6 +61,8 @@ class apb_master_1w1r_vseq
         seq_1r.start_addr == cur_addr;
       })
 
+    `uvm_create_on(seq_stop, vseqr.apb_magts[0].seqr)
+
     graph = '{
         nodes:
            '{
@@ -75,7 +79,14 @@ class apb_master_1w1r_vseq
                    seqr: vseqr.apb_magts[0].seqr,
                    prio: -1,
                    desc: {$psprintf("bind Node[%0d] as %s", 1, "seq_1r")}
-               }
+               },
+               '{
+                   uuid: 2,
+                   seq: seq_stop,
+                   seqr: vseqr.apb_magts[0].seqr,
+                   prio: -1,
+                   desc: {$psprintf("bind Node[%0d] as %s", 2, "seq_stop")}
+                }
            },
         edges:
            '{
@@ -95,6 +106,7 @@ class apb_master_1w1r_vseq
     fork
       begin seq_1w.start(vseqr.apb_magts[0].seqr, this, 0); end
       begin seq_1r.start(vseqr.apb_magts[0].seqr, this, 0); end
+      begin seq_stop.start(vseqr.apb_magts[0].seqr, this, 0); end
     join_none
     #10;
   endtask : body

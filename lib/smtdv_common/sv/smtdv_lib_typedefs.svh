@@ -7,6 +7,7 @@ typedef enum bit [2:0] {NOT_VALID, HW_RST, SW_RST, ALL_RST, PWR_RST} rst_type_t;
 typedef enum bit [0:0] {MASTER, SLAVE} mod_type_t;
 typedef enum bit [0:0] {RD, WR} trs_type_t;
 typedef enum bit [1:0] {FORCE, NORMAL, SKIP} run_type_t;
+typedef enum bit [1:0] {NOT_DUMP, ALLREG_DUMP, ALLMEM_DUMP} dump_type_t;
 
 typedef enum bit [4:0] {
   SMTDV_ALL_ON       = 5'b11111,

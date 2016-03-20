@@ -14,9 +14,11 @@ class apb_master_rand_vseq
   typedef apb_master_rand_vseq vseq_t;
   typedef apb_master_1w_seq#(ADDR_WIDTH, DATA_WIDTH) seq_1w_t;
   typedef apb_master_1r_seq#(ADDR_WIDTH, DATA_WIDTH) seq_1r_t;
+  typedef apb_master_stop_seqr_seq#(ADDR_WIDTH, DATA_WIDTH) seq_stop_t;
 
   seq_1w_t seq_1w[$];
   seq_1r_t seq_1r[$];
+  seq_stop_t seq_stop;
 
   static const bit [ADDR_WIDTH-1:0] start_wr_addr = `APB_START_ADDR(0)
   static const bit [ADDR_WIDTH-1:0] start_rd_addr = `APB_START_ADDR(0)
@@ -104,6 +106,16 @@ class apb_master_rand_vseq
      };
   endtask : dec_rand_rd_seq
 
+  virtual task dec_stop_seqr_seq();
+    graph.nodes[3] =
+        '{
+            uuid: 3,
+            seq: seq_stop,
+            seqr: vseqr.apb_magts[0].seqr,
+            prio: -1,
+            desc: {$psprintf("Node[%0d]", 2)}
+    };
+  endtask : dec_stop_seqr_seq
 
   virtual task run_rand_wr_seq();
     foreach (seq_1w[i]) begin
@@ -126,18 +138,22 @@ class apb_master_rand_vseq
     end
   endtask : run_rand_rd_seq
 
+  virtual task run_stop_seqr_seq();
+    seq_stop.start(vseqr.apb_magts[0].seqr, this, -1);
+  endtask : run_stop_seqr_seq
 
   virtual task pre_body();
     super.pre_body();
     dec_rand_wr_seq();
     dec_rand_rd_seq();
+    dec_stop_seqr_seq();
   endtask : pre_body
-
 
   virtual task body();
     super.body();
     run_rand_wr_seq();
     run_rand_rd_seq();
+    run_stop_seqr_seq();
      #1000;
   endtask : body
 

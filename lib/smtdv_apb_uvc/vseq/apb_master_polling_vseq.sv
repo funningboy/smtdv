@@ -12,11 +12,13 @@ class apb_master_polling_vseq
   typedef apb_master_polling_vseq vseq_t;
   typedef apb_master_cfg_seq#(ADDR_WIDTH, DATA_WIDTH) seq_cfg_t;
   typedef apb_master_1r_seq#(ADDR_WIDTH, DATA_WIDTH) seq_1r_t;
+  typedef apb_master_stop_seqr_seq#(ADDR_WIDTH, DATA_WIDTH) seq_stop_t;
   typedef apb_master_polling_seq#(ADDR_WIDTH, DATA_WIDTH) seq_pol_t;
 
   seq_cfg_t seq_cfg;
   seq_1r_t  seq_rd;
   seq_pol_t seq_pol;
+  seq_stop_t seq_stop;
 
   static const bit [ADDR_WIDTH-1:0] start_addr = `APB_START_ADDR(0)
   static const bit [ADDR_WIDTH-1:0] end_addr = `APB_END_ADDR(0)

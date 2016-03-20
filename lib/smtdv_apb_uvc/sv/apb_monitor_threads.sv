@@ -257,9 +257,17 @@ class apb_collect_stop_signal#(
   endfunction : new
 
   virtual task do_stop();
-    while (cnt < stop_cnt) begin
+    forever begin
+
+      // notify sequencer ready to stop
+      if (this.cmp.cfg.has_status) begin
+        if (cnt > stop_cnt)
+          this.cmp.cfg.start_to_stop = TRUE;
+      end
+      else begin cnt = 0; end
+
       @(negedge this.cmp.vif.clk);
-      cnt = (this.cmp.vif.penable || this.cmp.vif.pready || !this.cmp.vif.resetn)? 0 : cnt+1;
+      cnt = (this.cmp.vif.penable || this.cmp.vif.pready)? 0 : cnt+1;
 
       if (this.cmp.cfg.has_debug)
         update_timestamp();
@@ -267,7 +275,12 @@ class apb_collect_stop_signal#(
   endtask : do_stop
 
   virtual task run();
-    do_stop();
+    fork
+      do_stop();
+    join_none
+
+    wait(this.cmp.cfg.end_to_stop);
+
     // notify sequencer to finish
     // like timeout watch dog ref: http://www.synapse-da.com/Uploads/PDFFiles/04_UVM-Heartbeat.pdf
     if (this.cmp.seqr) begin
@@ -282,6 +295,61 @@ class apb_collect_stop_signal#(
   endtask : run
 
 endclass : apb_collect_stop_signal
+
+
+class apb_snoop_backdoor_labels#(
+  ADDR_WIDTH = 14,
+  DATA_WIDTH = 32,
+  type CFG = apb_slave_cfg,
+  type SEQR = apb_slave_sequencer#(ADDR_WIDTH, DATA_WIDTH)
+  ) extends
+    apb_monitor_base_thread#(
+      .ADDR_WIDTH(ADDR_WIDTH),
+      .DATA_WIDTH(DATA_WIDTH),
+      .CFG(CFG),
+      .SEQR(SEQR)
+  );
+
+  typedef apb_snoop_backdoor_labels#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) snoop_t;
+  typedef apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+
+  typedef struct {
+    bit [ADDR_WIDTH-1:0] addr;
+    bit [DATA_WIDTH-1:0] data;
+  } label_t;
+
+  label_t labels[$] = '{
+    '{'h1000_0000, 'hdeaddead }
+  };
+
+  item_t item;
+
+  `uvm_object_param_utils_begin(snoop_t)
+  `uvm_object_utils_end
+
+  function new(string name = "apb_collect_stop_signal", uvm_component parent=null);
+    super.new(name, parent);
+  endfunction : new
+
+  virtual task run();
+    forever begin
+      this.cmp.sbox.get(item);
+
+      foreach(item.addrs[i]) begin
+        foreach(labels[j]) begin
+          if (labels[j].addr == item.addrs[i])
+            this.cmp.vif.label = labels[j].data;
+
+        end
+      end
+
+      if (this.cmp.cfg.has_debug)
+        update_timestamp();
+    end
+  endtask : run
+
+endclass : apb_snoop_backdoor_labels
+
 
 
 class apb_collect_write_items#(
@@ -329,6 +397,7 @@ class apb_collect_write_items#(
       if (this.cmp.cfg.has_coverage) this.cmp.cbox.put(item);
       if (this.cmp.cfg.has_export)   this.cmp.ebox.put(item);
       if (this.cmp.cfg.has_notify)   this.cmp.bbox.put(item);
+      if (this.cmp.cfg.has_debug)    this.cmp.sbox.put(item);
 
       if (this.cmp.cfg.has_debug)
          update_timestamp();
@@ -338,6 +407,7 @@ class apb_collect_write_items#(
 
   virtual function void populate_begin_item(ref item_t item);
     item = item_t::type_id::create("apb_write_item");
+    `SMTDV_RAND(item) item.clear();
     item.mod_t = ($cast(m_cfg, this.cmp.cfg))? MASTER: SLAVE;
     item.run_t = (this.cmp.cfg.has_force)? FORCE: NORMAL;
     item.addr = this.cmp.vif.paddr;
@@ -407,6 +477,7 @@ class apb_collect_read_items#(
       if (this.cmp.cfg.has_coverage) this.cmp.cbox.put(item);
       if (this.cmp.cfg.has_export)   this.cmp.ebox.put(item);
       if (this.cmp.cfg.has_notify)   this.cmp.bbox.put(item);
+      if (this.cmp.cfg.has_debug)    this.cmp.sbox.put(item);
 
       if (this.cmp.cfg.has_debug)
          update_timestamp();

@@ -28,7 +28,6 @@ class smtdv_graph_scheduler#(
 
   extern virtual function void register(GRAPH parent);
   extern virtual task run();
-
 endclass : smtdv_graph_scheduler
 
 function void smtdv_graph_scheduler::register(smtdv_graph_scheduler::GRAPH parent);

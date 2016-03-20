@@ -26,10 +26,13 @@ class smtdv_cfg
   rand bit has_block;    // block trx
   rand bit has_timer;    // turn on timer
   rand bit has_flush;    // flush all seqs at seqr
-
+  rand bit has_status;   // predict bus status is on idle, busy
   rand bit clock_req;    // Master Cfg =1, Slave Cfg =0
 
-  int stlid;  // replay preload stl id
+  int stlid = 0;            // replay preload stl id
+
+  bit start_to_stop = FALSE;    // start to notify sequencer and wait all post procs are done
+  bit end_to_stop = FALSE;      // end to stop
 
   constraint c_has_debug { has_debug inside {FALSE, TRUE}; }
   constraint c_has_error { has_error inside {FALSE, TRUE}; }
@@ -40,6 +43,7 @@ class smtdv_cfg
   constraint c_has_block { has_block inside {FALSE}; }
   constraint c_has_timer { has_timer inside {TRUE}; }
   constraint c_has_flush { has_flush inside {FALSE}; }
+  constraint c_has_status { has_status inside {FALSE}; }
 
   `uvm_object_param_utils_begin(cfg_t)
     `uvm_field_int(has_debug, UVM_DEFAULT)
@@ -52,6 +56,7 @@ class smtdv_cfg
     `uvm_field_int(has_block, UVM_DEFAULT)
     `uvm_field_int(has_timer, UVM_DEFAULT)
     `uvm_field_int(has_flush, UVM_DEFAULT)
+    `uvm_field_int(has_status, UVM_DEFAULT)
     `uvm_field_int(clock_req, UVM_DEFAULT)
     `uvm_field_int(stlid, UVM_DEFAULT)
   `uvm_object_utils_end

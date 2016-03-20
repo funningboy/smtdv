@@ -267,9 +267,11 @@ class ahb_collect_stop_signal#(
 
   typedef ahb_collect_stop_signal#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) stop_t;
 
-  int stop_cnt = 100;
+  rand int stop_cnt;
   int cnt = 0;
   int pre_st = IDLE;
+
+  constraint c_stop_cnt { stop_cnt inside {[100:200]}; }
 
   //trx_type_t trx
   `uvm_object_param_utils_begin(stop_t)
@@ -297,7 +299,12 @@ class ahb_collect_stop_signal#(
   endtask : do_stop
 
   virtual task run();
-    do_stop();
+    fork
+      do_stop();
+    join_none
+
+    wait(this.cmp.cfg.end_to_stop);
+
     // notify sequencer to finish
     // like timeout watch dog ref: http://www.synapse-da.com/Uploads/PDFFiles/04_UVM-Heartbeat.pdf
     if (this.cmp.seqr) begin
@@ -413,6 +420,7 @@ class ahb_collect_addr_items#(
 
   virtual task populate_nonseq_item(ref item_t item);
     item = item_t::type_id::create("ahb_sequence_item");
+    `SMTDV_RAND(item) item.clear();
     item.mod_t = ($cast(m_cfg, this.cmp.cfg))? MASTER: SLAVE;
     item.run_t = (this.cmp.cfg.has_force)? FORCE: NORMAL;
     item.addr = this.cmp.vif.haddr;

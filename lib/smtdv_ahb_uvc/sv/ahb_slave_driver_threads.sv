@@ -212,10 +212,8 @@ class ahb_slave_drive_data #(
   endtask : drive_OKAY
 
   virtual task run();
-    item = null;
     forever begin
-      if (item==null)
-        this.cmp.databox.async_pop_front(0, item);
+      this.cmp.databox.async_pop_front(0, item);
 
       `SMTDV_SWAP(0) // data phase should be after addr phase
 
@@ -228,19 +226,16 @@ class ahb_slave_drive_data #(
         join_any
         disable fork;
       end
-      `uvm_info(this.cmp.get_full_name(), {$psprintf("try do data item \n%s", item.sprint())}, UVM_LOW)
 
-      $cast(item, item.next);
+      `uvm_info(this.cmp.get_full_name(),
+          {$psprintf("try do data item \n%s", item.sprint())}, UVM_LOW)
+
     end
   endtask : run
 
   virtual task populate_data_item(item_t item);
     if (item.trs_t == RD) begin
       this.cmp.vif.slave.hrdata <= item.unpack_data(item.data_idx);
-
-      `uvm_info(this.cmp.get_full_name(),
-          {$psprintf("sssss \n%s", item.sprint())}, UVM_LOW)
-
     end
   endtask : populate_data_item
 

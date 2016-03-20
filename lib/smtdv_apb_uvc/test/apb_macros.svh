@@ -12,6 +12,7 @@
        has_debug == TRUE;    \
        has_notify == TRUE;   \
    }) \
+   ``CFG``.has_status = TRUE;   \
    \
    if (!$cast(slv_cfgs[ID], ``CFG``)) \
     `uvm_error("SMTDV_DCAST_SLV_CFG",  \
@@ -46,6 +47,7 @@
         has_debug == TRUE;    \
         has_notify == TRUE;   \
     }) \
+    ``CFG``.has_status = TRUE;   \
     \
     if (!$cast(mst_cfgs[ID], ``CFG``)) \
     `uvm_error("SMTDV_DCAST_MST_CFG",  \

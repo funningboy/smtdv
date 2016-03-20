@@ -138,6 +138,7 @@ class smtdv_sequence_item#(
   extern virtual function bit compare(item_t cmp);
   extern virtual function void reset_index();
   extern virtual function void reset_status();
+  extern virtual function void clear();
 
 endclass : smtdv_sequence_item
 
@@ -182,6 +183,11 @@ endfunction : unpack_data
  *  @return bool
  */
 function bit smtdv_sequence_item::compare(smtdv_sequence_item::item_t cmp);
+  // trs_t
+  if (trs_t != cmp.trs_t) begin
+    return FALSE;
+  end
+
   // addr cmp
   if (addrs.size() != cmp.addrs.size() ) begin
     return FALSE;
@@ -191,23 +197,28 @@ function bit smtdv_sequence_item::compare(smtdv_sequence_item::item_t cmp);
       return FALSE;
     end
   end
-  // data_beat cmp
-  if (data_beat.size() != cmp.data_beat.size() ) begin
-    return FALSE;
-  end
-  foreach(data_beat[i]) begin
-    if (data_beat[i] != cmp.data_beat[i]) begin
+
+  if (trs_t inside {WR}) begin
+    // data_beat cmp
+    if (data_beat.size() != cmp.data_beat.size() ) begin
       return FALSE;
     end
-  end
-  // byten cmp
-  if (byten_beat.size() != cmp.byten_beat.size() ) begin
-    return FALSE;
-  end
-  foreach(byten_beat[i]) begin
-    if (byten_beat[i] != cmp.byten_beat[i]) begin
+    foreach(data_beat[i]) begin
+      if (data_beat[i] != cmp.data_beat[i]) begin
+        return FALSE;
+      end
+    end
+
+    // byten cmp
+    if (byten_beat.size() != cmp.byten_beat.size() ) begin
       return FALSE;
     end
+    foreach(byten_beat[i]) begin
+      if (byten_beat[i] != cmp.byten_beat[i]) begin
+        return FALSE;
+      end
+    end
+
   end
 
   if (initorid!=-1 && cmp.initorid!=-1) begin
@@ -234,5 +245,11 @@ function void smtdv_sequence_item::reset_status();
   addr_complete = FALSE;
   data_complete = FALSE;
 endfunction : reset_status
+
+function void smtdv_sequence_item::clear();
+  addrs.delete();
+  data_beat.delete();
+  byten_beat.delete();
+endfunction : clear
 
 `endif // end of __SMTDV_SEQUENCE_ITEM_SV__

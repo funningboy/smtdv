@@ -5,6 +5,8 @@
 `include "smtdv_master_base_seq.sv"
 `include "smtdv_master_retry_seq.sv"
 `include "smtdv_master_polling_seq.sv"
+`include "smtdv_master_stop_seqr_seq.sv"
+`include "smtdv_master_dump_memreg_seq.sv"
 `include "smtdv_master_test_seq.sv"
 
-`endif // __SMTDV_MASTER_SEQS_LIB_SV__
+`endif // __SMTDseqrseqr_

@@ -6,6 +6,7 @@ typedef class smtdv_sequence_item;
 typedef class smtdv_cfg;
 typedef class smtdv_component;
 typedef class smtdv_run_label;
+typedef class smtdv_system_table;
 
 /*
 * smtdv register updated cfg label while after setting reg cfg

@@ -77,6 +77,7 @@ function void smtdv_slave_agent::connect_phase(uvm_phase phase);
   super.connect_phase(phase);
   // connect monitor to sequencer via tlm analysis port
   mon.item_asserted_port.connect(fifo_mon_sqr.analysis_export);
+  drv.mon_get_port.connect(fifo_mon_sqr.get_export);
 
   if(get_is_active()) begin
     seqr.mon_get_port.connect(fifo_mon_sqr.get_export);

@@ -67,6 +67,7 @@ class apb_master_driver#(
   extern virtual task reset_inf();
   extern virtual task drive_bus();
   extern virtual task run_threads();
+  extern virtual task update_rsp_back();
 
 endclass : apb_master_driver
 
@@ -102,6 +103,11 @@ task apb_master_driver::drive_bus();
       $sformatf("RECEIVES AN UNEXPECTED ITEM: %s", req.sprint()))
   endcase
 endtask : drive_bus
+
+
+task apb_master_driver::update_rsp_back();
+  super.update_rsp_back();
+endtask : update_rsp_back
 
 `endif // end of __APB_MASTER_DRIVER_SV__
 

@@ -115,7 +115,6 @@ function void smtdv_agent::assign_cfg(smtdv_agent::CFG cfg);
   if(this.get_is_active()) begin
     drv.cfg = cfg;
     seqr.cfg = cfg;
-    seqr.cfg = cfg;
   end
 endfunction : assign_cfg
 

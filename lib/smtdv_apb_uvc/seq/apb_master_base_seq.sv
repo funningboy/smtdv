@@ -93,4 +93,30 @@ class apb_master_polling_seq#(
 
 endclass : apb_master_polling_seq
 
+
+class apb_master_stop_seqr_seq#(
+  ADDR_WIDTH = 14,
+  DATA_WIDTH = 32
+  ) extends
+    smtdv_master_stop_seqr_seq#(
+      .ADDR_WIDTH(ADDR_WIDTH),
+      .DATA_WIDTH(DATA_WIDTH),
+      .T1(apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH)),
+      .VIF(virtual interface apb_if#(ADDR_WIDTH, DATA_WIDTH)),
+      .CFG(apb_master_cfg),
+      .SEQR(apb_master_sequencer#(ADDR_WIDTH, DATA_WIDTH))
+  );
+
+  typedef apb_master_stop_seqr_seq#(ADDR_WIDTH, DATA_WIDTH) seq_t;
+  typedef apb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+
+  `uvm_object_param_utils_begin(seq_t)
+  `uvm_object_utils_end
+
+  function new(string name = "apb_master_stop_seqr_seq");
+    super.new(name);
+  endfunction : new
+
+endclass : apb_master_stop_seqr_seq
+
 `endif // __APB_MASTER_BASE_SEQ_SV__
