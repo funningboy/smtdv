@@ -1,15 +1,83 @@
 
-ref uvm-1.1d dox:
-http://www.studio-muzzi.com/project/docs/UVMdocs_smu/uvm-1.1d/annotated.html
+    SMTDV -Ver 1.1
+        2016
 
-ref: dvcon
-http://events.dvcon.org/events/proceedings.aspx?id=180-13
+SMTDV is a lightweight verification framework based on UVM 1.1d,
+user can use/override it more easily to set up their verification environment at moudle level(functional check) and
+system level(cosim), that also supports 3rd part lib as sqlte3 db to export/import valid transactions.
+
+----------------------------------------
+SMTDV flow overview
+----------------------------------------
+kernel:     base lib import, UVM_ML, systemc
+lib:        uvc, common lib as middleware lib
+script:     call, run, unittest
+dpi:        3rd part lib, sqlite3, stl, util lib
+designs:    DUT
+test:       test env
 
 
-1.
-set root ${SMTDV_HOME} as $PWD
-set $PATH = ${SMTDV_HOME}/script
+-----------------------------------------
+Getting Started
+-----------------------------------------
+1. setup $SMTDV_HOME as default root
+%setenv $SMTDV_HOME <smtdv_install_area>
+%set $PATH = ${SMTDV_HOME}/script
 
-2. run example
-cd ${SMTDV_HOME}/lib/smtdv_apb_uvc/sim
-../../../script/run.py --file smtdv_apb.core
+
+2. prepare .core file
+.core file uses section/token key to define preloading files and simulation args,
+that can be read more clear and easily as Makefile
+
+reserved sections
+[main] :            define os.getenv, and opts
+[cores]:            import dependey .cores
+[systemverilog]:    define systemverilog include_files, include_dirs, and lib
+[verilog]:          define verilog include_files, include_dirs, and lib
+[systemc]:          define systemc include_files, include_dirs, and lib
+[sharedlib]:        the sharedlib import as .so or *.a
+[ius]:              use IUS as default simulator
+[mti]:              use MTI as default simulator
+
+ex:
+lib/smtdv_common/smtdv_common.core
+lib/smtdv_apb_uvc/sim/smtdv_apb.core
+
+
+3. prepare required tool and lib
+% python >= 2.7.3
+% gcc, flex, yacc, sqlite3,
+% IUS >= 13.10, MTI >= 10.4
+
+
+4. build up 3rd part lib
+4.1 sqlite3 dpi interface build/test
+%cd dpi/sqlite3
+%./run.sh
+%./a.out
+4.1.2 run as systemverilog interface unittest
+% cd dpi/sqlite3/test
+%python ../../../script/run.py  --file test_smtdv_sqlite3.core
+
+
+4.2 stl interface build/test
+4.2.1 stl dpi interface build/test,
+stl, it's a raw database to record bus(AXI/AHB/APB) transaction and layer info decoded as package
+and frame
+
+%cd dpi/stl
+%./run.sh
+%./a.out
+4.2.2 run as systemverilog interface unittest
+% cd dpi/stl/test
+%python ../../../script/run.py --file test_smtdv_stl.core
+
+
+5 UVC one on one (Master/Slave) basic test
+ref:
+./lib/smtdv_apb_uvc/README
+
+6 module level test (cdnbus) test
+ref:
+./lib
+
