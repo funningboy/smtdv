@@ -2,10 +2,12 @@
 `ifndef __SMTDV_LIB_TYPEDEFS_SVH__
 `define __SMTDV_LIB_TYPEDEFS_SVH__
 
+typedef enum bit [2:0] {B8, B16, B32, B64, B128, B256, B512, B1024} trx_size_t;
 typedef enum bit [0:0] {FALSE, TRUE} bool_type_t;
+typedef enum bit [1:0] {OKAY, ERROR, RETRY, SPLIT} trx_rsp_t;
 typedef enum bit [2:0] {NOT_VALID, HW_RST, SW_RST, ALL_RST, PWR_RST} rst_type_t;
 typedef enum bit [0:0] {MASTER, SLAVE} mod_type_t;
-typedef enum bit [0:0] {RD, WR} trs_type_t;
+typedef enum bit [0:1] {RD, WR, RDWR} trs_type_t;
 typedef enum bit [1:0] {FORCE, NORMAL, SKIP} run_type_t;
 typedef enum bit [1:0] {NOT_DUMP, ALLREG_DUMP, ALLMEM_DUMP} dump_type_t;
 

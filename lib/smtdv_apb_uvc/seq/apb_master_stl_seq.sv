@@ -46,9 +46,10 @@ class apb_master_stl_seq#(
       item.run_t = FORCE;
       item.trs_t = (dpi_smtdv_get_smtdv_transfer_rw(m_dpi_trx) == "w")? WR : RD;
       item.addr  = dpi_hexstr_2_longint(dpi_smtdv_get_smtdv_transfer_addr(m_dpi_trx));
+      item.addrs[0] = item.addr;
       item.pack_data(0, dpi_hexstr_2_longint(dpi_smtdv_get_smtdv_transfer_data(m_dpi_trx, 0)));
       item.sel = 1 << dpi_hexstr_2_longint(dpi_smtdv_get_smtdv_transfer_id(m_dpi_trx));
-      item.rsp = (dpi_smtdv_get_smtdv_transfer_resp(m_dpi_trx) == "OK")? OK: ERR;
+      item.rsp = (dpi_smtdv_get_smtdv_transfer_resp(m_dpi_trx) == "OK")? OKAY: ERROR;
       item.bg_cyc = dpi_hexstr_2_longint(dpi_smtdv_get_smtdv_transfer_begin_cycle(m_dpi_trx));
       item.ed_cyc = dpi_hexstr_2_longint(dpi_smtdv_get_smtdv_transfer_end_cycle(m_dpi_trx));
       m_dpi_trx = dpi_smtdv_next_smtdv_transfer(m_dpi_mb);

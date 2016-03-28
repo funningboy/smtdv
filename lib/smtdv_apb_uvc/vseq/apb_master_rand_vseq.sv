@@ -16,8 +16,8 @@ class apb_master_rand_vseq
   typedef apb_master_1r_seq#(ADDR_WIDTH, DATA_WIDTH) seq_1r_t;
   typedef apb_master_stop_seqr_seq#(ADDR_WIDTH, DATA_WIDTH) seq_stop_t;
 
-  seq_1w_t seq_1w[$];
-  seq_1r_t seq_1r[$];
+  seq_1w_t seq_1ws[$];
+  seq_1r_t seq_1rs[$];
   seq_stop_t seq_stop;
 
   static const bit [ADDR_WIDTH-1:0] start_wr_addr = `APB_START_ADDR(0)
@@ -34,127 +34,73 @@ class apb_master_rand_vseq
     super.new(name);
   endfunction : new
 
-  virtual task dec_rand_wr_seq();
-    cur_wr_addr = start_wr_addr;
-
-    `uvm_create_on(seq_1w[0], vseqr.apb_magts[0].seqr)
-    `SMTDV_RAND_WITH(seq_1w[0],
-      {
-        seq_1w[0].start_addr == cur_wr_addr;
-      })
-      cur_wr_addr += incr_wr_addr;
-
-    `uvm_create_on(seq_1w[1], vseqr.apb_magts[0].seqr)
-    `SMTDV_RAND_WITH(seq_1w[1],
-      {
-        seq_1w[1].start_addr == cur_wr_addr;
-      })
-      cur_wr_addr += incr_wr_addr;
-
-    graph.nodes[0] =
-        '{
-            uuid: 0,
-            seq: seq_1w[0],
-            seqr: vseqr.apb_magts[0].seqr,
-            prio: -1,
-            desc: {$psprintf("Node[%0d]", 0)}
-    };
-
-    graph.nodes[1] =
-        '{
-            uuid: 1,
-            seq: seq_1w[1],
-            seqr: vseqr.apb_magts[0].seqr,
-            prio: -1,
-            desc: {$psprintf("Node[%0d]", 1)}
-    };
-
-    graph.edges[0] =
-        '{
-            uuid: 0,
-            sourceid: 0,
-            sinkid: 1,
-            desc: {$psprintf("Edge[%0d]", 0)}
-    };
-  endtask : dec_rand_wr_seq
-
-
-  virtual task dec_rand_rd_seq();
-    cur_rd_addr = start_rd_addr;
-
-    `uvm_create_on(seq_1r[0], vseqr.apb_magts[0].seqr)
-    `SMTDV_RAND_WITH(seq_1r[0],
-      {
-        seq_1r[0].start_addr == cur_rd_addr;
-      })
-      cur_rd_addr += incr_rd_addr;
-
-    graph.nodes[2] =
-        '{
-            uuid: 2,
-            seq: seq_1r[0],
-            seqr: vseqr.apb_magts[0].seqr,
-            prio: -1,
-            desc: {$psprintf("Node[%0d]", 2)}
-        };
-
-    graph.edges[1] = '{
-         uuid: 1,
-         sourceid: 1,
-         sinkid: 2,
-         desc: {$psprintf("Edge[%0d]", 1)}
-     };
-  endtask : dec_rand_rd_seq
-
-  virtual task dec_stop_seqr_seq();
-    graph.nodes[3] =
-        '{
-            uuid: 3,
-            seq: seq_stop,
-            seqr: vseqr.apb_magts[0].seqr,
-            prio: -1,
-            desc: {$psprintf("Node[%0d]", 2)}
-    };
-  endtask : dec_stop_seqr_seq
-
-  virtual task run_rand_wr_seq();
-    foreach (seq_1w[i]) begin
-      automatic int k;
-      k = i;
-      fork
-        seq_1w[k].start(vseqr.apb_magts[0].seqr, this, -1);
-      join_none
-    end
-  endtask : run_rand_wr_seq
-
-
-  virtual task run_rand_rd_seq();
-    foreach (seq_1r[i]) begin
-      automatic int k;
-      k = i;
-      fork
-        seq_1r[k].start(vseqr.apb_magts[0].seqr, this, -1);
-      join_none
-    end
-  endtask : run_rand_rd_seq
-
-  virtual task run_stop_seqr_seq();
-    seq_stop.start(vseqr.apb_magts[0].seqr, this, -1);
-  endtask : run_stop_seqr_seq
-
   virtual task pre_body();
+    cur_wr_addr = start_wr_addr;
+    cur_rd_addr = start_rd_addr;
     super.pre_body();
-    dec_rand_wr_seq();
-    dec_rand_rd_seq();
-    dec_stop_seqr_seq();
+
+    if (!$cast(vseqr, this.get_sequencer()))
+      `uvm_error("SMTDV_UCAST_V/PSEQR",
+         {$psprintf("UP CAST TO SMTDV V/PSEQR FAIL")})
+
+    `uvm_create_on(seq_1ws[0], vseqr.apb_magts[0].seqr)
+    `SMTDV_RAND_WITH(seq_1ws[0],
+      {
+        seq_1ws[0].start_addr == cur_wr_addr;
+      })
+
+    `uvm_create_on(seq_1rs[0], vseqr.apb_magts[0].seqr)
+    `SMTDV_RAND_WITH(seq_1rs[0],
+      {
+        seq_1rs[0].start_addr == cur_rd_addr;
+      })
+
+    `uvm_create_on(seq_stop, vseqr.apb_magts[0].seqr)
+
+    graph = '{
+        nodes:
+        '{
+            '{
+                uuid: 0,
+                seq: seq_1ws[0],
+                seqr: vseqr.apb_magts[0].seqr,
+                prio: -1,
+                desc: {$psprintf("Node[%0d]", 0)}
+            },
+            '{
+                uuid: 1,
+                seq: seq_1rs[0],
+                seqr: vseqr.apb_magts[0].seqr,
+                prio: -1,
+                desc: {$psprintf("Node[%0d]", 1)}
+            },
+            '{
+                uuid: 2,
+                seq: seq_stop,
+                seqr: vseqr.apb_magts[0].seqr,
+                prio: -1,
+                desc: {$psprintf("Node[%0d]", 2)}
+            }
+        },
+        edges:
+        '{
+            '{
+                uuid: 0,
+                sourceid: 0,
+                sinkid: 1,
+                desc: {$psprintf("Edge[%0d]", 0)}
+            }
+        }
+    };
+
   endtask : pre_body
 
   virtual task body();
     super.body();
-    run_rand_wr_seq();
-    run_rand_rd_seq();
-    run_stop_seqr_seq();
-     #1000;
+    seq_1ws[0].start(vseqr.apb_magts[0].seqr, this, -1);
+    seq_1rs[0].start(vseqr.apb_magts[0].seqr, this, -1);
+    seq_stop.start(vseqr.apb_magts[0].seqr, this, -1);
+    #10;
   endtask : body
 
   virtual task post_body();

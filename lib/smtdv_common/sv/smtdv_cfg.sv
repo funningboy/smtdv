@@ -69,6 +69,21 @@ class smtdv_cfg
 
   endfunction : new
 
+  // TODO: async update cfg on fly
+  // virtual task async_update_cfg();
+  //  wait(!is_lock());
+  //  lock();
+
+  //  unlock();
+  //endtask : async_update_cfg
+
+  //virtual task async_push_cfg();
+  //  wait(!is_lock());
+  //  lock();
+
+  //  unlock();
+  //endtask : async_push_cfg
+
 endclass : smtdv_cfg
 
 

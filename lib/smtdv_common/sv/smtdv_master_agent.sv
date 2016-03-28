@@ -41,6 +41,7 @@ class smtdv_master_agent#(
   typedef smtdv_master_agent#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, T1, SEQR, DRV, MON) agent_t;
 
    uvm_tlm_analysis_fifo#(T1) fifo_mon_sqr;
+   uvm_tlm_analysis_fifo#(T1) fifo_mon_drv;
 
   `uvm_component_param_utils_begin(agent_t)
   `uvm_component_utils_end
@@ -48,6 +49,7 @@ class smtdv_master_agent#(
   function new(string name = "smtdv_master_agent", uvm_component parent=null);
     super.new(name, parent);
     fifo_mon_sqr = new("fifo_mon_sqr", this);
+    fifo_mon_drv = new("fifo_mon_drv", this);
   endfunction
 
   extern virtual function void build_phase(uvm_phase phase);
@@ -65,11 +67,11 @@ function void smtdv_master_agent::connect_phase(uvm_phase phase);
   super.connect_phase(phase);
   // connect monitor to sequencer via tlm analysis port
   mon.item_asserted_port.connect(fifo_mon_sqr.analysis_export);
-  drv.mon_get_port.connect(fifo_mon_sqr.get_export);
-
   seqr.mon_get_port.connect(fifo_mon_sqr.get_export);
-endfunction
 
+  mon.item_callback_port.connect(fifo_mon_drv.analysis_export);
+  drv.mon_get_port.connect(fifo_mon_drv.get_export);
+endfunction
 
 `endif // end of __SMTDV_MASTER_AGENT_SV__
 

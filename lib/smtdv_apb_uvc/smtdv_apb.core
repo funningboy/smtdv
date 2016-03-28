@@ -8,14 +8,13 @@ stdout = FALSE
 unittest = TRUE
 clean = FALSE
 simulator = ius
-test = apb_setup_test
+test = apb_rand_test
 
 # add your test below
 tests =
   apb_base_test
   apb_setup_test
   apb_stl_test
-  apb_retry_test
   apb_err_inject_test
   apb_hijack_test
   apb_polling_test
@@ -24,8 +23,9 @@ tests =
   apb_rand_test
 
 # TODO
+#  apb_interrupt_test fail
 #  apb_uvm_reg_test
-#  apb_fw_ctl_test #need label
+#  apb_mutex_test
 
 [cores]
 import_files =

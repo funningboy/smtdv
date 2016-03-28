@@ -26,6 +26,7 @@
 `include "smtdv_sequencer.sv"
 `include "smtdv_push_sequencer.sv"
 `include "smtdv_force_vif_threads.sv"
+`include "smtdv_rsp_back_threads.sv"
 `include "smtdv_ready_notify_threads.sv"
 //`include "smtdv_lock_notify_threads.sv"
 `include "smtdv_driver.sv"

@@ -32,6 +32,18 @@ class apb_master_interrupt_vseq
   int nodeid = 0;
   int edgeid = 0;
 
+  typedef struct {
+    string q[$];
+  } stls_t;
+
+  stls_t stls = '{
+    q:
+        '{
+            {getenv("SMTDV_HOME"), "/lib/smtdv_apb_uvc/stl/preload1.stl"},
+            {getenv("SMTDV_HOME"), "/lib/smtdv_apb_uvc/stl/preload0.stl"}
+        }
+  };
+
   `uvm_object_param_utils_begin(vseq_t)
   `uvm_object_utils_end
 
@@ -44,6 +56,10 @@ class apb_master_interrupt_vseq
 
     for(int i=0; i<cnt; i++) begin
       `uvm_create_on(seq_stls[i], vseqr.apb_magts[0].seqr)
+      if (i%2==0)
+        seq_stls[i].m_file = stls.q[0];
+      else
+        seq_stls[i].m_file = stls.q[1];
 
       graph.nodes[nodeid] = '{
                     uuid: nodeid,

@@ -104,6 +104,20 @@ function void smtdv_report_server::summarize(UVM_FILE file=0);
     f_display(file,
       $sformatf({"                         TEST PASSED ", get_severity_count(UVM_WARNING) ? "with %0d UVM_WARNING(S)" : ""},
         get_severity_count(UVM_WARNING)));
+
+  f_display(file, "");
+  f_display(file, "");
+  f_display(file,
+      $sformatf({"release date: %s, version: %s, license: %s"},
+      about.date,
+      about.version,
+      about.license
+  ));
+
+  foreach(about.authors[i])
+    f_display(file,
+      $sformatf({"author: %s, mail: %s"}, about.authors[i].name, about.authors[i].mail));
+
   f_display(file,   "=============================================================");
   f_display(file, "");
 

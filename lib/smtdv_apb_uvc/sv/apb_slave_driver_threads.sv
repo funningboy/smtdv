@@ -73,7 +73,6 @@ task apb_slave_drive_items::run();
     populate_default_item(item);
     this.cmp.mbox.async_prio_get(0, item);
 
-    wait(this.cmp.vif.has_force);
     case(item.trs_t)
       WR: begin do_write_item(item); end
       RD: begin do_read_item(item);  end

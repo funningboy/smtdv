@@ -11,9 +11,12 @@
         ``LIB``_seq_``ADDR_WIDTH``X``DATA_WIDTH``.set(``NODE``);
 
 //TODO:
-//`define SMTDV_MAGIC_SEQR
-//`define SMTDV_MAGIC_AGENT
-//`define SMTDV_MAGIC_MONITOR
+//`define SMTDV_MAGIC_SEQR_DEC
+//`define SMTDV_MAGIC_SEQR_BIND
+//`define SMTDV_MAGIC_AGENT_DEC
+//`define SMTDV_MAGIC_AGENT_BIND
+//`define SMTDV_MAGIC_MONITOR_DEC
+//`define SMTDV_MAGIC_MONITOR_BIND
 
 `endif // __SMTDV_TOP_MACROS_SVH__
 

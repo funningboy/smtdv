@@ -88,8 +88,8 @@ class apb_collect_cover_group#(
       bins non_zero = {[start_data:end_data]};
     }
     apb_rsp : coverpoint item.rsp {
-      bins ok = {OK};
-      bins err = {ERR};
+      bins ok = {OKAY};
+      bins err = {ERROR};
     }
     apb_trx  : cross apb_addr, apb_rw, apb_data, apb_rsp;
   endgroup : apb_coverage
@@ -383,6 +383,7 @@ class apb_collect_write_items#(
       // notify to sequencer
       if (!$cast(m_cfg, this.cmp.cfg) && item.trs_t == WR) `SMTDV_SWAP(0)
       this.cmp.item_asserted_port.write(item);
+      this.cmp.item_callback_port.write(item);
       @(negedge this.cmp.vif.clk iff (this.cmp.vif.pready));
       populate_end_item(item);
 
@@ -423,8 +424,8 @@ class apb_collect_write_items#(
     item.pack_data(0, this.cmp.vif.pwdata);
     item.ed_cyc = this.cmp.vif.cyc;
     item.ed_time = $time;
-    item.rsp = (this.cmp.vif.pslverr == OK)? OK:ERR;
-    item.success = (item.rsp == OK)? TRUE:FALSE;
+    item.rsp = (this.cmp.vif.pslverr == OKAY)? OKAY:ERROR;
+    item.success = (item.rsp == OKAY)? TRUE:FALSE;
     item.data_complete = TRUE;
      void'(this.cmp.end_tr(item));
   endfunction : populate_end_item
@@ -463,6 +464,7 @@ class apb_collect_read_items#(
       // notify to sequencer
       if ($cast(m_cfg, this.cmp.cfg) && item.trs_t == RD) `SMTDV_SWAP(0)
       this.cmp.item_asserted_port.write(item);
+      this.cmp.item_callback_port.write(item);
       @(negedge this.cmp.vif.clk iff (this.cmp.vif.pready));
       populate_end_item(item);
 
@@ -502,8 +504,8 @@ class apb_collect_read_items#(
     item.pack_data(0, this.cmp.vif.prdata);
     item.ed_cyc = this.cmp.vif.cyc;
     item.ed_time = $time;
-    item.rsp = (this.cmp.vif.pslverr == OK)? OK:ERR;
-    item.success = (item.rsp == OK)? TRUE : FALSE;
+    item.rsp = (this.cmp.vif.pslverr == OKAY)? OKAY:ERROR;
+    item.success = (item.rsp == OKAY)? TRUE : FALSE;
     item.data_complete = TRUE;
     void'(this.cmp.end_tr(item));
   endfunction : populate_end_item

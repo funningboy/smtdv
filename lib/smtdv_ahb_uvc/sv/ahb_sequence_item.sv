@@ -20,8 +20,6 @@ class ahb_sequence_item #(
   typedef ahb_sequence_item #(ADDR_WIDTH, DATA_WIDTH) item_t;
 
   rand bst_type_t               bst_type;
-  rand trx_size_t               trx_size;
-  rand trx_rsp_t                rsp;
   rand bit [3:0]                trx_prt;
   rand bit [0:0]                hmastlock;
 
@@ -52,12 +50,12 @@ class ahb_sequence_item #(
   }
 
   constraint c_bst_len  {
-    solve bst_type before bst_len;
-    (bst_type == SINGLE) -> bst_len == 0;
-    (bst_type == INCR)   -> bst_len inside {1,2,4,5,6,8,9,10,11,12,13,14};
-    (bst_type inside {WRAP4, INCR4}) -> bst_len == 3;
-    (bst_type inside {WRAP8, INCR8}) -> bst_len == 7;
-    (bst_type inside {WRAP16, INCR16}) -> bst_len == 15;
+    solve bst_type before this.bst_len;
+    (bst_type == SINGLE) -> this.bst_len == 0;
+    (bst_type == INCR)   -> this.bst_len inside {1,2,4,5,6,8,9,10,11,12,13,14};
+    (bst_type inside {WRAP4, INCR4}) -> this.bst_len == 3;
+    (bst_type inside {WRAP8, INCR8}) -> this.bst_len == 7;
+    (bst_type inside {WRAP16, INCR16}) -> this.bst_len == 15;
   }
 
 // only work for dynamic array init, that's doesn't work for static queue
@@ -72,31 +70,24 @@ class ahb_sequence_item #(
 //  }
 
   constraint c_wrap_burst {
-    solve bst_type before bst_len, trx_size, addr;
-    solve bst_len before trx_size, addr;
-    solve trx_size before addr;
+    solve bst_type before this.bst_len, this.trx_size, this.addr;
+    solve this.bst_len before this.trx_size, this.addr;
+    solve this.trx_size before this.addr;
 
     if(bst_type inside {WRAP4, WRAP8, WRAP16}) {
       // Start address should be aligned to the size of each transfer
-      (trx_size == B16)  -> addr[0]   == 0;
-      (trx_size == B32)  -> addr[1:0] == 0;
-      (trx_size == B64)  -> addr[2:0] == 0;
-      (trx_size == B128) -> addr[3:0] == 0;
-      (trx_size == B256) -> addr[4:0] == 0;
-      (trx_size == B512) -> addr[5:0] == 0;
-      (trx_size == B1024)-> addr[6:0] == 0;
+      (this.trx_size == B16)  -> this.addr[0]   == 0;
+      (this.trx_size == B32)  -> this.addr[1:0] == 0;
+      (this.trx_size == B64)  -> this.addr[2:0] == 0;
+      (this.trx_size == B128) -> this.addr[3:0] == 0;
+      (this.trx_size == B256) -> this.addr[4:0] == 0;
+      (this.trx_size == B512) -> this.addr[5:0] == 0;
+      (this.trx_size == B1024)-> this.addr[6:0] == 0;
     }
   }
 
-  constraint c_offset {
-    solve trx_size before offset;
-      (trx_size == B16)  -> offset == 2;
-      (trx_size == B32)  -> offset == 4;
-      (trx_size == B64)  -> offset == 8;
-      (trx_size == B128) -> offset == 16;
-      (trx_size == B256) -> offset == 32;
-      (trx_size == B512) -> offset == 64;
-      (trx_size == B1024)-> offset == 128;
+  constraint c_trx_size {
+    this.trx_size == B32;
   }
 
   // TODO
@@ -111,15 +102,15 @@ class ahb_sequence_item #(
   //}
 
   constraint c_hbusreq_L2H {
-    hbusreq_L2H inside {[0:16]};
+    hbusreq_L2H inside {[1:16]};
   }
 
   constraint c_hnonseq_L2H {
-    hnonseq_L2H inside {[0:16]};
+    hnonseq_L2H inside {[1:16]};
   }
 
   constraint c_hready_L2H {
-    hready_L2H inside {[0:16]};
+    hready_L2H inside {[1:16]};
   }
 
   `uvm_object_param_utils_begin(item_t)

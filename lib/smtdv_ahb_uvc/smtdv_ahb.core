@@ -8,7 +8,7 @@ stdout = FALSE
 unittest = TRUE
 clean = FALSE
 simulator = ius
-test = ahb_cfg_label_test
+test = ahb_setup_test
 
 # add your test below
 tests =

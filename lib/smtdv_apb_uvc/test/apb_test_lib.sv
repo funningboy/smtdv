@@ -6,7 +6,6 @@
 
 `include "apb_setup_test.sv"
 `include "apb_stl_test.sv"
-`include "apb_retry_test.sv"
 `include "apb_err_inject_test.sv"
 `include "apb_hijack_test.sv"
 `include "apb_polling_test.sv"

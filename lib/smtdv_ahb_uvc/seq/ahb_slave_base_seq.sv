@@ -38,7 +38,7 @@ class ahb_slave_base_seq #(
     data= new[DATA_WIDTH>>3];
     super.mid_do_read_item(item);
 
-    #1;
+    `SMTDV_SWAP(1)
     wait(!gene_mem.is_lock());
     gene_mem.lock();
     item.post_addr(item.addr, item.trx_size, item.bst_len, item.bst_type, addrs);

@@ -28,6 +28,7 @@ class smtdv_monitor#(
 
   uvm_analysis_port#(T1) item_collected_port; // collect to scoreboard
   uvm_analysis_port#(T1) item_asserted_port;  // pre assert note to sequence item
+  uvm_analysis_port#(T1) item_callback_port;  // notify rsp back to master sequence
 
   // as backend threads/handler
   hdler_t bk_handler;
@@ -39,6 +40,7 @@ class smtdv_monitor#(
     super.new(name, parent);
     item_collected_port = new("item_collected_port", this);
     item_asserted_port = new("item_asserted_port", this);
+    item_callback_port = new("item_callback_port", this);
   endfunction : new
 
   virtual function void build_phase(uvm_phase phase);

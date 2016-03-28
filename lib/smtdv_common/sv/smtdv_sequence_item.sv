@@ -66,9 +66,10 @@ class smtdv_sequence_item#(
   rand bit [ADDR_WIDTH-1:0]     addrs[$];
   rand bit [(DATA_WIDTH>>3)-1:0][7:0] data_beat[$];
   rand bit [(DATA_WIDTH>>3)-1:0][0:0] byten_beat[$];
-  rand int            offset = DATA_WIDTH>>3;
-  rand int 	          rsp;
+  rand int            offset;
+  rand trx_rsp_t 	  rsp;
   rand int            bst_len;
+  rand trx_size_t     trx_size;
 
   bit                 success = FALSE;
   bit                 retry = FALSE;
@@ -99,12 +100,36 @@ class smtdv_sequence_item#(
     life_time inside {[10:20]};
   }
 
+  constraint c_offset {
+    solve trx_size before offset;
+      (trx_size == B16)  -> offset == 2;
+      (trx_size == B32)  -> offset == 4;
+      (trx_size == B64)  -> offset == 8;
+      (trx_size == B128) -> offset == 16;
+      (trx_size == B256) -> offset == 32;
+      (trx_size == B512) -> offset == 64;
+      (trx_size == B1024)-> offset == 128;
+  }
+
+  constraint c_addr {
+    solve trx_size before addr;
+
+      // Start address should be aligned to the size of each transfer
+      (trx_size == B16)  -> addr[0]   == 0;
+      (trx_size == B32)  -> addr[1:0] == 0;
+      (trx_size == B64)  -> addr[2:0] == 0;
+      (trx_size == B128) -> addr[3:0] == 0;
+      (trx_size == B256) -> addr[4:0] == 0;
+      (trx_size == B512) -> addr[5:0] == 0;
+      (trx_size == B1024)-> addr[6:0] == 0;
+  }
+
   `uvm_object_param_utils_begin(item_t)
     `uvm_field_int(uuid, UVM_ALL_ON)
     // virtual field should be imp at top level
     `uvm_field_int(addr, UVM_ALL_ON)
     `uvm_field_int(bst_len, UVM_ALL_ON)
-    `uvm_field_int(rsp, UVM_ALL_ON)
+    `uvm_field_enum(trx_rsp_t, rsp, UVM_ALL_ON)
     `uvm_field_queue_int(addrs, UVM_ALL_ON)
     `uvm_field_queue_int(data_beat, UVM_ALL_ON)
     `uvm_field_queue_int(byten_beat, UVM_ALL_ON)

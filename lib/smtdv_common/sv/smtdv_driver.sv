@@ -32,6 +32,7 @@ class smtdv_driver#(
   typedef smtdv_driver#(ADDR_WIDTH, DATA_WIDTH, VIF, CFG, REQ, RSP) drv_t;
   typedef smtdv_thread_handler#(drv_t) hdler_t;
   typedef smtdv_force_vif#(drv_t) force_t;
+  typedef smtdv_rsp_back#(ADDR_WIDTH, DATA_WIDTH, drv_t, REQ) rsp_back_t;
   typedef smtdv_queue#(REQ) item_q_t;
   typedef smtdv_master_cfg mst_cfg_t;
 
@@ -40,6 +41,7 @@ class smtdv_driver#(
 
   // as backend threads/handler
   force_t b0;
+  rsp_back_t b1;
   hdler_t bk_handler;
 
   item_q_t bbox;  // backdoor
@@ -47,6 +49,7 @@ class smtdv_driver#(
 
   `uvm_component_param_utils_begin(drv_t)
     `uvm_field_object(b0, UVM_ALL_ON)
+    `uvm_field_object(b1, UVM_ALL_ON)
     `uvm_field_object(bk_handler, UVM_ALL_ON)
   `uvm_component_utils_end
 
@@ -63,14 +66,17 @@ class smtdv_driver#(
     // build backend threads
     bk_handler = hdler_t::type_id::create("smtdv_backend_handler", this);
     b0 = force_t::type_id::create("smtdv_force_vif", this);
+    b1 = rsp_back_t::type_id::create("smtdv_rsp_back", this);
 
     `SMTDV_RAND(bk_handler)
     `SMTDV_RAND(b0)
+    `SMTDV_RAND(b1)
   endfunction : build_phase
 
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
     b0.register(this); bk_handler.add(b0);
+    b1.register(this); bk_handler.add(b1);
   endfunction : connect_phase
 
   virtual function void end_of_elaboration_phase(uvm_phase phase);
@@ -80,62 +86,17 @@ class smtdv_driver#(
   endfunction : end_of_elaboration_phase
 
   extern virtual task run_phase(uvm_phase phase);
-  extern virtual task run_rsp_back();
-  extern virtual task update_rsp_back();
+  extern virtual task update_rsp_back(REQ ritem, REQ mitem);
   extern virtual task reset_driver();
   extern virtual task drive_bus();
   extern virtual task run_threads();
 
 endclass : smtdv_driver
 
-// only for master to rsp back
-task smtdv_driver::run_rsp_back();
-  int founds[$];
-
-  fork
-    begin
-      wait (cfg.start_to_stop);
-
-            `uvm_info(get_full_name(),
-              {$psprintf("sssssss")}, UVM_LOW)
-
-
-    end
-
-    begin : get_bkdor_item_from_mon
-      forever begin
-        `SMTDV_SWAP(0)
-
-        mon_get_port.get(item);
-
-        if ($cast(mst_cfg, cfg)) begin
-          //wait(item.addr_complete && item.data_complete);
-
-          bbox.find_idxs(item, founds);
-          if (founds.size()!=1) begin
-            `uvm_error("SMTDV_RSP_UPDATE",
-                {$psprintf("RSP UPDATE BACK FAIL")})
-
-            `uvm_info(get_full_name(),
-              {$psprintf("mon get %s", item.sprint())}, UVM_LOW)
-
-            bbox.dump(4);
-          end
-
-          bbox.async_get(founds[0], 0, ritem);
-          update_rsp_back();
-        end
-       end
-     end
-   join_any
-   disable fork;
-
-endtask : run_rsp_back
-
-// imp at top level
-task smtdv_driver::update_rsp_back();
-   ritem.data_beat = item.data_beat;
-   ritem.rsp = item.rsp;
+// override at top level
+task smtdv_driver::update_rsp_back(REQ ritem, REQ mitem);
+   ritem.data_beat = mitem.data_beat;
+   ritem.rsp = mitem.rsp;
 endtask : update_rsp_back
 
 task smtdv_driver::run_phase(uvm_phase phase);
@@ -151,10 +112,6 @@ task smtdv_driver::run_phase(uvm_phase phase);
       fork
         begin
           @(negedge resetn);
-        end
-
-        begin
-          run_rsp_back();
         end
 
         begin

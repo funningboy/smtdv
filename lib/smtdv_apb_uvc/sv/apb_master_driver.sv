@@ -67,7 +67,7 @@ class apb_master_driver#(
   extern virtual task reset_inf();
   extern virtual task drive_bus();
   extern virtual task run_threads();
-  extern virtual task update_rsp_back();
+  extern virtual task update_rsp_back(item_t ritem, item_t mitem);
 
 endclass : apb_master_driver
 
@@ -105,8 +105,8 @@ task apb_master_driver::drive_bus();
 endtask : drive_bus
 
 
-task apb_master_driver::update_rsp_back();
-  super.update_rsp_back();
+task apb_master_driver::update_rsp_back(item_t ritem, item_t mitem);
+  super.update_rsp_back(ritem, mitem);
 endtask : update_rsp_back
 
 `endif // end of __APB_MASTER_DRIVER_SV__
