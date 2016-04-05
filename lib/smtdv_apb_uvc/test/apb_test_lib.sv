@@ -12,6 +12,7 @@
 `include "apb_interrupt_test.sv"
 `include "apb_cfg_label_test.sv"
 `include "apb_rand_test.sv"
+`include "apb_reset_test.sv"
 `include "apb_csim_test.sv"
 
 `endif // __APB_TEST_LIST_SV__

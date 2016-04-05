@@ -71,6 +71,7 @@ class ahb_master_driver #(
   extern virtual task drive_bus();
   extern virtual task redrive_bus(item_t item);
   extern virtual task run_threads();
+  extern virtual task update_rsp_back(item_t ritem, item_t mitem);
 
 endclass : ahb_master_driver
 
@@ -137,6 +138,10 @@ task ahb_master_driver::redrive_bus(item_t item);
     databox.async_push_front(ritem, 0);
   join_none
 endtask : redrive_bus
+
+task ahb_master_driver::update_rsp_back(item_t ritem, item_t mitem);
+  super.update_rsp_back(ritem, mitem);
+endtask : update_rsp_back
 
 
 `endif // end of __AHB_MASTER_DRIVER_SV__

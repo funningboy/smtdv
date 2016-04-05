@@ -7,8 +7,8 @@ spawn = TRUE
 stdout = FALSE
 unittest = TRUE
 clean = FALSE
-simulator = ius
-test = ahb_setup_test
+simulator = mti
+test = ahb_rand_test
 
 # add your test below
 tests =
@@ -25,6 +25,7 @@ tests =
   ahb_cfg_label_test
 
 # TODO
+#  ahb_interrupt_test fail at graph declare
 #  ahb_split_test
 #  ahb_retry_test
 #  ahb_fw_ctl_test

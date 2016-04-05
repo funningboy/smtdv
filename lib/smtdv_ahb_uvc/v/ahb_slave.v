@@ -47,7 +47,7 @@ module ahb_slave #(
   reg [DATA_WIDTH-1:0]     hrdata;
 
   // implement your func here ...
-  assign hresp = ahb_pkg::OKAY;
+  assign hresp = 'h0;
   assign hreadyout = 1'b1;
 
   always@(posedge clk) begin

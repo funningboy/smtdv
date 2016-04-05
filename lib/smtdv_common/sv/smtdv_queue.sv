@@ -34,7 +34,7 @@ class smtdv_queue#(
   extern virtual function bit has_item(T item);
   extern virtual function void find_all(T item, ref T founds[$]);
   extern virtual function void find_idxs(T item, ref int founds[$]);
-  extern virtual function void dump(int remain=10);
+  extern virtual function void dump(int remain=-1);
 
   extern virtual task async_push_front(T item, int delay=0);
   extern virtual task async_push_back(T item, int delay=0);
@@ -97,7 +97,7 @@ function void smtdv_queue::find_idxs(smtdv_queue::T item, ref int founds[$]);
 endfunction : find_idxs
 
 
-function void smtdv_queue::dump(int remain=10);
+function void smtdv_queue::dump(int remain=-1);
   int bg_idx = 0;
   int ed_idx = 0;
 
@@ -106,9 +106,6 @@ function void smtdv_queue::dump(int remain=10);
         {$psprintf("QUEUE IS EMPTY\n")}, UVM_LOW)
     return;
   end
-
-  if (size()>=remain)
-    bg_idx = size() - remain;
 
   ed_idx = size() -1;
 

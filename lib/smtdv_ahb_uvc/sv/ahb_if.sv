@@ -48,6 +48,9 @@ interface ahb_if #(
   bit has_coverage = 1;
   bit has_performance = 1;
 
+  // declare your sideband debug msg
+  bit [ADDR_WIDTH-1:0]  label;
+
   longint cyc = 0;
 
   clocking slave @(posedge clk or negedge resetn);

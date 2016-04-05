@@ -7,6 +7,7 @@
 `include "apb_master_stl_vseq.sv"
 `include "apb_master_interrupt_vseq.sv"
 `include "apb_master_rand_vseq.sv"
+`include "apb_master_reset_vseq.sv"
 
 `include "apb_master_retry_vseq.sv"
 `include "apb_master_polling_vseq.sv"

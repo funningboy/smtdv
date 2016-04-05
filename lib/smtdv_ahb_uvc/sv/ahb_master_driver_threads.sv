@@ -120,7 +120,7 @@ class ahb_master_drive_addr #(
       end
 
       `uvm_info(this.cmp.get_full_name(),
-          {$psprintf("try do addr item \n%s", item.sprint())}, UVM_LOW)
+          {$psprintf("TRY DO ADDR ITEM \n%s", item.sprint())}, UVM_LOW)
 
       if (this.cmp.cfg.has_debug)
         update_timestamp();
@@ -251,7 +251,7 @@ class ahb_master_drive_data #(
         disable fork;
       end
       `uvm_info(this.cmp.get_full_name(),
-          {$psprintf("try do data item \n%s", item.sprint())}, UVM_LOW)
+          {$psprintf("TRY DO DATA ITEM \n%s", item.sprint())}, UVM_LOW)
 
       if (this.cmp.cfg.has_debug)
         update_timestamp();

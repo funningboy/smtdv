@@ -30,6 +30,7 @@ class ahb_monitor #(
   typedef ahb_collect_cover_group#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) coll_cov_grp_t;
   typedef ahb_export_collected_items#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) exp_coll_items_t;
   typedef ahb_update_notify_labels#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) updt_note_lab_t;
+  typedef ahb_snoop_backdoor_labels#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) snop_bkdor_lab_t;
   typedef smtdv_thread_handler#(mon_t) hdler_t;
 
   // as frontend threads/handler
@@ -39,12 +40,14 @@ class ahb_monitor #(
   mailbox #(item_t) ebox; // export to db channel
   mailbox #(item_t) pbox; // port to data channel
   mailbox #(item_t) bbox; // update cfg channel
+  mailbox #(item_t) sbox; // snoop to debug channel
 
   // as backend system services, don't override these.
   coll_addr_item_t th0;
   coll_data_item_t th1;
   coll_stop_sin_t th2;
   updt_note_lab_t th5;
+  snop_bkdor_lab_t th6;
 
   // as frontend system services, user can override these at top level.
   coll_cov_grp_t th3;
@@ -59,6 +62,7 @@ class ahb_monitor #(
     ebox = new();
     pbox = new();
     bbox = new();
+    sbox = new();
   endfunction : new
 
   // register thread to thread handler
@@ -69,6 +73,7 @@ class ahb_monitor #(
     th0 = coll_addr_item_t::type_id::create("ahb_collect_addr_items", this);
     th1 = coll_data_item_t::type_id::create("ahb_collect_data_items", this);
     th2 = coll_stop_sin_t::type_id::create("ahb_collect_stop_signal", this);
+    th6 = snop_bkdor_lab_t::type_id::create("ahb_snoop_backdoor_labels", this);
 
     th3 = coll_cov_grp_t::type_id::create("ahb_collect_cover_group", this);
     th4 = exp_coll_items_t::type_id::create("ahb_export_collected_items", this);
@@ -81,6 +86,7 @@ class ahb_monitor #(
     `SMTDV_RAND(th3)
     `SMTDV_RAND(th4)
     `SMTDV_RAND(th5)
+    `SMTDV_RAND(th6)
   endfunction : build_phase
 
 
@@ -92,6 +98,7 @@ class ahb_monitor #(
     th3.register(this); th_handler.add(th3);
     th4.register(this); th_handler.add(th4);
     th5.register(this); th_handler.add(th5);
+    th6.register(this); th_handler.add(th6);
   endfunction : connect_phase
 
   virtual function void end_of_elaboration_phase(uvm_phase phase);

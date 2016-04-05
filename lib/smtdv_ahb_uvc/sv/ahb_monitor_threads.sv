@@ -166,7 +166,8 @@ class ahb_export_collected_items#(
 
   virtual task create_table();
     string table_nm = {$psprintf("\"%s\"", this.cmp.get_full_name())};
-    `uvm_info(this.cmp.get_full_name(), {$psprintf("create mon sqlite3: %s", table_nm)}, UVM_LOW)
+    `uvm_info(this.cmp.get_full_name(),
+        {$psprintf("CREATE MON SQLITE3: %s", table_nm)}, UVM_LOW)
 
     smtdv_sqlite3::create_tb(table_nm);
     foreach (attr_longint[i])
@@ -252,6 +253,60 @@ class ahb_update_notify_labels#(
 endclass : ahb_update_notify_labels
 
 
+class ahb_snoop_backdoor_labels#(
+  ADDR_WIDTH = 14,
+  DATA_WIDTH = 32,
+  type CFG = ahb_slave_cfg,
+  type SEQR = ahb_slave_sequencer#(ADDR_WIDTH, DATA_WIDTH)
+  ) extends
+    ahb_monitor_base_thread#(
+      .ADDR_WIDTH(ADDR_WIDTH),
+      .DATA_WIDTH(DATA_WIDTH),
+      .CFG(CFG),
+      .SEQR(SEQR)
+  );
+
+  typedef ahb_snoop_backdoor_labels#(ADDR_WIDTH, DATA_WIDTH, CFG, SEQR) snoop_t;
+  typedef ahb_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+
+  typedef struct {
+    bit [ADDR_WIDTH-1:0] addr;
+    bit [DATA_WIDTH-1:0] data;
+  } label_t;
+
+  label_t labels[$] = '{
+    '{'h1000_0000, 'hdeaddead }
+  };
+
+  item_t item;
+
+  `uvm_object_param_utils_begin(snoop_t)
+  `uvm_object_utils_end
+
+  function new(string name = "ahb_snoop_backdoor_labels", uvm_component parent=null);
+    super.new(name, parent);
+  endfunction : new
+
+  virtual task run();
+    forever begin
+      this.cmp.sbox.get(item);
+
+      foreach(item.addrs[i]) begin
+        foreach(labels[j]) begin
+          if (labels[j].addr == item.addrs[i])
+            this.cmp.vif.label = labels[j].data;
+
+        end
+      end
+
+      if (this.cmp.cfg.has_debug)
+        update_timestamp();
+    end
+  endtask : run
+
+endclass : ahb_snoop_backdoor_labels
+
+
 class ahb_collect_stop_signal#(
   ADDR_WIDTH = 14,
   DATA_WIDTH = 32,
@@ -283,7 +338,15 @@ class ahb_collect_stop_signal#(
   endfunction : new
 
   virtual task do_stop();
-    while (cnt < stop_cnt) begin
+    forever begin
+
+      // notify sequencer ready to stop
+      if (this.cmp.cfg.has_status) begin
+        if (cnt > stop_cnt)
+            this.cmp.cfg.start_to_stop = TRUE;
+      end
+      else begin cnt = 0; end
+
       @(negedge this.cmp.vif.clk);
       if (pre_st == this.cmp.vif.htrans) begin
         cnt++;
@@ -308,11 +371,13 @@ class ahb_collect_stop_signal#(
     // notify sequencer to finish
     // like timeout watch dog ref: http://www.synapse-da.com/Uploads/PDFFiles/04_UVM-Heartbeat.pdf
     if (this.cmp.seqr) begin
-      this.cmp.seqr.finish = 1;
-      `uvm_info(this.cmp.get_full_name(), {$psprintf("try collect finish signal\n")}, UVM_LOW)
+      this.cmp.seqr.finish = TRUE;
+      `uvm_info(this.cmp.get_full_name(),
+          {$psprintf("TRY COLLECT FINISH SIGNAL\n")}, UVM_LOW)
     end
     else begin
-      `uvm_fatal(this.cmp.get_full_name(), {$psprintf("try collect finish signal\n")})
+      `uvm_fatal(this.cmp.get_full_name(),
+          {$psprintf("TRY COLLECT FINISH SIGNAL\n")})
     end
   endtask : run
 
@@ -391,6 +456,7 @@ class ahb_collect_addr_items#(
       if (!$cast(m_cfg, this.cmp.cfg) && item.trs_t == WR) `SMTDV_SWAP(0)
       if ($cast(m_cfg, this.cmp.cfg) && item.trs_t == RD) `SMTDV_SWAP(0)
       this.cmp.item_asserted_port.write(item);
+      this.cmp.item_callback_port.write(item);
 
       fork
         begin
@@ -405,7 +471,7 @@ class ahb_collect_addr_items#(
       join
 
       `uvm_info(this.cmp.get_full_name(),
-          {$psprintf("try collect addr item \n%s", item.sprint())}, UVM_LOW)
+          {$psprintf("TRY COLLECT ADDR ITEM \n%s", item.sprint())}, UVM_LOW)
 
        if (this.cmp.cfg.has_debug)
         update_timestamp();
@@ -571,13 +637,14 @@ class ahb_collect_data_items#(
       if ($cast(m_cfg, this.cmp.cfg) && item.trs_t == RD) `SMTDV_SWAP(0)
 
       `uvm_info(this.cmp.get_full_name(),
-          {$psprintf("try collect data item \n%s", item.sprint())}, UVM_LOW)
+          {$psprintf("TRY COLLECT DATA ITEM \n%s", item.sprint())}, UVM_LOW)
 
       if (item.success) this.cmp.item_collected_port.write(item);
 
       if (this.cmp.cfg.has_coverage) this.cmp.cbox.put(item);
       if (this.cmp.cfg.has_export)   this.cmp.ebox.put(item);
       if (this.cmp.cfg.has_notify)   this.cmp.bbox.put(item);
+      if (this.cmp.cfg.has_debug)    this.cmp.sbox.put(item);
 
       if (this.cmp.cfg.has_debug)
         update_timestamp();

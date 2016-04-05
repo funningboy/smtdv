@@ -15,6 +15,7 @@ class smtdv_base_item
 
   int initorid = -1;
   int targetid = -1;
+  int debug = FALSE;
   rand int prio;
 
   typedef uvm_component cmp_t;
@@ -210,15 +211,27 @@ endfunction : unpack_data
 function bit smtdv_sequence_item::compare(smtdv_sequence_item::item_t cmp);
   // trs_t
   if (trs_t != cmp.trs_t) begin
+    if (this.debug)
+      `uvm_info(get_full_name(),
+        {$psprintf("TRS_T IS NOT MATCH\n")}, UVM_LOW)
+
     return FALSE;
   end
 
   // addr cmp
   if (addrs.size() != cmp.addrs.size() ) begin
+    if (this.debug)
+      `uvm_info(get_full_name(),
+        {$psprintf("COMPARE ADDRS.SIZE() IS NOT MATCH\n")}, UVM_LOW)
+
     return FALSE;
   end
   foreach(addrs[i]) begin
     if (addrs[i] != cmp.addrs[i]) begin
+      if (this.debug)
+        `uvm_info(get_full_name(),
+          {$psprintf("COMPARE ADDRS[%0d] IS NOT MATCH %h:%h\n", i, addrs[i], cmp.addrs[i])}, UVM_LOW)
+
       return FALSE;
     end
   end
@@ -226,20 +239,36 @@ function bit smtdv_sequence_item::compare(smtdv_sequence_item::item_t cmp);
   if (trs_t inside {WR}) begin
     // data_beat cmp
     if (data_beat.size() != cmp.data_beat.size() ) begin
+      if (this.debug)
+        `uvm_info(get_full_name(),
+          {$psprintf("COMPARE DATA_BEAT.SIZE() IS NOT MATCH\n")}, UVM_LOW)
+
       return FALSE;
     end
     foreach(data_beat[i]) begin
       if (data_beat[i] != cmp.data_beat[i]) begin
+        if (this.debug)
+          `uvm_info(get_full_name(),
+            {$psprintf("COMPARE DATA_BEAT[%0d] IS NOT MATCH %h:%h\n", i, data_beat[i], cmp.data_beat[i])}, UVM_LOW)
+
         return FALSE;
       end
     end
 
     // byten cmp
     if (byten_beat.size() != cmp.byten_beat.size() ) begin
+      if (this.debug)
+        `uvm_info(get_full_name(),
+           {$psprintf("COMPARE BYTEN_BEAT.SIZE() IS NOT MATCH\n")}, UVM_LOW)
+
       return FALSE;
     end
     foreach(byten_beat[i]) begin
       if (byten_beat[i] != cmp.byten_beat[i]) begin
+        if (this.debug)
+          `uvm_info(get_full_name(),
+            {$psprintf("COMPARE BYTEN_BEAT[%0d] IS NOT MATCH %h:%h\n", i, byten_beat[i], cmp.byten_beat[i])}, UVM_LOW)
+
         return FALSE;
       end
     end

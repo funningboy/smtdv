@@ -327,7 +327,7 @@ class apb_snoop_backdoor_labels#(
   `uvm_object_param_utils_begin(snoop_t)
   `uvm_object_utils_end
 
-  function new(string name = "apb_collect_stop_signal", uvm_component parent=null);
+  function new(string name = "apb_snoop_backdoor_labels", uvm_component parent=null);
     super.new(name, parent);
   endfunction : new
 

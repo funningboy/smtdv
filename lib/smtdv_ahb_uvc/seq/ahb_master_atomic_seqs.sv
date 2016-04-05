@@ -25,8 +25,8 @@ class ahb_master_1w_seq#(
   bst_type_t _bst_type;
   trx_size_t _trx_size;
 
-  constraint c_bst_type { bst_type inside {INCR, WRAP4, INCR4, WRAP8, INCR8, WRAP16, INCR16}; }
-//  constraint c_bst_type { bst_type inside {INCR4}; }
+//  constraint c_bst_type { bst_type inside {INCR, WRAP4, INCR4, WRAP8, INCR8, WRAP16, INCR16}; }
+  constraint c_bst_type { bst_type inside {INCR8}; }
   constraint c_trx_size { trx_size inside {B32}; }
 
   `uvm_object_param_utils_begin(seq_t)
@@ -86,8 +86,8 @@ class ahb_master_1r_seq#(
   bst_type_t _bst_type;
   trx_size_t _trx_size;
 
-  constraint c_bst_type { bst_type inside {INCR, WRAP4, INCR4, WRAP8, INCR8, WRAP16, INCR16}; }
-  //constraint c_bst_type { bst_type inside {INCR4}; }
+  //constraint c_bst_type { bst_type inside {INCR, WRAP4, INCR4, WRAP8, INCR8, WRAP16, INCR16}; }
+  constraint c_bst_type { bst_type inside {INCR8}; }
   constraint c_trx_size { trx_size inside {B32}; }
 
   `uvm_object_param_utils_begin(seq_t)

@@ -14,6 +14,7 @@ class ahb_master_interrupt_vseq
   typedef ahb_master_interrupt_vseq vseq_t;
   typedef ahb_master_stl_seq#(ADDR_WIDTH, DATA_WIDTH) seq_stl_t;
   typedef ahb_master_irq_seq#(ADDR_WIDTH, DATA_WIDTH) seq_irq_t;
+  typedef ahb_master_stop_seqr_seq#(ADDR_WIDTH, DATA_WIDTH) seq_stop_t;
   typedef uvm_component bcmp_t;
   typedef uvm_object obj_t;
 
@@ -22,6 +23,7 @@ class ahb_master_interrupt_vseq
 
   seq_stl_t seq_stls[$];
   seq_irq_t seq_irq;
+  seq_stop_t seq_stop;
 
   rand int cnt;
   constraint c_cnt { cnt inside {[10:20]}; }

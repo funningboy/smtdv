@@ -11,6 +11,7 @@ class ahb_master_stl_vseq
   typedef ahb_virtual_sequencer vseqr_t;
   typedef ahb_master_stl_vseq vseq_t;
   typedef ahb_master_stl_seq#(ADDR_WIDTH, DATA_WIDTH) seq_stl_t;
+  typedef ahb_master_stop_seqr_seq#(ADDR_WIDTH, DATA_WIDTH) seq_stop_t;
   typedef uvm_component bcmp_t;
   typedef uvm_object obj_t;
 
@@ -18,6 +19,7 @@ class ahb_master_stl_vseq
   obj_t bseq;
 
   seq_stl_t seq_stls[$];
+  seq_stop_t seq_stop;
 
   typedef struct {
     string q[$];
@@ -47,6 +49,8 @@ class ahb_master_stl_vseq
    `uvm_create_on(seq_stls[1], vseqr.ahb_magts[0].seqr)
     seq_stls[1].m_file = stls.q[1];
 
+    `uvm_create_on(seq_stop, vseqr.ahb_magts[0].seqr)
+
     graph = '{
         nodes:
            '{
@@ -63,7 +67,14 @@ class ahb_master_stl_vseq
                    seqr: vseqr.ahb_magts[0].seqr,
                    prio: -1,
                    desc: {$psprintf("bind Node[%0d] as %s", 1, "stls[1]")}
-               }
+               },
+               '{
+                    uuid: 2,
+                    seq: seq_stop,
+                    seqr: vseqr.ahb_magts[0].seqr,
+                    prio: -1,
+                    desc: {$psprintf("bind Node[%0d] as %s", 2, "seq_stop")}
+                }
            },
         edges:
            '{
@@ -82,6 +93,7 @@ class ahb_master_stl_vseq
     fork
       begin seq_stls[0].start(vseqr.ahb_magts[0].seqr); end
       begin seq_stls[1].start(vseqr.ahb_magts[0].seqr); end
+      begin seq_stop.start(vseqr.ahb_magts[0].seqr); end
     join_none;
     #10;
   endtask : body

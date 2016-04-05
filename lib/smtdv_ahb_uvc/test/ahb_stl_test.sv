@@ -37,11 +37,11 @@ class ahb_stl_test
   virtual function void end_of_elaboration_phase(uvm_phase phase);
     super.end_of_elaboration_phase(phase);
 
-    //cmp_envs[0].mst_agts[0].cfg.has_busy = FALSE;
+    cmp_envs[0].mst_agts[0].cfg.has_busy = FALSE;
 
-    //cmp_envs[0].slv_agts[0].cfg.has_error = FALSE;
-    //cmp_envs[0].slv_agts[0].cfg.has_retry = FALSE;
-    //cmp_envs[0].slv_agts[0].cfg.has_split = FALSE;
+    cmp_envs[0].slv_agts[0].cfg.has_error = FALSE;
+    cmp_envs[0].slv_agts[0].cfg.has_retry = FALSE;
+    cmp_envs[0].slv_agts[0].cfg.has_split = FALSE;
   endfunction : end_of_elaboration_phase
 
 //  check trx with sqlite3 db

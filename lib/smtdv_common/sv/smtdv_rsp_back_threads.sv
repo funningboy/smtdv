@@ -35,26 +35,14 @@ task smtdv_rsp_back::run();
 
   fork
     forever begin
-
       this.cmp.mon_get_port.get(item);
       wait(item.addr_complete && item.data_complete);
 
+      // inorder
       if ($cast(mst_cfg,this.cmp.cfg)) begin
-
-        this.cmp.bbox.find_idxs(item, founds);
-        if (founds.size()!=1) begin
-          `uvm_error("SMTDV_RSP_UPDATE",
-              {$psprintf("RSP UPDATE BACK FAIL")})
-
-          `uvm_info(get_full_name(),
-            {$psprintf("mon get %s", item.sprint())}, UVM_LOW)
-
-          this.cmp.bbox.dump(4);
-        end
-
-        this.cmp.bbox.async_get(founds[0], 0, ritem);
+        this.cmp.bbox.async_get(0, 0, ritem);
+        this.cmp.bbox.async_delete(0);
         this.cmp.update_rsp_back(ritem, item);
-
       end
 
       if (this.cmp.cfg.has_debug)

@@ -12,6 +12,7 @@
        has_retry == TRUE; \
        has_split == FALSE; \
    }) \
+   ``CFG``.has_status = TRUE; \
    \
    if (!$cast(slv_cfgs[ID], ``CFG``)) \
     `uvm_error("SMTDV_DCAST_SLV_CFG",  \
@@ -45,6 +46,7 @@
        has_export == TRUE;   \
        has_busy == TRUE;     \
    }) \
+   ``CFG``.has_status = TRUE; \
    if (!$cast(mst_cfgs[ID], ``CFG``)) \
     `uvm_error("SMTDV_DCAST_MST_CFG",  \
         {$psprintf("DOWN CAST TO SMTDV MST CFG FAIL")}) \

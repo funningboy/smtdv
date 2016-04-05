@@ -68,12 +68,12 @@ class apb_base_test
     if(!uvm_config_db#(rst_t)::get(this, "", "rst_vif", rst_vif))
       `uvm_fatal("APB_NO_VIF",{"VIRTUAL INTERFACE MUST BE SET ",get_full_name(),".rst_vif"});
     rst_model.create_rst_monitor(rst_vif);
-
   endfunction : build_phase
 
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
     vseqr.apb_magts[0] = cmp_envs[0].mst_agts[0];
+    vseqr.rst_model = rst_model;
   endfunction : connect_phase
 
   virtual function void end_of_elaboration_phase(uvm_phase phase);
