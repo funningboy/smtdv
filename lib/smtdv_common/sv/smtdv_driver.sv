@@ -154,6 +154,7 @@ endtask : run_threads
 */
 task smtdv_driver::reset_driver();
   bbox.delete();
+  bk_handler.reset();
 endtask : reset_driver
 
 /*

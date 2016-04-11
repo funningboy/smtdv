@@ -57,27 +57,27 @@ class ahb_master_rand_vseq
     `uvm_create_on(seq_1ws[0], vseqr.ahb_magts[0].seqr)
     `SMTDV_RAND_WITH(seq_1ws[0],
       {
-        seq_1ws[0].start_addr == cur_wr_addr;
-        seq_1ws[0].bst_type == bst_type;
-        seq_1ws[0].trx_size == trx_size;
+        start_addr == cur_wr_addr;
+        bst_type == bst_type;
+        trx_size == trx_size;
       })
       cur_wr_addr += incr_wr_addr;
 
     `uvm_create_on(seq_1ws[1], vseqr.ahb_magts[0].seqr)
     `SMTDV_RAND_WITH(seq_1ws[1],
       {
-        seq_1ws[1].start_addr == cur_wr_addr;
-        seq_1ws[1].bst_type == bst_type;
-        seq_1ws[1].trx_size == trx_size;
+        start_addr == cur_wr_addr;
+        bst_type == bst_type;
+        trx_size == trx_size;
       })
       cur_wr_addr += incr_wr_addr;
 
      `uvm_create_on(seq_1rs[0], vseqr.ahb_magts[0].seqr)
      `SMTDV_RAND_WITH(seq_1rs[0],
        {
-          seq_1rs[0].start_addr == cur_rd_addr;
-          seq_1rs[0].bst_type == bst_type;
-          seq_1rs[0].trx_size == trx_size;
+          start_addr == cur_rd_addr;
+          bst_type == bst_type;
+          trx_size == trx_size;
        })
       cur_rd_addr += incr_rd_addr;
 

@@ -66,7 +66,7 @@ class cdn_busmatrix_base_test
   virtual function void connect_phase(uvm_phase phase);
     super.connect_phase(phase);
     vseqr.ahb_magts[0] = clu0.mst_agts[0];
-    //vseqr.ahb_magts[1] = clu0.mst_agts[1];
+    vseqr.ahb_magts[1] = clu0.mst_agts[1];
   endfunction : connect_phase
 
   virtual function void end_of_elaboration_phase(uvm_phase phase);

@@ -58,6 +58,7 @@ class smtdv_thread_handler#(
   extern virtual function int succes();
   extern virtual function int fails();
   extern virtual function void finalize();
+  extern virtual function void reset();
   extern virtual task run();
   extern virtual task watch();
   extern virtual task timer();
@@ -134,6 +135,14 @@ function void smtdv_thread_handler::finalize();
   has_finalize = TRUE;
 endfunction : finalize
 
+/*
+* reset thread
+*/
+function void smtdv_thread_handler::reset();
+  foreach (thread_q[i]) begin
+    thread_q[i].th.has_finalize = FALSE;
+  end
+endfunction : reset
 
 /**
  *  fork registered threads, and join all

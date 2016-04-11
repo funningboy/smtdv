@@ -100,11 +100,11 @@ class ahb_master_polling_seq #(
     item = item_t::type_id::create("item");
     `SMTDV_RAND_WITH(item,
       {
-      item.mod_t == MASTER;
-      item.trs_t == RD;
-      item.run_t == FORCE;
-      item.addr == start_addr;
-      item.prio == prio;
+      mod_t == MASTER;
+      trs_t == RD;
+      run_t == FORCE;
+      addr == start_addr;
+      prio == prio;
       })
 
     `uvm_create(req)

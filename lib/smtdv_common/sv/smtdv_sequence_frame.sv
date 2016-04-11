@@ -26,6 +26,9 @@ class smtdv_sequence_frame#(
   );
 
   typedef smtdv_sequence_frame#(ADDR_WIDTH, DATA_WIDTH) frame_t;
+  typedef smtdv_sequence_item#(ADDR_WIDTH, DATA_WIDTH) item_t;
+
+  item_t item;
 
   typedef struct {
     int ucid;
@@ -50,6 +53,8 @@ class smtdv_sequence_frame#(
   } dframe_t;
 
   dframe_t frame;
+  row_t row;
+  col_t col;
 
   `uvm_object_param_utils_begin(frame_t)
   `uvm_object_utils_end
@@ -58,14 +63,19 @@ class smtdv_sequence_frame#(
     super.new(name);
   endfunction : new
 
-
 //  extern virtual function bit is_valid();  // it's valid sequence_frame
-//  extern virtual function void pack(); //  from sequence_item to sequence_frame
-//  extern virtual function void unpack(); // fraome sequence_frame to sequence_item
-//  extern virtual
-
+  extern virtual function void pack_item(); //  from sequence_item to sequence_frame
+  extern virtual function void unpack_item(); // fraome sequence_frame to sequence_item
+// extern virtual item_t iter();
+//
 endclass : smtdv_sequence_frame
+
+function void smtdv_sequence_frame::pack_item();
+endfunction : pack_item
+
+function void smtdv_sequence_frame::unpack_item();
+endfunction : unpack_item
+
 
 `endif // end of __SMTDV_FRAME_SV__
 
-//class smtdv_frame #()

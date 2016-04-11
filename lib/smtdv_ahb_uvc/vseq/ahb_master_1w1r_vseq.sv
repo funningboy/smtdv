@@ -53,18 +53,18 @@ class ahb_master_1w1r_vseq
     `uvm_create_on(seq_1w, vseqr.ahb_magts[0].seqr)
     `SMTDV_RAND_WITH(seq_1w,
       {
-        seq_1w.start_addr == cur_addr;
-        seq_1w.bst_type == bst_type;
-        seq_1w.trx_size == trx_size;
+        start_addr == cur_addr;
+        bst_type == bst_type;
+        trx_size == trx_size;
       })
 
     // create seq_1r as seq_graph node1
     `uvm_create_on(seq_1r, vseqr.ahb_magts[0].seqr)
     `SMTDV_RAND_WITH(seq_1r,
       {
-        seq_1r.start_addr == cur_addr;
-        seq_1r.bst_type == bst_type;
-        seq_1r.trx_size == trx_size;
+        start_addr == cur_addr;
+        bst_type == bst_type;
+        trx_size == trx_size;
       })
 
     `uvm_create_on(seq_stop, vseqr.ahb_magts[0].seqr)

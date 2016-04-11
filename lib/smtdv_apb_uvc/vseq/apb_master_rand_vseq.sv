@@ -46,13 +46,13 @@ class apb_master_rand_vseq
     `uvm_create_on(seq_1ws[0], vseqr.apb_magts[0].seqr)
     `SMTDV_RAND_WITH(seq_1ws[0],
       {
-        seq_1ws[0].start_addr == cur_wr_addr;
+        start_addr == cur_wr_addr;
       })
 
     `uvm_create_on(seq_1rs[0], vseqr.apb_magts[0].seqr)
     `SMTDV_RAND_WITH(seq_1rs[0],
       {
-        seq_1rs[0].start_addr == cur_rd_addr;
+        start_addr == cur_rd_addr;
       })
 
     `uvm_create_on(seq_stop, vseqr.apb_magts[0].seqr)

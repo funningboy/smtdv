@@ -43,8 +43,8 @@
 // interacts with AHB slaves
 //`define NUM_OF_SLAVES  6
 //`define NUM_OF_MASTERS 8
-`define NUM_OF_SLAVES 1
-`define NUM_OF_MASTERS 1
+`define NUM_OF_SLAVES 2
+`define NUM_OF_MASTERS 2
 
 // Following defines Address bus width and Data bus width of AHB system
 `define AHB_ADDR_WIDTH 32
@@ -55,7 +55,7 @@
 // Define the presence of Slaves in compliance with "NUM_OF_SLAVES"
 // define above
 `define SLAVE0
-//`define SLAVE1
+`define SLAVE1
 //`define SLAVE2
 //`define SLAVE3
 //`define SLAVE4
@@ -75,7 +75,7 @@
 // Define the presence of Masters in compliance with "NUM_OF_MASTERS"
 // define above
 `define MASTER0
-//`define MASTER1
+`define MASTER1
 //`define MASTER2
 //`define MASTER3
 //`define MASTER4

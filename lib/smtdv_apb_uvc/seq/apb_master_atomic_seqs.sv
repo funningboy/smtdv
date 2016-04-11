@@ -35,11 +35,11 @@ class apb_master_1w_seq#(
     item = item_t::type_id::create("item");
     `SMTDV_RAND_WITH(item,
       {
-      item.mod_t == MASTER;
-      item.trs_t == WR;
-      item.run_t == FORCE;
-      item.addr == start_addr;
-      item.prio == prio;
+      mod_t == MASTER;
+      trs_t == WR;
+      run_t == FORCE;
+      addr == start_addr;
+      prio == prio;
       })
 
     `uvm_create(req)
@@ -82,11 +82,11 @@ class apb_master_1r_seq#(
     item = item_t::type_id::create("item");
     `SMTDV_RAND_WITH(item,
       {
-      item.mod_t == MASTER;
-      item.trs_t == RD;
-      item.run_t == FORCE;
-      item.addr == start_addr;
-      item.prio == prio;
+      mod_t == MASTER;
+      trs_t == RD;
+      run_t == FORCE;
+      addr == start_addr;
+      prio == prio;
       })
 
     `uvm_create(req)

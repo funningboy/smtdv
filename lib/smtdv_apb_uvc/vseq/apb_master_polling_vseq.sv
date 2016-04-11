@@ -41,22 +41,22 @@ class apb_master_polling_vseq
     `uvm_create_on(seq_cfgs[0], vseqr.apb_magts[0].seqr)
     `SMTDV_RAND_WITH(seq_cfgs[0],
       {
-        seq_cfgs[0].start_addr == cur_addr;
-        seq_cfgs[0].write_data == pats[0];
+        start_addr == cur_addr;
+        write_data == pats[0];
       })
 
     `uvm_create_on(seq_cfgs[1], vseqr.apb_magts[0].seqr)
     `SMTDV_RAND_WITH(seq_cfgs[1],
       {
-        seq_cfgs[1].start_addr == cur_addr;
-        seq_cfgs[1].write_data == pats[1];
+        start_addr == cur_addr;
+        write_data == pats[1];
       })
 
    `uvm_create_on(seq_pol, vseqr.apb_magts[0].seqr)
     `SMTDV_RAND_WITH(seq_pol,
     {
-       seq_pol.start_addr == cur_addr;
-       seq_pol.expect_data == pats[1];
+       start_addr == cur_addr;
+       expect_data == pats[1];
     })
 
     `uvm_create_on(seq_stop, vseqr.apb_magts[0].seqr)

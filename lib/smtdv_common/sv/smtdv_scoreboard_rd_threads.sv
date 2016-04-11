@@ -64,24 +64,36 @@ endclass : smtdv_watch_rd_lifetime
 task smtdv_watch_rd_lifetime::run();
   addr_t taddr[$];
   queue_t tque;
-  T1 item;
+  T1 item, parent;
+  int dels[$];
 
   forever begin
     #watch_per_ns;
+
     this.cmp.rd_pool.keys(taddr);
 
     foreach(taddr[i])begin
+      dels.delete();
       tque = this.cmp.rd_pool.get(taddr[i]);
 
       for(int j=0; j<tque.size(); j++) begin
         tque.async_get(j, 0, item);
+        $cast(parent, item.parent);
+        if (item.has_check_on_scb || parent.has_check_on_scb_all()) begin
+          dels.push_back(j);
+        end
+        else begin
+          if (item.life_time<0)
+            `uvm_error("SMTDV_SB_LIFE_TIMEOUT",
+                {$psprintf("%s RUN OUT OF LIFE TIMEOUT DATA \n%s", this.cmp.get_full_name(), item.sprint())})
 
-        if (item.life_time<0)
-          `uvm_error("SMTDV_SB_LIFE_TIMEOUT",
-              {$psprintf("RUN OUT OF LIFE TIMEOUT DATA \n%s", item.sprint())})
-
-        item.life_time--;
+          item.life_time--;
+        end
       end
+
+      foreach(dels[i])
+        tque.async_delete(dels[i], 0);
+
     end
 
     if (this.cmp.has_debug)

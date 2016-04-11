@@ -21,7 +21,7 @@ tests =
   apb_interrupt_test
   apb_cfg_label_test
   apb_rand_test
-
+  apb_reset_test
 
 # TODO
 #  apb_interrupt_test fail at graph declare

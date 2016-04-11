@@ -19,10 +19,8 @@ class spi_item #(
 
   `uvm_object_param_utils_begin(`SPI_ITEM)
     `uvm_field_queue_int(data_beat, UVM_DEFAULT)
-    `ifdef SPI_DEBUG
-      `uvm_field_int(htx_L2H, UVM_DEFAULT)
-      `uvm_field_int(hrx_L2H, UVM_DEFAULT)
-    `endif
+    `uvm_field_int(htx_L2H, UVM_DEFAULT)
+    `uvm_field_int(hrx_L2H, UVM_DEFAULT)
   `uvm_object_utils_end
 
   function new (string name = "spi_item");

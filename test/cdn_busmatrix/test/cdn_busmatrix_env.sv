@@ -27,9 +27,9 @@ class cdn_cluster0#(
 
   `include "bm_params.v"
 
-  parameter NUM_OF_MASTERS = 1;
-  parameter NUM_OF_SLAVES = 1;
-  parameter NUM_OF_INITOR = 1;
+  parameter NUM_OF_MASTERS = 2;
+  parameter NUM_OF_SLAVES = 2;
+  parameter NUM_OF_INITOR = 2;
   parameter NUM_OF_TARGETS = NUM_OF_SLAVES;
 
   typedef cdn_cluster0#(ADDR_WIDTH, DATA_WIDTH, VIF, MCFG, MAGT, SCFG, SAGT, T1) clu0_t;
@@ -77,18 +77,18 @@ class cdn_cluster0#(
     bit [ADDR_WIDTH-1:0] start_addr, end_addr;
     super.build_phase(phase);
 
-    `ifdef SLAVE0 `CDN_SLAVE_CREATE(s0_cfg, s0_agt, 0)`endif
-    `ifdef SLAVE1 `CDN_SLAVE_CREATE(s1_cfg, s1_agt, 1) `endif
-    if (NUM_OF_SLAVES != slv_agts.size())
-        `uvm_error("CDN_CMP_GRAPH_ERR",
-            {$psprintf("graph slave size must be %d!=%d", NUM_OF_SLAVES, slv_agts.size())})
-
-
-    `ifdef MASTER0 `CDN_MASTER_CREATE(m0_cfg, m0_agt, 0) `endif
-    `ifdef MASTER1 `CDN_MASTER_CREATE(m1_cfg, m1_agt, 1) `endif
+    `ifdef SLAVE0 `CDN_MASTER_CREATE(m0_cfg, m0_agt, 0) `endif
+    `ifdef SLAVE1 `CDN_MASTER_CREATE(m1_cfg, m1_agt, 1) `endif
     if (NUM_OF_MASTERS != mst_agts.size())
         `uvm_error("CDN_CMP_GRAPH_ERR",
             {$psprintf("graph master size must be %d!=%d", NUM_OF_MASTERS, mst_agts.size())})
+
+
+    `ifdef MASTER0 `CDN_SLAVE_CREATE(s0_cfg, s0_agt, 0) `endif
+    `ifdef MASTER1 `CDN_SLAVE_CREATE(s1_cfg, s1_agt, 1) `endif
+    if (NUM_OF_SLAVES != slv_agts.size())
+        `uvm_error("CDN_CMP_GRAPH_ERR",
+            {$psprintf("graph slave size must be %d!=%d", NUM_OF_SLAVES, slv_agts.size())})
 
 
     for(int i=0; i<NUM_OF_MASTERS; i++) begin

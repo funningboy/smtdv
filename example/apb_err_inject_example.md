@@ -1,10 +1,13 @@
-1. description
-basic READ after WRITE test using apb bus and inject error response back.
+description
+-----
+a basic READ after WRITE test using apb bus and inject error response back to test DUT can handle it or not
 
-2. declare payload sequence, simulator and test at smtdv_apb.core
-2.1 declare the dependency graph as scheduler to handle the sequecne node based on edge correleation,
-by default, parallel or muti sequences are no edge dependency.
+declare payload sequence, simulator and test at smtdv_apb.core
+-----
+declare the dependency graph as scheduler to handle the sequecne node based on edge correleation,
+by default, parallel and muti sequences have no edge dependency.
 
+```
 ex:
   [node0]
      |
@@ -15,6 +18,7 @@ ex:
         [seqr]
 
 ref: lib/smtdv_apb_uvc/vseq/apb_master_1w1r_vseq.sv
+     lib/smtdv_apb_uvc/seq/apb_slave_err_inject_seq.sv
 
     graph = '{
         nodes:
@@ -51,11 +55,13 @@ ref: lib/smtdv_apb_uvc/vseq/apb_master_1w1r_vseq.sv
                }
            }
      };
+```
 
-2.2
+
 override test name as "apb_setup_test" at [main] section
+-----
 ref: lib/smtdv_apb_uvc/sim/smtdv_apb.core
-
+```
 [main]
 description = "SMTDV APB lib"
 root = os.getenv("SMTDV_HOME")
@@ -67,18 +73,25 @@ unittest = TRUE
 clean = FALSE
 simulator = ius
 test = apb_setup_test
+```
 
-3 run test
+run test
+-----
+```
 python ../../../script/run.py --file apb_setup_test
+```
 
-4. simulation report
+simulation report
+-----
 check PASS/FAIL
 
 _simulation.log for MTI,
 irun.log for IUS
 
-5. post process
+post process
+-----
 to extract raw apb bus transaction by querying apb_db.db
+```
 % sqlite3 apb_db.db
 
 sqlite> .tables
@@ -95,6 +108,6 @@ dec_addr    dec_bg_cyc  dec_bg_time  dec_burst   dec_data_000  dec_data_001  dec
 268435456   43          42000        0           1547825622    0             0             0             0             0             0             0             0             0             0             0             0             0             0             0             44          43000        1           0           0           0           0           1           0           1.84467440737096e+19
 268435456   54          53000        0           1547825622    0             0             0             0             0             0             0             0             0             0             0             0             0             0             0             55          54000        0           0           0           0           0           0           0           1.84467440737096e+19
 sqlite>
-
+```
 
 

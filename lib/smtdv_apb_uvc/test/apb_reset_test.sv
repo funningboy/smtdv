@@ -30,6 +30,9 @@ class apb_reset_test
       "default_sequence",
       s_bseq_t::type_id::get());
 
+    uvm_top.set_timeout(1000ns);
+    uvm_top.set_report_severity_id_override(UVM_FATAL, "PH_TIMEOUT", UVM_WARNING);
+
   endfunction : build_phase
 
   virtual function void end_of_elaboration_phase(uvm_phase phase);

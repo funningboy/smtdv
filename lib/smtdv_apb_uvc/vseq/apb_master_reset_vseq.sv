@@ -50,19 +50,19 @@ class apb_master_reset_vseq
     `uvm_create_on(seq_1ws[0], vseqr.apb_magts[0].seqr)
     `SMTDV_RAND_WITH(seq_1ws[0],
       {
-        seq_1ws[0].start_addr == cur_addr;
+        start_addr == cur_addr;
       })
 
     `uvm_create_on(seq_1ws[1], vseqr.apb_magts[0].seqr)
     `SMTDV_RAND_WITH(seq_1ws[1],
       {
-        seq_1ws[1].start_addr == cur_addr;
+        start_addr == cur_addr;
       })
 
     `uvm_create_on(seq_1ws[2], vseqr.apb_magts[0].seqr)
     `SMTDV_RAND_WITH(seq_1ws[2],
       {
-        seq_1ws[1].start_addr == cur_addr;
+        start_addr == cur_addr;
       })
 
     `uvm_create_on(seq_rst, vseqr.apb_magts[0].seqr)

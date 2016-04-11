@@ -85,6 +85,7 @@ endtask : run_threads
 task ahb_master_driver::reset_driver();
   addrbox.delete();
   databox.delete();
+  th_handler.reset();
   reset_inf();
 endtask : reset_driver
 

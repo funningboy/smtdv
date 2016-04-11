@@ -192,6 +192,8 @@ function void smtdv_scoreboard::reset_scoreboard();
 
   rd_pool.keys(taddr);
   foreach(taddr[i]) rd_pool.delete(taddr[i]);
+
+  th_handler.reset();
 endfunction : reset_scoreboard
 
 /**
@@ -292,6 +294,9 @@ function void smtdv_scoreboard::_do_initor_rd_check(smtdv_scoreboard::T1 item, i
     item_q = rd_pool.get(item.addrs[i]);
     it = item_q.pop_front();
 
+    if (it== null)
+      return;
+
     if (!it.compare(aitem))
       `uvm_error("SMTDV_SCB_RD_COMP",
           {$psprintf("RECEIVED WRONG DATA %h\n%s", item.addrs[i], item.sprint())})
@@ -299,6 +304,9 @@ function void smtdv_scoreboard::_do_initor_rd_check(smtdv_scoreboard::T1 item, i
     if (has_debug)
       `uvm_info(get_full_name(),
         {$psprintf("POP rd_pool READ ATOMIC ITEM %h\n%s", item.addrs[i], it.sprint())}, UVM_LOW)
+
+    it.has_check_on_scb = TRUE;
+    it.parent.check_num_on_scb++;
   end
   else begin
     rd_pool.keys(taddr);
@@ -306,9 +314,6 @@ function void smtdv_scoreboard::_do_initor_rd_check(smtdv_scoreboard::T1 item, i
       `uvm_warning(get_full_name(),
           {$psprintf("AT rd_pool: %h\n", taddr[i])})
     end
-
-    `uvm_error("SMTDV_SCB_RD_NOT",
-        {$psprintf("RECEIVED NOTFOUND DATA %h\n%s", item.addrs[i], item.sprint())})
   end
 endfunction : _do_initor_rd_check
 
@@ -361,6 +366,9 @@ function void smtdv_scoreboard::_do_target_wr_check(smtdv_scoreboard::T1 item, i
     item_q = wr_pool.get(item.addrs[i]);
     it = item_q.pop_front();
 
+    if (it==null)
+      return;
+
     if (!it.compare(aitem))
       `uvm_error("SMTDV_SCB_WR_COMP",
           {$psprintf("RECEIVED WRONG DATA %h\n%s", item.addrs[i], item.sprint())})
@@ -368,6 +376,9 @@ function void smtdv_scoreboard::_do_target_wr_check(smtdv_scoreboard::T1 item, i
     if (has_debug)
       `uvm_info(get_full_name(),
         {$psprintf("POP wr_pool WRITE ATOMIC ITEM %h\n%s", item.addrs[i], it.sprint())}, UVM_LOW)
+
+    it.has_check_on_scb = TRUE;
+    it.parent.check_num_on_scb++;
   end
   else begin
     wr_pool.keys(taddr);
@@ -376,8 +387,6 @@ function void smtdv_scoreboard::_do_target_wr_check(smtdv_scoreboard::T1 item, i
           {$psprintf("AT wr_pool: %h \n", taddr[i])})
     end
 
-    `uvm_error("SMTDV_SCB_WR_NOT",
-        {$psprintf("RECEIVED NOTFOUND DATA %h\n%s", item.addrs[i], item.sprint())})
   end
 endfunction : _do_target_wr_check
 

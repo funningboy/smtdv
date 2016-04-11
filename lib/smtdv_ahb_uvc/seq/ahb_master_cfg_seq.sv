@@ -36,12 +36,12 @@ class ahb_master_cfg_seq #(
     item = item_t::type_id::create("item");
     `SMTDV_RAND_WITH(item,
       {
-      item.mod_t == MASTER;
-      item.trs_t == WR;
-      item.run_t == FORCE;
-      item.addr == start_addr;
-      item.bst_type ==  bst_type;
-      item.trx_size == trx_size;
+      mod_t == MASTER;
+      trs_t == WR;
+      run_t == FORCE;
+      addr == start_addr;
+      bst_type ==  bst_type;
+      trx_size == trx_size;
     })
     item.pack_data(0, write_data);
 

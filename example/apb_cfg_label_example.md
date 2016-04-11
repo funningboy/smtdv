@@ -1,11 +1,14 @@
-1. description
+description
+-----
 try to label some valid transactions and layer packages as event callback to notify the
 label handler when the match transaction or package asserted/deasserted at inserted monitor collected
 
-2. declare payload sequence, simulator and test at smtdv_apb.core
-2.1 declare the dependency graph as scheduler to handle the sequecne node based on edge correleation,
-by default, parallel or muti sequences are no edge dependency.
+declare payload sequence, simulator and test at smtdv_apb.core
+-----
+declare the dependency graph as scheduler to handle the sequecne node based on edge correleation,
+by default, parallel and muti sequences have no edge dependency.
 
+```
 ex:
   [node0]
      |
@@ -14,9 +17,10 @@ ex:
      -----------
           |
         [seqr]
-
+```
 ref: lib/smtdv_apb_uvc/vseq/apb_master_stl_vseq.sv
 
+```
     graph = '{
         nodes:
            '{
@@ -52,37 +56,63 @@ ref: lib/smtdv_apb_uvc/vseq/apb_master_stl_vseq.sv
                }
            }
      };
+```
+
+declare the labelled transcation.
+-----
 
 
-2.2 declare the labelled transcation.
 ex:
    record the force vif cfg had asserted at `APB_SLAVE_ADDR_0, if asseted this transaction, then callback to
-   update the pointer cfg.
+   update the right pointer cfg.
 
 ref: lib/smtdv_apb_uvc/test/apb_cfg_label_test.sv
+     lib/smtdv_common/sv/smtdv_cfg_label.sv
+     lib/smtdv_common/sv/smtdv_force_replay_label.sv
 
-    cfg_labs[0].set('{
-        WR,
-        `APB_SLAVE_START_ADDR_0,
-        1,
-        cmp_envs[0].mst_agts[0],
-        cmp_envs[0].mst_agts[0].cfg
-    });
+set/override cfg label rule at top level
+-----
+```
+  virtual function void set(meta_t meta);
+    cfgtb = '{
+        ufid: 0,
+        desc: {$psprintf("force set cfg.stlid as %d", meta.data)},
+        cmp: meta.cmp,
+        cfg: meta.cfg,
+        rows: '{
+            '{
+                urid: 0,
+                addr: meta.addr,
+                data: meta.data,
+                trs: meta.trs,
+                attr: '{
+                    match: FALSE,
+                    require: TRUE,
+                    clear: TRUE,
+                    depends: '{-1},
+                    visit: FALSE
+                },
+                cols: '{
+                    '{
+                        ucid: 0,
+                        left: 5,
+                        right: 3,
+                        def: 0,
+                        val: 0,
+                        desc: "stl id, default 0"
+                    }
+                }
+            }
+        }
+    };
+  endfunction : set
+```
 
-    rcv_labs[0].set('{
-        WR,
-        `APB_SLAVE_START_ADDR_0,
-        1,
-        cmp_envs[0].slv_agts[0],
-        cmp_envs[0].mst_agts[0].cfg
-    });
-
-
-
-2.3
 override test name as "apb_cfg_label_test" at [main] section
+-----
 ref: lib/smtdv_apb_uvc/sim/smtdv_apb.core
 
+```
 [main]
 description = "SMTDV APB lib"
 root = os.getenv("SMTDV_HOME")
@@ -94,18 +124,24 @@ unittest = TRUE
 clean = FALSE
 simulator = ius
 test = apb_cfg_label_test
+```
 
-3 run test
+run test
+-----
 python ../../../script/run.py --file apb_setup_test
 
-4. simulation report
+simulation report
+-----
 check PASS/FAIL
 
 _simulation.log for MTI,
 irun.log for IUS
 
-5. post process
-to extract raw label info by querying apb_db.db
+post process
+-----
+to extract raw label info by querying apb_db.db,
+system table records the updated reg event when the match trx asserted by the labled monitor
+```
 % sqlite3 apb_db.db
 
 sqlite> .tables
@@ -122,4 +158,4 @@ uvm_test_top.apb_env[0].mst_agts[0]  uvm_test_top.apb_env[0].slv_agts[0]  desc  
 1                                    0                                    force set cfg.stlid as           7  800
 0                                    1                                    force set cfg.stlid as           7  800
 sqlite>
-
+```

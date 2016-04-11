@@ -12,6 +12,7 @@ class cdn_master_stl_vseq
   typedef cdn_busmatrix_virtual_sequencer vseqr_t;
   typedef cdn_master_stl_vseq vseq_t;
   typedef ahb_master_stl_seq#(ADDR_WIDTH, DATA_WIDTH) seq_stl_t;
+  typedef ahb_master_stop_seqr_seq#(ADDR_WIDTH, DATA_WIDTH) seq_stop_t;
   typedef uvm_component bcmp_t;
   typedef uvm_object obj_t;
 
@@ -22,6 +23,7 @@ class cdn_master_stl_vseq
   `uvm_declare_p_sequencer(vseqr_t)
 
   seq_stl_t seq_stls[$];
+  seq_stop_t seq_stops[$];
 
   typedef struct {
     string q[$];
@@ -67,11 +69,15 @@ class cdn_master_stl_vseq
    `uvm_create_on(seq_stls[1], vseqr.ahb_magts[0].seqr)
     seq_stls[1].m_file = stls[0].q[1];
 
-//   `uvm_create_on(seq_stls[2], vseqr.ahb_magts[1].seqr)
-//    seq_stls[2].m_file = stls[1].q[0];
-//
-//   `uvm_create_on(seq_stls[3], vseqr.ahb_magts[1].seqr)
-//    seq_stls[3].m_file = stls[1].q[1];
+   `uvm_create_on(seq_stops[0], vseqr.ahb_magts[0].seqr)
+
+   `uvm_create_on(seq_stls[2], vseqr.ahb_magts[1].seqr)
+    seq_stls[2].m_file = stls[1].q[0];
+
+   `uvm_create_on(seq_stls[3], vseqr.ahb_magts[1].seqr)
+    seq_stls[3].m_file = stls[1].q[1];
+
+   `uvm_create_on(seq_stops[1], vseqr.ahb_magts[1].seqr)
 
     graph = '{
         nodes:
@@ -89,21 +95,35 @@ class cdn_master_stl_vseq
                    seqr: vseqr.ahb_magts[0].seqr,
                    prio: -1,
                    desc: {$psprintf("bind Node[%0d] as %s", 1, "stls[0][1]")}
-               }//,
-//               '{
-//                    uuid: 2,
-//                    seq: seq_stls[2],
-//                    seqr: vseqr.ahb_magts[1].seqr,
-//                    prio: -1,
-//                    desc: {$psprintf("bind Node[%0d] as %s", 2, "stls[1][0]")}
-//                },
-//                '{
-//                    uuid: 3,
-//                    seq: seq_stls[3],
-//                    seqr: vseqr.ahb_magts[1].seqr,
-//                    prio: -1,
-//                    desc: {$psprintf("bind Node[%0d] as %s", 3, "stls[1][1]")}
-//                }
+               },
+               '{
+                    uuid: 2,
+                    seq: seq_stls[2],
+                    seqr: vseqr.ahb_magts[1].seqr,
+                    prio: -1,
+                    desc: {$psprintf("bind Node[%0d] as %s", 2, "stls[1][0]")}
+                },
+                '{
+                    uuid: 3,
+                    seq: seq_stls[3],
+                    seqr: vseqr.ahb_magts[1].seqr,
+                    prio: -1,
+                    desc: {$psprintf("bind Node[%0d] as %s", 3, "stls[1][1]")}
+                },
+               '{
+                   uuid: 4,
+                   seq: seq_stops[0],
+                   seqr: vseqr.ahb_magts[0].seqr,
+                   prio: -1,
+                   desc: {$psprintf("bind Node[%0d] as %s", 4, "seq_stops[0]")}
+                },
+               '{
+                   uuid: 5,
+                   seq: seq_stops[1],
+                   seqr: vseqr.ahb_magts[1].seqr,
+                   prio: -1,
+                   desc: {$psprintf("bind Node[%0d] as %s", 5, "seq_stops[1]")}
+                }
            },
         edges:
            '{
@@ -112,13 +132,13 @@ class cdn_master_stl_vseq
                    sourceid: 0,
                    sinkid: 1,
                    desc: {$psprintf("bind Edge[%0d] from Node[%0d] to Node[%0d]", 0, 0, 1)}
-               }//,
-//               '{
-//                   uuid: 1,
-//                   sourceid: 2,
-//                   sinkid: 3,
-//                   desc: {$psprintf("bind Edge[%0d] from Node[%0d] to Node[%0d]", 0, 0, 1)}
-//               }
+               },
+               '{
+                   uuid: 1,
+                   sourceid: 2,
+                   sinkid: 3,
+                   desc: {$psprintf("bind Edge[%0d] from Node[%0d] to Node[%0d]", 0, 0, 1)}
+               }
            }
      };
   endtask : pre_body
@@ -126,18 +146,19 @@ class cdn_master_stl_vseq
   virtual task body();
     super.body();
     fork
-      begin seq_stls[0].start(vseqr.ahb_magts[0].seqr); end
-      begin seq_stls[1].start(vseqr.ahb_magts[0].seqr); end
+ //     begin seq_stls[0].start(vseqr.ahb_magts[0].seqr); end
+//      begin seq_stls[1].start(vseqr.ahb_magts[0].seqr); end
 //      begin seq_stls[2].start(vseqr.ahb_magts[1].seqr); end
-//      begin seq_stls[2].start(vseqr.ahb_magts[1].seqr); end
+//      begin seq_stls[3].start(vseqr.ahb_magts[1].seqr); end
+      begin seq_stops[0].start(vseqr.ahb_magts[0].seqr); end
+      begin seq_stops[1].start(vseqr.ahb_magts[1].seqr); end
     join_none;
     #10;
   endtask : body
 
   virtual task post_body();
     super.post_body();
-    wait(vseqr.ahb_magts[0].seqr.finish);
-    //wait(vseqr.ahb_magts[0].seqr.finish && vseqr.ahb_magts[1].seqr.finish);
+    wait(vseqr.ahb_magts[0].seqr.finish && vseqr.ahb_magts[1].seqr.finish);
   endtask : post_body
 
 endclass : cdn_master_stl_vseq

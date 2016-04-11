@@ -15,7 +15,7 @@ class smtdv_queue#(
 
   typedef smtdv_queue#(T) cmp_t;
   bit has_lock = FALSE;
-  bit has_debug = TRUE;
+  bit has_debug = FALSE;
 
   T nitem;
 

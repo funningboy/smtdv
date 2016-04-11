@@ -25,6 +25,8 @@ class smtdv_base_item
   bitem_t next = null;
   bitem_t pre = null;
   bitem_t parent = null;
+  bit has_check_on_scb = FALSE;  // checked on scoreboard
+  int check_num_on_scb = 0;
 
   constraint c_prio { prio inside {[-2:10]}; }
 
@@ -32,6 +34,8 @@ class smtdv_base_item
     `uvm_field_int(prio, UVM_ALL_ON)
     `uvm_field_int(initorid, UVM_ALL_ON)
     `uvm_field_int(targetid, UVM_ALL_ON)
+    `uvm_field_int(has_check_on_scb, UVM_ALL_ON)
+    `uvm_field_int(check_num_on_scb, UVM_ALL_ON)
     `uvm_field_object(parent, UVM_DEFAULT)
     `uvm_field_object(pre, UVM_DEFAULT)
     `uvm_field_object(next, UVM_DEFAULT)
@@ -165,6 +169,7 @@ class smtdv_sequence_item#(
   extern virtual function void reset_index();
   extern virtual function void reset_status();
   extern virtual function void clear();
+  extern virtual function bit has_check_on_scb_all();
 
 endclass : smtdv_sequence_item
 
@@ -183,6 +188,11 @@ endclass : smtdv_sequence_item
  *  pack serial data to byte arr data_beat
  *  @return void
  */
+
+function bit smtdv_sequence_item::has_check_on_scb_all();
+  return this.check_num_on_scb == addrs.size();
+endfunction : has_check_on_scb_all
+
 function void smtdv_sequence_item::pack_data(int idx=0, bit [DATA_WIDTH-1:0] idata=0);
   int n = (DATA_WIDTH>>3);
   for (int i=0; i<n; i+=1) begin

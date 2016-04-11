@@ -82,6 +82,7 @@ endtask : run_threads
 task apb_master_driver::reset_driver();
   mbox.delete();
   reset_inf();
+  th_handler.reset();
 endtask : reset_driver
 
 

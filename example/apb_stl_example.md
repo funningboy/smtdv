@@ -1,10 +1,14 @@
-1. description
-replay/clone bus behavior by using stl sequence.
+description
+------
+try to replay/clone bus behavior by using stl sequence.
+that will get more easiler for tester who does not need to have create a new sequence again.
 
-2. declare payload sequence, simulator and test at smtdv_apb.core
-2.1 declare the dependency graph as scheduler to handle the sequecne node based on edge correleation,
-by default, parallel or muti sequences are no edge dependency.
+declare payload sequence, simulator and test at smtdv_apb.core
+-----
+declare the dependency graph as scheduler to handle the sequecne node based on edge correleation,
+by default, parallel and muti sequences have edge dependency.
 
+```
 ex:
   [node0]
      |
@@ -13,11 +17,22 @@ ex:
      -----------
           |
         [seqr]
-
+```
 ref: lib/smtdv_apb_uvc/vseq/apb_master_stl_vseq.sv
 
-  # declare the payload sequence
+# declare the payload sequence and format,
+ref: /lib/smtdb_apb_uvc/stl/preload0.stl
+```
+  # ordering sequence items are depend on the cycle and time.
 
+# apb_monitor
+# begin_cycle,        end_cycle,       begin_time,         end_time,    id, r/w, resp,  addr,  data,
+0000000000000002, 0000000000000004, 0000000000000019, 000000000000002d,  0, w,    OK,  10000000, 000000ff,
+0000000000000002, 0000000000000004, 0000000000000019, 000000000000002d,  0, r,    OK,  10000000, 000000ff,
+```
+
+
+```
   stls_t stls = '{
     q:
         '{
@@ -32,6 +47,7 @@ ref: lib/smtdv_apb_uvc/vseq/apb_master_stl_vseq.sv
         nodes:
            '{
                '{
+                   // bind seq_stl[0](preload1.stl) as node[0]
                    uuid: 0,
                    seq: seq_stls[0],
                    seqr: vseqr.apb_magts[0].seqr,
@@ -39,6 +55,7 @@ ref: lib/smtdv_apb_uvc/vseq/apb_master_stl_vseq.sv
                    desc: {$psprintf("bind Node[%0d] as %s", 0, "stls[0]")}
                },
                '{
+                   // bind seq_stl[1](preload0.stl) as node[1]
                    uuid: 1,
                    seq: seq_stls[1],
                    seqr: vseqr.apb_magts[0].seqr,
@@ -63,11 +80,13 @@ ref: lib/smtdv_apb_uvc/vseq/apb_master_stl_vseq.sv
                }
            }
      };
+```
 
-2.2
+
 override test name as "apb_stl_test" at [main] section
+---
 ref: lib/smtdv_apb_uvc/sim/smtdv_apb.core
-
+```
 [main]
 description = "SMTDV APB lib"
 root = os.getenv("SMTDV_HOME")
@@ -79,19 +98,26 @@ unittest = TRUE
 clean = FALSE
 simulator = ius
 test = apb_stl_test
-
-3 run test
+```
+run test
+----
+```
 python ../../../script/run.py --file smtdv_apb.core
+```
 
-4. simulation report
+simulation report
+-----
+
 check PASS/FAIL
 
 _simulation.log for MTI,
 irun.log for IUS
 
-5. post process
-to extract raw apb bus transaction by querying apb_db.db and then compare these are expected to the driven sequences
 
+post process
+-----
+to extract raw apb bus transaction by querying apb_db.db and then compare these are expected to the driven sequences
+```
 % sqlite3 apb_db.db
 sqlite> .tables
 top.system_table
@@ -106,4 +132,4 @@ dec_addr    dec_bg_cyc  dec_bg_time  dec_burst   dec_data_000  dec_data_001  dec
 ----------  ----------  -----------  ----------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ----------  -----------  ----------  ----------  ----------  ----------  ----------  ----------  ----------  --------------------
 268455936   38          37000        0           65535         0             0             0             0             0             0             0             0             0             0             0             0             0             0             0             39          38000        1           0           0           0           0           1           0           1.84467440737096e+19
 268455936   41          40000        0           65535         0             0             0             0             0             0             0             0             0             0             0             0
-
+```

@@ -38,13 +38,13 @@ class ahb_master_irq_seq#(
       item = item_t::type_id::create("item");
       `SMTDV_RAND_WITH(item,
         {
-        item.mod_t == MASTER;
-        item.trs_t == RD;
-        item.run_t == FORCE;
-        item.trx_size == B32;
-        item.bst_type == SINGLE;
-        item.addr == cur_addr;
-        item.prio == -1;
+        mod_t == MASTER;
+        trs_t == RD;
+        run_t == FORCE;
+        trx_size == B32;
+        bst_type == SINGLE;
+        addr == cur_addr;
+        prio == -1;
         })
 
       `uvm_create(req)

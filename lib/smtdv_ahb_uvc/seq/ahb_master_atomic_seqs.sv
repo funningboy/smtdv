@@ -48,12 +48,12 @@ class ahb_master_1w_seq#(
     item = item_t::type_id::create("item");
     `SMTDV_RAND_WITH(item,
       {
-      item.mod_t == MASTER;
-      item.trs_t == WR;
-      item.run_t == FORCE;
-      item.addr == _start_addr;
-      item.bst_type == _bst_type;
-      item.trx_size == _trx_size;
+      mod_t == MASTER;
+      trs_t == WR;
+      run_t == FORCE;
+      addr == _start_addr;
+      bst_type == _bst_type;
+      trx_size == _trx_size;
       })
     `uvm_create(req)
     req.copy(item);
@@ -109,12 +109,12 @@ class ahb_master_1r_seq#(
     item = item_t::type_id::create("item");
     `SMTDV_RAND_WITH(item,
       {
-      item.mod_t == MASTER;
-      item.trs_t == RD;
-      item.run_t == FORCE;
-      item.addr == _start_addr;
-      item.bst_type == _bst_type;
-      item.trx_size == _trx_size;
+      mod_t == MASTER;
+      trs_t == RD;
+      run_t == FORCE;
+      addr == _start_addr;
+      bst_type == _bst_type;
+      trx_size == _trx_size;
     })
 
     `uvm_create(req)
