@@ -35,6 +35,8 @@ class smtdv_queue#(
   extern virtual function void find_all(T item, ref T founds[$]);
   extern virtual function void find_idxs(T item, ref int founds[$]);
   extern virtual function void dump(int remain=-1);
+  extern virtual function void purge();
+  extern virtual function void nocheck_scb_get(ref T item); // find no checked item
 
   extern virtual task async_push_front(T item, int delay=0);
   extern virtual task async_push_back(T item, int delay=0);
@@ -44,6 +46,7 @@ class smtdv_queue#(
   extern virtual task async_get(int idx, int delay=0, ref T item);
   extern virtual task async_prio_get(int delay=0, ref T item); // Qos
   extern virtual task async_delete(int idx, int delay=0);
+  extern virtual task async_purge(int delay=0);
 
 endclass : smtdv_queue
 
@@ -96,6 +99,10 @@ function void smtdv_queue::find_idxs(smtdv_queue::T item, ref int founds[$]);
   founds = this.queue.find_index(it) with ( it.compare(item) == TRUE );
 endfunction : find_idxs
 
+
+function void smtdv_queue::purge();
+  this.queue.delete();
+endfunction : purge
 
 function void smtdv_queue::dump(int remain=-1);
   int bg_idx = 0;
@@ -188,6 +195,24 @@ task smtdv_queue::async_prio_get(int delay=0, ref smtdv_queue::T item);
   unlock();
 endtask : async_prio_get
 
+/*
+* get first no visited(checked) item
+* */
+function void smtdv_queue::nocheck_scb_get(ref smtdv_queue::T item);
+  T bitem, parent;
+  item = null;
+  foreach(this.queue[i]) begin
+    $cast(bitem, this.queue[i]);
+    $cast(parent, this.queue[i].parent);
+    if (!bitem.has_check_on_scb || !parent.has_check_on_scb_all()) begin
+        item = bitem;
+        break;
+    end
+  end
+  if (has_debug)
+    dump();
+endfunction : nocheck_scb_get
+
 
 task smtdv_queue::async_get(int idx, int delay=0, ref smtdv_queue::T item);
   wait(size()>0);
@@ -206,6 +231,15 @@ task smtdv_queue::async_delete(int idx, int delay=0);
   `SMTDV_SWAP(delay)
   unlock();
 endtask : async_delete
+
+
+task smtdv_queue::async_purge(int delay=0);
+  wait(!is_lock());
+  lock();
+  purge();
+  `SMTDV_SWAP(delay)
+  unlock();
+endtask : async_purge
 
 
 /*

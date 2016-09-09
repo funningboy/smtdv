@@ -71,12 +71,12 @@ class smtdv_scoreboard#(
   // foreach(a[i]) begin
   //   `CAST_CREATE(a[i])
   // end
-  T2 initor_m[NUM_OF_INITOR];   // map to initiator as master
-  T3 targets_s[NUM_OF_TARGETS]; // map to all targets as slaves
+  T2 initor_m[$];   // map to initiator as master
+  T3 targets_s[$]; // map to all targets as slaves
   T2 cmp;
 
-  uvm_analysis_imp_initor#(T1, scb_t) initor[NUM_OF_INITOR];
-  uvm_analysis_imp_target#(T1, scb_t) targets[NUM_OF_TARGETS];
+  uvm_analysis_imp_initor#(T1, scb_t) initor[$];
+  uvm_analysis_imp_target#(T1, scb_t) targets[$];
 
   `uvm_component_param_utils_begin(scb_t)
   `uvm_component_utils_end
@@ -252,9 +252,11 @@ endfunction : write_target
 function smtdv_scoreboard::T1 smtdv_scoreboard::_create_atomic_item(smtdv_scoreboard::T1 item, int i);
   T1 aitem;
   aitem = T1::type_id::create("atomic_item");
+  `SMTDV_RAND(aitem) aitem.clear();
   aitem.addrs[0] = item.addrs[i];
   aitem.data_beat[0] = item.data_beat[i];
   aitem.trs_t = item.trs_t;
+  aitem.rsp = item.rsp;
   if (item.byten_beat.size() > 0) begin
     aitem.byten_beat[0] = item.byten_beat[i];
   end
@@ -292,14 +294,14 @@ function void smtdv_scoreboard::_do_initor_rd_check(smtdv_scoreboard::T1 item, i
 
   if (rd_pool.exists(item.addrs[i])) begin
     item_q = rd_pool.get(item.addrs[i]);
-    it = item_q.pop_front();
+    item_q.nocheck_scb_get(it);
 
     if (it== null)
       return;
 
     if (!it.compare(aitem))
       `uvm_error("SMTDV_SCB_RD_COMP",
-          {$psprintf("RECEIVED WRONG DATA %h\n%s", item.addrs[i], item.sprint())})
+          {$psprintf("RECEIVED WRONG DATA %h\n%s\n %s\n \%s", item.addrs[i], item.sprint(), it.sprint(), aitem.sprint())})
 
     if (has_debug)
       `uvm_info(get_full_name(),
@@ -364,14 +366,14 @@ function void smtdv_scoreboard::_do_target_wr_check(smtdv_scoreboard::T1 item, i
 
   if (wr_pool.exists(item.addrs[i])) begin
     item_q = wr_pool.get(item.addrs[i]);
-    it = item_q.pop_front();
+    item_q.nocheck_scb_get(it);
 
     if (it==null)
       return;
 
     if (!it.compare(aitem))
       `uvm_error("SMTDV_SCB_WR_COMP",
-          {$psprintf("RECEIVED WRONG DATA %h\n%s", item.addrs[i], item.sprint())})
+          {$psprintf("RECEIVED WRONG DATA %h\n%s\n %s\n \%s", item.addrs[i], item.sprint(), it.sprint(), aitem.sprint())})
 
     if (has_debug)
       `uvm_info(get_full_name(),
